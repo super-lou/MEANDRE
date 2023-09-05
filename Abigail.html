@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Interactive GeoJSON Map with D3.js</title>
+	<script src="https://d3js.org/d3.v5.min.js"></script> <!-- Include D3.js library -->
+	<style>
+         body {
+             margin: 0;
+             padding: 0;
+             display: flex;
+             height: 100vh;
+             overflow: hidden;
+         }
+
+         #menu {
+             width: 60px; /* Initial width */
+             background-color: #333;
+             color: #fff;
+             padding: 20px;
+             box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+             transition: width 0.3s ease; /* Smooth transition */
+         }
+
+         #menu.expanded {
+             width: 250px; /* Expanded width */
+         }
+
+         #menu-button {
+             position: absolute;
+             top: 20px;
+             left: 20px;
+             cursor: pointer;
+             z-index: 2;
+         }
+
+         #map {
+             flex: 1;
+             position: relative;
+         }
+
+         #map-container {
+             height: 100%;
+             overflow: hidden;
+         }
+
+         /* Style for GeoJSON features */
+         .geojson-feature {
+             fill: blue;
+             stroke: black;
+             stroke-width: 1;
+         }
+	</style>
+    </head>
+    <body>
+	<div id="menu">
+            <!-- Your menu content here -->
+            <h1 id="menu-text">Menu</h1>
+            <ul>
+		<li><a href="#">Item 1</a></li>
+		<li><a href="#">Item 2</a></li>
+		<li><a href="#">Item 3</a></li>
+            </ul>
+	</div>
+	<div id="menu-button" onclick="toggleMenu()">
+            <!-- Button to expand/shrink menu -->
+            &#9776;
+	</div>
+	<div id="map">
+            <svg id="geojson-svg"></svg> <!-- Use an SVG element for rendering -->
+	</div>
+	<script>
+         function toggleMenu() {
+             const menu = document.getElementById("menu");
+             const menuText = document.getElementById("menu-text");
+
+             if (menu.classList.contains("expanded")) {
+                 menu.classList.remove("expanded");
+                 menuText.textContent = "Menu";
+             } else {
+                 menu.classList.add("expanded");
+                 menuText.textContent = "M";
+             }
+         }
+
+         let geoJSONData = null;
+	 
+         // Load the GeoJSON file
+	 d3.json('carte-de-france-et-outre-mers.json')
+	   .then(data => {
+               geoJSONData = data;
+               drawGeoJSON();
+	   })
+	   .catch(error => {
+               console.error("Error loading GeoJSON:", error);
+	   });	 
+
+         // Define a function to draw the GeoJSON data using D3.js
+         function drawGeoJSON() {
+             if (geoJSONData) {
+                 // Create an SVG group for the features
+                 const svg = d3.select("#geojson-svg");
+                 const g = svg.append("g");
+
+                 // Create a path generator
+                 const path = d3.geoPath();
+
+                 // Bind data and draw features
+                 g.selectAll("path")
+                  .data(geoJSONData.features)
+                  .enter()
+                  .append("path")
+                  .attr("class", "geojson-feature")
+                  .attr("d", path);
+             }
+         }
+	</script>
+    </body>
+</html>
