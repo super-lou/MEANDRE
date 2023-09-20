@@ -4,9 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Abigail</title>
-	<script src="https://d3js.org/d3.v6.min.js"></script>
+
+	<!-- topojson for json -->
 	<script src="//d3js.org/topojson.v1.min.js"></script>
+
+	<!-- geotoolbox for geo transformation -->
 	<script src="https://cdn.jsdelivr.net/npm/geotoolbox" charset="utf-8"></script>
+
+	<!-- d3 -->
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	
+
 	<style>
          body {
              margin: 0;
@@ -14,11 +22,12 @@
              display: flex;
              height: 100vh;
              overflow: hidden;
+	     background-color: #333;
          }
 
          #menu {
              width: 60px;
-             background-color: #333;
+             background-color: #CCC;
              color: #fff;
              padding: 20px;
              box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
@@ -74,35 +83,68 @@
 
 	 const k_simplify_initial = 0.02;
 
+	 const geoJSONfiles = [
+	     'data/france.geo.json',
+	     'data/river.geo.json'
+	 ];
 
-	 d3.json('data/france.geo.json')
-	   .then(data => {
-	       drawGeoJSON_france(geotoolbox.simplify(data, { k: k_simplify_initial, merge: false }));
-	   })
-	   .catch(error => {
-	       console.error("Error loading geojson file :", error);
-	   });
+	 function loadGeoJSON(fileURL) {
+	     return d3.json(fileURL)
+		      .then(data => data)
+		      .catch(error => {
+			  console.error("Error loading geojson file :", error);
+			  throw error;
+		      });
+	 }
 
-	 function drawGeoJSON_france(geoJSONdata_france) {
-	     if (geoJSONdata_france) {
+	 const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
+
+	 Promise.all(promises)
+		.then(geoJSONdata => {
+		    const geoJSONdata_france = geotoolbox.simplify(geoJSONdata[0], { k: k_simplify_initial, merge: false });
+		    const geoJSONdata_river = geotoolbox.simplify(geoJSONdata[1], { k: k_simplify_initial, merge: false });
+		    drawGeoJSON(geoJSONdata_france, geoJSONdata_river);
+		})
+		.catch(error => {
+		    console.error("Error loading or processing GeoJSON files:", error);
+		});
+
+	 
+
+	 function drawGeoJSON(geoJSONdata_france, geoJSONdata_river) {
+	     if (geoJSONdata_france && geoJSONdata_river) {
 		 const width = 700;
 		 const height = 700;
 
-		 const backgroundColor = "#EAF2FA";
-		 const landColor = "#09A573";
-		 const landStroke = "#FCF5E9";
+		 
+		 const landColor = "transparent";
+		 const landStroke = "#fff";
+		 const stroke_river = "#777";
 
 		 const minZoom = 1;
-		 const maxZoom = 4.5;
+		 const maxZoom = 4;
+		 const maxPan = 0;
+
+		 const transitionDuration = 500;
 		 
 		 const k_simplify_ref = 0.05;
 		 let k_simplify;
 
+		 const riverLength_max = 300000;
+		 const riverLength_min = 100000;
+		 let riverLength;
+
 		 const zoom = d3.zoom()
 				.scaleExtent([minZoom, maxZoom])
-				.on("zoom", function (event) {
+				.translateExtent([[-width*maxPan, -height*maxPan],
+						  [width*(1+maxPan), height*(1+maxPan)]])
+				.on("zoom", function (event) { 
+
+				    riverLength = riverLength_max - (event.transform.k - minZoom)/(maxZoom-minZoom)*(riverLength_max-riverLength_min);
+				    
 				    k_simplify = k_simplify_ref + (event.transform.k - minZoom)/(maxZoom-minZoom)*(1-k_simplify_ref);
-				    redrawMap(k_simplify);
+				    redrawMap(k_simplify, riverLength);
+
 				    svg.attr("transform", event.transform);
 				    svg.style("width", width * event.transform.k + "px");
 				    svg.style("height", height * event.transform.k + "px");
@@ -110,7 +152,7 @@
 
 
 		 const projection = d3.geoMercator()
-				      .scale([2100])
+				      .scale([2200])
 				      .center(geoJSONdata_france.features[0].properties.centroid)
 				      .translate([width/2, height/2]);
 
@@ -120,26 +162,61 @@
 			       .call(zoom)
 			       .append("g");
 		 
-		 svg.append("rect")
-		    .attr("width", width)
-		    .attr("height", height)
-		    .attr('fill', backgroundColor);
+		 function redrawMap(k_simplify, riverLength) {
+		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
 
-		 function redrawMap(k) {
-		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k, merge: false });
+		     const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.length >= riverLength);
+		     const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
+
+
 
 		     svg.selectAll('path')
+		        .data(simplifiedGeoJSON_france.features, d => d.properties.id) // Use a key function to track elements by a unique identifier
+		        .join(
+		            enter => enter.append('path')
+					  .attr('fill', landColor)
+					  .attr('stroke', landStroke)
+					  .attr('stroke-width', 1)
+			    		  .attr('stroke-linejoin', "round")
+					  .attr('stroke-miterlimit', 1)
+					  .attr('d', pathGenerator)
+					  .style('opacity', 0) // Start with opacity 0 for a smooth fade-in transition
+					  .call(enter => enter.transition().duration(transitionDuration).style('opacity', 1)), // Smooth fade-in transition
+		            update => update.transition().duration(transitionDuration).attr('d', pathGenerator), // Smooth path transition
+		            exit => exit.transition().duration(transitionDuration).style('opacity', 0).remove() // Smooth fade-out transition and remove
+		        );
+		     
+
+		     
+		     /* svg.selectAll('path')
 		        .data(simplifiedGeoJSON_france.features)
 		        .join('path')
+			.transition()
+			.duration(500)
 		        .attr('d', pathGenerator)
 		        .attr('fill', landColor)
 		        .attr('stroke', landStroke)
-		        .attr('stroke-width', 1);
+		        .attr('stroke-width', 1)
+			.attr('stroke-linejoin', "round")
+			.attr('stroke-miterlimit', 1); */
+
+		     svg.selectAll('path.river')
+			.data(simplifiedselectedGeoJSON_river.features)
+			.join('path')
+			.attr('class', 'river')
+			.attr('d', pathGenerator)
+			.attr("fill", "none")
+			.attr("stroke", stroke_river)
+			.attr('stroke-width', 0.8)
+			.attr('stroke-linejoin', "round")
+			.attr('stroke-linecap', "round")
+			.attr('stroke-miterlimit', 1);
+		     
 		 }
 
 		 const pathGenerator = d3.geoPath(projection);
 
-		 redrawMap(k_simplify_ref); // Initial map drawing
+		 redrawMap(k_simplify_ref, riverLength_max); // Initial map drawing
 		 
 		 return svg.node();
 		 
