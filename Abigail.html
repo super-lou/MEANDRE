@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Interactive GeoJSON Map with D3.js</title>
-	<script src="https://d3js.org/d3.v5.min.js"></script> <!-- Include D3.js library -->
+	<title>Abigail</title>
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="//d3js.org/topojson.v1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/geotoolbox" charset="utf-8"></script>
 	<style>
          body {
              margin: 0;
@@ -15,106 +17,135 @@
          }
 
          #menu {
-             width: 60px; /* Initial width */
+             width: 60px;
              background-color: #333;
              color: #fff;
              padding: 20px;
              box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
-             transition: width 0.3s ease; /* Smooth transition */
-         }
-
-         #menu.expanded {
-             width: 250px; /* Expanded width */
-         }
-
-         #menu-button {
+             transition: width 0.3s ease;
              position: absolute;
-             top: 20px;
-             left: 20px;
-             cursor: pointer;
+             top: 0;
+             bottom: 0;
              z-index: 2;
          }
 
-         #map {
-             flex: 1;
-             position: relative;
+         #menu.expanded {
+             width: 250px;
+         }
+
+         #menu-button {
+             cursor: pointer;
+             z-index: 3;
+             position: absolute;
+             top: 20px;
+             left: 20px;
          }
 
          #map-container {
-             height: 100%;
+             flex: 1;
+	     position: relative;
              overflow: hidden;
          }
 
-         /* Style for GeoJSON features */
-         .geojson-feature {
-             fill: blue;
-             stroke: black;
-             stroke-width: 1;
-         }
 	</style>
     </head>
     <body>
-	<div id="menu">
-            <!-- Your menu content here -->
-            <h1 id="menu-text">Menu</h1>
-            <ul>
-		<li><a href="#">Item 1</a></li>
-		<li><a href="#">Item 2</a></li>
-		<li><a href="#">Item 3</a></li>
-            </ul>
+	<div id="map-container">
+            <svg id="geoJSONsvg_france"></svg>
 	</div>
-	<div id="menu-button" onclick="toggleMenu()">
-            <!-- Button to expand/shrink menu -->
-            &#9776;
-	</div>
-	<div id="map">
-            <svg id="geojson-svg"></svg> <!-- Use an SVG element for rendering -->
-	</div>
+	
 	<script>
+	 
+	 
          function toggleMenu() {
              const menu = document.getElementById("menu");
              const menuText = document.getElementById("menu-text");
 
              if (menu.classList.contains("expanded")) {
                  menu.classList.remove("expanded");
-                 menuText.textContent = "Menu";
+                 menuText.textContent = "M";
              } else {
                  menu.classList.add("expanded");
-                 menuText.textContent = "M";
+                 menuText.textContent = "Menu";
              }
          }
 
-         let geoJSONData = null;
 	 
-         // Load the GeoJSON file
-	 d3.json('carte-de-france-et-outre-mers.json')
+
+	 const k_simplify_initial = 0.02;
+
+
+	 d3.json('data/france.geo.json')
 	   .then(data => {
-               geoJSONData = data;
-               drawGeoJSON();
+	       drawGeoJSON_france(geotoolbox.simplify(data, { k: k_simplify_initial, merge: false }));
 	   })
 	   .catch(error => {
-               console.error("Error loading GeoJSON:", error);
-	   });	 
+	       console.error("Error loading geojson file :", error);
+	   });
 
-         // Define a function to draw the GeoJSON data using D3.js
-         function drawGeoJSON() {
-             if (geoJSONData) {
-                 // Create an SVG group for the features
-                 const svg = d3.select("#geojson-svg");
-                 const g = svg.append("g");
+	 function drawGeoJSON_france(geoJSONdata_france) {
+	     if (geoJSONdata_france) {
+		 const width = 700;
+		 const height = 700;
 
-                 // Create a path generator
-                 const path = d3.geoPath();
+		 const backgroundColor = "#EAF2FA";
+		 const landColor = "#09A573";
+		 const landStroke = "#FCF5E9";
 
-                 // Bind data and draw features
-                 g.selectAll("path")
-                  .data(geoJSONData.features)
-                  .enter()
-                  .append("path")
-                  .attr("class", "geojson-feature")
-                  .attr("d", path);
-             }
-         }
+		 const minZoom = 1;
+		 const maxZoom = 4.5;
+		 
+		 const k_simplify_ref = 0.05;
+		 let k_simplify;
+
+		 const zoom = d3.zoom()
+				.scaleExtent([minZoom, maxZoom])
+				.on("zoom", function (event) {
+				    k_simplify = k_simplify_ref + (event.transform.k - minZoom)/(maxZoom-minZoom)*(1-k_simplify_ref);
+				    redrawMap(k_simplify);
+				    svg.attr("transform", event.transform);
+				    svg.style("width", width * event.transform.k + "px");
+				    svg.style("height", height * event.transform.k + "px");
+				});
+
+
+		 const projection = d3.geoMercator()
+				      .scale([2100])
+				      .center(geoJSONdata_france.features[0].properties.centroid)
+				      .translate([width/2, height/2]);
+
+		 const svg = d3.select("#geoJSONsvg_france")
+			       .attr("width", width)
+			       .attr("height", height)
+			       .call(zoom)
+			       .append("g");
+		 
+		 svg.append("rect")
+		    .attr("width", width)
+		    .attr("height", height)
+		    .attr('fill', backgroundColor);
+
+		 function redrawMap(k) {
+		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k, merge: false });
+
+		     svg.selectAll('path')
+		        .data(simplifiedGeoJSON_france.features)
+		        .join('path')
+		        .attr('d', pathGenerator)
+		        .attr('fill', landColor)
+		        .attr('stroke', landStroke)
+		        .attr('stroke-width', 1);
+		 }
+
+		 const pathGenerator = d3.geoPath(projection);
+
+		 redrawMap(k_simplify_ref); // Initial map drawing
+		 
+		 return svg.node();
+		 
+	     }
+	 }
+	 
 	</script>
     </body>
 </html>
