@@ -1,6 +1,7 @@
 library(sf)
 library(jsonlite)
 library(dplyr)
+library(ggplot2)
 
 
 # write_geojson = function (shp, output) {
@@ -65,9 +66,9 @@ writeLines(json_string, output)
 # river
 output = file.path(data_dir, "river.geo.json")
 river = st_read(file.path(computer_data_path, map_dir, "river"))
-river = st_transform(river, 4326)
 river$length = as.numeric(st_length(river$geometry))
 river = filter(river, length >= 100000)
+river = st_transform(river, 4326)
 
 nRiver = length(river$geometry)
 # nRiver = 10
@@ -84,7 +85,8 @@ json_data = list(
                 properties=list(
                     code=river$CdEntiteHy[i],
                     name=river$NomEntiteH[i],
-                    length=river$length[i]
+                    length=river$length[i],
+                    norm=(sqrt(river$length[i])-sqrt(min(river$length))) / (sqrt(max(river$length))-sqrt(min(river$length)))
                 ),
                 
                 geometry=list(
