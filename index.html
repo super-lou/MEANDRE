@@ -23,7 +23,7 @@
              display: flex;
              height: 100vh;
              overflow: hidden;
-	     background-color: #333;
+	     background-color: #262A2B;
          }
 
          #menu {
@@ -82,11 +82,10 @@
 
 	 
 
-	 const k_simplify_initial = 0.02;
-
 	 const geoJSONfiles = [
-	     'data/france.geo.json',
-	     'data/river.geo.json'
+	     "data/france.geo.json",
+	     "data/river.geo.json",
+	     "data/entiteHydro.geo.json"
 	 ];
 
 	 function loadGeoJSON(fileURL) {
@@ -102,9 +101,10 @@
 
 	 Promise.all(promises)
 		.then(geoJSONdata => {
-		    const geoJSONdata_france = geotoolbox.simplify(geoJSONdata[0], { k: k_simplify_initial, merge: false });
-		    const geoJSONdata_river = geotoolbox.simplify(geoJSONdata[1], { k: k_simplify_initial, merge: false });
-		    drawGeoJSON(geoJSONdata_france, geoJSONdata_river);
+		    const geoJSONdata_france = geoJSONdata[0];
+		    const geoJSONdata_river = geoJSONdata[1];
+		    const geoJSONdata_entiteHydro = geoJSONdata[2];
+		    drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro);
 		})
 		.catch(error => {
 		    console.error("Error loading or processing GeoJSON files:", error);
@@ -112,15 +112,17 @@
 
 	 
 
-	 function drawGeoJSON(geoJSONdata_france, geoJSONdata_river) {
+	 function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro) {
 	     if (geoJSONdata_france && geoJSONdata_river) {
 		 const width = 700;
 		 const height = 700;
 
+		 const fill_entiteHydro = "transparent";
+		 const stroke_entiteHydro = "#555";
 		 
-		 const landColor = "transparent";
-		 const landStroke = "#fff";
-		 const stroke_river = "#777";
+		 const fill_france = "transparent";
+		 const stroke_france = "#E8E6E3";
+		 const stroke_river = "#9A9286";
 
 		 const minZoom = 1;
 		 const maxZoom = 4;
@@ -128,12 +130,12 @@
 
 		 const transitionDuration = 500;
 		 
-		 const k_simplify_ref = 0.05;
+		 const k_simplify_ref = 0.1;
 		 let k_simplify;
 
-		 const riverLength_max = 300000;
-		 const riverLength_min = 100000;
-		 let riverLength;
+		 const riverLength_max = 0.4;
+		 const riverLength_min = 0;
+		 let riverLength;		 
 
 		 const zoom = d3.zoom()
 				.scaleExtent([minZoom, maxZoom])
@@ -164,48 +166,104 @@
 			       .append("g");
 		 
 		 function redrawMap(k_simplify, riverLength) {
+		     /* const simplifiedGeoJSON_entiteHydro = geotoolbox.simplify(geoJSONdata_entiteHydro, { k: k_simplify, merge: false }); */
 		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
 
-		     const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.length >= riverLength);
+		     const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.norm >= riverLength);
 		     const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
 
+
+		     /* svg.selectAll("path.entiteHydro")
+			.data(simplifiedGeoJSON_entiteHydro.features)
+			.join("path")
+			.attr("class", "entiteHydro")
+			.attr("d", pathGenerator)
+			.attr("fill", fill_entiteHydro)
+			.attr("stroke", stroke_entiteHydro)
+			.attr("stroke-width", 0.8)
+			.attr("stroke-linejoin", "round")
+			.attr("stroke-miterlimit", 1); */
 		     
-		     svg.selectAll('path.france')
+		     svg.selectAll("path.france")
 			.data(simplifiedGeoJSON_france.features)
-			.join('path')
-			.attr('class', 'france')
-			.attr('d', pathGenerator)
-			.attr('fill', landColor)
-			.attr('stroke', landStroke)
-			.attr('stroke-width', 1)
-			.attr('stroke-linejoin', "round")
-			.attr('stroke-miterlimit', 1);
+			.join("path")
+			.attr("class", "france")
+			.attr("d", pathGenerator)
+			.attr("fill", fill_france)
+			.attr("stroke", stroke_france)
+			.attr("stroke-width", 1)
+			.attr("stroke-linejoin", "miter")
+			.attr("stroke-miterlimit", 1);
 
 		     const strokeWith_river_max = 0.9;
-		     const strokeWith_river_min = 0.2;
-		     
-		     svg.selectAll('path.river')
+		     const strokeWith_river_min = 0.1;
+
+
+		     svg.selectAll("path.river")
 			.data(simplifiedselectedGeoJSON_river.features)
-			.join('path')
-			.attr('class', 'river')
-			.attr('d', pathGenerator)
+			.join("path")
+			.attr("class", "river")
+			.attr("d", pathGenerator)
 			.transition()
 			.duration(1000)
 			.attr("fill", "transparent")
 			.attr("stroke", stroke_river)
-		     /* .attr('stroke-width', 0.8) */
 			.attr("stroke-width", function(d) {
 			    return strokeWith_river_max - (1-d.properties.norm)*(strokeWith_river_max-strokeWith_river_min);
 			})
-			.attr('stroke-linejoin', "round")
-			.attr('stroke-linecap', "round")
-			.attr('stroke-miterlimit', 1);
+		     /* .attr("stroke-width", 0.8) */
+			.attr("stroke-linejoin", "miter")
+			.attr("stroke-linecap", "round")
+			.attr("stroke-miterlimit", 1);
 		     
 		 }
 
 		 const pathGenerator = d3.geoPath(projection);
 
-		 redrawMap(k_simplify_ref, riverLength_max); // Initial map drawing
+		 redrawMap(k_simplify_ref, riverLength_max);
+
+
+
+
+
+		 /* let hoveredPolygon = null;
+
+		    svg.selectAll("path.entiteHydro")
+		    .data(geoJSONdata_entiteHydro.features)
+		    .join("path")
+		    .attr("class", "entiteHydro")
+		    .attr("d", pathGenerator)
+		    .attr("fill", fill_entiteHydro)
+		    .attr("stroke", stroke_entiteHydro)
+		    .attr("stroke-width", 0.8)
+		    .attr("stroke-linejoin", "round")
+		    .attr("stroke-miterlimit", 1)
+		    .on("mouseover", function (event, d) {
+		    hoveredPolygon = d;
+		    updateDisplay();
+		    })
+		    .on("mouseout", function (event, d) {
+		    hoveredPolygon = null;
+		    updateDisplay();
+		    });
+
+		    function updateDisplay() {
+		    svg.selectAll("path.entiteHydro")
+		    .each(function (d) {
+		    this.style.display = "none";
+		    });
+
+		    if (hoveredPolygon) {
+		    const hoveredPath = svg.select(`[data-id="${hoveredPolygon.properties.id}"]`);
+		    if (!hoveredPath.empty()) {
+		    hoveredPath.style("display", "block");
+		    }
+		    }
+		    } */
+
+
+
+		 
 		 
 		 return svg.node();
 		 
