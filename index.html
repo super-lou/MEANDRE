@@ -5,6 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Abigail</title>
 
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
 	<!-- topojson for json -->
 	<script src="//d3js.org/topojson.v1.min.js"></script>
 	<!-- geotoolbox for geo transformation -->
@@ -16,7 +19,12 @@
 	<script src="https://unpkg.com/d3-interpolate-path@2.3.0/build/d3-interpolate-path.js"></script>
 	
 
+	<!-- Slider -->
+	<link href="src/nouislider.css" rel="stylesheet">
+	<script src="src/nouislider.js"></script>
+	
 	<style>
+
          body {
              margin: 0;
              padding: 0;
@@ -24,13 +32,15 @@
              height: 100vh;
              overflow: hidden;
 	     background-color: #262A2B;
+	     font-family: "Poppins",sans-serif;
          }
 
          #menu {
-             width: 60px;
+	     pointer-events: auto;
+             width: 10px;
              background-color: #CCC;
              color: #fff;
-             padding: 20px;
+             padding: 10px;
              box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
              transition: width 0.3s ease;
              position: absolute;
@@ -40,26 +50,56 @@
          }
 
          #menu.expanded {
+	     pointer-events: auto;
              width: 250px;
+         }
+
+         .hidden {
+             display: none;
          }
 
          #menu-button {
              cursor: pointer;
              z-index: 3;
              position: absolute;
-             top: 20px;
-             left: 20px;
+             top: 10px;
+             left: 10px;
          }
 
          #map-container {
-             flex: 1;
+	     left: 20px;
+	     width: 100vh;
+	     height: 100vh;
 	     position: relative;
-             overflow: hidden;
+	     overflow: hidden;
          }
+
+	 #range-container {
+	     left: 5px;
+	     top: 50px;
+	     width: 100%;
+	     height: 10px;
+	     position: relative;
+         }
+
+
 
 	</style>
     </head>
     <body>
+	<div id="menu-button" onclick="toggleMenu()">M</div>
+	
+
+        <div id="menu">
+            <div id="menuExpand" class="hidden">
+                <p>This is the content of the menu.</p>
+		<div id="range-container">
+		    <div id="range"></div>
+		</div>
+            </div>
+        </div>
+
+	
 	<div id="map-container">
             <svg id="geoJSONsvg_france"></svg>
 	</div>
@@ -67,18 +107,19 @@
 	<script>
 	 
 	 
-         function toggleMenu() {
-             const menu = document.getElementById("menu");
-             const menuText = document.getElementById("menu-text");
 
-             if (menu.classList.contains("expanded")) {
-                 menu.classList.remove("expanded");
-                 menuText.textContent = "M";
-             } else {
-                 menu.classList.add("expanded");
-                 menuText.textContent = "Menu";
-             }
-         }
+	 function toggleMenu() {
+	     const menu = document.getElementById("menu");
+	     const menuExpand = document.getElementById("menuExpand");
+
+	     if (menu.classList.contains("expanded")) {
+		 menu.classList.remove("expanded");
+		 menuExpand.classList.add("hidden");
+	     } else {
+		 menu.classList.add("expanded");
+		 menuExpand.classList.remove("hidden");
+	     }
+	 }
 
 	 
 
@@ -114,8 +155,6 @@
 
 	 function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro) {
 	     if (geoJSONdata_france && geoJSONdata_river) {
-		 const width = 700;
-		 const height = 700;
 
 		 const fill_entiteHydro = "transparent";
 		 const stroke_entiteHydro = "#555";
@@ -131,23 +170,28 @@
 		 const transitionDuration = 500;
 		 
 		 const k_simplify_ref = 0.1;
-		 let k_simplify;
+		 let k_simplify = k_simplify_ref;
 
 		 const riverLength_max = 0.4;
 		 const riverLength_min = 0;
-		 let riverLength;		 
+		 let riverLength = riverLength_max;
+
+		 const strokeWith_river_max = 0.9;
+		 const strokeWith_river_min = 0.1;
+		 
+		 let width = window.innerHeight;
+		 let height = window.innerHeight;
+
+		 
 
 		 const zoom = d3.zoom()
 				.scaleExtent([minZoom, maxZoom])
-				.translateExtent([[-width*maxPan, -height*maxPan],
-						  [width*(1+maxPan), height*(1+maxPan)]])
 				.on("zoom", function (event) { 
-
 				    riverLength = riverLength_max - (event.transform.k - minZoom)/(maxZoom-minZoom)*(riverLength_max-riverLength_min);
-				    
 				    k_simplify = k_simplify_ref + (event.transform.k - minZoom)/(maxZoom-minZoom)*(1-k_simplify_ref);
-				    redrawMap(k_simplify, riverLength);
 
+				    redrawMap();
+				    
 				    svg.attr("transform", event.transform);
 				    svg.style("width", width * event.transform.k + "px");
 				    svg.style("height", height * event.transform.k + "px");
@@ -155,49 +199,50 @@
 
 
 		 const projection = d3.geoMercator()
-				      .scale([2200])
-				      .center(geoJSONdata_france.features[0].properties.centroid)
-				      .translate([width/2, height/2]);
-
+				      .center(geoJSONdata_france.features[0].properties.centroid);
+		 
 		 const svg = d3.select("#geoJSONsvg_france")
-			       .attr("width", width)
-			       .attr("height", height)
+			       .attr("width", "100%")
+			       .attr("height", "100%")
 			       .call(zoom)
 			       .append("g");
-		 
-		 function redrawMap(k_simplify, riverLength) {
-		     /* const simplifiedGeoJSON_entiteHydro = geotoolbox.simplify(geoJSONdata_entiteHydro, { k: k_simplify, merge: false }); */
-		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
 
+
+		 
+		 
+
+		 function handleResize() {
+		     width = window.innerHeight;
+		     height = window.innerHeight;
+
+		     zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
+		     svg.attr("width", width).attr("height", height);
+		     projection.scale([height*3.2]).translate([width / 2, height / 2]);
+
+		     redrawMap();
+		 }
+
+		 window.addEventListener("resize", handleResize.bind(null, k_simplify, riverLength));
+
+
+		 
+		 function redrawMap() {
+		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
 		     const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.norm >= riverLength);
 		     const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
-
-
-		     /* svg.selectAll("path.entiteHydro")
-			.data(simplifiedGeoJSON_entiteHydro.features)
-			.join("path")
-			.attr("class", "entiteHydro")
-			.attr("d", pathGenerator)
-			.attr("fill", fill_entiteHydro)
-			.attr("stroke", stroke_entiteHydro)
-			.attr("stroke-width", 0.8)
-			.attr("stroke-linejoin", "round")
-			.attr("stroke-miterlimit", 1); */
 		     
 		     svg.selectAll("path.france")
 			.data(simplifiedGeoJSON_france.features)
 			.join("path")
 			.attr("class", "france")
 			.attr("d", pathGenerator)
+			.transition()
+			.duration(1000)
 			.attr("fill", fill_france)
 			.attr("stroke", stroke_france)
 			.attr("stroke-width", 1)
 			.attr("stroke-linejoin", "miter")
 			.attr("stroke-miterlimit", 1);
-
-		     const strokeWith_river_max = 0.9;
-		     const strokeWith_river_min = 0.1;
-
 
 		     svg.selectAll("path.river")
 			.data(simplifiedselectedGeoJSON_river.features)
@@ -209,66 +254,63 @@
 			.attr("fill", "transparent")
 			.attr("stroke", stroke_river)
 			.attr("stroke-width", function(d) {
-			    return strokeWith_river_max - (1-d.properties.norm)*(strokeWith_river_max-strokeWith_river_min);
+			    return strokeWith_river_max - (1 - d.properties.norm) * (strokeWith_river_max - strokeWith_river_min);
 			})
-		     /* .attr("stroke-width", 0.8) */
 			.attr("stroke-linejoin", "miter")
 			.attr("stroke-linecap", "round")
 			.attr("stroke-miterlimit", 1);
-		     
 		 }
+
+
 
 		 const pathGenerator = d3.geoPath(projection);
 
-		 redrawMap(k_simplify_ref, riverLength_max);
-
-
-
-
-
-		 /* let hoveredPolygon = null;
-
-		    svg.selectAll("path.entiteHydro")
-		    .data(geoJSONdata_entiteHydro.features)
-		    .join("path")
-		    .attr("class", "entiteHydro")
-		    .attr("d", pathGenerator)
-		    .attr("fill", fill_entiteHydro)
-		    .attr("stroke", stroke_entiteHydro)
-		    .attr("stroke-width", 0.8)
-		    .attr("stroke-linejoin", "round")
-		    .attr("stroke-miterlimit", 1)
-		    .on("mouseover", function (event, d) {
-		    hoveredPolygon = d;
-		    updateDisplay();
-		    })
-		    .on("mouseout", function (event, d) {
-		    hoveredPolygon = null;
-		    updateDisplay();
-		    });
-
-		    function updateDisplay() {
-		    svg.selectAll("path.entiteHydro")
-		    .each(function (d) {
-		    this.style.display = "none";
-		    });
-
-		    if (hoveredPolygon) {
-		    const hoveredPath = svg.select(`[data-id="${hoveredPolygon.properties.id}"]`);
-		    if (!hoveredPath.empty()) {
-		    hoveredPath.style("display", "block");
-		    }
-		    }
-		    } */
-
-
-
+		 redrawMap();
+		 handleResize();
 		 
-		 
+
 		 return svg.node();
-		 
 	     }
 	 }
+
+
+
+
+	 var range = document.getElementById('range');
+
+	 noUiSlider.create(range, {
+
+	     range: {
+		 'min': 1300,
+		 'max': 3250
+	     },
+
+	     step: 150,
+
+	     // Handles start at ...
+	     start: [1450, 2050, 2350, 3000],
+
+	     // ... must be at least 300 apart
+	     margin: 300,
+
+	     // ... but no more than 600
+	     limit: 600,
+
+	     // Display colored bars between handles
+	     connect: true,
+
+	     // Move handle on tap, bars are draggable
+	     behaviour: 'tap-drag',
+	     tooltips: true,
+
+	     // Show a scale with the slider
+	     pips: {
+		 mode: 'steps',
+		 stepped: true,
+		 density: 4
+	     }
+	 });
+
 	 
 	</script>
     </body>
