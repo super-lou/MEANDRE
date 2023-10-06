@@ -17,11 +17,16 @@
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 	<!-- d3 interpolate path -->
 	<script src="https://unpkg.com/d3-interpolate-path@2.3.0/build/d3-interpolate-path.js"></script>
-	
 
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	
 	<!-- Slider -->
 	<link href="src/nouislider.css" rel="stylesheet">
 	<script src="src/nouislider.js"></script>
+
+	<script src="src/wNumb.js"></script>
+	
 	
 	<style>
 
@@ -31,17 +36,20 @@
              display: flex;
              height: 100vh;
              overflow: hidden;
-	     background-color: #262A2B;
+	     background-color: #3a4042;
 	     font-family: "Poppins",sans-serif;
          }
 
          #menu {
 	     pointer-events: auto;
              width: 10px;
-             background-color: #CCC;
+             background-color: #222;
              color: #fff;
-             padding: 10px;
-             box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+             padding-top: 25px;
+	     padding-bottom: 10px;
+	     padding-left: 10px;
+	     padding-right: 10px;
+             box-shadow: 2px 0px 5px #22222280;
              transition: width 0.3s ease;
              position: absolute;
              top: 0;
@@ -75,12 +83,155 @@
          }
 
 	 #range-container {
-	     left: 5px;
-	     top: 50px;
-	     width: 100%;
-	     height: 10px;
+	     margin-right: 15px;
+	     margin-left: 15px;
+	     top: 23px;
+	     height: 50px;
 	     position: relative;
          }
+
+
+	 .slider-styled,
+	 .slider-styled .noUi-handle {
+	     box-shadow: none;
+	 }
+
+	 /* Hide markers on slider handles */
+	 .slider-styled .noUi-handle::before,
+	 .slider-styled .noUi-handle::after {
+	     display: none;
+	 }
+
+	 .slider-round {
+	     height: 5px;
+	     border: 0px solid transparent;
+	 }
+
+	 .slider-round .noUi-connect {
+	     background: #0098b6;
+	 }
+
+	 .slider-round .noUi-base {
+	     background: #004958;
+	     border-radius: 5px;
+	     border: 0px solid transparent;
+	 }
+
+	 .slider-round .noUi-handle {
+	     height: 16px;
+	     width: 16px;
+	     top: -6px;
+	     right: -8px; /* half the width */
+	     border-radius: 50%;
+	     background: #0098b6;
+	     border: 0px solid transparent;
+	 }
+	 .slider-round .noUi-handle:hover {
+	     height: 18px;
+	     width: 18px;
+	     top: -7px;
+	     right: -9px; /* half the width */
+	     border-radius: 50%;
+	     background: #0098b6;
+	     border: 0px solid transparent;
+	 }
+	 .slider-round .noUi-handle:active {
+	     height: 26px;
+	     width: 26px;
+	     top: -11px;
+	     right: -13px; /* half the width */
+	     border-radius: 50%;
+	     background: #0098b6;
+	     border: 5px solid #0098b680;
+	     border: 5px solid #0098b680;
+	     -webkit-background-clip: padding-box; /* for Safari */
+	     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+	 }
+
+	 .slider-round .noUi-tooltip {
+	     display: block;
+	     position: absolute;
+	     border-radius: 6px;
+	     background: #fff;
+	     color: #202124;
+	     padding-top: 1px;
+	     padding-bottom: 1px;
+	     padding-left: 3px;
+	     padding-right: 3px;
+	     text-align: center;
+	     white-space: nowrap;
+	     border: 0;
+	     box-shadow: 0 1px 2px rgba(230,230,230,0.3),0 1px 3px 1px rgba(230,230,230,0.15);
+	 }
+
+	 .slider-round .noUi-tooltip::before {
+	     content: "";
+	     display: block;
+	     background: #fff;
+	     border-radius: 3px;
+	     bottom: -5px;
+	     height: 12px;
+	     position: absolute;
+	     transform: translateX(-50%) rotate(45deg);
+	     width: 12px;
+	     left: 50%;
+	     border: 0;
+	 }
+	 
+	 .slider-round .noUi-tooltip-arrow {
+	     content: "";
+	     display: block;
+	     background: transparent;
+	     border-radius: 3px;
+	     bottom: 5px;
+	     height: 12px;
+	     position: absolute;
+	     transform: translateX(50%) rotate(45deg);
+	     width: 12px;
+	     border: 0;
+	     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 2px 4px 2px rgba(60,64,67,0.15);
+	 }
+
+
+	 .slider-round .noUi-marker {
+	     position: absolute;
+	     background: #CCC;
+	 }
+	 .slider-round .noUi-marker-sub {
+	     background: #AAA;
+	 }
+	 .slider-round .noUi-marker-large {
+	     background: #AAA;
+	 }
+
+	 .slider-round .noUi-pips-horizontal {
+	     padding: 10px 0;
+	     height: 80px;
+	     top: 100%;
+	     left: 0;
+	     width: 100%;
+	 }
+	 .slider-round .noUi-value-horizontal {
+	     -webkit-transform: translate(-50%, 50%);
+	     transform: translate(-50%, 50%);
+	 }
+	 .slider-round .noUi-rtl .noUi-value-horizontal {
+	     -webkit-transform: translate(50%, 50%);
+	     transform: translate(50%, 50%);
+	 }
+	 .slider-round .noUi-marker-horizontal.noUi-marker {
+	     margin-left: -1px;
+	     width: 1px;
+	     height: 7px;
+	 }
+	 .slider-round .noUi-marker-horizontal.noUi-marker-sub {
+	     height: 7px;
+	     width: 1px;
+	 }
+	 .slider-round .noUi-marker-horizontal.noUi-marker-large {
+	     height: 10px;
+	     width: 2px;
+	 }
 
 
 
@@ -92,9 +243,9 @@
 
         <div id="menu">
             <div id="menuExpand" class="hidden">
-                <p>This is the content of the menu.</p>
+		<p>Période de référence</p>
 		<div id="range-container">
-		    <div id="range"></div>
+		    <div id="range-slider" class="slider-styled slider-round"></div>
 		</div>
             </div>
         </div>
@@ -276,40 +427,142 @@
 
 
 
-	 var range = document.getElementById('range');
 
-	 noUiSlider.create(range, {
+	 
 
-	     range: {
-		 'min': 1300,
-		 'max': 3250
-	     },
+	 
 
-	     step: 150,
 
-	     // Handles start at ...
-	     start: [1450, 2050, 2350, 3000],
+	 var rangeSlider = document.getElementById('range-slider');
 
-	     // ... must be at least 300 apart
-	     margin: 300,
-
-	     // ... but no more than 600
-	     limit: 600,
-
-	     // Display colored bars between handles
+	 noUiSlider.create(rangeSlider, {
+	     start: [1970, 2000],
+	     margin: 30,
+	     behaviour: 'drag-smooth-steps-tap',
+	     step: 5,
 	     connect: true,
-
-	     // Move handle on tap, bars are draggable
-	     behaviour: 'tap-drag',
-	     tooltips: true,
-
-	     // Show a scale with the slider
+	     keyboardDefaultStep: 1,
+	     keyboardPageMultiplier: 2,
+	     keyboardMultiplier: 1,
+	     tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+	     format: {
+		 from: function(value) {
+		     return parseInt(value);
+		 },
+		 to: function(value) {
+		     return parseInt(value);
+		 }
+	     },
+	     range: {
+		 'min': 1970,
+		 'max': 2020
+	     },
 	     pips: {
-		 mode: 'steps',
-		 stepped: true,
-		 density: 4
+		 mode: 'values',
+		 values: [1970, 2000, 2020],
+		 density: 10,
+		 format: wNumb({
+		     decimals: 0,
+		 })
 	     }
+	     
 	 });
+
+
+	 mergeTooltips(rangeSlider, 100, ' - ');
+
+	 /**
+	  * @param slider HtmlElement with an initialized slider
+	  * @param threshold Minimum proximity (in percentages) to merge tooltips
+	  * @param separator String joining tooltips
+	  */
+	 function mergeTooltips(slider, threshold, separator) {
+
+	     var textIsRtl = getComputedStyle(slider).direction === 'rtl';
+	     var isRtl = slider.noUiSlider.options.direction === 'rtl';
+	     var isVertical = slider.noUiSlider.options.orientation === 'vertical';
+	     var tooltips = slider.noUiSlider.getTooltips();
+	     var origins = slider.noUiSlider.getOrigins();
+	     
+	     // Move tooltips into the origin element. The default stylesheet handles this.
+	     tooltips.forEach(function (tooltip, index) {
+		 if (tooltip) {
+		     let div = document.createElement('div');
+		     div.classList.add('noUi-tooltip-arrow');
+		     origins[index].appendChild(div);
+		     
+		     origins[index].appendChild(tooltip);
+		 }
+	     });
+
+	     var arrows = document.getElementsByClassName('noUi-tooltip-arrow');
+
+	     slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
+		 
+		 var pools = [[]];
+		 var poolPositions = [[]];
+		 var poolValues = [[]];
+		 var atPool = 0;
+
+		 // Assign the first tooltip to the first pool, if the tooltip is configured
+		 if (tooltips[0]) {
+		     pools[0][0] = 0;
+		     poolPositions[0][0] = positions[0];
+		     poolValues[0][0] = values[0];
+		 }
+
+		 for (var i = 1; i < positions.length; i++) {
+		     if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
+			 atPool++;
+			 pools[atPool] = [];
+			 poolValues[atPool] = [];
+			 poolPositions[atPool] = [];
+		     }
+
+		     if (tooltips[i]) {
+			 pools[atPool].push(i);
+			 poolValues[atPool].push(values[i]);
+			 poolPositions[atPool].push(positions[i]);
+		     }
+		 }
+
+		 pools.forEach(function (pool, poolIndex) {
+		     var handlesInPool = pool.length;
+
+		     for (var j = 0; j < handlesInPool; j++) {
+			 var handleNumber = pool[j];
+
+			 if (j === handlesInPool - 1) {
+			     var offset = 0;
+
+			     poolPositions[poolIndex].forEach(function (value) {
+				 offset += 1000 - value;
+			     });
+
+			     var direction = isVertical ? 'bottom' : 'right';
+			     var last = isRtl ? 0 : handlesInPool - 1;
+			     var lastOffset = 1000 - poolPositions[poolIndex][last];
+			     offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
+			     
+			     // Center this tooltip over the affected handles
+			     tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
+			     tooltips[handleNumber].style.display = 'block';
+			     tooltips[handleNumber].style[direction] = offset + '%';
+
+			     arrows[handleNumber].style.display = 'block';
+			     arrows[handleNumber].style[direction] = offset + '%';
+			     
+			 } else {
+			     // Hide this tooltip
+			     tooltips[handleNumber].style.display = 'none';
+			     arrows[handleNumber].style.display = 'none';
+			 }
+		     }
+		 });
+	     });
+	 }
+
+
 
 	 
 	</script>

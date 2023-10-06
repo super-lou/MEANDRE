@@ -504,6 +504,7 @@
         drag: "state-drag",
         tap: "state-tap",
         active: "active",
+	tooltipArrow: "tooltip-arrow",
         tooltip: "tooltip",
         pips: "pips",
         pipsHorizontal: "pips-horizontal",
