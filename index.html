@@ -243,10 +243,78 @@
 
         <div id="menu">
             <div id="menuExpand" class="hidden">
+		
 		<p>Période de référence</p>
 		<div id="range-container">
-		    <div id="range-slider" class="slider-styled slider-round"></div>
-		</div>
+		    <div id="period_reference" class="slider-styled slider-round"></div>
+		</div></br>
+		
+		<p>Période futur</p>
+		<div id="range-container">
+		    <div id="period_futur" class="slider-styled slider-round"></div>
+		</div></br>
+
+		<p>Global Climate Model</p>
+		<select id="GCM" onchange="check_GCM(); check_RCM();">
+		    <option>CNRM-CM5</option>
+		    <option>EC-EARTH</option>
+		    <option>HadGEM2-ES</option>
+		    <option>IPSL-CM5A-MR</option>
+		    <option>MPI-ESM-LR</option>
+		    <option>NorESM1-M</option>
+		</select>
+
+		<p>Regional Climate Model</p>
+		<select id="CNRM-CM5_RCM" style="display: block;" onchange="check_RCM()">
+		    <option>ALADIN63</option>
+		    <option>RACMO22E</option>
+		    <option>HadREM3-GA7</option>
+		</select>
+		<select id="EC-EARTH_RCM" style="display: none;" onchange="check_RCM()">
+		    <option>RACMO22E</option>
+		    <option>RCA4</option>
+		    <option>HadREM3-GA7</option>
+		</select>
+		<select id="HadGEM2-ES_RCM" style="display: none;" onchange="check_RCM()">
+		    <option>ALADIN63</option>
+		    <option>CCLM4-8-17</option>
+		    <option>RegCM4-6</option>
+		    <option>HadREM3-GA7</option>
+		</select>
+		<select id="IPSL-CM5A-MR_RCM" style="display: none;" onchange="check_RCM()">
+		    <option>HIRHAM5</option>
+		    <option>RCA4</option>
+		    <option>WRF381P</option>
+		</select>
+		<select id="MPI-ESM-LR_RCM" style="display: none;" onchange="check_RCM()">
+		    <option>CCLM4-8-17</option>
+		    <option>RegCM4-6</option>
+		    <option>REMO</option>
+		</select>
+		<select id="NorESM1-M_RCM" style="display: none;" onchange="check_RCM()">
+		    <option>HIRHAM5</option>
+		    <option>REMO</option>
+		    <option>WRF381P</option>
+		</select>
+
+		<p>Scénario Climatique</p>
+		<select id="EXP_85" style="display: none;">
+		    <option>RCP 8.5</option>
+		</select>
+		<select id="EXP_26_85" style="display: none;">
+		    <option>RCP 2.6</option>
+		    <option>RCP 8.5</option>
+		</select>
+		<select id="EXP_45_85" style="display: none;">
+		    <option>RCP 4.5</option>
+		    <option>RCP 8.5</option>
+		</select>
+		<select id="EXP_26_45_85" style="display: block;">
+		    <option>RCP 2.6</option>
+		    <option>RCP 4.5</option>
+		    <option>RCP 8.5</option>
+		</select>
+
             </div>
         </div>
 
@@ -256,7 +324,118 @@
 	</div>
 	
 	<script>
+
+	 var GCM_default = "CNRM-CM5";
+	 var GCM_select = document.getElementById('GCM');
+	 for (var i, j = 0; i = GCM_select.options[j]; j++) {
+	     if (i.value == GCM_default) {
+		 GCM_select.selectedIndex = j;
+		 break;
+	     }
+	 }
+	 var GCM = document.getElementById("GCM").value;
+
+
+	 var RCM = get_RCM_select().value;
+
 	 
+	 if (get_EXP_select()) {
+	     var EXP_default = "RCP 8.5";
+	     var EXP_select = get_EXP_select();
+	     for (var i, j = 0; i = EXP_select.options[j]; j++) {
+		 if (i.value == EXP_default) {
+		     EXP_select.selectedIndex = j;
+		     break;
+		 }
+	     }
+	     EXP = get_EXP_select().value;
+	 }
+
+
+
+	 function get_RCM_select() {
+	     var RCM_select;
+	     var RCM_selectAll = document.querySelectorAll('[id$="_RCM"]');
+	     RCM_selectAll.forEach(function (select) {
+		 if (getComputedStyle(select).display !== "none") {
+		     RCM_select = select;
+		 }
+	     });
+	     return RCM_select;
+	 }
+
+	 function get_EXP_select() {
+	     var EXP_select;
+	     var EXP_selectAll = document.querySelectorAll('[id$="EXP_"]');
+	     EXP_selectAll.forEach(function (select) {
+		 if (getComputedStyle(select).display !== "none") {
+		     EXP_select = select;
+		 }
+	     });
+	     return EXP_select;
+	 }
+	 
+	 function check_GCM() {
+	     var GCM = document.getElementById("GCM").value;
+
+	     var RCM_selectAll = document.querySelectorAll('[id$="_RCM"]');
+	     RCM_selectAll.forEach(function (select) {
+		 select.style.display = "none";
+	     });
+
+	     var RCM_selected = document.getElementById(GCM + "_RCM");
+	     if (RCM_selected) {
+		 RCM_selected.style.display = "block";
+	     }
+	     check_RCM();
+	 }
+
+	 function check_RCM() {
+	     var GCM = document.getElementById("GCM").value;
+	     var RCM = get_RCM_select().value;
+
+	     var EXP_85 = document.getElementById("EXP_85");
+	     var EXP_26_85 = document.getElementById("EXP_26_85");
+	     var EXP_45_85 = document.getElementById("EXP_45_85");
+	     var EXP_26_45_85 = document.getElementById("EXP_26_45_85");
+
+	     EXP_85.style.display = "none";
+	     EXP_26_85.style.display = "none";
+	     EXP_45_85.style.display = "none";
+	     EXP_26_45_85.style.display = "none";
+
+	     if ((GCM === "CNRM-CM5" && RCM === "HadREM3-GA7") ||
+		 (GCM === "HadGEM2-ES" && RCM === "ALADIN63") ||
+		 (GCM === "IPSL-CM5A-MR" && RCM === "HIRHAM5") ||
+		 (GCM === "NorESM1-M" && RCM === "WRF381P")) {
+		 EXP_85.style.display = "block";
+	     }
+
+	     if ((GCM === "EC-EARTH" && RCM === "HadREM3-GA7") ||
+		 (GCM === "HadGEM2-ES" && RCM === "RegCM4-6") ||
+		 (GCM === "HadGEM2-ES" && RCM === "HadREM3-GA7") ||
+		 (GCM === "MPI-ESM-LR" && RCM === "RegCM4-6")) {
+		 EXP_26_85.style.display = "block";
+	     }
+
+	     if ((GCM === "HadGEM2-ES" && RCM === "CCLM4-8-17") ||
+		 (GCM === "IPSL-CM5A-MR" && RCM === "RCA4") ||
+		 (GCM === "IPSL-CM5A-MR" && RCM === "WRF381P") ||
+		 (GCM === "NorESM1-M" && RCM === "HIRHAM5")) {
+		 EXP_45_85.style.display = "block";
+	     }
+
+	     if ((GCM === "CNRM-CM5" && RCM === "ALADIN63") ||
+		 (GCM === "CNRM-CM5" && RCM === "CCLM4-8-17") ||
+		 (GCM === "CNRM-CM5" && RCM === "RACMO22E") ||
+		 (GCM === "EC-EARTH" && RCM === "RACMO22E") ||
+		 (GCM === "EC-EARTH" && RCM === "RCA4") ||
+		 (GCM === "MPI-ESM-LR" && RCM === "CCLM4-8-17") ||
+		 (GCM === "MPI-ESM-LR" && RCM === "REMO") ||
+		 (GCM === "NorESM1-M" && RCM === "REMO")) {
+		 EXP_26_45_85.style.display = "block";
+	     }
+	 }
 	 
 
 	 function toggleMenu() {
@@ -275,9 +454,9 @@
 	 
 
 	 const geoJSONfiles = [
-	     "data/france.geo.json",
-	     "data/river.geo.json",
-	     "data/entiteHydro.geo.json"
+		 "data/france.geo.json",
+		 "data/river.geo.json",
+		 "data/entiteHydro.geo.json"
 	 ];
 
 	 function loadGeoJSON(fileURL) {
@@ -410,7 +589,7 @@
 			.attr("stroke-linejoin", "miter")
 			.attr("stroke-linecap", "round")
 			.attr("stroke-miterlimit", 1);
-		 }
+	 }
 
 
 
@@ -433,9 +612,8 @@
 	 
 
 
-	 var rangeSlider = document.getElementById('range-slider');
-
-	 noUiSlider.create(rangeSlider, {
+	 var rangeSlider_reference = document.getElementById('period_reference');
+	 noUiSlider.create(rangeSlider_reference, {
 	     start: [1970, 2000],
 	     margin: 30,
 	     behaviour: 'drag-smooth-steps-tap',
@@ -467,9 +645,46 @@
 	     }
 	     
 	 });
+	 mergeTooltips(rangeSlider_reference, 100, ' - ');
 
 
-	 mergeTooltips(rangeSlider, 100, ' - ');
+	 var rangeSlider_futur = document.getElementById('period_futur');
+	 noUiSlider.create(rangeSlider_futur, {
+	     start: [2040, 2070],
+	     margin: 30,
+	     behaviour: 'drag-smooth-steps-tap',
+	     step: 5,
+	     connect: true,
+	     keyboardDefaultStep: 1,
+	     keyboardPageMultiplier: 2,
+	     keyboardMultiplier: 1,
+	     tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+	     format: {
+		 from: function(value) {
+		     return parseInt(value);
+		 },
+		 to: function(value) {
+		     return parseInt(value);
+		 }
+	     },
+	     range: {
+		 'min': 2020,
+		 'max': 2100
+	     },
+	     pips: {
+		 mode: 'values',
+		 values: [2020, 2050, 2100],
+		 density: 10,
+		 format: wNumb({
+		     decimals: 0,
+		 })
+	     }
+	     
+	 });
+	 mergeTooltips(rangeSlider_futur, 100, ' - ');
+
+
+	 
 
 	 /**
 	  * @param slider HtmlElement with an initialized slider
