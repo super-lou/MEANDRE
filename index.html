@@ -254,8 +254,31 @@
 		    <div id="period_futur" class="slider-styled slider-round"></div>
 		</div></br>
 
+		<p>Scénario Climatique</p>
+		<select id="RCP" onchange="check_GCM();">
+		    <option>RCP 2.6</option>
+		    <option>RCP 4.5</option>
+		    <option>RCP 8.5</option>
+		</select>
+
+		
 		<p>Global Climate Model</p>
-		<select id="GCM" onchange="check_GCM(); check_RCM();">
+		<select id="RCP 2.6_GCM" style="display: none;" onchange="check_RCM()">
+		    <option>CNRM-CM5</option>
+		    <option>EC-EARTH</option>
+		    <option>HadGEM2-ES</option>
+		    <option>MPI-ESM-LR</option>
+		    <option>NorESM1-M</option>
+		</select>
+		<select id="RCP 4.5_GCM" style="display: none;" onchange="check_RCM()">
+		    <option>CNRM-CM5</option>
+		    <option>EC-EARTH</option>
+		    <option>HadGEM2-ES</option>
+		    <option>IPSL-CM5A-MR</option>
+		    <option>MPI-ESM-LR</option>
+		    <option>NorESM1-M</option>
+		</select>
+		<select id="RCP 8.5_GCM" style="display: block;" onchange="check_RCM()">
 		    <option>CNRM-CM5</option>
 		    <option>EC-EARTH</option>
 		    <option>HadGEM2-ES</option>
@@ -264,56 +287,117 @@
 		    <option>NorESM1-M</option>
 		</select>
 
+
 		<p>Regional Climate Model</p>
-		<select id="CNRM-CM5_RCM" style="display: block;" onchange="check_RCM()">
+		<select id="RCP 2.6_CNRM-CM5_RCM" style="display: none;"">
+		    <option>ALADIN63</option>
+		    <option>RACMO22E</option>
+		</select>
+		<select id="RCP 4.5_CNRM-CM5_RCM" style="display: none;"">
+		    <option>ALADIN63</option>
+		    <option>RACMO22E</option>
+		</select>
+		<select id="RCP 8.5_CNRM-CM5_RCM" style="display: block;"">
 		    <option>ALADIN63</option>
 		    <option>RACMO22E</option>
 		    <option>HadREM3-GA7</option>
 		</select>
-		<select id="EC-EARTH_RCM" style="display: none;" onchange="check_RCM()">
+
+		<select id="RCP 2.6_EC-EARTH_RCM" style="display: none;">
 		    <option>RACMO22E</option>
 		    <option>RCA4</option>
 		    <option>HadREM3-GA7</option>
 		</select>
-		<select id="HadGEM2-ES_RCM" style="display: none;" onchange="check_RCM()">
+		<select id="RCP 4.5_EC-EARTH_RCM" style="display: none;">
+		    <option>RACMO22E</option>
+		    <option>RCA4</option>
+		</select>
+		<select id="RCP 8.5_EC-EARTH_RCM" style="display: none;">
+		    <option>RACMO22E</option>
+		    <option>RCA4</option>
+		    <option>HadREM3-GA7</option>
+		</select>
+		
+		<select id="RCP 2.6_HadGEM2-ES_RCM" style="display: none;">
+		    <option>RegCM4-6</option>
+		    <option>HadREM3-GA7</option>
+		</select>
+		<select id="RCP 4.5_HadGEM2-ES_RCM" style="display: none;">
+		    <option>CCLM4-8-17</option>
+		</select>
+		<select id="RCP 8.5_HadGEM2-ES_RCM" style="display: none;">
 		    <option>ALADIN63</option>
 		    <option>CCLM4-8-17</option>
 		    <option>RegCM4-6</option>
 		    <option>HadREM3-GA7</option>
 		</select>
-		<select id="IPSL-CM5A-MR_RCM" style="display: none;" onchange="check_RCM()">
+
+		<select id="RCP 4.5_IPSL-CM5A-MR_RCM" style="display: none;">
+		    <option>RCA4</option>
+		    <option>WRF381P</option>
+		</select>
+		<select id="RCP 8.5_IPSL-CM5A-MR_RCM" style="display: none;">
 		    <option>HIRHAM5</option>
 		    <option>RCA4</option>
 		    <option>WRF381P</option>
 		</select>
-		<select id="MPI-ESM-LR_RCM" style="display: none;" onchange="check_RCM()">
+
+		<select id="RCP 2.6_MPI-ESM-LR_RCM" style="display: none;">
 		    <option>CCLM4-8-17</option>
 		    <option>RegCM4-6</option>
 		    <option>REMO</option>
 		</select>
-		<select id="NorESM1-M_RCM" style="display: none;" onchange="check_RCM()">
+		<select id="RCP 4.5_MPI-ESM-LR_RCM" style="display: none;">
+		    <option>CCLM4-8-17</option>
+		    <option>REMO</option>
+		</select>
+		<select id="RCP 8.5_MPI-ESM-LR_RCM" style="display: none;">
+		    <option>CCLM4-8-17</option>
+		    <option>RegCM4-6</option>
+		    <option>REMO</option>
+		</select>
+
+		<select id="RCP 2.6_NorESM1-M_RCM" style="display: none;">
+		    <option>REMO</option>
+		</select>
+		<select id="RCP 4.5_NorESM1-M_RCM" style="display: none;">
+		    <option>HIRHAM5</option>
+		    <option>REMO</option>
+		</select>
+		<select id="RCP 8.5_NorESM1-M_RCM" style="display: none;">
 		    <option>HIRHAM5</option>
 		    <option>REMO</option>
 		    <option>WRF381P</option>
 		</select>
 
-		<p>Scénario Climatique</p>
-		<select id="EXP_85" style="display: none;">
-		    <option>RCP 8.5</option>
+		
+		<p>Correction de Biais</p>
+		<select id="BC" onchange="check_Model()">
+		    <option>ADAMONT</option>
+		    <option>CDFt</option>
 		</select>
-		<select id="EXP_26_85" style="display: none;">
-		    <option>RCP 2.6</option>
-		    <option>RCP 8.5</option>
+
+		
+		<p>Modèle Hydrologique</p>
+		<select id="ADAMONT_Model" style="display: block;">
+		    <option>CTRIP</option>
+		    <option>EROS</option>
+		    <option>GRSD</option>
+		    <option>J2000</option>
+		    <option>MORDOR-SD</option>
+		    <option>MORDOR-TS</option>
+		    <option>ORCHIDEE</option>
+		    <option>SIM2</option>
+		    <option>SMASH</option>
 		</select>
-		<select id="EXP_45_85" style="display: none;">
-		    <option>RCP 4.5</option>
-		    <option>RCP 8.5</option>
+		<select id="CDFt_Model" style="display: none;">
+		    <option>EROS</option>
+		    <option>GRSD</option>
+		    <option>J2000</option>
+		    <option>MORDOR-SD</option>
+		    <option>SMASH</option>
 		</select>
-		<select id="EXP_26_45_85" style="display: block;">
-		    <option>RCP 2.6</option>
-		    <option>RCP 4.5</option>
-		    <option>RCP 8.5</option>
-		</select>
+
 
             </div>
         </div>
@@ -325,33 +409,81 @@
 	
 	<script>
 
-	 var GCM_default = "CNRM-CM5";
-	 var GCM_select = document.getElementById('GCM');
-	 for (var i, j = 0; i = GCM_select.options[j]; j++) {
-	     if (i.value == GCM_default) {
-		 GCM_select.selectedIndex = j;
+	 var RCP_default = "RCP 8.5";
+	 var RCP_select = document.getElementById('RCP');
+	 for (var i = 0; i < RCP_select.options.length; i++) {
+	     if (RCP_select.options[i].value === RCP_default) {
+		 RCP_select.selectedIndex = i;
 		 break;
 	     }
 	 }
-	 var GCM = document.getElementById("GCM").value;
-
-
+	 var RCP = document.getElementById("RCP").value;
+	 var GCM = get_GCM_select().value;
 	 var RCM = get_RCM_select().value;
+	 
+	 var BC_default = "ADAMONT";
+	 var BC_select = document.getElementById('BC');
+	 for (var i = 0; i < BC_select.options.length; i++) {
+	     if (BC_select.options[i].value === BC_default) {
+		 BC_select.selectedIndex = i;
+		 break;
+	     }
+	 }
+	 var BC = document.getElementById("BC").value;
+	 var Model = get_Model_select().value;
 
 	 
-	 if (get_EXP_select()) {
-	     var EXP_default = "RCP 8.5";
-	     var EXP_select = get_EXP_select();
-	     for (var i, j = 0; i = EXP_select.options[j]; j++) {
-		 if (i.value == EXP_default) {
-		     EXP_select.selectedIndex = j;
+	 function set_GCM_default() {
+	     var GCM_default = "CNRM-CM5";
+	     var GCM_select = get_GCM_select();
+	     for (var i = 0; i < GCM_select.options.length; i++) {
+		 if (GCM_select.options[i].value === GCM_default) {
+		     GCM_select.selectedIndex = i;
 		     break;
 		 }
 	     }
-	     EXP = get_EXP_select().value;
 	 }
 
+	 function set_RCM_default() {
+	     var GCM = document.getElementById("GCM").value;
+	     if (GCM === "CNRM-CM5") var RCM_default = "ALADIN63";
+	     if (GCM === "EC-EARTH") var RCM_default = "RACMO22E";
+	     if (GCM === "HadGEM2-ES") var RCM_default = "ALADIN63";
+	     if (GCM === "IPSL-CM5A-MR") var RCM_default = "HIRHAM5";
+	     if (GCM === "MPI-ESM-LR") var RCM_default = "CCLM4-8-17";
+	     if (GCM === "NorESM1-M") var RCM_default = "HIRHAM5";
+	     var RCM_select = get_RCM_select();
+	     for (var i = 0; i < RCM_select.options.length; i++) {
+		 if (RCM_select.options[i].value === RCM_default) {
+		     RCM_select.selectedIndex = i;
+		     break;
+		 }
+	     }
+	 }
+	 
+	 function set_Model_default() {
+	     var BC = document.getElementById("BC").value;
+	     if (BC === "ADAMONT") var Model_default = "J2000";
+	     if (BC === "CDFt") var Model_default = "J2000";
+	     var Model_select = get_Model_select();
+	     for (var i = 0; i < Model_select.options.length; i++) {
+		 if (Model_select.options[i].value === Model_default) {
+		     Model_select.selectedIndex = i;
+		     break;
+		 }
+	     }
+	 }
 
+	 function get_GCM_select() {
+	     var GCM_select;
+	     var GCM_selectAll = document.querySelectorAll('[id$="_GCM"]');
+	     GCM_selectAll.forEach(function (select) {
+		 if (getComputedStyle(select).display !== "none") {
+		     GCM_select = select;
+		 }
+	     });
+	     return GCM_select;
+	 }
 
 	 function get_RCM_select() {
 	     var RCM_select;
@@ -364,78 +496,58 @@
 	     return RCM_select;
 	 }
 
-	 function get_EXP_select() {
-	     var EXP_select;
-	     var EXP_selectAll = document.querySelectorAll('[id$="EXP_"]');
-	     EXP_selectAll.forEach(function (select) {
+	 function get_Model_select() {
+	     var Model_select;
+	     var Model_selectAll = document.querySelectorAll('[id$="_Model"]');
+	     Model_selectAll.forEach(function (select) {
 		 if (getComputedStyle(select).display !== "none") {
-		     EXP_select = select;
+		     Model_select = select;
 		 }
 	     });
-	     return EXP_select;
+	     return Model_select;
 	 }
-	 
-	 function check_GCM() {
-	     var GCM = document.getElementById("GCM").value;
 
-	     var RCM_selectAll = document.querySelectorAll('[id$="_RCM"]');
-	     RCM_selectAll.forEach(function (select) {
+	 function check_GCM() {
+	     var RCP = document.getElementById("RCP").value;
+	     var GCM_selectAll = document.querySelectorAll('[id$="_GCM"]');
+	     GCM_selectAll.forEach(function (select) {
 		 select.style.display = "none";
 	     });
-
-	     var RCM_selected = document.getElementById(GCM + "_RCM");
-	     if (RCM_selected) {
-		 RCM_selected.style.display = "block";
+	     var GCM_selected = document.getElementById(RCP + "_GCM");
+	     if (GCM_selected) {
+		 GCM_selected.style.display = "block";
 	     }
 	     check_RCM();
 	 }
 
 	 function check_RCM() {
-	     var GCM = document.getElementById("GCM").value;
-	     var RCM = get_RCM_select().value;
-
-	     var EXP_85 = document.getElementById("EXP_85");
-	     var EXP_26_85 = document.getElementById("EXP_26_85");
-	     var EXP_45_85 = document.getElementById("EXP_45_85");
-	     var EXP_26_45_85 = document.getElementById("EXP_26_45_85");
-
-	     EXP_85.style.display = "none";
-	     EXP_26_85.style.display = "none";
-	     EXP_45_85.style.display = "none";
-	     EXP_26_45_85.style.display = "none";
-
-	     if ((GCM === "CNRM-CM5" && RCM === "HadREM3-GA7") ||
-		 (GCM === "HadGEM2-ES" && RCM === "ALADIN63") ||
-		 (GCM === "IPSL-CM5A-MR" && RCM === "HIRHAM5") ||
-		 (GCM === "NorESM1-M" && RCM === "WRF381P")) {
-		 EXP_85.style.display = "block";
+	     var RCP = document.getElementById("RCP").value;
+	     var GCM = get_GCM_select().value;
+	     var RCM_selectAll = document.querySelectorAll('[id$="_RCM"]');
+	     RCM_selectAll.forEach(function (select) {
+		 select.style.display = "none";
+	     });
+	     var RCM_selected = document.getElementById(RCP + "_" + GCM + "_RCM");
+	     if (RCM_selected) {
+		 RCM_selected.style.display = "block";
 	     }
-
-	     if ((GCM === "EC-EARTH" && RCM === "HadREM3-GA7") ||
-		 (GCM === "HadGEM2-ES" && RCM === "RegCM4-6") ||
-		 (GCM === "HadGEM2-ES" && RCM === "HadREM3-GA7") ||
-		 (GCM === "MPI-ESM-LR" && RCM === "RegCM4-6")) {
-		 EXP_26_85.style.display = "block";
-	     }
-
-	     if ((GCM === "HadGEM2-ES" && RCM === "CCLM4-8-17") ||
-		 (GCM === "IPSL-CM5A-MR" && RCM === "RCA4") ||
-		 (GCM === "IPSL-CM5A-MR" && RCM === "WRF381P") ||
-		 (GCM === "NorESM1-M" && RCM === "HIRHAM5")) {
-		 EXP_45_85.style.display = "block";
-	     }
-
-	     if ((GCM === "CNRM-CM5" && RCM === "ALADIN63") ||
-		 (GCM === "CNRM-CM5" && RCM === "CCLM4-8-17") ||
-		 (GCM === "CNRM-CM5" && RCM === "RACMO22E") ||
-		 (GCM === "EC-EARTH" && RCM === "RACMO22E") ||
-		 (GCM === "EC-EARTH" && RCM === "RCA4") ||
-		 (GCM === "MPI-ESM-LR" && RCM === "CCLM4-8-17") ||
-		 (GCM === "MPI-ESM-LR" && RCM === "REMO") ||
-		 (GCM === "NorESM1-M" && RCM === "REMO")) {
-		 EXP_26_45_85.style.display = "block";
-	     }
+	     set_GCM_default();
+	     set_RCM_default();
 	 }
+
+	 function check_Model() {
+	     var BC = document.getElementById("BC").value;
+	     var Model_selectAll = document.querySelectorAll('[id$="_Model"]');
+	     Model_selectAll.forEach(function (select) {
+		 select.style.display = "none";
+	     });
+	     var Model_selected = document.getElementById(BC + "_Model");
+	     if (Model_selected) {
+		 Model_selected.style.display = "block";
+	     }
+	     set_Model_default();
+	 }
+
 	 
 
 	 function toggleMenu() {
@@ -454,9 +566,9 @@
 	 
 
 	 const geoJSONfiles = [
-		 "data/france.geo.json",
-		 "data/river.geo.json",
-		 "data/entiteHydro.geo.json"
+	     "data/france.geo.json",
+	     "data/river.geo.json",
+	     "data/entiteHydro.geo.json"
 	 ];
 
 	 function loadGeoJSON(fileURL) {
@@ -589,7 +701,7 @@
 			.attr("stroke-linejoin", "miter")
 			.attr("stroke-linecap", "round")
 			.attr("stroke-miterlimit", 1);
-	 }
+		 }
 
 
 
