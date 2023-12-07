@@ -36,15 +36,17 @@
              display: flex;
              height: 100vh;
              overflow: hidden;
-	     background-color: #3a4042;
+	     background-color: #ECEDEE;
+	     color: #0F0F0F;
 	     font-family: "Poppins",sans-serif;
          }
 
          #menu {
 	     pointer-events: auto;
              width: 10px;
-             background-color: #222;
-             color: #fff;
+             background-color: #0F0F0F;
+             /* color: #CDD2D6; */
+	     color: #ffffff;
              padding-top: 25px;
 	     padding-bottom: 10px;
 	     padding-left: 10px;
@@ -79,6 +81,45 @@
              top: 10px;
              left: 10px;
          }
+
+	 a {
+	     color: #979797;
+	     text-decoration: none;
+	 }
+
+	 button {
+	     font: inherit;
+	     border: none;
+	     border-radius: 0.25rem/0.25rem;
+	     min-width: 2rem;
+	     padding: 0 0.5rem;
+	     margin: 0;
+	     background-color: transparent;
+	     cursor: pointer;
+	     color: #979797;
+	     touch-action: manipulation;
+	 }
+
+	 button.selected {
+	     color: #e7ca7a;
+	     background: #474747;
+	 }
+
+	 /* button:focus, */
+	 button:hover,
+	 a:focus,
+	 a:hover {
+	     color: #ffffff;
+	 }
+
+	 .bunch {
+	     display: flex;
+	     flex-direction: row;
+	     flex-wrap: wrap;
+	     align-items: baseline;
+	     margin: -1px;
+	 }
+	 
 	 
 
 	 #range-container {
@@ -107,11 +148,11 @@
 	 }
 
 	 .slider-round .noUi-connect {
-	     background: #0098b6;
+	     background: #00a3a6;
 	 }
 
 	 .slider-round .noUi-base {
-	     background: #004958;
+	     background: #275662;
 	     border-radius: 5px;
 	     border: 0px solid transparent;
 	 }
@@ -122,7 +163,7 @@
 	     top: -6px;
 	     right: -8px; /* half the width */
 	     border-radius: 50%;
-	     background: #0098b6;
+	     background: #00a3a6;
 	     border: 0px solid transparent;
 	 }
 	 .slider-round .noUi-handle:hover {
@@ -131,7 +172,7 @@
 	     top: -7px;
 	     right: -9px; /* half the width */
 	     border-radius: 50%;
-	     background: #0098b6;
+	     background: #00a3a6;
 	     border: 0px solid transparent;
 	 }
 	 .slider-round .noUi-handle:active {
@@ -140,9 +181,9 @@
 	     top: -11px;
 	     right: -13px; /* half the width */
 	     border-radius: 50%;
-	     background: #0098b6;
-	     border: 5px solid #0098b680;
-	     border: 5px solid #0098b680;
+	     background: #00a3a6;
+	     border: 5px solid #00a3a680;
+	     border: 5px solid #00a3a680;
 	     -webkit-background-clip: padding-box; /* for Safari */
 	     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 	 }
@@ -151,8 +192,8 @@
 	     display: block;
 	     position: absolute;
 	     border-radius: 6px;
-	     background: #fff;
-	     color: #202124;
+	     background: #ffffff;
+	     color: #0F0F0F;
 	     padding-top: 1px;
 	     padding-bottom: 1px;
 	     padding-left: 3px;
@@ -166,7 +207,7 @@
 	 .slider-round .noUi-tooltip::before {
 	     content: "";
 	     display: block;
-	     background: #fff;
+	     background: #ffffff;
 	     border-radius: 3px;
 	     bottom: -5px;
 	     height: 12px;
@@ -251,21 +292,21 @@
 	     margin-left: 20px;
 	     width: 100vh;
 	     height: 100vh;
+	     margin: 1rem;
 	     position: fixed;
 	     overflow: hidden;
          }
 
 	 
-	 /* ! Grid styling */
 	 .gallery {
-	     /* position: absolute; */
 	     display: grid;
-	     grid-template-columns: repeat(auto-fill, minmax(10vw, 1fr)); /* Use vw unit for dynamic sizing */
+	     grid-template-rows: repeat(auto-fill, minmax(15vw, 1fr));
+	     grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
 	     grid-gap: 1rem;
 	     grid-auto-flow: dense;
-	     width: calc(100vw - 100vh);
-	     height: 1000px;
-	     margin-left: 100vh;
+	     width: calc(100vw - 100vh - 1rem);
+	     height: 2000px;
+	     margin-left: calc(100vh + 1rem);
 	     overflow-y: auto;
 	     padding: 1rem;
 	 }
@@ -277,13 +318,13 @@
 	 }
 
 
-
 	 .gallery-item {
-	     border: 3px solid white;
+	     border: 3px solid #ffffff;
+	     background-color: #ffffff;
 	     padding: 1ch 1rem;
 	     position: relative;
 	     overflow: hidden;
-	     border-radius: 10px; /* Add border-radius for rounded corners */
+	     border-radius: 10px;
 	 }
 
 	 .gallery-item img {
@@ -296,7 +337,7 @@
 	 .gallery-item span {
 	     position: relative;
 	     z-index: 1;
-	     color: white; /* Ensure text is visible on the rounded background */
+	     color: #0F0F0F;
 	 }
 
 
@@ -316,7 +357,6 @@
 	     .gallery {
 		 width: 100vw;
 		 margin-left: 20px;
-		 /* height: calc(100vrw - 100vh); */
 		 top: 100vw;
 	     }
 	 }
@@ -342,148 +382,309 @@
 		</div></br>
 
 		<p>Scénario Climatique</p>
-		<select id="RCP" onchange="check_GCM();">
-		    <option>RCP 2.6</option>
-		    <option>RCP 4.5</option>
-		    <option>RCP 8.5</option>
-		</select>
+		<div id="bunch_RCP" class="bunch">
+		    <button id="26_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>RCP 2.6</span>
+		    </button>
+		    <button id="45_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>RCP 4.5</span>
+		    </button>
+		    <button id="85_GCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>RCP 8.5</span>
+		    </button>
+		</div>
 
-		
 		<p>Global Climate Model</p>
-		<select id="RCP 2.6_GCM" style="display: none;" onchange="check_RCM()">
-		    <option>CNRM-CM5</option>
-		    <option>EC-EARTH</option>
-		    <option>HadGEM2-ES</option>
-		    <option>MPI-ESM-LR</option>
-		    <option>NorESM1-M</option>
-		</select>
-		<select id="RCP 4.5_GCM" style="display: none;" onchange="check_RCM()">
-		    <option>CNRM-CM5</option>
-		    <option>EC-EARTH</option>
-		    <option>HadGEM2-ES</option>
-		    <option>IPSL-CM5A-MR</option>
-		    <option>MPI-ESM-LR</option>
-		    <option>NorESM1-M</option>
-		</select>
-		<select id="RCP 8.5_GCM" style="display: block;" onchange="check_RCM()">
-		    <option>CNRM-CM5</option>
-		    <option>EC-EARTH</option>
-		    <option>HadGEM2-ES</option>
-		    <option>IPSL-CM5A-MR</option>
-		    <option>MPI-ESM-LR</option>
-		    <option>NorESM1-M</option>
-		</select>
+		<div id="bunch_26_GCM" class="bunch" style="display: none;">
+		    <button id="26_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>CNRM-CM5</span>
+		    </button>
+		    <button id="26_EC-EARTH_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>EC-EARTH</span>
+		    </button>
+		    <button id="26_HadGEM2-ES_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>HadGEM2-ES</span>
+		    </button>
+		    <button id="26_MPI-ESM-LR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>MPI-ESM-LR</span>
+		    </button>
+		    <button id="26_NorESM1-M_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>NorESM1-M</span>
+		    </button>
+		</div>
+
+		<div id="bunch_45_GCM" class="bunch" style="display: none;">
+		    <button id="45_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>CNRM-CM5</span>
+		    </button>
+		    <button id="45_EC-EARTH_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>EC-EARTH</span>
+		    </button>
+		    <button id="45_HadGEM2-ES_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>HadGEM2-ES</span>
+		    </button>
+		    <button id="45_IPSL-CM5A-MR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>IPSL-CM5A-MR</span>
+		    </button>
+		    <button id="45_MPI-ESM-LR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>MPI-ESM-LR</span>
+		    </button>
+		    <button id="45_NorESM1-M_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>NorESM1-M</span>
+		    </button>
+		</div>
+
+		<div id="bunch_85_GCM" class="bunch" style="display: block;">
+		    <button id="85_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>CNRM-CM5</span>
+		    </button>
+		    <button id="85_EC-EARTH_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>EC-EARTH</span>
+		    </button>
+		    <button id="85_HadGEM2-ES_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>HadGEM2-ES</span>
+		    </button>
+		    <button id="85_IPSL-CM5A-MR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>IPSL-CM5A-MR</span>
+		    </button>
+		    <button id="85_MPI-ESM-LR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>MPI-ESM-LR</span>
+		    </button>
+		    <button id="85_NorESM1-M_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span>NorESM1-M</span>
+		    </button>
+		</div>
+
 
 
 		<p>Regional Climate Model</p>
-		<select id="RCP 2.6_CNRM-CM5_RCM" style="display: none;"">
-		    <option>ALADIN63</option>
-		    <option>RACMO22E</option>
-		</select>
-		<select id="RCP 4.5_CNRM-CM5_RCM" style="display: none;"">
-		    <option>ALADIN63</option>
-		    <option>RACMO22E</option>
-		</select>
-		<select id="RCP 8.5_CNRM-CM5_RCM" style="display: block;"">
-		    <option>ALADIN63</option>
-		    <option>RACMO22E</option>
-		    <option>HadREM3-GA7</option>
-		</select>
+		<!-- CNRM-CM5 -->
+		<div id="bunch_26_CNRM-CM5_RCM" class="bunch" style="display: none;">
+		    <button id="26_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+			<span>ALADIN63</span>
+		    </button>
+		    <button id="26_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
+			<span>RACMO22E</span>
+		    </button>
+		</div>
+		<div id="bunch_45_CNRM-CM5_RCM" class="bunch" style="display: none;">
+		    <button id="45_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+			<span>ALADIN63</span>
+		    </button>
+		    <button id="45_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
+			<span>RACMO22E</span>
+		    </button>
+		</div>
+		<div id="bunch_85_CNRM-CM5_RCM" class="bunch">
+		    <button id="85_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+			<span>ALADIN63</span>
+		    </button>
+		    <button id="85_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
+			<span>RACMO22E</span>
+		    </button>
+		    <button id="85_CNRM-CM5_HadREM3-GA7" onclick="selectButton(this)">
+			<span>HadREM3-GA7</span>
+		    </button>
+		</div>
 
-		<select id="RCP 2.6_EC-EARTH_RCM" style="display: none;">
-		    <option>RACMO22E</option>
-		    <option>RCA4</option>
-		    <option>HadREM3-GA7</option>
-		</select>
-		<select id="RCP 4.5_EC-EARTH_RCM" style="display: none;">
-		    <option>RACMO22E</option>
-		    <option>RCA4</option>
-		</select>
-		<select id="RCP 8.5_EC-EARTH_RCM" style="display: none;">
-		    <option>RACMO22E</option>
-		    <option>RCA4</option>
-		    <option>HadREM3-GA7</option>
-		</select>
+		<!-- EC-EARTH -->
+		<div id="bunch_26_EC-EARTH_RCM" class="bunch" style="display: none;">
+		    <button id="26_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+			<span>RACMO22E</span>
+		    </button>
+		    <button id="26_EC-EARTH_RCA4" onclick="selectButton(this)">
+			<span>RCA4</span>
+		    </button>
+		    <button id="26_EC-EARTH_HadREM3-GA7" onclick="selectButton(this)">
+			<span>HadREM3-GA7</span>
+		    </button>
+		</div>
+		<div id="bunch_45_EC-EARTH_RCM" class="bunch" style="display: none;">
+		    <button id="45_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+			<span>RACMO22E</span>
+		    </button>
+		    <button id="45_EC-EARTH_RCA4" onclick="selectButton(this)">
+			<span>RCA4</span>
+		    </button>
+		</div>
+		<div id="bunch_85_EC-EARTH_RCM" class="bunch" style="display: none;">
+		    <button id="85_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+			<span>RACMO22E</span>
+		    </button>
+		    <button id="85_EC-EARTH_RCA4" onclick="selectButton(this)">
+			<span>RCA4</span>
+		    </button>
+		    <button id="85_EC-EARTH_HadREM3-GA7" onclick="selectButton(this)">
+			<span>HadREM3-GA7</span>
+		    </button>
+		</div>
+
+		<!-- HadGEM2-ES -->
+		<div id="bunch_26_HadGEM2-ES_RCM" class="bunch" style="display: none;">
+		    <button id="26_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
+			<span>RegCM4-6</span>
+		    </button>
+		    <button id="26_HadGEM2-ES_HadREM3-GA7" onclick="selectButton(this)">
+			<span>HadREM3-GA7</span>
+		    </button>
+		</div>
+		<div id="bunch_45_HadGEM2-ES_RCM" class="bunch" style="display: none;">
+		    <button id="45_HadGEM2-ES_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+			<span>CCLM4-8-17</span>
+		    </button>
+		</div>
+		<div id="bunch_85_HadGEM2-ES_RCM" class="bunch" style="display: none;">
+		    <button id="85_HadGEM2-ES_ALADIN63" class="selected" onclick="selectButton(this)">
+			<span>ALADIN63</span>
+		    </button>
+		    <button id="85_HadGEM2-ES_CCLM4-8-17" onclick="selectButton(this)">
+			<span>CCLM4-8-17</span>
+		    </button>
+		    <button id="85_HadGEM2-ES_RegCM4-6" onclick="selectButton(this)">
+			<span>RegCM4-6</span>
+		    </button>
+		    <button id="85_HadGEM2-ES_HadREM3-GA7" onclick="selectButton(this)">
+			<span>HadREM3-GA7</span>
+		    </button>
+		</div>
 		
-		<select id="RCP 2.6_HadGEM2-ES_RCM" style="display: none;">
-		    <option>RegCM4-6</option>
-		    <option>HadREM3-GA7</option>
-		</select>
-		<select id="RCP 4.5_HadGEM2-ES_RCM" style="display: none;">
-		    <option>CCLM4-8-17</option>
-		</select>
-		<select id="RCP 8.5_HadGEM2-ES_RCM" style="display: none;">
-		    <option>ALADIN63</option>
-		    <option>CCLM4-8-17</option>
-		    <option>RegCM4-6</option>
-		    <option>HadREM3-GA7</option>
-		</select>
+		<!-- IPSL-CM5A-MR -->
+		<div id="bunch_45_IPSL-CM5A-MR_RCM" class="bunch" style="display: none;">
+		    <button id="45_IPSL-CM5A-MR_RCA4" class="selected" onclick="selectButton(this)">
+			<span>RCA4</span>
+		    </button>
+		    <button id="45_IPSL-CM5A-MR_WRF381P" onclick="selectButton(this)">
+			<span>WRF381P</span>
+		    </button>
+		</div>
+		<div id="bunch_85_IPSL-CM5A-MR_RCM" class="bunch" style="display: none;">
+		    <button id="85_IPSL-CM5A-MR_HIRHAM5" class="selected" onclick="selectButton(this)">
+			<span>HIRHAM5</span>
+		    </button>
+		    <button id="85_IPSL-CM5A-MR_RCA4" onclick="selectButton(this)">
+			<span>RCA4</span>
+		    </button>
+		    <button id="85_IPSL-CM5A-MR_WRF381P" onclick="selectButton(this)">
+			<span>WRF381P</span>
+		    </button>
+		</div>
 
-		<select id="RCP 4.5_IPSL-CM5A-MR_RCM" style="display: none;">
-		    <option>RCA4</option>
-		    <option>WRF381P</option>
-		</select>
-		<select id="RCP 8.5_IPSL-CM5A-MR_RCM" style="display: none;">
-		    <option>HIRHAM5</option>
-		    <option>RCA4</option>
-		    <option>WRF381P</option>
-		</select>
+		<!-- MPI-ESM-LR -->
+		<div id="bunch_26_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
+		    <button id="26_MPI-ESM-LR_CCLM4-8-17" onclick="selectButton(this)">
+			<span>CCLM4-8-17</span>
+		    </button>
+		    <button id="26_MPI-ESM-LR_RegCM4-6" onclick="selectButton(this)">
+			<span>RegCM4-6</span>
+		    </button>
+		    <button id="26_MPI-ESM-LR_REMO" onclick="selectButton(this)">
+			<span>REMO</span>
+		    </button>
+		</div>
+		<div id="bunch_45_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
+		    <button id="45_MPI-ESM-LR_CCLM4-8-17" onclick="selectButton(this)">
+			<span>CCLM4-8-17</span>
+		    </button>
+		    <button id="45_MPI-ESM-LR_REMO" onclick="selectButton(this)">
+			<span>REMO</span>
+		    </button>
+		</div>
+		<div id="bunch_85_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
+		    <button id="85_MPI-ESM-LR_CCLM4-8-17" onclick="selectButton(this)">
+			<span>CCLM4-8-17</span>
+		    </button>
+		    <button id="85_MPI-ESM-LR_RegCM4-6" onclick="selectButton(this)">
+			<span>RegCM4-6</span>
+		    </button>
+		    <button id="85_MPI-ESM-LR_REMO" onclick="selectButton(this)">
+			<span>REMO</span>
+		    </button>
+		</div>
 
-		<select id="RCP 2.6_MPI-ESM-LR_RCM" style="display: none;">
-		    <option>CCLM4-8-17</option>
-		    <option>RegCM4-6</option>
-		    <option>REMO</option>
-		</select>
-		<select id="RCP 4.5_MPI-ESM-LR_RCM" style="display: none;">
-		    <option>CCLM4-8-17</option>
-		    <option>REMO</option>
-		</select>
-		<select id="RCP 8.5_MPI-ESM-LR_RCM" style="display: none;">
-		    <option>CCLM4-8-17</option>
-		    <option>RegCM4-6</option>
-		    <option>REMO</option>
-		</select>
+		<!-- NorESM1-M -->
+		<div id="bunch_26_NorESM1-M_RCM" class="bunch" style="display: none;">
+		    <button id="26_NorESM1-M_REMO" onclick="selectButton(this)">
+			<span>REMO</span>
+		    </button>
+		</div>
+		<div id="bunch_45_NorESM1-M_RCM" class="bunch" style="display: none;">
+		    <button id="45_NorESM1-M_HIRHAM5" onclick="selectButton(this)">
+			<span>HIRHAM5</span>
+		    </button>
+		    <button id="45_NorESM1-M_REMO" onclick="selectButton(this)">
+			<span>REMO</span>
+		    </button>
+		</div>
+		<div id="bunch_85_NorESM1-M_RCM" class="bunch" style="display: none;">
+		    <button id="85_NorESM1-M_HIRHAM5" onclick="selectButton(this)">
+			<span>HIRHAM5</span>
+		    </button>
+		    <button id="85_NorESM1-M_REMO" onclick="selectButton(this)">
+			<span>REMO</span>
+		    </button>
+		    <button id="85_NorESM1-M_WRF381P" onclick="selectButton(this)">
+			<span>WRF381P</span>
+		    </button>
+		</div>
 
-		<select id="RCP 2.6_NorESM1-M_RCM" style="display: none;">
-		    <option>REMO</option>
-		</select>
-		<select id="RCP 4.5_NorESM1-M_RCM" style="display: none;">
-		    <option>HIRHAM5</option>
-		    <option>REMO</option>
-		</select>
-		<select id="RCP 8.5_NorESM1-M_RCM" style="display: none;">
-		    <option>HIRHAM5</option>
-		    <option>REMO</option>
-		    <option>WRF381P</option>
-		</select>
 
-		
 		<p>Correction de Biais</p>
-		<select id="BC" onchange="check_Model()">
-		    <option>ADAMONT</option>
-		    <option>CDFt</option>
-		</select>
-
+		<div id="bunch_BC" class="bunch" style="display: block;">
+		    <button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
+			<span>ADAMONT</span>
+		    </button>
+		    <button id="CDFt_Model" onclick="selectButton(this); show_Model(this);">
+			<span>CDFt</span>
+		    </button>
+		</div>
 		
 		<p>Modèle Hydrologique</p>
-		<select id="ADAMONT_Model" style="display: block;">
-		    <option>CTRIP</option>
-		    <option>EROS</option>
-		    <option>GRSD</option>
-		    <option>J2000</option>
-		    <option>MORDOR-SD</option>
-		    <option>MORDOR-TS</option>
-		    <option>ORCHIDEE</option>
-		    <option>SIM2</option>
-		    <option>SMASH</option>
-		</select>
-		<select id="CDFt_Model" style="display: none;">
-		    <option>EROS</option>
-		    <option>GRSD</option>
-		    <option>J2000</option>
-		    <option>MORDOR-SD</option>
-		    <option>SMASH</option>
-		</select>
+		<div id="bunch_ADAMONT_Model" style="display: block;">
+		    <button id="ADAMONT_CTRIP" onclick="selectButton(this)">
+			<span>CTRIP</span>
+		    </button>
+		    <button id="ADAMONT_EROS" onclick="selectButton(this)">
+			<span>EROS</span>
+		    </button>
+		    <button id="ADAMONT_GRSD" onclick="selectButton(this)">
+			<span>GRSD</span>
+		    </button>
+		    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
+			<span>J2000</span>
+		    </button>
+		    <button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
+			<span>MORDOR-SD</span>
+		    </button>
+		    <button id="ADAMONT_MORDOR-TS" onclick="selectButton(this)">
+			<span>MORDOR-TS</span>
+		    </button>
+		    <button id="ADAMONT_ORCHIDEE" onclick="selectButton(this)">
+			<span>ORCHIDEE</span>
+		    </button>
+		    <button id="ADAMONT_SIM2" onclick="selectButton(this)">
+			<span>SIM2</span>
+		    </button>
+		    <button id="ADAMONT_SMASH" onclick="selectButton(this)">
+			<span>SMASH</span>
+		    </button>
+		</div>
+		<div id="bunch_CDFt_Model" style="display: none;">
+		    <button id="ADAMONT_EROS" onclick="selectButton(this)">
+			<span>EROS</span>
+		    </button>
+		    <button id="ADAMONT_GRSD" onclick="selectButton(this)">
+			<span>GRSD</span>
+		    </button>
+		    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
+			<span>J2000</span>
+		    </button>
+		    <button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
+			<span>MORDOR-SD</span>
+		    </button>
+		    <button id="ADAMONT_SMASH" onclick="selectButton(this)">
+			<span>SMASH</span>
+		    </button>
+		</div>
 
 
             </div>
@@ -536,144 +737,60 @@
 	    
 	<script>
 
-	 var RCP_default = "RCP 8.5";
-	 var RCP_select = document.getElementById('RCP');
-	 for (var i = 0; i < RCP_select.options.length; i++) {
-	     if (RCP_select.options[i].value === RCP_default) {
-		 RCP_select.selectedIndex = i;
-		 break;
-	     }
+	 function selectButton(selectedButton) {
+	     var buttons = selectedButton.parentNode.querySelectorAll('button');
+	     buttons.forEach(function (button) {
+		 button.classList.remove('selected');
+	     });
+	     selectedButton.classList.add('selected');
 	 }
-	 var RCP = document.getElementById("RCP").value;
-	 var GCM = get_GCM_select().value;
-	 var RCM = get_RCM_select().value;
-	 
-	 var BC_default = "ADAMONT";
-	 var BC_select = document.getElementById('BC');
-	 for (var i = 0; i < BC_select.options.length; i++) {
-	     if (BC_select.options[i].value === BC_default) {
-		 BC_select.selectedIndex = i;
-		 break;
-	     }
-	 }
-	 var BC = document.getElementById("BC").value;
-	 var Model = get_Model_select().value;
 
-	 
-	 function set_GCM_default() {
-	     var GCM_default = "CNRM-CM5";
-	     var GCM_select = get_GCM_select();
-	     for (var i = 0; i < GCM_select.options.length; i++) {
-		 if (GCM_select.options[i].value === GCM_default) {
-		     GCM_select.selectedIndex = i;
-		     break;
+	 function show_GCM_RCM(selectedButton) {
+	     var RCP = selectedButton.id.split('_')[0];
+	     var GCM = selectedButton.id.split('_')[1];
+	     var RCM = selectedButton.id.split('_')[2];
+	     
+	     if (GCM === "GCM") {
+		 var GCM_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_GCM"]`);
+		 GCM_bunchAll.forEach(function (GCM_bunch) {
+		     GCM_bunch.style.display = 'none';
+		 });
+		 var GCM_selected = document.getElementById(`bunch_${RCP}_GCM`);
+		 if (GCM_selected) {
+		     GCM_selected.style.display = 'block';
 		 }
 	     }
-	 }
-
-	 function set_RCM_default() {
-	     var GCM = document.getElementById("GCM").value;
-	     if (GCM === "CNRM-CM5") var RCM_default = "ALADIN63";
-	     if (GCM === "EC-EARTH") var RCM_default = "RACMO22E";
-	     if (GCM === "HadGEM2-ES") var RCM_default = "ALADIN63";
-	     if (GCM === "IPSL-CM5A-MR") var RCM_default = "HIRHAM5";
-	     if (GCM === "MPI-ESM-LR") var RCM_default = "CCLM4-8-17";
-	     if (GCM === "NorESM1-M") var RCM_default = "HIRHAM5";
-	     var RCM_select = get_RCM_select();
-	     for (var i = 0; i < RCM_select.options.length; i++) {
-		 if (RCM_select.options[i].value === RCM_default) {
-		     RCM_select.selectedIndex = i;
-		     break;
+	     if (RCM === "RCM") {
+		 var RCM_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_RCM"]`);
+		 RCM_bunchAll.forEach(function (RCM_bunch) {
+		     RCM_bunch.style.display = 'none';
+		 });
+		 var RCM_selected = document.getElementById(`bunch_${RCP}_${GCM}_RCM`);
+		 if (RCM_selected) {
+		     RCM_selected.style.display = 'block';
 		 }
 	     }
 	 }
 	 
-	 function set_Model_default() {
-	     var BC = document.getElementById("BC").value;
-	     if (BC === "ADAMONT") var Model_default = "J2000";
-	     if (BC === "CDFt") var Model_default = "J2000";
-	     var Model_select = get_Model_select();
-	     for (var i = 0; i < Model_select.options.length; i++) {
-		 if (Model_select.options[i].value === Model_default) {
-		     Model_select.selectedIndex = i;
-		     break;
+
+	 function show_Model(selectedButton) {
+	     var BC = selectedButton.id.split('_')[0];
+	     var Model = selectedButton.id.split('_')[1];
+	     
+	     if (Model === "Model") {
+		 var Model_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_Model"]`);
+		 Model_bunchAll.forEach(function (Model_bunch) {
+		     Model_bunch.style.display = 'none';
+		 });
+		 var Model_selected = document.getElementById(`bunch_${BC}_Model`);
+		 if (Model_selected) {
+		     Model_selected.style.display = 'block';
 		 }
 	     }
 	 }
 
-	 function get_GCM_select() {
-	     var GCM_select;
-	     var GCM_selectAll = document.querySelectorAll('[id$="_GCM"]');
-	     GCM_selectAll.forEach(function (select) {
-		 if (getComputedStyle(select).display !== "none") {
-		     GCM_select = select;
-		 }
-	     });
-	     return GCM_select;
-	 }
 
-	 function get_RCM_select() {
-	     var RCM_select;
-	     var RCM_selectAll = document.querySelectorAll('[id$="_RCM"]');
-	     RCM_selectAll.forEach(function (select) {
-		 if (getComputedStyle(select).display !== "none") {
-		     RCM_select = select;
-		 }
-	     });
-	     return RCM_select;
-	 }
 
-	 function get_Model_select() {
-	     var Model_select;
-	     var Model_selectAll = document.querySelectorAll('[id$="_Model"]');
-	     Model_selectAll.forEach(function (select) {
-		 if (getComputedStyle(select).display !== "none") {
-		     Model_select = select;
-		 }
-	     });
-	     return Model_select;
-	 }
-
-	 function check_GCM() {
-	     var RCP = document.getElementById("RCP").value;
-	     var GCM_selectAll = document.querySelectorAll('[id$="_GCM"]');
-	     GCM_selectAll.forEach(function (select) {
-		 select.style.display = "none";
-	     });
-	     var GCM_selected = document.getElementById(RCP + "_GCM");
-	     if (GCM_selected) {
-		 GCM_selected.style.display = "block";
-	     }
-	     check_RCM();
-	 }
-
-	 function check_RCM() {
-	     var RCP = document.getElementById("RCP").value;
-	     var GCM = get_GCM_select().value;
-	     var RCM_selectAll = document.querySelectorAll('[id$="_RCM"]');
-	     RCM_selectAll.forEach(function (select) {
-		 select.style.display = "none";
-	     });
-	     var RCM_selected = document.getElementById(RCP + "_" + GCM + "_RCM");
-	     if (RCM_selected) {
-		 RCM_selected.style.display = "block";
-	     }
-	     set_GCM_default();
-	     set_RCM_default();
-	 }
-
-	 function check_Model() {
-	     var BC = document.getElementById("BC").value;
-	     var Model_selectAll = document.querySelectorAll('[id$="_Model"]');
-	     Model_selectAll.forEach(function (select) {
-		 select.style.display = "none";
-	     });
-	     var Model_selected = document.getElementById(BC + "_Model");
-	     if (Model_selected) {
-		 Model_selected.style.display = "block";
-	     }
-	     set_Model_default();
-	 }
 
 	 
 
@@ -726,11 +843,11 @@
 	     if (geoJSONdata_france && geoJSONdata_river) {
 
 		 const fill_entiteHydro = "transparent";
-		 const stroke_entiteHydro = "#555";
+		 const stroke_entiteHydro = "#ffffff";
 		 
 		 const fill_france = "transparent";
-		 const stroke_france = "#E8E6E3";
-		 const stroke_river = "#9A9286";
+		 const stroke_france = "#B6BBC0";
+		 const stroke_river = "#B0D9D6";
 
 		 const minZoom = 1;
 		 const maxZoom = 4;
@@ -745,12 +862,12 @@
 		 const riverLength_min = 0;
 		 let riverLength = riverLength_max;
 
-		 const strokeWith_river_max = 0.9;
-		 const strokeWith_river_min = 0.1;
+		 const strokeWith_france = 2;
+		 const strokeWith_river_max = 1.5;
+		 const strokeWith_river_min = 0.4;
 		 
 		 let width = window.innerHeight;
 		 let height = window.innerHeight;
-
 		 
 
 		 const zoom = d3.zoom()
@@ -776,18 +893,19 @@
 			       .call(zoom)
 			       .append("g");
 
-
-		 
 		 
 
 		 function handleResize() {
-		     width = window.innerHeight;
-		     height = window.innerHeight;
-
+		     if (window.innerWidth < window.innerHeight) {
+			 var width = window.innerWidth;
+			 var height = window.innerWidth;
+		     } else {
+			 var width = window.innerHeight;
+			 var height = window.innerHeight;
+		     }
 		     zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
 		     svg.attr("width", width).attr("height", height);
 		     projection.scale([height*3.2]).translate([width / 2, height / 2]);
-
 		     redrawMap();
 		 }
 
@@ -809,7 +927,7 @@
 			.duration(1000)
 			.attr("fill", fill_france)
 			.attr("stroke", stroke_france)
-			.attr("stroke-width", 1)
+			.attr("stroke-width", strokeWith_france)
 			.attr("stroke-linejoin", "miter")
 			.attr("stroke-miterlimit", 1);
 
