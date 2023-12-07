@@ -89,8 +89,9 @@
 
 	 button {
 	     font: inherit;
-	     border: none;
-	     border-radius: 0.25rem/0.25rem;
+	     /* border: none; */
+	     border: 2px solid #0F0F0F;
+	     border-radius: 0.5rem/0.5rem;
 	     min-width: 2rem;
 	     padding: 0 0.5rem;
 	     margin: 0;
@@ -99,18 +100,179 @@
 	     color: #979797;
 	     touch-action: manipulation;
 	 }
-
 	 button.selected {
-	     color: #e7ca7a;
-	     background: #474747;
+	     color: #ffffff;
+	     border: 2px solid #ffffff;
 	 }
-
-	 /* button:focus, */
 	 button:hover,
 	 a:focus,
 	 a:hover {
 	     color: #ffffff;
 	 }
+
+
+	 .RCP26 {
+	     &.selected {
+		 background: #0B56A4;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #0B56A495;
+	     }
+	 }
+	 .RCP45 {
+	     &.selected {
+		 background: #DE8E0D;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #DE8E0D95;
+	     }
+	 }
+	 .RCP85 {
+	     &.selected {
+		 background: #DA2516;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #DA251695;
+	     }
+	 }
+
+	 .EUPHORBE {
+	     &.selected {
+		 background: #447C57;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #447C5780;
+	     }
+	 }
+	 .NARCISSE {
+	     &.selected {
+		 background: #E5E840;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #E5E84080;
+	     }
+	 }
+	 .DAHLIA {
+	     &.selected {
+		 background: #E2A13B;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #E2A13B80;
+	     }
+	 }
+	 .ASTER {
+	     &.selected {
+		 background: #70194E;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #70194E80;
+	     }
+	 }
+	 .ASTER_EUPHORBE {
+	     &.selected {
+		 background-image: linear-gradient(-45deg, #70194E 50%, #447C57 0%);
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background-image: linear-gradient(-45deg, #70194E80 50%, #447C5780 0%);
+	     }
+	 }
+	 
+	 
+	 .CTRIP {
+	     &.selected {
+		 background: #A88D72;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #A88D7280;
+	     }
+	 }
+	 .EROS {
+	     &.selected {
+		 background: #CECD8D;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #CECD8D80;
+	     }
+	 }
+	 .GRSD {
+	     &.selected {
+		 background: #619C6C;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #619C6C80;
+	     }
+	 }
+	 .J2000 {
+	     &.selected {
+		 background: #00a3a6;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #00a3a680;
+	     }
+	 }
+	 .MORDOR-SD {
+	     &.selected {
+		 background: #D8714E;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #D8714E80;
+	     }
+	 }
+	 .MORDOR-TS {
+	     &.selected {
+		 background: #AE473E;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #AE473E80;
+	     }
+	 }
+	 .ORCHIDEE {
+	     &.selected {
+		 background: #EFA59D;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #EFA59D80;
+	     }
+	 }
+	 .SIM2 {
+	     &.selected {
+		 background: #475E6A;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #475E6A80;
+	     }
+	 }
+	 .SMASH {
+	     &.selected {
+		 background: #F6BA62;
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background: #F6BA6280;
+	     }
+	 }
+	 
+
+	 
+	 
+
+	 
 
 	 .bunch {
 	     display: flex;
@@ -383,13 +545,13 @@
 
 		<p>Scénario Climatique</p>
 		<div id="bunch_RCP" class="bunch">
-		    <button id="26_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="26_GCM" class="RCP26" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 2.6</span>
 		    </button>
-		    <button id="45_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="45_GCM" class="RCP45" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 4.5</span>
 		    </button>
-		    <button id="85_GCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="85_GCM" class="RCP85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 8.5</span>
 		    </button>
 		</div>
@@ -435,13 +597,13 @@
 		</div>
 
 		<div id="bunch_85_GCM" class="bunch" style="display: block;">
-		    <button id="85_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="85_CNRM-CM5_RCM" class="NARCISSE selected" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>CNRM-CM5</span>
 		    </button>
-		    <button id="85_EC-EARTH_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="85_EC-EARTH_RCM" class="DAHLIA" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>EC-EARTH</span>
 		    </button>
-		    <button id="85_HadGEM2-ES_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="85_HadGEM2-ES_RCM" class="ASTER_EUPHORBE" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>HadGEM2-ES</span>
 		    </button>
 		    <button id="85_IPSL-CM5A-MR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
@@ -476,7 +638,7 @@
 		    </button>
 		</div>
 		<div id="bunch_85_CNRM-CM5_RCM" class="bunch">
-		    <button id="85_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+		    <button id="85_CNRM-CM5_ALADIN63" class="NARCISSE selected" onclick="selectButton(this)">
 			<span>ALADIN63</span>
 		    </button>
 		    <button id="85_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
@@ -508,13 +670,13 @@
 		    </button>
 		</div>
 		<div id="bunch_85_EC-EARTH_RCM" class="bunch" style="display: none;">
-		    <button id="85_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+		    <button id="85_EC-EARTH_RACMO22E" onclick="selectButton(this)">
 			<span>RACMO22E</span>
 		    </button>
 		    <button id="85_EC-EARTH_RCA4" onclick="selectButton(this)">
 			<span>RCA4</span>
 		    </button>
-		    <button id="85_EC-EARTH_HadREM3-GA7" onclick="selectButton(this)">
+		    <button id="85_EC-EARTH_HadREM3-GA7" class="DAHLIA selected" onclick="selectButton(this)">
 			<span>HadREM3-GA7</span>
 		    </button>
 		</div>
@@ -534,10 +696,10 @@
 		    </button>
 		</div>
 		<div id="bunch_85_HadGEM2-ES_RCM" class="bunch" style="display: none;">
-		    <button id="85_HadGEM2-ES_ALADIN63" class="selected" onclick="selectButton(this)">
+		    <button id="85_HadGEM2-ES_ALADIN63" class="EUPHORBE" onclick="selectButton(this)">
 			<span>ALADIN63</span>
 		    </button>
-		    <button id="85_HadGEM2-ES_CCLM4-8-17" onclick="selectButton(this)">
+		    <button id="85_HadGEM2-ES_CCLM4-8-17" class="ASTER selected" onclick="selectButton(this)">
 			<span>CCLM4-8-17</span>
 		    </button>
 		    <button id="85_HadGEM2-ES_RegCM4-6" onclick="selectButton(this)">
@@ -640,48 +802,48 @@
 		
 		<p>Modèle Hydrologique</p>
 		<div id="bunch_ADAMONT_Model" style="display: block;">
-		    <button id="ADAMONT_CTRIP" onclick="selectButton(this)">
+		    <button id="ADAMONT_CTRIP" class="CTRIP" onclick="selectButton(this)">
 			<span>CTRIP</span>
 		    </button>
-		    <button id="ADAMONT_EROS" onclick="selectButton(this)">
+		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
 			<span>EROS</span>
 		    </button>
-		    <button id="ADAMONT_GRSD" onclick="selectButton(this)">
+		    <button id="ADAMONT_GRSD" class="GRSD" onclick="selectButton(this)">
 			<span>GRSD</span>
 		    </button>
-		    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
+		    <button id="ADAMONT_J2000" class="J2000 selected" onclick="selectButton(this)">
 			<span>J2000</span>
 		    </button>
-		    <button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
+		    <button id="ADAMONT_MORDOR-SD" class="MORDOR-SD" onclick="selectButton(this)">
 			<span>MORDOR-SD</span>
 		    </button>
-		    <button id="ADAMONT_MORDOR-TS" onclick="selectButton(this)">
+		    <button id="ADAMONT_MORDOR-TS" class="MORDOR-TS" onclick="selectButton(this)">
 			<span>MORDOR-TS</span>
 		    </button>
-		    <button id="ADAMONT_ORCHIDEE" onclick="selectButton(this)">
+		    <button id="ADAMONT_ORCHIDEE" class="ORCHIDEE" onclick="selectButton(this)">
 			<span>ORCHIDEE</span>
 		    </button>
-		    <button id="ADAMONT_SIM2" onclick="selectButton(this)">
+		    <button id="ADAMONT_SIM2" class="SIM2" onclick="selectButton(this)">
 			<span>SIM2</span>
 		    </button>
-		    <button id="ADAMONT_SMASH" onclick="selectButton(this)">
+		    <button id="ADAMONT_SMASH" class="SMASH" onclick="selectButton(this)">
 			<span>SMASH</span>
 		    </button>
 		</div>
 		<div id="bunch_CDFt_Model" style="display: none;">
-		    <button id="ADAMONT_EROS" onclick="selectButton(this)">
+		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
 			<span>EROS</span>
 		    </button>
-		    <button id="ADAMONT_GRSD" onclick="selectButton(this)">
+		    <button id="ADAMONT_GRSD" class="GRSD" onclick="selectButton(this)">
 			<span>GRSD</span>
 		    </button>
-		    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
+		    <button id="ADAMONT_J2000" class="J2000 selected" onclick="selectButton(this)">
 			<span>J2000</span>
 		    </button>
-		    <button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
+		    <button id="ADAMONT_MORDOR-SD" class="MORDOR-SD" onclick="selectButton(this)">
 			<span>MORDOR-SD</span>
 		    </button>
-		    <button id="ADAMONT_SMASH" onclick="selectButton(this)">
+		    <button id="ADAMONT_SMASH" class="SMASH" onclick="selectButton(this)">
 			<span>SMASH</span>
 		    </button>
 		</div>
@@ -737,6 +899,30 @@
 	    
 	<script>
 
+
+
+	 /* const CTRIP_lightcolor = "#f6f4f1";
+	    const CTRIP_color = "#A88D72";
+	    const EROS_lightcolor = "#fafaf4";
+	    const EROS_color = "#CECD8D";
+	    const GRSD_lightcolor = "#eff5f0";
+	    const GRSD_color = "#619C6C";
+	    const J2000_lightcolor = "#ddfeff";
+	    const J2000_color = "#00a3a6";
+	    const MORDOR-SD_lightcolor = "#fbf1ed";
+	    const MORDOR-SD_color = "#D8714E";
+	    const MORDOR-TS_lightcolor = "#f8eceb";
+	    const MORDOR-TS_color = "#AE473E";
+	    const ORCHIDEE_lightcolor = "#fdf6f5";
+	    const ORCHIDEE_color = "#EFA59D";
+	    const SIM2_lightcolor = "#ebeff2";
+	    const SIM2_color = "#475E6A";
+	    const SMASH_lightcolor = "#fef8ef";
+	    const SMASH_color = "#F6BA62"; */
+
+
+
+	 
 	 function selectButton(selectedButton) {
 	     var buttons = selectedButton.parentNode.querySelectorAll('button');
 	     buttons.forEach(function (button) {
@@ -744,6 +930,11 @@
 	     });
 	     selectedButton.classList.add('selected');
 	 }
+
+
+
+	 
+	 
 
 	 function show_GCM_RCM(selectedButton) {
 	     var RCP = selectedButton.id.split('_')[0];
@@ -810,9 +1001,9 @@
 	 
 
 	 const geoJSONfiles = [
-	     "data/france.geo.json",
-	     "data/river.geo.json",
-	     "data/entiteHydro.geo.json"
+		 "data/france.geo.json",
+		 "data/river.geo.json",
+		 "data/entiteHydro.geo.json"
 	 ];
 
 	 function loadGeoJSON(fileURL) {
@@ -946,18 +1137,18 @@
 			.attr("stroke-linejoin", "miter")
 			.attr("stroke-linecap", "round")
 			.attr("stroke-miterlimit", 1);
-		 }
+	 }
 
 
 
-		 const pathGenerator = d3.geoPath(projection);
+	 const pathGenerator = d3.geoPath(projection);
 
-		 redrawMap();
-		 handleResize();
-		 
+	 redrawMap();
+	 handleResize();
+	 
 
-		 return svg.node();
-	     }
+	 return svg.node();
+	 }
 	 }
 
 
