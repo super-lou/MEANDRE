@@ -145,7 +145,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #447C5780;
+		 background: #447C5795;
 	     }
 	 }
 	 .NARCISSE {
@@ -154,7 +154,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #E5E84080;
+		 background: #E5E84095;
 	     }
 	 }
 	 .DAHLIA {
@@ -163,7 +163,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #E2A13B80;
+		 background: #E2A13B95;
 	     }
 	 }
 	 .ASTER {
@@ -172,7 +172,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #70194E80;
+		 background: #70194E95;
 	     }
 	 }
 	 .ASTER_EUPHORBE {
@@ -181,7 +181,17 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background-image: linear-gradient(-45deg, #70194E80 50%, #447C5780 0%);
+		 background-image: linear-gradient(-45deg, #70194E95 50%, #447C5795 0%);
+	     }
+	 }
+
+	 .ASTER_DAHLIA_NARCISSE_EUPHORBE {
+	     &.selected {
+		 background-image: linear-gradient(-45deg, #70194E 25%, #E2A13B 25% 50%, #E5E840 50% 75%, #447C57 75%);
+		 border: 2px solid #0F0F0F;
+	     }
+	     &:hover {
+		 background-image: linear-gradient(-45deg, #70194E95 25%, #E2A13B95 25% 50%, #E5E84095 50% 75%, #447C5795 75%);
 	     }
 	 }
 	 
@@ -192,7 +202,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #A88D7280;
+		 background: #A88D7295;
 	     }
 	 }
 	 .EROS {
@@ -201,7 +211,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #CECD8D80;
+		 background: #CECD8D95;
 	     }
 	 }
 	 .GRSD {
@@ -210,7 +220,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #619C6C80;
+		 background: #619C6C95;
 	     }
 	 }
 	 .J2000 {
@@ -219,7 +229,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #00a3a680;
+		 background: #00a3a695;
 	     }
 	 }
 	 .MORDOR-SD {
@@ -228,7 +238,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #D8714E80;
+		 background: #D8714E95;
 	     }
 	 }
 	 .MORDOR-TS {
@@ -237,7 +247,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #AE473E80;
+		 background: #AE473E95;
 	     }
 	 }
 	 .ORCHIDEE {
@@ -246,7 +256,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #EFA59D80;
+		 background: #EFA59D95;
 	     }
 	 }
 	 .SIM2 {
@@ -255,7 +265,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #475E6A80;
+		 background: #475E6A95;
 	     }
 	 }
 	 .SMASH {
@@ -264,7 +274,7 @@
 		 border: 2px solid #0F0F0F;
 	     }
 	     &:hover {
-		 background: #F6BA6280;
+		 background: #F6BA6295;
 	     }
 	 }
 	 
@@ -436,25 +446,66 @@
 	 }
 
 
+	 #bar {
+	     position: fixed;
+	     height: 52px;
+	     /* margin-bottom: auto; */
+	     top: 0px;
+	     width: 100%;
+	     z-index: 1;
+	 }
+
+	 #bunch_bar {
+	     position: relative;
+	     height: 30px;
+	     top: 26px;
+	     transform: translateY(-13px);
+	     display: flex;
+	     flex-direction: row;
+	     align-items: baseline;
+	     margin-left: 45px;
+	     align-content: stretch;
+	 }
+
+	 .button_bar {
+	     font: inherit;
+	     /* border: none; */
+	     border: 2px solid transparent;
+	     border-radius: 0.5rem/0.5rem;
+	     min-width: 2rem;
+	     padding: 0 0.5rem;
+	     margin: 0;
+	     background-color: #0F0F0F;
+	     cursor: pointer;
+	     color: #ffffff;
+	     touch-action: manipulation;
+	 }
+	 .button_bar.selected {
+	     color: #ffffff;
+	     border: 2px solid #ffffff;
+	 }
+	 .button_bar:hover {
+	     color: #979797;
+	 }
+
 	 
 	 #back {
 	     display: flex;
 	     flex-direction: row;
 	     flex-wrap: wrap;
-	     /* align-items: center; */
 	     align-content: stretch;
 	     width: 100vw; 
 	     height: 100vh;
-	     /* margin: auto; */
 	     overflow-y: auto;
 	     padding: 0rem;
+	     /* z-index: 0; */
 	 }
 
 	 #map-container {
-	     margin-left: 20px;
-	     width: 100vh;
-	     height: 100vh;
-	     margin: 1rem;
+	     width: calc(100vh);
+	     height: calc(100vh);
+	     top: 0px;
+	     left: 30px;
 	     position: fixed;
 	     overflow: hidden;
          }
@@ -466,9 +517,10 @@
 	     grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
 	     grid-gap: 1rem;
 	     grid-auto-flow: dense;
-	     width: calc(100vw - 100vh - 1rem);
+	     width: calc(100vw - 100vh - 1rem - 30px);
 	     height: 2000px;
-	     margin-left: calc(100vh + 1rem);
+	     margin-top: 50px;
+	     margin-left: calc(100vh + 30px);
 	     overflow-y: auto;
 	     padding: 1rem;
 	 }
@@ -545,13 +597,13 @@
 
 		<p>Scénario Climatique</p>
 		<div id="bunch_RCP" class="bunch">
-		    <button id="26_GCM" class="RCP26" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="26_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 2.6</span>
 		    </button>
-		    <button id="45_GCM" class="RCP45" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="45_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 4.5</span>
 		    </button>
-		    <button id="85_GCM" class="RCP85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+		    <button id="85_GCM" class="ASTER_DAHLIA_NARCISSE_EUPHORBE selected" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 8.5</span>
 		    </button>
 		</div>
@@ -801,7 +853,7 @@
 		</div>
 		
 		<p>Modèle Hydrologique</p>
-		<div id="bunch_ADAMONT_Model" style="display: block;">
+		<div id="bunch_ADAMONT_Model" class="bunch" style="display: block;">
 		    <button id="ADAMONT_CTRIP" class="CTRIP" onclick="selectButton(this)">
 			<span>CTRIP</span>
 		    </button>
@@ -830,7 +882,7 @@
 			<span>SMASH</span>
 		    </button>
 		</div>
-		<div id="bunch_CDFt_Model" style="display: none;">
+		<div id="bunch_CDFt_Model" class="bunch" style="display: none;">
 		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
 			<span>EROS</span>
 		    </button>
@@ -853,8 +905,17 @@
         </div>
 
 
+  
+
 	<div id="back">
-	    
+
+	    <div id="bar">
+		<div id="bunch_bar">
+		    <button id="test" class="button_bar">
+			<span>test</span>
+		    </button>
+		</div> 
+	    </div> 
 
 	    <div id="map-container">
 		<svg id="geoJSONsvg_france"></svg>
