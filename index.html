@@ -6,7 +6,12 @@
 	<title>Abigail</title>
 
 	<!-- Google Fonts -->
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway+Dots&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	      rel="stylesheet">
+
 
 	<!-- topojson for json -->
 	<script src="//d3js.org/topojson.v1.min.js"></script>
@@ -30,28 +35,47 @@
 	
 	<style>
 
+	 /* font-family: 'Lato', sans-serif;
+	    font-family: 'Poppins', sans-serif;
+	    font-family: 'Raleway', sans-serif;
+	    font-family: 'Raleway Dots', sans-serif; */
+	 
          body {
              margin: 0;
              padding: 0;
              display: flex;
              height: 100vh;
              overflow: hidden;
-	     background-color: #ECEDEE;
-	     color: #0F0F0F;
-	     font-family: "Poppins",sans-serif;
+	     background-color: #F5F5F5;
+	     color: #060508;
+	     font-family: "Lato", sans-serif;
+	     font-size: 0.9rem;
          }
+
+	 .menu_section,
+	 .menu_section-slider {
+	     font-family: "Raleway", sans-serif;
+	     font-weight:400;
+	     font-size: 1.3rem;
+	     margin-top: 1.5rem;
+	     margin-bottom: 0.3rem;
+	 }
+	 .menu_section-slider {
+	     margin-top: 1.5rem;
+	     margin-bottom: 0.8rem;
+	 }
 
          #menu {
 	     pointer-events: auto;
              width: 10px;
-             background-color: #0F0F0F;
+             background-color: #ffffff;
              /* color: #CDD2D6; */
-	     color: #ffffff;
+	     color: #060508;
              padding-top: 25px;
 	     padding-bottom: 10px;
 	     padding-left: 10px;
 	     padding-right: 10px;
-             box-shadow: 2px 0px 5px #22222280;
+             /* box-shadow: 2px 0px 5px #22222280; */
              transition: width 0.3s ease;
              position: absolute;
              top: 0;
@@ -81,206 +105,12 @@
          }
 
 	 a {
-	     color: #979797;
+	     color: #060508;
 	     text-decoration: none;
 	 }
-
-	 button {
-	     font: inherit;
-	     /* border: none; */
-	     border: 2px solid #0F0F0F;
-	     border-radius: 0.5rem/0.5rem;
-	     min-width: 2rem;
-	     padding: 0 0.5rem;
-	     margin: 0;
-	     background-color: transparent;
-	     cursor: pointer;
-	     color: #979797;
-	     touch-action: manipulation;
-	 }
-	 button.selected {
-	     color: #ffffff;
-	     border: 2px solid #ffffff;
-	 }
-	 button:hover,
-	 a:focus,
-	 a:hover {
-	     color: #ffffff;
-	 }
-
-
-	 .RCP26 {
-	     &.selected {
-		 background: #0B56A4;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #0B56A495;
-	     }
-	 }
-	 .RCP45 {
-	     &.selected {
-		 background: #DE8E0D;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #DE8E0D95;
-	     }
-	 }
-	 .RCP85 {
-	     &.selected {
-		 background: #DA2516;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #DA251695;
-	     }
-	 }
-
-	 .EUPHORBE {
-	     &.selected {
-		 background: #447C57;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #447C5795;
-	     }
-	 }
-	 .NARCISSE {
-	     &.selected {
-		 background: #E5E840;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #E5E84095;
-	     }
-	 }
-	 .DAHLIA {
-	     &.selected {
-		 background: #E2A13B;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #E2A13B95;
-	     }
-	 }
-	 .ASTER {
-	     &.selected {
-		 background: #70194E;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #70194E95;
-	     }
-	 }
-	 .ASTER_EUPHORBE {
-	     &.selected {
-		 background-image: linear-gradient(-45deg, #70194E 50%, #447C57 0%);
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background-image: linear-gradient(-45deg, #70194E95 50%, #447C5795 0%);
-	     }
-	 }
-
-	 .ASTER_DAHLIA_NARCISSE_EUPHORBE {
-	     &.selected {
-		 background-image: linear-gradient(-45deg, #70194E 25%, #E2A13B 25% 50%, #E5E840 50% 75%, #447C57 75%);
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background-image: linear-gradient(-45deg, #70194E95 25%, #E2A13B95 25% 50%, #E5E84095 50% 75%, #447C5795 75%);
-	     }
-	 }
-	 
-	 
-	 .CTRIP {
-	     &.selected {
-		 background: #A88D72;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #A88D7295;
-	     }
-	 }
-	 .EROS {
-	     &.selected {
-		 background: #CECD8D;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #CECD8D95;
-	     }
-	 }
-	 .GRSD {
-	     &.selected {
-		 background: #619C6C;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #619C6C95;
-	     }
-	 }
-	 .J2000 {
-	     &.selected {
-		 background: #00a3a6;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #00a3a695;
-	     }
-	 }
-	 .MORDOR-SD {
-	     &.selected {
-		 background: #D8714E;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #D8714E95;
-	     }
-	 }
-	 .MORDOR-TS {
-	     &.selected {
-		 background: #AE473E;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #AE473E95;
-	     }
-	 }
-	 .ORCHIDEE {
-	     &.selected {
-		 background: #EFA59D;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #EFA59D95;
-	     }
-	 }
-	 .SIM2 {
-	     &.selected {
-		 background: #475E6A;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #475E6A95;
-	     }
-	 }
-	 .SMASH {
-	     &.selected {
-		 background: #F6BA62;
-		 border: 2px solid #0F0F0F;
-	     }
-	     &:hover {
-		 background: #F6BA6295;
-	     }
-	 }
 	 
 
-	 
-	 
 
-	 
 
 	 .bunch {
 	     display: flex;
@@ -290,11 +120,241 @@
 	     margin: -1px;
 	 }
 	 
+	 button {
+	     font: inherit;
+	     border: none;
+	     min-width: 2rem;
+	     padding: 0 0.4rem;
+	     margin: 0;
+	     background-color: transparent;
+	     cursor: pointer;
+	     color: #89898a;
+	     touch-action: manipulation;
+	     position: relative;
+	     
+	     /* display: inline-block; */
+	     display: inline-flex;
+	     flex-direction: row;
+	     flex-wrap: nowrap;
+	     /* margin: -1px; */
+	     align-items: center;
+
+	     
+	 }
+	 button.selected {
+	     color: #060508;
+	     font-weight: bold;
+	     /* padding: 0 0.4rem; */
+	 }
+	 button:hover,
+	 a:focus,
+	 a:hover {
+	     font-weight: normal;
+	     color: #060508;
+	     /* padding: 0 0.4rem; */
+	 }
+
+	 button.selected .notif,
+	 button:hover .notif {
+	     position: absolute;
+	     top: 0.25rem;
+	     right: -0.05rem;
+	     transform: translateY(-50%);
+	     height: 0.6rem;
+	     width: 0.6rem;
+	     border-radius: 1rem/1rem;
+	     background: red;
+	     border: solid 2px #ffffff;
+	     color: white;
+	     display: inline-block;
+	 }
+
+	 .material-icons {
+	     color: #302f2f;
+	 }
+
+	 .material-icons.inline {
+	     font-size: 0.9rem;
+	     margin-right: 0.2rem;
+	 }
+
+	 
+	 button .material-icons {
+	     color: #89898a;
+	 }
+	 button.selected .material-icons {
+	     color: #060508;
+	     font-weight: bold;
+	 }
+	 button:hover .material-icons {
+	     color: #060508;
+	     font-weight: normal;
+	 }
+
+	 
+	 .RCP26 {
+	     &.selected .notif {
+		 background: #0B56A4;
+	     }
+	     &:hover .notif .notif {
+		 background: #0B56A495;
+	     }
+	 }
+	 .RCP45 {
+	     &.selected .notif {
+		 background: #DE8E0D;
+	     }
+	     &:hover .notif {
+		 background: #DE8E0D95;
+	     }
+	 }
+	 .RCP85 {
+	     &.selected .notif {
+		 background: #DA2516;
+	     }
+	     &:hover .notif {
+		 background: #DA251695;
+	     }
+	 }
+
+	 .EUPHORBE {
+	     &.selected .notif {
+		 background: #447C57;
+	     }
+	     &:hover .notif {
+		 background: #447C5795;
+	     }
+	 }
+	 .NARCISSE {
+	     &.selected .notif {
+		 background: #E5E840;
+	     }
+	     &:hover .notif {
+		 background: #E5E84095;
+	     }
+	 }
+	 .DAHLIA {
+	     &.selected .notif {
+		 background: #E2A13B;
+	     }
+	     &:hover .notif {
+		 background: #E2A13B95;
+	     }
+	 }
+	 .ASTER {
+	     &.selected .notif {
+		 background: #70194E;
+	     }
+	     &:hover .notif {
+		 background: #70194E95;
+	     }
+	 }
+	 .ASTER_EUPHORBE {
+	     &.selected .notif {
+		 background: transparent;
+		 background-image: linear-gradient(-45deg, #70194E 50%, #447C57 0%);
+	     }
+	     &:hover .notif {
+		 background: transparent;
+		 background-image: linear-gradient(-45deg, #70194E95 50%, #447C5795 0%);
+	     }
+	 }
+
+	 .ASTER_DAHLIA_NARCISSE_EUPHORBE {
+	     &.selected .notif {
+		 background-image: linear-gradient(-45deg, #70194E 25%, #E2A13B 25% 50%, #E5E840 50% 75%, #447C57 75%);
+	     }
+	     &:hover .notif {
+		 background-image: linear-gradient(-45deg, #70194E95 25%, #E2A13B95 25% 50%, #E5E84095 50% 75%, #447C5795 75%);
+	     }
+	 }
+	 
+	 
+	 .CTRIP {
+	     &.selected .notif {
+		 background: #A88D72;
+	     }
+	     &:hover .notif {
+		 background: #A88D7295;
+	     }
+	 }
+	 .EROS {
+	     &.selected .notif {
+		 background: #CECD8D;
+	     }
+	     &:hover .notif {
+		 background: #CECD8D95;
+	     }
+	 }
+	 .GRSD {
+	     &.selected .notif {
+		 background: #619C6C;
+	     }
+	     &:hover .notif {
+		 background: #619C6C95;
+	     }
+	 }
+	 .J2000 {
+	     &.selected .notif {
+		 background: #00a3a6;
+	     }
+	     &:hover .notif {
+		 background: #00a3a695;
+	     }
+	 }
+	 .MORDOR-SD {
+	     &.selected .notif {
+		 background: #D8714E;
+	     }
+	     &:hover .notif {
+		 background: #D8714E95;
+	     }
+	 }
+	 .MORDOR-TS {
+	     &.selected .notif {
+		 background: #AE473E;
+	     }
+	     &:hover .notif {
+		 background: #AE473E95;
+	     }
+	 }
+	 .ORCHIDEE {
+	     &.selected .notif {
+		 background: #EFA59D;
+	     }
+	     &:hover .notif {
+		 background: #EFA59D95;
+	     }
+	 }
+	 .SIM2 {
+	     &.selected .notif {
+		 background: #475E6A;
+	     }
+	     &:hover .notif {
+		 background: #475E6A95;
+	     }
+	 }
+	 .SMASH {
+	     &.selected .notif {
+		 background: #F6BA62;
+	     }
+	     &:hover .notif {
+		 background: #F6BA6295;
+	     }
+	 }
+	 
+	 
+
+	 
+
+
+	 
 	 
 
 	 #range-container {
 	     margin-right: 15px;
 	     margin-left: 15px;
+	     margin-bottom: -0.5rem;
 	     top: 23px;
 	     height: 50px;
 	     position: relative;
@@ -318,11 +378,11 @@
 	 }
 
 	 .slider-round .noUi-connect {
-	     background: #00a3a6;
+	     background: #3d3e3e;
 	 }
 
 	 .slider-round .noUi-base {
-	     background: #275662;
+	     background: #CACCCC;
 	     border-radius: 5px;
 	     border: 0px solid transparent;
 	 }
@@ -333,7 +393,7 @@
 	     top: -6px;
 	     right: -8px; /* half the width */
 	     border-radius: 50%;
-	     background: #00a3a6;
+	     background: #3d3e3e;
 	     border: 0px solid transparent;
 	 }
 	 .slider-round .noUi-handle:hover {
@@ -342,7 +402,7 @@
 	     top: -7px;
 	     right: -9px; /* half the width */
 	     border-radius: 50%;
-	     background: #00a3a6;
+	     background: #3d3e3e;
 	     border: 0px solid transparent;
 	 }
 	 .slider-round .noUi-handle:active {
@@ -351,9 +411,9 @@
 	     top: -11px;
 	     right: -13px; /* half the width */
 	     border-radius: 50%;
-	     background: #00a3a6;
-	     border: 5px solid #00a3a680;
-	     border: 5px solid #00a3a680;
+	     background: #3d3e3e;
+	     border: 5px solid #3d3e3e80;
+	     border: 5px solid #3d3e3e80;
 	     -webkit-background-clip: padding-box; /* for Safari */
 	     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 	 }
@@ -363,7 +423,7 @@
 	     position: absolute;
 	     border-radius: 6px;
 	     background: #ffffff;
-	     color: #0F0F0F;
+	     color: #060508;
 	     padding-top: 1px;
 	     padding-bottom: 1px;
 	     padding-left: 3px;
@@ -371,7 +431,7 @@
 	     text-align: center;
 	     white-space: nowrap;
 	     border: 0;
-	     box-shadow: 0 1px 2px rgba(230,230,230,0.3),0 1px 3px 1px rgba(230,230,230,0.15);
+	     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 1px 3px 1px rgba(60,64,67,0.15);
 	 }
 
 	 .slider-round .noUi-tooltip::before {
@@ -401,7 +461,6 @@
 	     border: 0;
 	     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 2px 4px 2px rgba(60,64,67,0.15);
 	 }
-
 
 	 .slider-round .noUi-marker {
 	     position: absolute;
@@ -510,17 +569,17 @@
 	     width: auto;
 	     padding: 0 0.5rem;
 	     margin: -1px;
-	     background-color: #0F0F0F;
+	     background-color: #ffffff;
 	     cursor: pointer;
-	     color: #ffffff;
+	     color: #060508;
 	     touch-action: manipulation;
 	 }
 	 .button_bar.selected {
-	     color: #ffffff;
-	     border: 2px solid #ffffff;
+	     color: #89898a;
+	     border: 2px solid #89898a;
 	 }
 	 .button_bar:hover {
-	     color: #979797;
+	     color: #89898a;
 	 }
 
 	 
@@ -576,7 +635,7 @@
 	 .gallery-item span {
 	     position: relative;
 	     z-index: 1;
-	     color: #0F0F0F;
+	     color: #060508;
 	 }
 
 
@@ -610,17 +669,17 @@
         <div id="menu">
             <div id="menuExpand" class="hidden">
 		
-		<p>Période de référence</p>
+		<p class="menu_section-slider">Période de référence</p>
 		<div id="range-container">
 		    <div id="period_reference" class="slider-styled slider-round"></div>
 		</div></br>
 		
-		<p>Période futur</p>
+		<p class="menu_section-slider">Période futur</p>
 		<div id="range-container">
 		    <div id="period_futur" class="slider-styled slider-round"></div>
 		</div></br>
 
-		<p>Scénario Climatique</p>
+		<p class="menu_section">Scénario Climatique</p>
 		<div id="bunch_RCP" class="bunch">
 		    <button id="26_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>RCP 2.6</span>
@@ -633,7 +692,7 @@
 		    </button>
 		</div>
 
-		<p>Global Climate Model</p>
+		<p class="menu_section">Global Climate Model</p>
 		<div id="bunch_26_GCM" class="bunch" style="display: none;">
 		    <button id="26_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>CNRM-CM5</span>
@@ -675,13 +734,19 @@
 
 		<div id="bunch_85_GCM" class="bunch" style="display: block;">
 		    <button id="85_CNRM-CM5_RCM" class="NARCISSE selected" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span class="material-icons inline">filter_drama </span>
 			<span>CNRM-CM5</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="85_EC-EARTH_RCM" class="DAHLIA" onclick="selectButton(this); show_GCM_RCM(this);">
+			<!-- <span class="material-icons inline">wb_sunny</span> -->
 			<span>EC-EARTH</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="85_HadGEM2-ES_RCM" class="ASTER_EUPHORBE" onclick="selectButton(this); show_GCM_RCM(this);">
+			<!-- <span class="material-icons inline">umbrella local_fire_department </span> -->
 			<span>HadGEM2-ES</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="85_IPSL-CM5A-MR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
 			<span>IPSL-CM5A-MR</span>
@@ -696,7 +761,7 @@
 
 
 
-		<p>Regional Climate Model</p>
+		<p class="menu_section">Regional Climate Model</p>
 		<!-- CNRM-CM5 -->
 		<div id="bunch_26_CNRM-CM5_RCM" class="bunch" style="display: none;">
 		    <button id="26_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
@@ -717,6 +782,7 @@
 		<div id="bunch_85_CNRM-CM5_RCM" class="bunch">
 		    <button id="85_CNRM-CM5_ALADIN63" class="NARCISSE selected" onclick="selectButton(this)">
 			<span>ALADIN63</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="85_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
 			<span>RACMO22E</span>
@@ -755,6 +821,7 @@
 		    </button>
 		    <button id="85_EC-EARTH_HadREM3-GA7" class="DAHLIA selected" onclick="selectButton(this)">
 			<span>HadREM3-GA7</span>
+			<span class="notif"></span>
 		    </button>
 		</div>
 
@@ -775,9 +842,11 @@
 		<div id="bunch_85_HadGEM2-ES_RCM" class="bunch" style="display: none;">
 		    <button id="85_HadGEM2-ES_ALADIN63" class="EUPHORBE" onclick="selectButton(this)">
 			<span>ALADIN63</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="85_HadGEM2-ES_CCLM4-8-17" class="ASTER selected" onclick="selectButton(this)">
 			<span>CCLM4-8-17</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="85_HadGEM2-ES_RegCM4-6" onclick="selectButton(this)">
 			<span>RegCM4-6</span>
@@ -867,7 +936,7 @@
 		</div>
 
 
-		<p>Correction de Biais</p>
+		<p class="menu_section">Correction de Biais</p>
 		<div id="bunch_BC" class="bunch" style="display: block;">
 		    <button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
 			<span>ADAMONT</span>
@@ -877,51 +946,65 @@
 		    </button>
 		</div>
 		
-		<p>Modèle Hydrologique</p>
+		<p class="menu_section">Modèle Hydrologique</p>
 		<div id="bunch_ADAMONT_Model" class="bunch" style="display: block;">
 		    <button id="ADAMONT_CTRIP" class="CTRIP" onclick="selectButton(this)">
 			<span>CTRIP</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
 			<span>EROS</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_GRSD" class="GRSD" onclick="selectButton(this)">
 			<span>GRSD</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_J2000" class="J2000 selected" onclick="selectButton(this)">
 			<span>J2000</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_MORDOR-SD" class="MORDOR-SD" onclick="selectButton(this)">
 			<span>MORDOR-SD</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_MORDOR-TS" class="MORDOR-TS" onclick="selectButton(this)">
 			<span>MORDOR-TS</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_ORCHIDEE" class="ORCHIDEE" onclick="selectButton(this)">
 			<span>ORCHIDEE</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_SIM2" class="SIM2" onclick="selectButton(this)">
 			<span>SIM2</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_SMASH" class="SMASH" onclick="selectButton(this)">
 			<span>SMASH</span>
+			<span class="notif"></span>
 		    </button>
 		</div>
 		<div id="bunch_CDFt_Model" class="bunch" style="display: none;">
 		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
 			<span>EROS</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_GRSD" class="GRSD" onclick="selectButton(this)">
 			<span>GRSD</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_J2000" class="J2000 selected" onclick="selectButton(this)">
 			<span>J2000</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_MORDOR-SD" class="MORDOR-SD" onclick="selectButton(this)">
 			<span>MORDOR-SD</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="ADAMONT_SMASH" class="SMASH" onclick="selectButton(this)">
 			<span>SMASH</span>
+			<span class="notif"></span>
 		    </button>
 		</div>
 
@@ -1057,19 +1140,25 @@
 		 GCM_bunchAll.forEach(function (GCM_bunch) {
 		     GCM_bunch.style.display = 'none';
 		 });
-		 var GCM_selected = document.getElementById(`bunch_${RCP}_GCM`);
-		 if (GCM_selected) {
-		     GCM_selected.style.display = 'block';
+		 var GCM_bunch_selected = document.getElementById(`bunch_${RCP}_GCM`);
+		 if (GCM_bunch_selected) {
+		     GCM_bunch_selected.style.display = 'block';
 		 }
+		 var GCM_buttonSelected = GCM_bunch_selected.querySelector('.selected');
+		 var GCM_selected = GCM_buttonSelected ? GCM_buttonSelected.id.split('_')[1] : null;
 	     }
-	     if (RCM === "RCM") {
+	     if (GCM === "GCM" || RCM === "RCM") {
 		 var RCM_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_RCM"]`);
 		 RCM_bunchAll.forEach(function (RCM_bunch) {
 		     RCM_bunch.style.display = 'none';
 		 });
-		 var RCM_selected = document.getElementById(`bunch_${RCP}_${GCM}_RCM`);
-		 if (RCM_selected) {
-		     RCM_selected.style.display = 'block';
+		 if (GCM_selected) {
+		     var RCM_bunch_selected = document.getElementById(`bunch_${RCP}_${GCM_selected}_RCM`);
+		 } else {
+		     var RCM_bunch_selected = document.getElementById(`bunch_${RCP}_${GCM}_RCM`);
+		 }
+		 if (RCM_bunch_selected) {
+		     RCM_bunch_selected.style.display = 'block';
 		 }
 	     }
 	 }
@@ -1084,9 +1173,9 @@
 		 Model_bunchAll.forEach(function (Model_bunch) {
 		     Model_bunch.style.display = 'none';
 		 });
-		 var Model_selected = document.getElementById(`bunch_${BC}_Model`);
-		 if (Model_selected) {
-		     Model_selected.style.display = 'block';
+		 var Model_bunch_selected = document.getElementById(`bunch_${BC}_Model`);
+		 if (Model_bunch_selected) {
+		     Model_bunch_selected.style.display = 'block';
 		 }
 	     }
 	 }
@@ -1145,10 +1234,11 @@
 	     if (geoJSONdata_france && geoJSONdata_river) {
 
 		 const fill_entiteHydro = "transparent";
-		 const stroke_entiteHydro = "#ffffff";
+		 const stroke_entiteHydro = "#000000";
 		 
 		 const fill_france = "transparent";
-		 const stroke_france = "#B6BBC0";
+		 const stroke_france = "#89898A";
+		 /* "#3D3E3E"; */
 		 const stroke_river = "#B0D9D6";
 
 		 const minZoom = 1;
@@ -1351,26 +1441,22 @@
 	  * @param separator String joining tooltips
 	  */
 	 function mergeTooltips(slider, threshold, separator) {
-
 	     var textIsRtl = getComputedStyle(slider).direction === 'rtl';
 	     var isRtl = slider.noUiSlider.options.direction === 'rtl';
 	     var isVertical = slider.noUiSlider.options.orientation === 'vertical';
 	     var tooltips = slider.noUiSlider.getTooltips();
 	     var origins = slider.noUiSlider.getOrigins();
-	     
-	     // Move tooltips into the origin element. The default stylesheet handles this.
+	     var arrows = [];
 	     tooltips.forEach(function (tooltip, index) {
 		 if (tooltip) {
 		     let div = document.createElement('div');
 		     div.classList.add('noUi-tooltip-arrow');
 		     origins[index].appendChild(div);
-		     
 		     origins[index].appendChild(tooltip);
+		     arrows.push(div);
 		 }
 	     });
-
-	     var arrows = document.getElementsByClassName('noUi-tooltip-arrow');
-
+	     
 	     slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
 		 
 		 var pools = [[]];
