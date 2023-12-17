@@ -9,9 +9,9 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway+Dots&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-	      rel="stylesheet">
-
+	<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" -->
+	<!-- rel="stylesheet"> -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Two+Tone|Material+Icons+Sharp">
 
 	<!-- topojson for json -->
 	<script src="//d3js.org/topojson.v1.min.js"></script>
@@ -59,6 +59,10 @@
 	     font-size: 1.3rem;
 	     margin-top: 1.5rem;
 	     margin-bottom: 0.3rem;
+	     
+	     display: inline-flex;
+	     flex-wrap: nowrap;
+	     align-items: center;
 	 }
 	 .menu_section-slider {
 	     margin-top: 1.5rem;
@@ -67,15 +71,9 @@
 
          #menu {
 	     pointer-events: auto;
-             width: 10px;
+             width: 0px;
              background-color: #ffffff;
-             /* color: #CDD2D6; */
 	     color: #060508;
-             padding-top: 25px;
-	     padding-bottom: 10px;
-	     padding-left: 10px;
-	     padding-right: 10px;
-             /* box-shadow: 2px 0px 5px #22222280; */
              transition: width 0.3s ease;
              position: absolute;
              top: 0;
@@ -90,6 +88,10 @@
          #menu.expanded {
 	     pointer-events: auto;
              width: 250px;
+	     padding-top: 25px;
+	     padding-bottom: 10px;
+	     padding-left: 10px;
+	     padding-right: 10px;
          }
 
          .hidden {
@@ -102,7 +104,41 @@
              position: absolute;
              top: 10px;
              left: 10px;
+	     background-color: transparent;
+	     color: #060508;
          }
+
+	 .threebar {
+	     cursor: pointer;
+	     position: relative;
+	     height: 88px; /* 22px * 3 + space between (11px * 2) */
+	     margin-top: 33px;
+	     margin-left: 33px;
+	 }
+	 .threebar .bar {
+	     position: absolute;
+	     width: 70px;
+	     height: 22px;
+	     background: #000;
+	     top: 33px;
+	     transition: all 0.5s ease;
+	 }
+	 .threebar .bar:nth-child(1) {
+	     transform: translateY(-150%);
+	 }
+	 .threebar .bar:nth-child(3) {
+	     transform: translateY(150%);
+	 }
+	 .threebar.cross .bar:nth-child(1) {
+	     transform: rotate(45deg);
+	 }
+	 .threebar.cross .bar:nth-child(3) {
+	     transform: rotate(-45deg);
+	 }
+	 .threebar.cross .bar:nth-child(2) {
+	     opacity: 0;
+	 }
+	 
 
 	 a {
 	     color: #060508;
@@ -131,12 +167,10 @@
 	     color: #89898a;
 	     touch-action: manipulation;
 	     position: relative;
-	     
-	     /* display: inline-block; */
+
+	     /* flex-direction: row; */
 	     display: inline-flex;
-	     flex-direction: row;
 	     flex-wrap: nowrap;
-	     /* margin: -1px; */
 	     align-items: center;
 
 	     
@@ -169,24 +203,39 @@
 	     display: inline-block;
 	 }
 
-	 .material-icons {
+	 .material-icons,
+	 .material-icons-outlined,
+	 .material-icons-round {
 	     color: #302f2f;
 	 }
 
-	 .material-icons.inline {
+	 .material-icons.inline-front,
+	 .material-icons-outlined.inline-front,
+	 .material-icons-round.inline-front {
 	     font-size: 0.9rem;
 	     margin-right: 0.2rem;
 	 }
 
+	 .material-icons.inline-back,
+	 .material-icons-outlined.inline-back,
+	 .material-icons-round.inline-back {
+	     font-size: 0.9rem;
+	     margin-left: 0.2rem;
+	 }
 	 
-	 button .material-icons {
+
+	 
+	 button .material-icons,
+	 button .material-icons-outlined {
 	     color: #89898a;
 	 }
-	 button.selected .material-icons {
+	 button.selected .material-icons,
+	 button.selected .material-icons-outlined {
 	     color: #060508;
 	     font-weight: bold;
 	 }
-	 button:hover .material-icons {
+	 button:hover .material-icons,
+	 button:hover .material-icons-outlined {
 	     color: #060508;
 	     font-weight: normal;
 	 }
@@ -249,100 +298,7 @@
 		 background: #70194E95;
 	     }
 	 }
-	 .ASTER_EUPHORBE {
-	     &.selected .notif {
-		 background: transparent;
-		 background-image: linear-gradient(-45deg, #70194E 50%, #447C57 0%);
-	     }
-	     &:hover .notif {
-		 background: transparent;
-		 background-image: linear-gradient(-45deg, #70194E95 50%, #447C5795 0%);
-	     }
-	 }
 
-	 .ASTER_DAHLIA_NARCISSE_EUPHORBE {
-	     &.selected .notif {
-		 background-image: linear-gradient(-45deg, #70194E 25%, #E2A13B 25% 50%, #E5E840 50% 75%, #447C57 75%);
-	     }
-	     &:hover .notif {
-		 background-image: linear-gradient(-45deg, #70194E95 25%, #E2A13B95 25% 50%, #E5E84095 50% 75%, #447C5795 75%);
-	     }
-	 }
-	 
-	 
-	 .CTRIP {
-	     &.selected .notif {
-		 background: #A88D72;
-	     }
-	     &:hover .notif {
-		 background: #A88D7295;
-	     }
-	 }
-	 .EROS {
-	     &.selected .notif {
-		 background: #CECD8D;
-	     }
-	     &:hover .notif {
-		 background: #CECD8D95;
-	     }
-	 }
-	 .GRSD {
-	     &.selected .notif {
-		 background: #619C6C;
-	     }
-	     &:hover .notif {
-		 background: #619C6C95;
-	     }
-	 }
-	 .J2000 {
-	     &.selected .notif {
-		 background: #00a3a6;
-	     }
-	     &:hover .notif {
-		 background: #00a3a695;
-	     }
-	 }
-	 .MORDOR-SD {
-	     &.selected .notif {
-		 background: #D8714E;
-	     }
-	     &:hover .notif {
-		 background: #D8714E95;
-	     }
-	 }
-	 .MORDOR-TS {
-	     &.selected .notif {
-		 background: #AE473E;
-	     }
-	     &:hover .notif {
-		 background: #AE473E95;
-	     }
-	 }
-	 .ORCHIDEE {
-	     &.selected .notif {
-		 background: #EFA59D;
-	     }
-	     &:hover .notif {
-		 background: #EFA59D95;
-	     }
-	 }
-	 .SIM2 {
-	     &.selected .notif {
-		 background: #475E6A;
-	     }
-	     &:hover .notif {
-		 background: #475E6A95;
-	     }
-	 }
-	 .SMASH {
-	     &.selected .notif {
-		 background: #F6BA62;
-	     }
-	     &:hover .notif {
-		 background: #F6BA6295;
-	     }
-	 }
-	 
 	 
 
 	 
@@ -663,7 +619,14 @@
 	</style>
     </head>
     <body>
-	<div id="menu-button" onclick="toggleMenu()" style="color:white">M</div>
+	<div id="menu-button" onclick="toggleMenu(); get_selectedClimateChain(); update_colorModel();">
+	    <!-- <span class="material-icons-outlined">menu</span> -->
+	    <div class='threebar hamburger'>
+		<div class='bar'></div>
+		<div class='bar'></div>
+		<div class='bar'></div>
+	    </div>
+	</div>
 	
 
         <div id="menu">
@@ -688,7 +651,9 @@
 			<span>RCP 4.5</span>
 		    </button>
 		    <button id="85_GCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span id="icon_85_GCM" class="material-icons-outlined inline-front">filter_drama</span>
 			<span>RCP 8.5</span>
+			<span class="notif"></span>
 		    </button>
 		</div>
 
@@ -734,17 +699,17 @@
 
 		<div id="bunch_85_GCM" class="bunch" style="display: block;">
 		    <button id="85_CNRM-CM5_RCM" class="NARCISSE selected" onclick="selectButton(this); show_GCM_RCM(this);">
-			<span class="material-icons inline">filter_drama </span>
+			<span class="material-icons inline-front">filter_drama</span>
 			<span>CNRM-CM5</span>
 			<span class="notif"></span>
 		    </button>
 		    <button id="85_EC-EARTH_RCM" class="DAHLIA" onclick="selectButton(this); show_GCM_RCM(this);">
-			<!-- <span class="material-icons inline">wb_sunny</span> -->
+			<span class="material-icons-outlined inline-front">wb_sunny</span>
 			<span>EC-EARTH</span>
 			<span class="notif"></span>
 		    </button>
-		    <button id="85_HadGEM2-ES_RCM" class="ASTER_EUPHORBE" onclick="selectButton(this); show_GCM_RCM(this);">
-			<!-- <span class="material-icons inline">umbrella local_fire_department </span> -->
+		    <button id="85_HadGEM2-ES_RCM" class="ASTER" onclick="selectButton(this); show_GCM_RCM(this);">
+			<span id="icon_85_HadGEM2-ES_RCM" class="material-icons-outlined inline-front">local_fire_department</span>
 			<span>HadGEM2-ES</span>
 			<span class="notif"></span>
 		    </button>
@@ -781,6 +746,7 @@
 		</div>
 		<div id="bunch_85_CNRM-CM5_RCM" class="bunch">
 		    <button id="85_CNRM-CM5_ALADIN63" class="NARCISSE selected" onclick="selectButton(this)">
+			<span class="material-icons inline-front">filter_drama</span>
 			<span>ALADIN63</span>
 			<span class="notif"></span>
 		    </button>
@@ -820,6 +786,7 @@
 			<span>RCA4</span>
 		    </button>
 		    <button id="85_EC-EARTH_HadREM3-GA7" class="DAHLIA selected" onclick="selectButton(this)">
+			<span class="material-icons-outlined inline-front">wb_sunny</span>
 			<span>HadREM3-GA7</span>
 			<span class="notif"></span>
 		    </button>
@@ -841,10 +808,12 @@
 		</div>
 		<div id="bunch_85_HadGEM2-ES_RCM" class="bunch" style="display: none;">
 		    <button id="85_HadGEM2-ES_ALADIN63" class="EUPHORBE" onclick="selectButton(this)">
+			<span class="material-icons-outlined inline-front">umbrella</span>
 			<span>ALADIN63</span>
 			<span class="notif"></span>
 		    </button>
 		    <button id="85_HadGEM2-ES_CCLM4-8-17" class="ASTER selected" onclick="selectButton(this)">
+			<span class="material-icons-outlined inline-front">local_fire_department</span>
 			<span>CCLM4-8-17</span>
 			<span class="notif"></span>
 		    </button>
@@ -879,7 +848,7 @@
 
 		<!-- MPI-ESM-LR -->
 		<div id="bunch_26_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
-		    <button id="26_MPI-ESM-LR_CCLM4-8-17" onclick="selectButton(this)">
+		    <button id="26_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
 			<span>CCLM4-8-17</span>
 		    </button>
 		    <button id="26_MPI-ESM-LR_RegCM4-6" onclick="selectButton(this)">
@@ -890,7 +859,7 @@
 		    </button>
 		</div>
 		<div id="bunch_45_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
-		    <button id="45_MPI-ESM-LR_CCLM4-8-17" onclick="selectButton(this)">
+		    <button id="45_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
 			<span>CCLM4-8-17</span>
 		    </button>
 		    <button id="45_MPI-ESM-LR_REMO" onclick="selectButton(this)">
@@ -898,7 +867,7 @@
 		    </button>
 		</div>
 		<div id="bunch_85_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
-		    <button id="85_MPI-ESM-LR_CCLM4-8-17" onclick="selectButton(this)">
+		    <button id="85_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
 			<span>CCLM4-8-17</span>
 		    </button>
 		    <button id="85_MPI-ESM-LR_RegCM4-6" onclick="selectButton(this)">
@@ -911,12 +880,12 @@
 
 		<!-- NorESM1-M -->
 		<div id="bunch_26_NorESM1-M_RCM" class="bunch" style="display: none;">
-		    <button id="26_NorESM1-M_REMO" onclick="selectButton(this)">
+		    <button id="26_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
 			<span>REMO</span>
 		    </button>
 		</div>
 		<div id="bunch_45_NorESM1-M_RCM" class="bunch" style="display: none;">
-		    <button id="45_NorESM1-M_HIRHAM5" onclick="selectButton(this)">
+		    <button id="45_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
 			<span>HIRHAM5</span>
 		    </button>
 		    <button id="45_NorESM1-M_REMO" onclick="selectButton(this)">
@@ -924,7 +893,7 @@
 		    </button>
 		</div>
 		<div id="bunch_85_NorESM1-M_RCM" class="bunch" style="display: none;">
-		    <button id="85_NorESM1-M_HIRHAM5" onclick="selectButton(this)">
+		    <button id="85_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
 			<span>HIRHAM5</span>
 		    </button>
 		    <button id="85_NorESM1-M_REMO" onclick="selectButton(this)">
@@ -939,72 +908,62 @@
 		<p class="menu_section">Correction de Biais</p>
 		<div id="bunch_BC" class="bunch" style="display: block;">
 		    <button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
+			<span id="icon_ADAMONT_Model" class="material-icons-outlined inline-front">filter_drama</span>
 			<span>ADAMONT</span>
+			<span class="notif"></span>
 		    </button>
 		    <button id="CDFt_Model" onclick="selectButton(this); show_Model(this);">
 			<span>CDFt</span>
 		    </button>
 		</div>
 		
-		<p class="menu_section">Modèle Hydrologique</p>
+		<p class="menu_section">Modèle Hydrologique
+		    <span id="colorModel" class="material-icons-round" style="margin-left:0.2rem;">gesture</span>
+		</p>
 		<div id="bunch_ADAMONT_Model" class="bunch" style="display: block;">
-		    <button id="ADAMONT_CTRIP" class="CTRIP" onclick="selectButton(this)">
+		    <button id="ADAMONT_CTRIP" onclick="selectButton(this)">
 			<span>CTRIP</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
+		    <button id="ADAMONT_EROS" onclick="selectButton(this)">
 			<span>EROS</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_GRSD" class="GRSD" onclick="selectButton(this)">
+		    <button id="ADAMONT_GRSD" onclick="selectButton(this)">
 			<span>GRSD</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_J2000" class="J2000 selected" onclick="selectButton(this)">
+		    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
 			<span>J2000</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_MORDOR-SD" class="MORDOR-SD" onclick="selectButton(this)">
+		    <button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
 			<span>MORDOR-SD</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_MORDOR-TS" class="MORDOR-TS" onclick="selectButton(this)">
+		    <button id="ADAMONT_MORDOR-TS" onclick="selectButton(this)">
 			<span>MORDOR-TS</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_ORCHIDEE" class="ORCHIDEE" onclick="selectButton(this)">
+		    <button id="ADAMONT_ORCHIDEE" onclick="selectButton(this)">
 			<span>ORCHIDEE</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_SIM2" class="SIM2" onclick="selectButton(this)">
+		    <button id="ADAMONT_SIM2" onclick="selectButton(this)">
 			<span>SIM2</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_SMASH" class="SMASH" onclick="selectButton(this)">
+		    <button id="ADAMONT_SMASH" onclick="selectButton(this)">
 			<span>SMASH</span>
-			<span class="notif"></span>
 		    </button>
 		</div>
 		<div id="bunch_CDFt_Model" class="bunch" style="display: none;">
-		    <button id="ADAMONT_EROS" class="EROS" onclick="selectButton(this)">
+		    <button id="ADAMONT_EROS" onclick="selectButton(this)">
 			<span>EROS</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_GRSD" class="GRSD" onclick="selectButton(this)">
+		    <button id="ADAMONT_GRSD" onclick="selectButton(this)">
 			<span>GRSD</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_J2000" class="J2000 selected" onclick="selectButton(this)">
+		    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
 			<span>J2000</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_MORDOR-SD" class="MORDOR-SD" onclick="selectButton(this)">
+		    <button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
 			<span>MORDOR-SD</span>
-			<span class="notif"></span>
 		    </button>
-		    <button id="ADAMONT_SMASH" class="SMASH" onclick="selectButton(this)">
+		    <button id="ADAMONT_SMASH" onclick="selectButton(this)">
 			<span>SMASH</span>
-			<span class="notif"></span>
 		    </button>
 		</div>
 
@@ -1098,53 +1057,121 @@
 	<script>
 
 
+	 $(document).on('click', '.hamburger', function() {
+	     $('.threebar')
+		 .removeClass('hamburger')
+		 .addClass('cross');
+	 });
 
-	 /* const CTRIP_lightcolor = "#f6f4f1";
-	    const CTRIP_color = "#A88D72";
-	    const EROS_lightcolor = "#fafaf4";
-	    const EROS_color = "#CECD8D";
-	    const GRSD_lightcolor = "#eff5f0";
-	    const GRSD_color = "#619C6C";
-	    const J2000_lightcolor = "#ddfeff";
-	    const J2000_color = "#00a3a6";
-	    const MORDOR-SD_lightcolor = "#fbf1ed";
-	    const MORDOR-SD_color = "#D8714E";
-	    const MORDOR-TS_lightcolor = "#f8eceb";
-	    const MORDOR-TS_color = "#AE473E";
-	    const ORCHIDEE_lightcolor = "#fdf6f5";
-	    const ORCHIDEE_color = "#EFA59D";
-	    const SIM2_lightcolor = "#ebeff2";
-	    const SIM2_color = "#475E6A";
-	    const SMASH_lightcolor = "#fef8ef";
-	    const SMASH_color = "#F6BA62"; */
+	 $(document).on('click', '.cross', function() {
+	     $('.threebar')
+		 .removeClass('cross')
+		 .addClass('hamburger');
+	 });
 
 
 
+	 const CTRIP_color = "#A88D72";
+	 const EROS_color = "#CECD8D";
+	 const GRSD_color = "#619C6C";
+	 const J2000_color = "#00a3a6";
+	 const MORDORSD_color = "#D8714E";
+	 const MORDORTS_color = "#AE473E";
+	 const ORCHIDEE_color = "#EFA59D";
+	 const SIM2_color = "#475E6A";
+	 const SMASH_color = "#F6BA62";
 
+	 var icon_storyLines = {
+	     "ASTER": "local_fire_department",
+	     "DAHLIA": "wb_sunny",
+	     "NARCISSE": "filter_drama",
+	     "EUPHORBE": "umbrella"
+	 };
+
+	 var RCP = null;
+	 var GCM = null;
+	 var RCM = null;
+
+
+	 function get_selectedClimateChain() {
+	     var RCM_bunch = $('[id^="bunch_"][id$="_RCM"]:visible');
+	     if (RCM_bunch.length > 0) {
+		 var RCM_button = RCM_bunch.find('.selected')[0];
+		 var RCP = RCM_button.id.split('_')[0];
+		 var GCM = RCM_button.id.split('_')[1];
+		 var RCM = RCM_button.id.split('_')[2];
+		 
+		 console.log("RCP", RCP);
+		 console.log("GCM", GCM);
+		 console.log("RCM", RCM);
+
+		 var RCM_class = RCM_button.getAttribute('class').split(' ');
+		 var RCM_class = RCM_class.filter(function(chr) {
+		     return chr !== 'selected';})[0];
+
+		 if (RCM_class && RCM_class.length > 0) {
+		     if (RCM_class === "ASTER" || RCM_class === "EUPHORBE") {
+			 var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_Model'];
+		     } else {
+			 var button_id = ['85_GCM', 'ADAMONT_Model'];
+		     }
+		     button_id.forEach(function(id) {
+			 document.getElementById('icon_' + id).innerHTML = icon_storyLines[RCM_class]
+			 var button_class = $('#' + id)[0].getAttribute('class').split(' ');
+			 if (button_class.includes('selected')) {
+			     $('#' + id).removeClass().addClass(RCM_class + ' selected');
+			 } else {
+			     $('#' + id).removeClass().addClass(RCM_class);
+			 }
+		     });
+		 }
+	     }
+	 }
+	 get_selectedClimateChain();
+
+
+	 function update_colorModel() {
+	     var Model_bunch = $('[id^="bunch_"][id$="_Model"]:visible');
+	     if (Model_bunch.length > 0) {
+		 var Model_button = Model_bunch.find('.selected')[0];
+		 var BC = Model_button.id.split('_')[0];
+		 var Model = Model_button.id.split('_')[1];
+		 
+		 console.log("BC", BC);
+		 console.log("Model", Model);
+
+		 $('#colorModel').css('color', eval(Model.replace(/-/, "") + '_color'));
+	     }
+	 }
+	 update_colorModel();
 	 
+
 	 function selectButton(selectedButton) {
 	     var buttons = selectedButton.parentNode.querySelectorAll('button');
 	     buttons.forEach(function (button) {
 		 button.classList.remove('selected');
 	     });
 	     selectedButton.classList.add('selected');
+
+	     update_colorModel();
+	     get_selectedClimateChain();
 	 }
 
 	 function show_GCM_RCM(selectedButton) {
 	     var RCP = selectedButton.id.split('_')[0];
 	     var GCM = selectedButton.id.split('_')[1];
 	     var RCM = selectedButton.id.split('_')[2];
-	     
+
 	     if (GCM === "GCM") {
 		 var GCM_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_GCM"]`);
 		 GCM_bunchAll.forEach(function (GCM_bunch) {
 		     GCM_bunch.style.display = 'none';
 		 });
-		 var GCM_bunch_selected = document.getElementById(`bunch_${RCP}_GCM`);
-		 if (GCM_bunch_selected) {
-		     GCM_bunch_selected.style.display = 'block';
+		 var GCM_selectedBunch = document.getElementById(`bunch_${RCP}_GCM`);
+		 if (GCM_selectedBunch) {
+		     GCM_selectedBunch.style.display = 'block';
 		 }
-		 var GCM_buttonSelected = GCM_bunch_selected.querySelector('.selected');
+		 var GCM_buttonSelected = GCM_selectedBunch.querySelector('.selected');
 		 var GCM_selected = GCM_buttonSelected ? GCM_buttonSelected.id.split('_')[1] : null;
 	     }
 	     if (GCM === "GCM" || RCM === "RCM") {
@@ -1153,15 +1180,20 @@
 		     RCM_bunch.style.display = 'none';
 		 });
 		 if (GCM_selected) {
-		     var RCM_bunch_selected = document.getElementById(`bunch_${RCP}_${GCM_selected}_RCM`);
+		     var RCM_selectedBunch = document.getElementById(`bunch_${RCP}_${GCM_selected}_RCM`);
 		 } else {
-		     var RCM_bunch_selected = document.getElementById(`bunch_${RCP}_${GCM}_RCM`);
+		     var RCM_selectedBunch = document.getElementById(`bunch_${RCP}_${GCM}_RCM`);
 		 }
-		 if (RCM_bunch_selected) {
-		     RCM_bunch_selected.style.display = 'block';
+		 if (RCM_selectedBunch) {
+		     RCM_selectedBunch.style.display = 'block';
 		 }
 	     }
+
+	     get_selectedClimateChain();
 	 }
+
+
+
 	 
 
 	 function show_Model(selectedButton) {
@@ -1173,9 +1205,9 @@
 		 Model_bunchAll.forEach(function (Model_bunch) {
 		     Model_bunch.style.display = 'none';
 		 });
-		 var Model_bunch_selected = document.getElementById(`bunch_${BC}_Model`);
-		 if (Model_bunch_selected) {
-		     Model_bunch_selected.style.display = 'block';
+		 var Model_selectedBunch = document.getElementById(`bunch_${BC}_Model`);
+		 if (Model_selectedBunch) {
+		     Model_selectedBunch.style.display = 'block';
 		 }
 	     }
 	 }
