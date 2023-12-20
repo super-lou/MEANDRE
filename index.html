@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>MEANDRE</title>
+	<link rel="icon" href="resources/MEANDRE_logo.svg" type="image/x-icon">
 
 	<!-- Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,41 +54,6 @@
          }
 
 
-
-	 
-	 .threebar {
-	     cursor: pointer;
-	     position: relative;
-	     height: 11px;
-	     width: 21px;
-	     margin-top: 7px;
-	     margin-left: 3px;
-	 }
-	 .threebar .bar {
-	     position: absolute;
-	     width: 18px;
-	     height: 3px;
-	     background: #70757A;
-	     transition: all 0.6s ease;
-	 }
-	 .threebar .bar:nth-child(1) {
-	     transform: translateY(-5px);
-	 }
-	 .threebar .bar:nth-child(3) {
-	     transform: translateY(5px);
-	 }
-	 .threebar.cross .bar:nth-child(1) {
-	     transform: rotate(45deg);
-	 }
-	 .threebar.cross .bar:nth-child(2) {
-	     opacity: 0;
-	 }
-	 .threebar.cross .bar:nth-child(3) {
-	     transform: rotate(-45deg);
-	 }
-
-	 
-
 	 a {
 	     color: #060508;
 	     text-decoration: none;
@@ -115,25 +81,19 @@
 	     color: #89898a;
 	     touch-action: manipulation;
 	     position: relative;
-
-	     /* flex-direction: row; */
 	     display: inline-flex;
 	     flex-wrap: nowrap;
 	     align-items: center;
-
-	     
 	 }
 	 button.selected {
 	     color: #060508;
 	     font-weight: bold;
-	     /* padding: 0 0.4rem; */
 	 }
 	 button:hover,
 	 a:focus,
 	 a:hover {
 	     font-weight: normal;
 	     color: #060508;
-	     /* padding: 0 0.4rem; */
 	 }
 
 	 button.selected .notif,
@@ -224,13 +184,14 @@
 	 
 
 	 
-	 #container_menu_map_gallery {
+	 #container_menu_bar_map_gallery {
 	     display: flex;
 	     flex-direction: row;
 	     flex-wrap: nowrap;
 	     /* align-content: stretch; */
 	     padding: 0rem;
 	     width: 100vw;
+	     
 	 }
 
 	 
@@ -280,30 +241,6 @@
              display: none;
          }
 
-         .menuButton {
-             z-index: 3;
-             top: 10px;
-             left: 10px;
-	     cursor: pointer;
-             position: absolute;
-	     background-color: transparent;
-	     color: #060508;
-	     transition: all 0.3s ease;
-         }
-	 .menuButton.expanded {
-	     transform: translateX(230px) translateY(12px);
-         }
-
-	 .menuTitle {
-	     font-family: "Raleway", sans-serif;
-	     font-weight: 900;
-	     font-size: 1.3rem;
-	     color: #16171f;
-	     display: flex;
-	     flex-wrap: nowrap;
-	     align-items: center;
-	     justify-content: center;
-	 }
 
 	 #range-container {
 	     margin-right: 15px;
@@ -458,26 +395,110 @@
 
 
 
-	 /* #container_map_gallery {
-	    display: flex;
-	    flex-direction: row;
-	    flex-wrap: wrap;
-	    align-content: stretch;
-	    width: 100vw; 
-	    height: 100vh;
-	    overflow-y: auto;
-	    padding: 0rem;
-	    } */
-	 
 
 	 
 	 
+	 #container_bar {
+	     flex: 1;
+	     display: flex;
+	     flex-direction: row;
+	     flex-wrap: wrap;
+	 }
+	 
+	 #bar {
+	     height: 50px;
+	     width: 100%; 
+	     background: #ffffff;
+	     display: flex;
+	     flex-direction: row;
+	     flex-wrap: wrap;
+	     align-items: center;
+	 }
 
+
+         #menuButton {
+	     cursor: pointer;
+	     background-color: transparent;
+	     color: #060508;
+	     transition: all 0.3s ease;
+	     cursor: pointer;
+	     height: auto;
+	     width: auto;
+	     /* padding-top: 7px; */
+	     /* padding-left: 7px; */
+	     margin: 0 0.6rem;
+	     
+         }
+	 
+	 .threebarTitle {
+	     font-family: "Raleway", sans-serif;
+	     font-weight: 600;
+	     font-size: 0.7rem;
+	     color: #70757A;
+	 }
+	 
+	 .threebar {
+	     height: 11px;
+	     width: 21px;
+	     padding-top: 7px;
+	     padding-left: 7px;
+	     margin-bottom: -3px;
+	 }
+	 .threebar .bar {
+	     position: absolute;
+	     width: 18px;
+	     height: 3px;
+	     background: #70757A;
+	     transition: all 0.6s ease;
+	 }
+	 .threebar .bar:nth-child(1) {
+	     transform: translateY(-5px);
+	 }
+	 .threebar .bar:nth-child(3) {
+	     transform: translateY(5px);
+	 }
+	 .threebar.cross .bar:nth-child(1) {
+	     transform: rotate(45deg);
+	 }
+	 .threebar.cross .bar:nth-child(2) {
+	     opacity: 0;
+	 }
+	 .threebar.cross .bar:nth-child(3) {
+	     transform: rotate(-45deg);
+	 }
+	 
+
+
+	 .sep {
+	     position: relative;
+	     display: inline-flex;
+	     flex-wrap: nowrap;
+	     align-items: center;
+	     /* position: absolute; */
+	     height: 50px;	     
+	     border-left: 2px solid #F5F5F5;
+	 }
+	 .sep.big {
+	     border-left: 3px solid #F5F5F5;
+	 }
+	 
+	 .menuTitle {
+	     font-family: "Raleway", sans-serif;
+	     font-weight: 900;
+	     font-size: 1.3rem;
+	     color: #16171f;
+	     display: flex;
+	     flex-wrap: nowrap;
+	     align-items: center;
+	     justify-content: center;
+	 }
+
+
+	 
 
 	 #container_map {
-	     width: calc(100vh);
-	     height: calc(100vh);
-	     /* top: 0px; */
+	     width: calc(100vh - 50px);
+	     height: calc(100vh - 50px);
 	     /* left: 30px; */
 	     /* position: fixed; */
 	     overflow: hidden;
@@ -485,13 +506,14 @@
 
 
 	 #container_gallery {
-	     height: 100vh;
+	     height: calc(100vh - 2rem);
 	     flex: 1;
 	     overflow-y: auto;
+	     margin-top: 1rem;
          }
 	 
 	 .gallery {
-	     /* position: fixed; */
+	     transition: all 0.3s ease;
 	     display: grid;
 	     grid-template-rows: repeat(auto-fill, minmax(15vw, 1fr));
 	     grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
@@ -557,22 +579,16 @@
 	</style>
     </head>
     <body>
-	<div id="menuButton" class="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorModel();">
-	    <div class='threebar hamburger'>	
-		<div class='bar'></div>
-		<div class='bar'></div>
-		<div class='bar'></div>
-	    </div>
-	</div>
+
 	
-	<div id="container_menu_map_gallery">
+	<div id="container_menu_bar_map_gallery">
 	    
             <div id="menu">
 		<div id="menuExpand" class="hidden">
 
 		    <div class="menuTitle">
 			<img src="resources/MEANDRE_logo.svg" height="40" style="padding-bottom: 10px; padding-right: 10px;" alt="MEANDRE"/>
-			<span style="padding-right: 2rem;">MEANDRE</span>
+			<span style="padding-right: 3rem;">MEANDRE</span>
 		    </div>
 		    
 		    <p class="menu_section-slider" style="margin-top: 0px;">Période de référence</p>
@@ -915,44 +931,60 @@
             </div>
 
 
-	    
+	    <div id="container_bar">
+		<div id="bar" class="bunch">
+		    
+		    <div id="menuSep" class="sep big"></div>
+		    <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorModel();">
+			<div class='threebar hamburger'>	
+			    <div class='bar'></div>
+			    <div class='bar'></div>
+			    <div class='bar'></div>
+			</div>
+			<span class="threebarTitle">MENU</span>
+		    </div>
+		    
+		    <div class="sep"></div>
+		</div>
+		
 
 		
-	    <div id="container_map">
-		<svg id="geoJSONsvg_france"></svg>
-	    </div>
-	    
-	    <div id="container_gallery">
-		<div class="gallery">
-		    <div class="gallery-item horizontal">
-			<span>1</span>
-		    </div>
-		    <div class="gallery-item">
-			<span>2</span>
-		    </div>
-		    <div class="gallery-item vertical">
-			<span>3</span>
-		    </div>
-		    <div class="gallery-item">
-			<span>4</span>
-		    </div>
-		    <div class="gallery-item horizontal">
-			<span>5</span>
-		    </div>
-		    <div class="gallery-item vertical horizontal ">
-			<span>6</span>
-		    </div>
-		    <div class="gallery-item">
-			<span>7</span>
-		    </div>
-		    <div class="gallery-item horizontal vertical">
-			<span>8</span>
-		    </div>
-		    <div class="gallery-item vertical">
-			<span>9</span>
-		    </div>
-		    <div class="gallery-item">
-			<span>10</span>
+		<div id="container_map">
+		    <svg id="geoJSONsvg_france"></svg>
+		</div>
+		
+		<div id="container_gallery">
+		    <div class="gallery">
+			<div class="gallery-item horizontal">
+			    <span>1</span>
+			</div>
+			<div class="gallery-item">
+			    <span>2</span>
+			</div>
+			<div class="gallery-item vertical">
+			    <span>3</span>
+			</div>
+			<div class="gallery-item">
+			    <span>4</span>
+			</div>
+			<div class="gallery-item horizontal">
+			    <span>5</span>
+			</div>
+			<div class="gallery-item vertical horizontal ">
+			    <span>6</span>
+			</div>
+			<div class="gallery-item">
+			    <span>7</span>
+			</div>
+			<div class="gallery-item horizontal vertical">
+			    <span>8</span>
+			</div>
+			<div class="gallery-item vertical">
+			    <span>9</span>
+			</div>
+			<div class="gallery-item">
+			    <span>10</span>
+			</div>
 		    </div>
 		</div>
 	    </div>
@@ -976,22 +1008,25 @@
 		     .addClass('hamburger');
 	     }
 
-	     const menuButton = document.getElementById("menuButton");
-	     if (menuButton.classList.contains("expanded")) {
-		 menuButton.classList.remove("expanded");
-	     } else {
-		 menuButton.classList.add("expanded");
-	     }
-	     
+	     /* const menuButton = document.getElementById("menuButton");
+		if (menuButton.classList.contains("expanded")) {
+		menuButton.classList.remove("expanded");
+		} else {
+		menuButton.classList.add("expanded");
+		} */
+
 	     const menu = document.getElementById("menu");
 	     const menuExpand = document.getElementById("menuExpand");
+	     const menuSep = document.getElementById("menuSep");
 
 	     if (menu.classList.contains("expanded")) {
 		 menu.classList.remove("expanded");
 		 menuExpand.classList.add("hidden");
+		 menuSep.classList.remove("sep");
 	     } else {
 		 menu.classList.add("expanded");
 		 menuExpand.classList.remove("hidden");
+		 menuSep.classList.add("sep");
 	     }
 	 }
 
@@ -1237,8 +1272,8 @@
 			 var width = window.innerWidth;
 			 var height = window.innerWidth;
 		     } else {
-			 var width = window.innerHeight;
-			 var height = window.innerHeight;
+			 var width = window.innerHeight - 50;
+			 var height = window.innerHeight - 50;
 		     }
 		     zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
 		     svg.attr("width", width).attr("height", height);
