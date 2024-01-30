@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>MEANDRE</title>
-	<link rel="icon" href="resources/MEANDRE_logo.svg" type="image/x-icon">
+	<link rel="icon" href="/resources/MEANDRE_logo.svg" type="image/x-icon">
 
 	<!-- Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,555 +28,16 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	
 	<!-- Slider -->
-	<link href="src/nouislider.css" rel="stylesheet">
-	<script src="src/nouislider.js"></script>
+	<!-- <link rel="stylesheet" href="/src/nouislider.css">
+	     <script src="/src/nouislider.js"></script>
+	     <script src="/src/wNumb.js"></script> -->
 
-	<script src="src/wNumb.js"></script>
+	<!-- MEANDRE -->
+	<script src="/script.js"></script>
+	
+	<link rel="stylesheet" href="/style.css">
 	
 	
-	<style>
-
-	 /* font-family: 'Lato', sans-serif;
-	    font-family: 'Poppins', sans-serif;
-	    font-family: 'Raleway', sans-serif;
-	    font-family: 'Raleway Dots', sans-serif; */
-	 
-         body {
-             margin: 0;
-             padding: 0;
-             display: flex;
-             height: 100vh;
-             overflow: hidden;
-	     background-color: #F5F5F5;
-	     color: #060508;
-	     font-family: "Lato", sans-serif;
-	     font-size: 0.9rem;
-         }
-
-
-	 a {
-	     color: #060508;
-	     text-decoration: none;
-	 }
-	 
-
-
-
-	 .bunch {
-	     display: flex;
-	     flex-direction: row;
-	     flex-wrap: wrap;
-	     align-items: baseline;
-	     margin: -1px;
-	 }
-	 
-	 button {
-	     font: inherit;
-	     border: none;
-	     min-width: 2rem;
-	     padding: 0 0.4rem;
-	     margin: 0;
-	     background-color: transparent;
-	     cursor: pointer;
-	     color: #89898a;
-	     touch-action: manipulation;
-	     position: relative;
-	     display: inline-flex;
-	     flex-wrap: nowrap;
-	     align-items: center;
-	 }
-	 button.selected {
-	     color: #060508;
-	     font-weight: bold;
-	 }
-	 button:hover,
-	 a:focus,
-	 a:hover {
-	     font-weight: normal;
-	     color: #060508;
-	 }
-
-	 button.selected .notif,
-	 button:hover .notif {
-	     position: absolute;
-	     top: 0.25rem;
-	     right: -0.05rem;
-	     transform: translateY(-50%);
-	     height: 0.6rem;
-	     width: 0.6rem;
-	     border-radius: 1rem/1rem;
-	     background: red;
-	     border: solid 2px #ffffff;
-	     color: white;
-	     display: inline-block;
-	 }
-
-	 .material-icons,
-	 .material-icons-outlined,
-	 .material-icons-round {
-	     color: #302f2f;
-	 }
-
-	 .material-icons.inline-front,
-	 .material-icons-outlined.inline-front,
-	 .material-icons-round.inline-front {
-	     font-size: 0.9rem;
-	     margin-right: 0.2rem;
-	 }
-
-	 .material-icons.inline-back,
-	 .material-icons-outlined.inline-back,
-	 .material-icons-round.inline-back {
-	     font-size: 0.9rem;
-	     margin-left: 0.2rem;
-	 }
-	 
-
-	 
-	 button .material-icons,
-	 button .material-icons-outlined {
-	     color: #89898a;
-	 }
-	 button.selected .material-icons,
-	 button.selected .material-icons-outlined {
-	     color: #060508;
-	     font-weight: bold;
-	 }
-	 button:hover .material-icons,
-	 button:hover .material-icons-outlined {
-	     color: #060508;
-	     font-weight: normal;
-	 }
-	 
-	 .EUPHORBE {
-	     &.selected .notif {
-		 background: #447C57;
-	     }
-	     &:hover .notif {
-		 background: #447C5795;
-	     }
-	 }
-	 .NARCISSE {
-	     &.selected .notif {
-		 background: #E5E840;
-	     }
-	     &:hover .notif {
-		 background: #E5E84095;
-	     }
-	 }
-	 .DAHLIA {
-	     &.selected .notif {
-		 background: #E2A13B;
-	     }
-	     &:hover .notif {
-		 background: #E2A13B95;
-	     }
-	 }
-	 .ASTER {
-	     &.selected .notif {
-		 background: #70194E;
-	     }
-	     &:hover .notif {
-		 background: #70194E95;
-	     }
-	 }
-
-	 
-
-	 
-	 #container_menu_bar_map_gallery {
-	     display: flex;
-	     flex-direction: row;
-	     flex-wrap: nowrap;
-	     /* align-content: stretch; */
-	     padding: 0rem;
-	     width: 100vw;
-	     
-	 }
-
-	 
-	 .menu_section,
-	 .menu_section-slider {
-	     font-family: "Raleway", sans-serif;
-	     font-weight: 400;
-	     font-size: 1.3rem;
-	     margin-top: 1.5rem;
-	     margin-bottom: 0.3rem;
-	     
-	     display: inline-flex;
-	     flex-wrap: nowrap;
-	     align-items: center;
-	 }
-	 .menu_section-slider {
-	     margin-top: 1.5rem;
-	     margin-bottom: 0.8rem;
-	 }
-
-         #menu {
-	     pointer-events: auto;
-             width: 0px;
-             background-color: #ffffff;
-	     color: #060508;
-             transition: width 0.3s ease;
-             /* position: absolute; */
-             /* top: 0; */
-             /* bottom: 0; */
-             z-index: 2;
-	     overflow-y: auto;
-	     scrollbar-width: none;
-         }
-	 #menu::-webkit-scrollbar {
-	     display: none;
-	 }
-         #menu.expanded {
-	     pointer-events: auto;
-             width: 250px;
-	     padding-top: 5px;
-	     padding-bottom: 10px;
-	     padding-left: 10px;
-	     padding-right: 10px;
-         }
-
-         .hidden {
-             display: none;
-         }
-
-
-	 #range-container {
-	     margin-right: 15px;
-	     margin-left: 15px;
-	     margin-bottom: -0.5rem;
-	     top: 23px;
-	     height: 50px;
-	     position: relative;
-         }
-
-	 .slider-styled,
-	 .slider-styled .noUi-handle {
-	     box-shadow: none;
-	 }
-
-	 /* Hide markers on slider handles */
-	 .slider-styled .noUi-handle::before,
-	 .slider-styled .noUi-handle::after {
-	     display: none;
-	 }
-
-	 .slider-round {
-	     height: 5px;
-	     border: 0px solid transparent;
-	 }
-
-	 .slider-round .noUi-connect {
-	     background: #3d3e3e;
-	 }
-
-	 .slider-round .noUi-base {
-	     background: #CACCCC;
-	     border-radius: 5px;
-	     border: 0px solid transparent;
-	 }
-
-	 .slider-round .noUi-handle {
-	     height: 16px;
-	     width: 16px;
-	     top: -6px;
-	     right: -8px; /* half the width */
-	     border-radius: 50%;
-	     background: #3d3e3e;
-	     border: 0px solid transparent;
-	 }
-	 .slider-round .noUi-handle:hover {
-	     height: 18px;
-	     width: 18px;
-	     top: -7px;
-	     right: -9px; /* half the width */
-	     border-radius: 50%;
-	     background: #3d3e3e;
-	     border: 0px solid transparent;
-	 }
-	 .slider-round .noUi-handle:active {
-	     height: 26px;
-	     width: 26px;
-	     top: -11px;
-	     right: -13px; /* half the width */
-	     border-radius: 50%;
-	     background: #3d3e3e;
-	     border: 5px solid #3d3e3e80;
-	     border: 5px solid #3d3e3e80;
-	     -webkit-background-clip: padding-box; /* for Safari */
-	     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
-	 }
-
-	 .slider-round .noUi-tooltip {
-	     display: block;
-	     position: absolute;
-	     border-radius: 6px;
-	     background: #ffffff;
-	     color: #060508;
-	     padding-top: 1px;
-	     padding-bottom: 1px;
-	     padding-left: 3px;
-	     padding-right: 3px;
-	     text-align: center;
-	     white-space: nowrap;
-	     border: 0;
-	     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 1px 3px 1px rgba(60,64,67,0.15);
-	 }
-
-	 .slider-round .noUi-tooltip::before {
-	     content: "";
-	     display: block;
-	     background: #ffffff;
-	     border-radius: 3px;
-	     bottom: -5px;
-	     height: 12px;
-	     position: absolute;
-	     transform: translateX(-50%) rotate(45deg);
-	     width: 12px;
-	     left: 50%;
-	     border: 0;
-	 }
-	 
-	 .slider-round .noUi-tooltip-arrow {
-	     content: "";
-	     display: block;
-	     background: transparent;
-	     border-radius: 3px;
-	     bottom: 5px;
-	     height: 12px;
-	     position: absolute;
-	     transform: translateX(50%) rotate(45deg);
-	     width: 12px;
-	     border: 0;
-	     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 2px 4px 2px rgba(60,64,67,0.15);
-	 }
-
-	 .slider-round .noUi-marker {
-	     position: absolute;
-	     background: #CCC;
-	 }
-	 .slider-round .noUi-marker-sub {
-	     background: #AAA;
-	 }
-	 .slider-round .noUi-marker-large {
-	     background: #AAA;
-	 }
-
-	 .slider-round .noUi-pips-horizontal {
-	     padding: 10px 0;
-	     height: 80px;
-	     top: 100%;
-	     left: 0;
-	     width: 100%;
-	 }
-	 .slider-round .noUi-value-horizontal {
-	     -webkit-transform: translate(-50%, 50%);
-	     transform: translate(-50%, 50%);
-	 }
-	 .slider-round .noUi-rtl .noUi-value-horizontal {
-	     -webkit-transform: translate(50%, 50%);
-	     transform: translate(50%, 50%);
-	 }
-	 .slider-round .noUi-marker-horizontal.noUi-marker {
-	     margin-left: -1px;
-	     width: 1px;
-	     height: 7px;
-	 }
-	 .slider-round .noUi-marker-horizontal.noUi-marker-sub {
-	     height: 7px;
-	     width: 1px;
-	 }
-	 .slider-round .noUi-marker-horizontal.noUi-marker-large {
-	     height: 10px;
-	     width: 2px;
-	 }
-
-
-
-
-
-	 
-	 
-	 #container_bar {
-	     flex: 1;
-	     display: flex;
-	     flex-direction: row;
-	     flex-wrap: wrap;
-	 }
-	 
-	 #bar {
-	     height: 50px;
-	     width: 100%; 
-	     background: #ffffff;
-	     display: flex;
-	     flex-direction: row;
-	     flex-wrap: wrap;
-	     align-items: center;
-	 }
-
-
-         #menuButton {
-	     cursor: pointer;
-	     background-color: transparent;
-	     color: #060508;
-	     transition: all 0.3s ease;
-	     cursor: pointer;
-	     height: auto;
-	     width: auto;
-	     /* padding-top: 7px; */
-	     /* padding-left: 7px; */
-	     margin: 0 0.6rem;
-	     
-         }
-	 
-	 .threebarTitle {
-	     font-family: "Raleway", sans-serif;
-	     font-weight: 600;
-	     font-size: 0.7rem;
-	     color: #70757A;
-	 }
-	 
-	 .threebar {
-	     height: 11px;
-	     width: 21px;
-	     padding-top: 7px;
-	     padding-left: 7px;
-	     margin-bottom: -3px;
-	 }
-	 .threebar .bar {
-	     position: absolute;
-	     width: 18px;
-	     height: 3px;
-	     background: #70757A;
-	     transition: all 0.6s ease;
-	 }
-	 .threebar .bar:nth-child(1) {
-	     transform: translateY(-5px);
-	 }
-	 .threebar .bar:nth-child(3) {
-	     transform: translateY(5px);
-	 }
-	 .threebar.cross .bar:nth-child(1) {
-	     transform: rotate(45deg);
-	 }
-	 .threebar.cross .bar:nth-child(2) {
-	     opacity: 0;
-	 }
-	 .threebar.cross .bar:nth-child(3) {
-	     transform: rotate(-45deg);
-	 }
-	 
-
-
-	 .sep {
-	     position: relative;
-	     display: inline-flex;
-	     flex-wrap: nowrap;
-	     align-items: center;
-	     /* position: absolute; */
-	     height: 50px;	     
-	     border-left: 2px solid #F5F5F5;
-	 }
-	 .sep.big {
-	     border-left: 3px solid #F5F5F5;
-	 }
-	 
-	 .menuTitle {
-	     font-family: "Raleway", sans-serif;
-	     font-weight: 900;
-	     font-size: 1.3rem;
-	     color: #16171f;
-	     display: flex;
-	     flex-wrap: nowrap;
-	     align-items: center;
-	     justify-content: center;
-	 }
-
-
-	 
-
-	 #container_map {
-	     width: calc(100vh - 50px);
-	     height: calc(100vh - 50px);
-	     /* left: 30px; */
-	     /* position: fixed; */
-	     overflow: hidden;
-         }
-
-
-	 #container_gallery {
-	     height: calc(100vh - 2rem);
-	     flex: 1;
-	     overflow-y: auto;
-	     margin-top: 1rem;
-         }
-	 
-	 .gallery {
-	     transition: all 0.3s ease;
-	     display: grid;
-	     grid-template-rows: repeat(auto-fill, minmax(15vw, 1fr));
-	     grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
-	     grid-gap: 1rem;
-	     grid-auto-flow: dense;
-	     height: 2500px;
-	     overflow-y: auto;
-	     padding-left: 1rem;
-	     padding-right: 1rem;
-	 }
-	 .horizontal {
-	     grid-column: span 2;
-	 }
-	 .vertical {
-	     grid-row: span 2;
-	 }
-
-
-	 .gallery-item {
-	     border: 3px solid #ffffff;
-	     background-color: #ffffff;
-	     padding: 1ch 1rem;
-	     position: relative;
-	     overflow: hidden;
-	     border-radius: 10px;
-	 }
-
-	 .gallery-item img {
-	     position: absolute;
-	     top: 50%;
-	     left: 50%;
-	     transform: translate(-50%, -50%);
-	 }
-
-	 .gallery-item span {
-	     position: relative;
-	     z-index: 1;
-	     color: #060508;
-	 }
-
-
-	 
-	 @media (max-width: 768px) {
-	     /* #back { */
-	     /* flex-direction: column; */
-	     /* align-items: stretch; */
-	     /* }  */
-
-	     #container_map {
-		 position: relative;
-		 width: 100vw;
-		 height: 100vw;
-	     }
-
-	     .gallery {
-		 width: 100vw;
-		 margin-left: 20px;
-		 top: 100vw;
-	     }
-	 }
-
-
-	</style>
     </head>
     <body>
 
@@ -587,344 +48,481 @@
 		<div id="menuExpand" class="hidden">
 
 		    <div class="menuTitle">
-			<img src="resources/MEANDRE_logo.svg" height="40" style="padding-bottom: 10px; padding-right: 10px;" alt="MEANDRE"/>
-			<span style="padding-right: 3rem;">MEANDRE</span>
+			<img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
+			<span style="padding-right: 3rem;">
+			    MEANDRE
+			</span>
 		    </div>
+
+
+		    <!-- <h2 class="top-section">Période de référence</h2>
+			 <div class="range-container">
+			 <div id="period_reference" class="slider-styled slider-round"></div>
+			 </div>
+			 
+			 <h2>Période futur</h2>
+			 <div class="range-container">
+			 <div id="period_futur" class="slider-styled slider-round"></div>
+			 </div> -->
+
+		    <!-- DRAWER 1 -->
+		    <div class="drawer">
+			<div class="drawer-label" onclick="toggleDrawer('drawer1')">
+			    <h1>Chaîne de projection</h1>
+			</div>
+			<div class="drawer-content" id="drawer1-content">
+
+			    <h2 class="top-section">Scénario Climatique</h2>
+			    <div id="bunch_RCP" class="bunch space">
+				<button id="26_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				    <span>RCP 2.6</span>
+				</button>
+				<button id="45_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				    <span>RCP 4.5</span>
+				</button>
+				<button id="85_GCM" class="selected" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				    <span id="icon_85_GCM" class="material-icons-outlined inline-front">filter_drama</span>
+				    <span>RCP 8.5</span>
+				    <span class="notif"></span>
+				</button>
+			    </div>
+
+			    <h2>Global Climate Model</h2>
+			    <div id="block_26_GCM" class="chain_block" style="display: none;">
+				<button id="button_26_GCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    RCP 2.6
+				</button>
+				<div id="bunch_26_GCM" class="bunch space left-border">
+				    <button id="26_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>CNRM-CM5</span>
+				    </button>
+				    <button id="26_EC-EARTH_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>EC-EARTH</span>
+				    </button>
+				    <button id="26_HadGEM2-ES_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>HadGEM2-ES</span>
+				    </button>
+				    <button id="26_MPI-ESM-LR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>MPI-ESM-LR</span>
+				    </button>
+				    <button id="26_NorESM1-M_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>NorESM1-M</span>
+				    </button>
+				</div>
+			    </div>
+
+			    <div id="block_45_GCM" class="chain_block" style="display: none;">
+				<button id="button_45_GCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    RCP 4.5
+				</button>
+				<div id="bunch_45_GCM" class="bunch space left-border">
+				    <button id="45_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>CNRM-CM5</span>
+				    </button>
+				    <button id="45_EC-EARTH_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>EC-EARTH</span>
+				    </button>
+				    <button id="45_HadGEM2-ES_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>HadGEM2-ES</span>
+				    </button>
+				    <button id="45_IPSL-CM5A-MR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>IPSL-CM5A-MR</span>
+				    </button>
+				    <button id="45_MPI-ESM-LR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>MPI-ESM-LR</span>
+				    </button>
+				    <button id="45_NorESM1-M_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>NorESM1-M</span>
+				    </button>
+				</div>
+			    </div>
+
+			    <div id="block_85_GCM" class="chain_block" style="display: flex;">
+				<button id="button_85_GCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    RCP 8.5
+				</button>
+				<div id="bunch_85_GCM" class="bunch space left-border">
+				    <button id="85_CNRM-CM5_RCM" class="NARCISSE selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span class="material-icons inline-front">filter_drama</span>
+					<span>CNRM-CM5</span>
+					<span class="notif"></span>
+				    </button>
+				    <button id="85_EC-EARTH_RCM" class="DAHLIA selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span class="material-icons-outlined inline-front">wb_sunny</span>
+					<span>EC-EARTH</span>
+					<span class="notif"></span>
+				    </button>
+				    <button id="85_HadGEM2-ES_RCM" class="ASTER selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span id="icon_85_HadGEM2-ES_RCM" class="material-icons-outlined inline-front">local_fire_department</span>
+					<span>HadGEM2-ES</span>
+					<span class="notif"></span>
+				    </button>
+				    <button id="85_IPSL-CM5A-MR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>IPSL-CM5A-MR</span>
+				    </button>
+				    <button id="85_MPI-ESM-LR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>MPI-ESM-LR</span>
+				    </button>
+				    <button id="85_NorESM1-M_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					<span>NorESM1-M</span>
+				    </button>
+				</div>
+			    </div>
+			    
+
+			    <h2>Regional Climate Model</h2>
+			    <!-- CNRM-CM5 -->
+			    <div id="block_26_CNRM-CM5_RCM" class="chain_block" style="display: none;">
+				<button id="button_26_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    CNRM-CM5
+				</button>
+				<div id="bunch_26_CNRM-CM5_RCM" class="bunch space left-border">
+				    <button id="26_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+					<span>ALADIN63</span>
+				    </button>
+				    <button id="26_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
+					<span>RACMO22E</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_45_CNRM-CM5_RCM" class="chain_block" style="display: none;">
+				<button id="button_45_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    CNRM-CM5
+				</button>
+				<div id="bunch_45_CNRM-CM5_RCM" class="bunch space left-border">
+				    <button id="45_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+					<span>ALADIN63</span>
+				    </button>
+				    <button id="45_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
+					<span>RACMO22E</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_85_CNRM-CM5_RCM" class="chain_block" style="display: flex;">
+				<button id="button_85_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    CNRM-CM5
+				</button>
+				<div id="bunch_CNRM-CM5_RCM" class="bunch space left-border">
+				    <button id="85_CNRM-CM5_ALADIN63" class="NARCISSE selected" onclick="selectButton(this)">
+					<span class="material-icons inline-front">filter_drama</span>
+					<span>ALADIN63</span>
+					<span class="notif"></span>
+				    </button>
+				    <button id="85_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
+					<span>RACMO22E</span>
+				    </button>
+				    <button id="85_CNRM-CM5_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					<span>HadREM3-GA7</span>
+				    </button>
+				</div>
+			    </div>
+			    
+			    <!-- EC-EARTH -->
+			    <div id="block_26_EC-EARTH_RCM" class="chain_block" style="display: none;">
+				<button id="button_26_EC-EARTH_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    EC-EARTH
+				</button>
+				<div id="bunch_26_EC-EARTH_RCM" class="bunch space left-border">
+				    <button id="26_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+					<span>RACMO22E</span>
+				    </button>
+				    <button id="26_EC-EARTH_RCA4" class="selected" onclick="selectButton(this)">
+					<span>RCA4</span>
+				    </button>
+				    <button id="26_EC-EARTH_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					<span>HadREM3-GA7</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_45_EC-EARTH_RCM" class="chain_block" style="display: none;">
+				<button id="button_45_EC-EARTH_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    EC-EARTH
+				</button>
+				<div id="bunch_45_EC-EARTH_RCM" class="bunch space left-border">
+				    <button id="45_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+					<span>RACMO22E</span>
+				    </button>
+				    <button id="45_EC-EARTH_RCA4" class="selected" onclick="selectButton(this)">
+					<span>RCA4</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_85_EC-EARTH_RCM" class="chain_block" style="display: flex;">
+				<button id="button_85_EC-EARTH_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    EC-EARTH
+				</button>
+				<div id="bunch_85_EC-EARTH_RCM" class="bunch space left-border">
+				    <button id="85_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+					<span>RACMO22E</span>
+				    </button>
+				    <button id="85_EC-EARTH_RCA4" class="selected" onclick="selectButton(this)">
+					<span>RCA4</span>
+				    </button>
+				    <button id="85_EC-EARTH_HadREM3-GA7" class="DAHLIA selected" onclick="selectButton(this)">
+					<span class="material-icons-outlined inline-front">wb_sunny</span>
+					<span>HadREM3-GA7</span>
+					<span class="notif"></span>
+				    </button>
+				</div>
+			    </div>
+
+			    <!-- HadGEM2-ES -->
+			    <div id="block_26_HadGEM2-ES_RCM" class="chain_block" style="display: none;">
+				<button id="button_26_HadGEM2-ES_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    HadGEM2-ES
+				</button>
+				<div id="bunch_26_HadGEM2-ES_RCM" class="bunch space left-border">
+				    <button id="26_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
+					<span>RegCM4-6</span>
+				    </button>
+				    <button id="26_HadGEM2-ES_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					<span>HadREM3-GA7</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_45_HadGEM2-ES_RCM" class="chain_block" style="display: none;">
+				<button id="button_45_HadGEM2-ES_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    HadGEM2-ES
+				</button>
+				<div id="bunch_45_HadGEM2-ES_RCM" class="bunch space left-border">
+				    <button id="45_HadGEM2-ES_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					<span>CCLM4-8-17</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_85_HadGEM2-ES_RCM" class="chain_block" style="display: flex;">
+				<button id="button_85_HadGEM2-ES_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    HadGEM2-ES
+				</button>
+				<div id="bunch_85_HadGEM2-ES_RCM" class="bunch space left-border">
+				    <button id="85_HadGEM2-ES_ALADIN63" class="EUPHORBE selected" onclick="selectButton(this)">
+					<span class="material-icons-outlined inline-front">umbrella</span>
+					<span>ALADIN63</span>
+					<span class="notif"></span>
+				    </button>
+				    <button id="85_HadGEM2-ES_CCLM4-8-17" class="ASTER selected" onclick="selectButton(this)">
+					<span class="material-icons-outlined inline-front">local_fire_department</span>
+					<span>CCLM4-8-17</span>
+					<span class="notif"></span>
+				    </button>
+				    <button id="85_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
+					<span>RegCM4-6</span>
+				    </button>
+				    <button id="85_HadGEM2-ES_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					<span>HadREM3-GA7</span>
+				    </button>
+				</div>
+			    </div>
+			    
+			    <!-- IPSL-CM5A-MR -->
+			    <div id="block_45_IPSL-CM5A-MR_RCM" class="chain_block" style="display: none;">
+				<button id="button_45_IPSL-CM5A-MR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    IPSL-CM5A-MR
+				</button>
+				<div id="bunch_45_IPSL-CM5A-MR_RCM" class="bunch space left-border">
+				    <button id="45_IPSL-CM5A-MR_RCA4" class="selected" onclick="selectButton(this)">
+					<span>RCA4</span>
+				    </button>
+				    <button id="45_IPSL-CM5A-MR_WRF381P" class="selected" onclick="selectButton(this)">
+					<span>WRF381P</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_85_IPSL-CM5A-MR_RCM" class="chain_block" style="display: flex;">
+				<button id="button_85_IPSL-CM5A-MR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    IPSL-CM5A-MR
+				</button>
+				<div id="bunch_85_IPSL-CM5A-MR_RCM" class="bunch space left-border">
+				    <button id="85_IPSL-CM5A-MR_HIRHAM5" class="selected" onclick="selectButton(this)">
+					<span>HIRHAM5</span>
+				    </button>
+				    <button id="85_IPSL-CM5A-MR_RCA4" class="selected" onclick="selectButton(this)">
+					<span>RCA4</span>
+				    </button>
+				    <button id="85_IPSL-CM5A-MR_WRF381P" class="selected" onclick="selectButton(this)">
+					<span>WRF381P</span>
+				    </button>
+				</div>
+			    </div>
+
+			    <!-- MPI-ESM-LR -->
+			    <div id="block_26_MPI-ESM-LR_RCM" class="chain_block" style="display: none;">
+				<button id="button_26_MPI-ESM-LR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    MPI-ESM-LR
+				</button>
+				<div id="bunch_26_MPI-ESM-LR_RCM" class="bunch space left-border">
+				    <button id="26_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					<span>CCLM4-8-17</span>
+				    </button>
+				    <button id="26_MPI-ESM-LR_RegCM4-6" class="selected" onclick="selectButton(this)">
+					<span>RegCM4-6</span>
+				    </button>
+				    <button id="26_MPI-ESM-LR_REMO" class="selected" onclick="selectButton(this)">
+					<span>REMO</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_45_MPI-ESM-LR_RCM" class="chain_block" style="display: none;">
+				<button id="button_45_MPI-ESM-LR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    MPI-ESM-LR
+				</button>
+				<div id="bunch_45_MPI-ESM-LR_RCM" class="bunch space left-border">
+				    <button id="45_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					<span>CCLM4-8-17</span>
+				    </button>
+				    <button id="45_MPI-ESM-LR_REMO" class="selected" onclick="selectButton(this)">
+					<span>REMO</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_85_MPI-ESM-LR_RCM" class="chain_block" style="display: flex;">
+				<button id="button_85_MPI-ESM-LR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    MPI-ESM-LR
+				</button>
+				<div id="bunch_85_MPI-ESM-LR_RCM" class="bunch space left-border">
+				    <button id="85_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					<span>CCLM4-8-17</span>
+				    </button>
+				    <button id="85_MPI-ESM-LR_RegCM4-6" class="selected" onclick="selectButton(this)">
+					<span>RegCM4-6</span>
+				    </button>
+				    <button id="85_MPI-ESM-LR_REMO" class="selected" onclick="selectButton(this)">
+					<span>REMO</span>
+				    </button>
+				</div>
+			    </div>
+
+			    <!-- NorESM1-M -->
+			    <div id="block_26_NorESM1-M_RCM" class="chain_block" style="display: none;">
+				<button id="button_26_NorESM1-M_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    NorESM1-M
+				</button>
+				<div id="bunch_26_NorESM1-M_RCM" class="bunch space left-border">
+				    <button id="26_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
+					<span>REMO</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_45_NorESM1-M_RCM" class="chain_block" style="display: none;">
+				<button id="button_45_NorESM1-M_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    NorESM1-M
+				</button>
+				<div id="bunch_45_NorESM1-M_RCM" class="bunch space left-border">
+				    <button id="45_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
+					<span>HIRHAM5</span>
+				    </button>
+				    <button id="45_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
+					<span>REMO</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_85_NorESM1-M_RCM" class="chain_block" style="display: flex;">
+				<button id="button_85_NorESM1-M_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				    <span>NorESM1-M</span>
+				</button>
+				<div id="bunch_85_NorESM1-M_RCM" class="bunch space left-border">
+				    <button id="85_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
+					<span>HIRHAM5</span>
+				    </button>
+				    <button id="85_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
+					<span>REMO</span>
+				    </button>
+				    <button id="85_NorESM1-M_WRF381P" class="selected" onclick="selectButton(this)">
+					<span>WRF381P</span>
+				    </button>
+				</div>
+			    </div>
+
+
+			    <h2>Correction de Biais</h2>
+			    <div id="bunch_BC" class="bunch space" style="display: flex;">
+				<button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
+				    <span id="icon_ADAMONT_Model" class="material-icons-outlined inline-front">filter_drama</span>
+				    <span>ADAMONT</span>
+				    <span class="notif"></span>
+				</button>
+				<button id="CDFt_Model" class="selected" onclick="selectButton(this); show_Model(this);">
+				    <span>CDFt</span>
+				</button>
+			    </div>
+			    
+			    <h2>Modèle Hydrologique
+				<!-- <span id="colorModel" class="material-icons-round" style="margin-left:0.2rem;">gesture</span> -->
+			    </h2>
+			    <div id="block_ADAMONT_Model" class="chain_block" style="display: flex;">
+				<button id="button_ADAMONT_Model" class="chain_block_button" onclick="toggleBlock(this)">
+				    ADAMONT
+				</button>
+				<div id="bunch_ADAMONT_Model" class="bunch space left-border">
+				    <button id="ADAMONT_CTRIP" class="selected" onclick="selectButton(this)">
+					<span>CTRIP</span>
+				    </button>
+				    <button id="ADAMONT_EROS" class="selected" onclick="selectButton(this)">
+					<span>EROS</span>
+				    </button>
+				    <button id="ADAMONT_GRSD" class="selected" onclick="selectButton(this)">
+					<span>GRSD</span>
+				    </button>
+				    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
+					<span>J2000</span>
+				    </button>
+				    <button id="ADAMONT_MORDOR-SD" class="selected" onclick="selectButton(this)">
+					<span>MORDOR-SD</span>
+				    </button>
+				    <button id="ADAMONT_MORDOR-TS" class="selected" onclick="selectButton(this)">
+					<span>MORDOR-TS</span>
+				    </button>
+				    <button id="ADAMONT_ORCHIDEE" class="selected" onclick="selectButton(this)">
+					<span>ORCHIDEE</span>
+				    </button>
+				    <button id="ADAMONT_SIM2" class="selected" onclick="selectButton(this)">
+					<span>SIM2</span>
+				    </button>
+				    <button id="ADAMONT_SMASH" class="selected" onclick="selectButton(this)">
+					<span>SMASH</span>
+				    </button>
+				</div>
+			    </div>
+			    <div id="block_CDFt_Model" class="chain_block" style="display: flex;">
+				<button id="button_CDFt_Model" class="chain_block_button" onclick="toggleBlock(this)">
+				    CDFt
+				</button>
+				<div id="bunch_CDFt_Model" class="bunch space left-border">
+				    <button id="CDFt_EROS" class="selected" onclick="selectButton(this)">
+					<span>EROS</span>
+				    </button>
+				    <button id="CDFt_GRSD" class="selected" onclick="selectButton(this)">
+					<span>GRSD</span>
+				    </button>
+				    <button id="CDFt_J2000" class="selected" onclick="selectButton(this)">
+					<span>J2000</span>
+				    </button>
+				    <button id="CDFt_MORDOR-SD" class="selected" onclick="selectButton(this)">
+					<span>MORDOR-SD</span>
+				    </button>
+				    <button id="CDFt_SMASH" class="selected" onclick="selectButton(this)">
+					<span>SMASH</span>
+				    </button>
+				</div>
+			    </div>
+			    
+			    <div class="end-drawer"></div>
+			</div>
+		    </div>
+
+		    <!-- DRAWER 2 -->
+		    <div class="drawer">
+			<div class="drawer-label" onclick="toggleDrawer('drawer2')">
+			    <h1>Drawer 2</h1>
+			</div>
+			<div class="drawer-content" id="drawer2-content">
+			    HI
+			</div>
+		    </div>
+
+
 		    
-		    <p class="menu_section-slider" style="margin-top: 0px;">Période de référence</p>
-		    <div id="range-container">
-			<div id="period_reference" class="slider-styled slider-round"></div>
-		    </div></br>
 		    
-		    <p class="menu_section-slider">Période futur</p>
-		    <div id="range-container">
-			<div id="period_futur" class="slider-styled slider-round"></div>
-		    </div></br>
-
-		    <p class="menu_section">Scénario Climatique</p>
-		    <div id="bunch_RCP" class="bunch">
-			<button id="26_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>RCP 2.6</span>
-			</button>
-			<button id="45_GCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>RCP 4.5</span>
-			</button>
-			<button id="85_GCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span id="icon_85_GCM" class="material-icons-outlined inline-front">filter_drama</span>
-			    <span>RCP 8.5</span>
-			    <span class="notif"></span>
-			</button>
-		    </div>
-
-		    <p class="menu_section">Global Climate Model</p>
-		    <div id="bunch_26_GCM" class="bunch" style="display: none;">
-			<button id="26_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>CNRM-CM5</span>
-			</button>
-			<button id="26_EC-EARTH_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>EC-EARTH</span>
-			</button>
-			<button id="26_HadGEM2-ES_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>HadGEM2-ES</span>
-			</button>
-			<button id="26_MPI-ESM-LR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>MPI-ESM-LR</span>
-			</button>
-			<button id="26_NorESM1-M_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>NorESM1-M</span>
-			</button>
-		    </div>
-
-		    <div id="bunch_45_GCM" class="bunch" style="display: none;">
-			<button id="45_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>CNRM-CM5</span>
-			</button>
-			<button id="45_EC-EARTH_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>EC-EARTH</span>
-			</button>
-			<button id="45_HadGEM2-ES_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>HadGEM2-ES</span>
-			</button>
-			<button id="45_IPSL-CM5A-MR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>IPSL-CM5A-MR</span>
-			</button>
-			<button id="45_MPI-ESM-LR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>MPI-ESM-LR</span>
-			</button>
-			<button id="45_NorESM1-M_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>NorESM1-M</span>
-			</button>
-		    </div>
-
-		    <div id="bunch_85_GCM" class="bunch" style="display: block;">
-			<button id="85_CNRM-CM5_RCM" class="NARCISSE selected" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span class="material-icons inline-front">filter_drama</span>
-			    <span>CNRM-CM5</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="85_EC-EARTH_RCM" class="DAHLIA" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span class="material-icons-outlined inline-front">wb_sunny</span>
-			    <span>EC-EARTH</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="85_HadGEM2-ES_RCM" class="ASTER" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span id="icon_85_HadGEM2-ES_RCM" class="material-icons-outlined inline-front">local_fire_department</span>
-			    <span>HadGEM2-ES</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="85_IPSL-CM5A-MR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>IPSL-CM5A-MR</span>
-			</button>
-			<button id="85_MPI-ESM-LR_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>MPI-ESM-LR</span>
-			</button>
-			<button id="85_NorESM1-M_RCM" onclick="selectButton(this); show_GCM_RCM(this);">
-			    <span>NorESM1-M</span>
-			</button>
-		    </div>
-
-
-
-		    <p class="menu_section">Regional Climate Model</p>
-		    <!-- CNRM-CM5 -->
-		    <div id="bunch_26_CNRM-CM5_RCM" class="bunch" style="display: none;">
-			<button id="26_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
-			    <span>ALADIN63</span>
-			</button>
-			<button id="26_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
-			    <span>RACMO22E</span>
-			</button>
-		    </div>
-		    <div id="bunch_45_CNRM-CM5_RCM" class="bunch" style="display: none;">
-			<button id="45_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
-			    <span>ALADIN63</span>
-			</button>
-			<button id="45_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
-			    <span>RACMO22E</span>
-			</button>
-		    </div>
-		    <div id="bunch_85_CNRM-CM5_RCM" class="bunch">
-			<button id="85_CNRM-CM5_ALADIN63" class="NARCISSE selected" onclick="selectButton(this)">
-			    <span class="material-icons inline-front">filter_drama</span>
-			    <span>ALADIN63</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="85_CNRM-CM5_RACMO22E" onclick="selectButton(this)">
-			    <span>RACMO22E</span>
-			</button>
-			<button id="85_CNRM-CM5_HadREM3-GA7" onclick="selectButton(this)">
-			    <span>HadREM3-GA7</span>
-			</button>
-		    </div>
-
-		    <!-- EC-EARTH -->
-		    <div id="bunch_26_EC-EARTH_RCM" class="bunch" style="display: none;">
-			<button id="26_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
-			    <span>RACMO22E</span>
-			</button>
-			<button id="26_EC-EARTH_RCA4" onclick="selectButton(this)">
-			    <span>RCA4</span>
-			</button>
-			<button id="26_EC-EARTH_HadREM3-GA7" onclick="selectButton(this)">
-			    <span>HadREM3-GA7</span>
-			</button>
-		    </div>
-		    <div id="bunch_45_EC-EARTH_RCM" class="bunch" style="display: none;">
-			<button id="45_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
-			    <span>RACMO22E</span>
-			</button>
-			<button id="45_EC-EARTH_RCA4" onclick="selectButton(this)">
-			    <span>RCA4</span>
-			</button>
-		    </div>
-		    <div id="bunch_85_EC-EARTH_RCM" class="bunch" style="display: none;">
-			<button id="85_EC-EARTH_RACMO22E" onclick="selectButton(this)">
-			    <span>RACMO22E</span>
-			</button>
-			<button id="85_EC-EARTH_RCA4" onclick="selectButton(this)">
-			    <span>RCA4</span>
-			</button>
-			<button id="85_EC-EARTH_HadREM3-GA7" class="DAHLIA selected" onclick="selectButton(this)">
-			    <span class="material-icons-outlined inline-front">wb_sunny</span>
-			    <span>HadREM3-GA7</span>
-			    <span class="notif"></span>
-			</button>
-		    </div>
-
-		    <!-- HadGEM2-ES -->
-		    <div id="bunch_26_HadGEM2-ES_RCM" class="bunch" style="display: none;">
-			<button id="26_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
-			    <span>RegCM4-6</span>
-			</button>
-			<button id="26_HadGEM2-ES_HadREM3-GA7" onclick="selectButton(this)">
-			    <span>HadREM3-GA7</span>
-			</button>
-		    </div>
-		    <div id="bunch_45_HadGEM2-ES_RCM" class="bunch" style="display: none;">
-			<button id="45_HadGEM2-ES_CCLM4-8-17" class="selected" onclick="selectButton(this)">
-			    <span>CCLM4-8-17</span>
-			</button>
-		    </div>
-		    <div id="bunch_85_HadGEM2-ES_RCM" class="bunch" style="display: none;">
-			<button id="85_HadGEM2-ES_ALADIN63" class="EUPHORBE" onclick="selectButton(this)">
-			    <span class="material-icons-outlined inline-front">umbrella</span>
-			    <span>ALADIN63</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="85_HadGEM2-ES_CCLM4-8-17" class="ASTER selected" onclick="selectButton(this)">
-			    <span class="material-icons-outlined inline-front">local_fire_department</span>
-			    <span>CCLM4-8-17</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="85_HadGEM2-ES_RegCM4-6" onclick="selectButton(this)">
-			    <span>RegCM4-6</span>
-			</button>
-			<button id="85_HadGEM2-ES_HadREM3-GA7" onclick="selectButton(this)">
-			    <span>HadREM3-GA7</span>
-			</button>
-		    </div>
-		    
-		    <!-- IPSL-CM5A-MR -->
-		    <div id="bunch_45_IPSL-CM5A-MR_RCM" class="bunch" style="display: none;">
-			<button id="45_IPSL-CM5A-MR_RCA4" class="selected" onclick="selectButton(this)">
-			    <span>RCA4</span>
-			</button>
-			<button id="45_IPSL-CM5A-MR_WRF381P" onclick="selectButton(this)">
-			    <span>WRF381P</span>
-			</button>
-		    </div>
-		    <div id="bunch_85_IPSL-CM5A-MR_RCM" class="bunch" style="display: none;">
-			<button id="85_IPSL-CM5A-MR_HIRHAM5" class="selected" onclick="selectButton(this)">
-			    <span>HIRHAM5</span>
-			</button>
-			<button id="85_IPSL-CM5A-MR_RCA4" onclick="selectButton(this)">
-			    <span>RCA4</span>
-			</button>
-			<button id="85_IPSL-CM5A-MR_WRF381P" onclick="selectButton(this)">
-			    <span>WRF381P</span>
-			</button>
-		    </div>
-
-		    <!-- MPI-ESM-LR -->
-		    <div id="bunch_26_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
-			<button id="26_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
-			    <span>CCLM4-8-17</span>
-			</button>
-			<button id="26_MPI-ESM-LR_RegCM4-6" onclick="selectButton(this)">
-			    <span>RegCM4-6</span>
-			</button>
-			<button id="26_MPI-ESM-LR_REMO" onclick="selectButton(this)">
-			    <span>REMO</span>
-			</button>
-		    </div>
-		    <div id="bunch_45_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
-			<button id="45_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
-			    <span>CCLM4-8-17</span>
-			</button>
-			<button id="45_MPI-ESM-LR_REMO" onclick="selectButton(this)">
-			    <span>REMO</span>
-			</button>
-		    </div>
-		    <div id="bunch_85_MPI-ESM-LR_RCM" class="bunch" style="display: none;">
-			<button id="85_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
-			    <span>CCLM4-8-17</span>
-			</button>
-			<button id="85_MPI-ESM-LR_RegCM4-6" onclick="selectButton(this)">
-			    <span>RegCM4-6</span>
-			</button>
-			<button id="85_MPI-ESM-LR_REMO" onclick="selectButton(this)">
-			    <span>REMO</span>
-			</button>
-		    </div>
-
-		    <!-- NorESM1-M -->
-		    <div id="bunch_26_NorESM1-M_RCM" class="bunch" style="display: none;">
-			<button id="26_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
-			    <span>REMO</span>
-			</button>
-		    </div>
-		    <div id="bunch_45_NorESM1-M_RCM" class="bunch" style="display: none;">
-			<button id="45_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
-			    <span>HIRHAM5</span>
-			</button>
-			<button id="45_NorESM1-M_REMO" onclick="selectButton(this)">
-			    <span>REMO</span>
-			</button>
-		    </div>
-		    <div id="bunch_85_NorESM1-M_RCM" class="bunch" style="display: none;">
-			<button id="85_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
-			    <span>HIRHAM5</span>
-			</button>
-			<button id="85_NorESM1-M_REMO" onclick="selectButton(this)">
-			    <span>REMO</span>
-			</button>
-			<button id="85_NorESM1-M_WRF381P" onclick="selectButton(this)">
-			    <span>WRF381P</span>
-			</button>
-		    </div>
-
-
-		    <p class="menu_section">Correction de Biais</p>
-		    <div id="bunch_BC" class="bunch" style="display: block;">
-			<button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
-			    <span id="icon_ADAMONT_Model" class="material-icons-outlined inline-front">filter_drama</span>
-			    <span>ADAMONT</span>
-			    <span class="notif"></span>
-			</button>
-			<button id="CDFt_Model" onclick="selectButton(this); show_Model(this);">
-			    <span>CDFt</span>
-			</button>
-		    </div>
-		    
-		    <p class="menu_section">Modèle Hydrologique
-			<span id="colorModel" class="material-icons-round" style="margin-left:0.2rem;">gesture</span>
-		    </p>
-		    <div id="bunch_ADAMONT_Model" class="bunch" style="display: block;">
-			<button id="ADAMONT_CTRIP" onclick="selectButton(this)">
-			    <span>CTRIP</span>
-			</button>
-			<button id="ADAMONT_EROS" onclick="selectButton(this)">
-			    <span>EROS</span>
-			</button>
-			<button id="ADAMONT_GRSD" onclick="selectButton(this)">
-			    <span>GRSD</span>
-			</button>
-			<button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
-			    <span>J2000</span>
-			</button>
-			<button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
-			    <span>MORDOR-SD</span>
-			</button>
-			<button id="ADAMONT_MORDOR-TS" onclick="selectButton(this)">
-			    <span>MORDOR-TS</span>
-			</button>
-			<button id="ADAMONT_ORCHIDEE" onclick="selectButton(this)">
-			    <span>ORCHIDEE</span>
-			</button>
-			<button id="ADAMONT_SIM2" onclick="selectButton(this)">
-			    <span>SIM2</span>
-			</button>
-			<button id="ADAMONT_SMASH" onclick="selectButton(this)">
-			    <span>SMASH</span>
-			</button>
-		    </div>
-		    <div id="bunch_CDFt_Model" class="bunch" style="display: none;">
-			<button id="ADAMONT_EROS" onclick="selectButton(this)">
-			    <span>EROS</span>
-			</button>
-			<button id="ADAMONT_GRSD" onclick="selectButton(this)">
-			    <span>GRSD</span>
-			</button>
-			<button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
-			    <span>J2000</span>
-			</button>
-			<button id="ADAMONT_MORDOR-SD" onclick="selectButton(this)">
-			    <span>MORDOR-SD</span>
-			</button>
-			<button id="ADAMONT_SMASH" onclick="selectButton(this)">
-			    <span>SMASH</span>
-			</button>
-		    </div>
 
 
 		</div>
@@ -990,521 +588,6 @@
 	    </div>
 	</div>
 	
-	<script>
-
-
-
-
-	 function toggleMenu() {
-	     var threebar = $('.threebar')[0];
-	     var threebar_class = threebar.getAttribute('class').split(' ')[1];
-	     if (threebar_class === "hamburger") {
-		 $('.threebar')
-		     .removeClass('hamburger')
-		     .addClass('cross');
-	     } else if (threebar_class === "cross") {
-		 $('.threebar')
-		     .removeClass('cross')
-		     .addClass('hamburger');
-	     }
-
-	     /* const menuButton = document.getElementById("menuButton");
-		if (menuButton.classList.contains("expanded")) {
-		menuButton.classList.remove("expanded");
-		} else {
-		menuButton.classList.add("expanded");
-		} */
-
-	     const menu = document.getElementById("menu");
-	     const menuExpand = document.getElementById("menuExpand");
-	     const menuSep = document.getElementById("menuSep");
-
-	     if (menu.classList.contains("expanded")) {
-		 menu.classList.remove("expanded");
-		 menuExpand.classList.add("hidden");
-		 menuSep.classList.remove("sep");
-	     } else {
-		 menu.classList.add("expanded");
-		 menuExpand.classList.remove("hidden");
-		 menuSep.classList.add("sep");
-	     }
-	 }
-
-
-	 const CTRIP_color = "#A88D72";
-	 const EROS_color = "#CECD8D";
-	 const GRSD_color = "#619C6C";
-	 const J2000_color = "#00a3a6";
-	 const MORDORSD_color = "#D8714E";
-	 const MORDORTS_color = "#AE473E";
-	 const ORCHIDEE_color = "#EFA59D";
-	 const SIM2_color = "#475E6A";
-	 const SMASH_color = "#F6BA62";
-
-	 var icon_storyLines = {
-	     "ASTER": "local_fire_department",
-	     "DAHLIA": "wb_sunny",
-	     "NARCISSE": "filter_drama",
-	     "EUPHORBE": "umbrella"
-	 };
-
-	 var RCP = null;
-	 var GCM = null;
-	 var RCM = null;
-
-
-	 function get_selectedClimateChain() {
-	     var RCM_bunch = $('[id^="bunch_"][id$="_RCM"]:visible');
-	     if (RCM_bunch.length > 0) {
-		 var RCM_button = RCM_bunch.find('.selected')[0];
-		 var RCP = RCM_button.id.split('_')[0];
-		 var GCM = RCM_button.id.split('_')[1];
-		 var RCM = RCM_button.id.split('_')[2];
-		 
-		 console.log("RCP", RCP);
-		 console.log("GCM", GCM);
-		 console.log("RCM", RCM);
-
-		 var RCM_class = RCM_button.getAttribute('class').split(' ');
-		 var RCM_class = RCM_class.filter(function(chr) {
-		     return chr !== 'selected';})[0];
-
-		 if (RCM_class && RCM_class.length > 0) {
-		     if (RCM_class === "ASTER" || RCM_class === "EUPHORBE") {
-			 var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_Model'];
-		     } else {
-			 var button_id = ['85_GCM', 'ADAMONT_Model'];
-		     }
-		     button_id.forEach(function(id) {
-			 document.getElementById('icon_' + id).innerHTML = icon_storyLines[RCM_class]
-			 var button_class = $('#' + id)[0].getAttribute('class').split(' ');
-			 if (button_class.includes('selected')) {
-			     $('#' + id).removeClass().addClass(RCM_class + ' selected');
-			 } else {
-			     $('#' + id).removeClass().addClass(RCM_class);
-			 }
-		     });
-		 }
-	     }
-	 }
-	 get_selectedClimateChain();
-
-
-	 function update_colorModel() {
-	     var Model_bunch = $('[id^="bunch_"][id$="_Model"]:visible');
-	     if (Model_bunch.length > 0) {
-		 var Model_button = Model_bunch.find('.selected')[0];
-		 var BC = Model_button.id.split('_')[0];
-		 var Model = Model_button.id.split('_')[1];
-		 
-		 console.log("BC", BC);
-		 console.log("Model", Model);
-
-		 $('#colorModel').css('color', eval(Model.replace(/-/, "") + '_color'));
-	     }
-	 }
-	 update_colorModel();
-	 
-
-	 function selectButton(selectedButton) {
-	     var buttons = selectedButton.parentNode.querySelectorAll('button');
-	     buttons.forEach(function (button) {
-		 button.classList.remove('selected');
-	     });
-	     selectedButton.classList.add('selected');
-
-	     update_colorModel();
-	     get_selectedClimateChain();
-	 }
-
-	 function show_GCM_RCM(selectedButton) {
-	     var RCP = selectedButton.id.split('_')[0];
-	     var GCM = selectedButton.id.split('_')[1];
-	     var RCM = selectedButton.id.split('_')[2];
-
-	     if (GCM === "GCM") {
-		 var GCM_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_GCM"]`);
-		 GCM_bunchAll.forEach(function (GCM_bunch) {
-		     GCM_bunch.style.display = 'none';
-		 });
-		 var GCM_selectedBunch = document.getElementById(`bunch_${RCP}_GCM`);
-		 if (GCM_selectedBunch) {
-		     GCM_selectedBunch.style.display = 'block';
-		 }
-		 var GCM_buttonSelected = GCM_selectedBunch.querySelector('.selected');
-		 var GCM_selected = GCM_buttonSelected ? GCM_buttonSelected.id.split('_')[1] : null;
-	     }
-	     if (GCM === "GCM" || RCM === "RCM") {
-		 var RCM_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_RCM"]`);
-		 RCM_bunchAll.forEach(function (RCM_bunch) {
-		     RCM_bunch.style.display = 'none';
-		 });
-		 if (GCM_selected) {
-		     var RCM_selectedBunch = document.getElementById(`bunch_${RCP}_${GCM_selected}_RCM`);
-		 } else {
-		     var RCM_selectedBunch = document.getElementById(`bunch_${RCP}_${GCM}_RCM`);
-		 }
-		 if (RCM_selectedBunch) {
-		     RCM_selectedBunch.style.display = 'block';
-		 }
-	     }
-
-	     get_selectedClimateChain();
-	 }
-
-
-
-	 
-
-	 function show_Model(selectedButton) {
-	     var BC = selectedButton.id.split('_')[0];
-	     var Model = selectedButton.id.split('_')[1];
-	     
-	     if (Model === "Model") {
-		 var Model_bunchAll = document.querySelectorAll(`[id^="bunch_"][id$="_Model"]`);
-		 Model_bunchAll.forEach(function (Model_bunch) {
-		     Model_bunch.style.display = 'none';
-		 });
-		 var Model_selectedBunch = document.getElementById(`bunch_${BC}_Model`);
-		 if (Model_selectedBunch) {
-		     Model_selectedBunch.style.display = 'block';
-		 }
-	     }
-	 }
-
-
-
-
-	 
-
-
-	 
-
-	 const geoJSONfiles = [
-	     "data/france.geo.json",
-	     "data/river.geo.json",
-	     "data/entiteHydro.geo.json"
-	 ];
-
-	 function loadGeoJSON(fileURL) {
-	     return d3.json(fileURL)
-		      .then(data => data)
-		      .catch(error => {
-			  console.error("Error loading geojson file :", error);
-			  throw error;
-		      });
-	 }
-
-	 const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
-
-	 Promise.all(promises)
-		.then(geoJSONdata => {
-		    const geoJSONdata_france = geoJSONdata[0];
-		    const geoJSONdata_river = geoJSONdata[1];
-		    const geoJSONdata_entiteHydro = geoJSONdata[2];
-		    drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro);
-		})
-		.catch(error => {
-		    console.error("Error loading or processing GeoJSON files:", error);
-		});
-
-	 
-
-	 function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro) {
-	     if (geoJSONdata_france && geoJSONdata_river) {
-
-		 const fill_entiteHydro = "transparent";
-		 const stroke_entiteHydro = "#000000";
-		 
-		 const fill_france = "transparent";
-		 const stroke_france = "#89898A";
-		 /* "#3D3E3E"; */
-		 const stroke_river = "#B0D9D6";
-
-		 const minZoom = 1;
-		 const maxZoom = 4;
-		 const maxPan = 0;
-
-		 const transitionDuration = 500;
-		 
-		 const k_simplify_ref = 0.1;
-		 let k_simplify = k_simplify_ref;
-
-		 const riverLength_max = 0.4;
-		 const riverLength_min = 0;
-		 let riverLength = riverLength_max;
-
-		 const strokeWith_france = 2;
-		 const strokeWith_river_max = 1.5;
-		 const strokeWith_river_min = 0.4;
-		 
-		 let width = window.innerHeight;
-		 let height = window.innerHeight;
-		 
-
-		 const zoom = d3.zoom()
-				.scaleExtent([minZoom, maxZoom])
-				.on("zoom", function (event) { 
-				    riverLength = riverLength_max - (event.transform.k - minZoom)/(maxZoom-minZoom)*(riverLength_max-riverLength_min);
-				    k_simplify = k_simplify_ref + (event.transform.k - minZoom)/(maxZoom-minZoom)*(1-k_simplify_ref);
-
-				    redrawMap();
-				    
-				    svg.attr("transform", event.transform);
-				    svg.style("width", width * event.transform.k + "px");
-				    svg.style("height", height * event.transform.k + "px");
-				});
-
-
-		 const projection = d3.geoMercator()
-				      .center(geoJSONdata_france.features[0].properties.centroid);
-		 
-		 const svg = d3.select("#geoJSONsvg_france")
-			       .attr("width", "100%")
-			       .attr("height", "100%")
-			       .call(zoom)
-			       .append("g");
-
-		 
-
-		 function handleResize() {
-		     if (window.innerWidth < window.innerHeight) {
-			 var width = window.innerWidth;
-			 var height = window.innerWidth;
-		     } else {
-			 var width = window.innerHeight - 50;
-			 var height = window.innerHeight - 50;
-		     }
-		     zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
-		     svg.attr("width", width).attr("height", height);
-		     projection.scale([height*3.2]).translate([width / 2, height / 2]);
-		     redrawMap();
-		 }
-
-		 window.addEventListener("resize", handleResize.bind(null, k_simplify, riverLength));
-
-
-		 
-		 function redrawMap() {
-		     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
-		     const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.norm >= riverLength);
-		     const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
-		     
-		     svg.selectAll("path.france")
-			.data(simplifiedGeoJSON_france.features)
-			.join("path")
-			.attr("class", "france")
-			.attr("d", pathGenerator)
-			.transition()
-			.duration(1000)
-			.attr("fill", fill_france)
-			.attr("stroke", stroke_france)
-			.attr("stroke-width", strokeWith_france)
-			.attr("stroke-linejoin", "miter")
-			.attr("stroke-miterlimit", 1);
-
-		     svg.selectAll("path.river")
-			.data(simplifiedselectedGeoJSON_river.features)
-			.join("path")
-			.attr("class", "river")
-			.attr("d", pathGenerator)
-			.transition()
-			.duration(1000)
-			.attr("fill", "transparent")
-			.attr("stroke", stroke_river)
-			.attr("stroke-width", function(d) {
-			    return strokeWith_river_max - (1 - d.properties.norm) * (strokeWith_river_max - strokeWith_river_min);
-			})
-			.attr("stroke-linejoin", "miter")
-			.attr("stroke-linecap", "round")
-			.attr("stroke-miterlimit", 1);
-		 }
-
-
-
-		 const pathGenerator = d3.geoPath(projection);
-
-		 redrawMap();
-		 handleResize();
-		 
-
-		 return svg.node();
-	     }
-	 }
-
-
-
-
-
-	 
-
-	 
-
-
-	 var rangeSlider_reference = document.getElementById('period_reference');
-	 noUiSlider.create(rangeSlider_reference, {
-	     start: [1970, 2000],
-	     margin: 30,
-	     behaviour: 'drag-smooth-steps-tap',
-	     step: 5,
-	     connect: true,
-	     keyboardDefaultStep: 1,
-	     keyboardPageMultiplier: 2,
-	     keyboardMultiplier: 1,
-	     tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-	     format: {
-		 from: function(value) {
-		     return parseInt(value);
-		 },
-		 to: function(value) {
-		     return parseInt(value);
-		 }
-	     },
-	     range: {
-		 'min': 1970,
-		 'max': 2020
-	     },
-	     pips: {
-		 mode: 'values',
-		 values: [1970, 2000, 2020],
-		 density: 10,
-		 format: wNumb({
-		     decimals: 0,
-		 })
-	     }
-	     
-	 });
-	 mergeTooltips(rangeSlider_reference, 100, ' - ');
-
-
-	 var rangeSlider_futur = document.getElementById('period_futur');
-	 noUiSlider.create(rangeSlider_futur, {
-	     start: [2040, 2070],
-	     margin: 30,
-	     behaviour: 'drag-smooth-steps-tap',
-	     step: 5,
-	     connect: true,
-	     keyboardDefaultStep: 1,
-	     keyboardPageMultiplier: 2,
-	     keyboardMultiplier: 1,
-	     tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-	     format: {
-		 from: function(value) {
-		     return parseInt(value);
-		 },
-		 to: function(value) {
-		     return parseInt(value);
-		 }
-	     },
-	     range: {
-		 'min': 2020,
-		 'max': 2100
-	     },
-	     pips: {
-		 mode: 'values',
-		 values: [2020, 2050, 2100],
-		 density: 10,
-		 format: wNumb({
-		     decimals: 0,
-		 })
-	     }
-	     
-	 });
-	 mergeTooltips(rangeSlider_futur, 100, ' - ');
-
-
-	 
-
-	 /**
-	  * @param slider HtmlElement with an initialized slider
-	  * @param threshold Minimum proximity (in percentages) to merge tooltips
-	  * @param separator String joining tooltips
-	  */
-	 function mergeTooltips(slider, threshold, separator) {
-	     var textIsRtl = getComputedStyle(slider).direction === 'rtl';
-	     var isRtl = slider.noUiSlider.options.direction === 'rtl';
-	     var isVertical = slider.noUiSlider.options.orientation === 'vertical';
-	     var tooltips = slider.noUiSlider.getTooltips();
-	     var origins = slider.noUiSlider.getOrigins();
-	     var arrows = [];
-	     tooltips.forEach(function (tooltip, index) {
-		 if (tooltip) {
-		     let div = document.createElement('div');
-		     div.classList.add('noUi-tooltip-arrow');
-		     origins[index].appendChild(div);
-		     origins[index].appendChild(tooltip);
-		     arrows.push(div);
-		 }
-	     });
-	     
-	     slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
-		 
-		 var pools = [[]];
-		 var poolPositions = [[]];
-		 var poolValues = [[]];
-		 var atPool = 0;
-
-		 // Assign the first tooltip to the first pool, if the tooltip is configured
-		 if (tooltips[0]) {
-		     pools[0][0] = 0;
-		     poolPositions[0][0] = positions[0];
-		     poolValues[0][0] = values[0];
-		 }
-
-		 for (var i = 1; i < positions.length; i++) {
-		     if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
-			 atPool++;
-			 pools[atPool] = [];
-			 poolValues[atPool] = [];
-			 poolPositions[atPool] = [];
-		     }
-
-		     if (tooltips[i]) {
-			 pools[atPool].push(i);
-			 poolValues[atPool].push(values[i]);
-			 poolPositions[atPool].push(positions[i]);
-		     }
-		 }
-
-		 pools.forEach(function (pool, poolIndex) {
-		     var handlesInPool = pool.length;
-
-		     for (var j = 0; j < handlesInPool; j++) {
-			 var handleNumber = pool[j];
-
-			 if (j === handlesInPool - 1) {
-			     var offset = 0;
-
-			     poolPositions[poolIndex].forEach(function (value) {
-				 offset += 1000 - value;
-			     });
-
-			     var direction = isVertical ? 'bottom' : 'right';
-			     var last = isRtl ? 0 : handlesInPool - 1;
-			     var lastOffset = 1000 - poolPositions[poolIndex][last];
-			     offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
-			     
-			     // Center this tooltip over the affected handles
-			     tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
-			     tooltips[handleNumber].style.display = 'block';
-			     tooltips[handleNumber].style[direction] = offset + '%';
-
-			     arrows[handleNumber].style.display = 'block';
-			     arrows[handleNumber].style[direction] = offset + '%';
-			     
-			 } else {
-			     // Hide this tooltip
-			     tooltips[handleNumber].style.display = 'none';
-			     arrows[handleNumber].style.display = 'none';
-			 }
-		     }
-		 });
-	     });
-	 }
-
-
-
-	 
-	</script>
+	
     </body>
 </html>
