@@ -1,5 +1,59 @@
 
 
+function selectVariableButton(selectedButton) {
+    var buttons = selectedButton.parentNode.querySelectorAll('button');
+    buttons.forEach(function (button) {
+	button.classList.remove('selected');
+    });
+    selectedButton.classList.add('selected');
+}
+
+
+
+function addUnselectedClass(bunchId) {
+    var bunch = document.getElementById(bunchId);
+    bunch.classList.add('unselected');
+}
+
+function removeUnselectedClass(bunchId) {
+    var bunch = document.getElementById(bunchId);
+    bunch.classList.remove('unselected');
+}
+
+function removeSelectedClass(bunchId) {
+    var buttons = document.querySelectorAll('#' + bunchId + ' button');
+    buttons.forEach(function(button) {
+        button.classList.remove('selected');
+    });
+}
+
+function removeSelectedClass(sliderId, bunchId) {
+    var buttons = document.querySelectorAll('#' + bunchId + ' button');
+    buttons.forEach(function(button) {
+        button.classList.remove('selected');
+    });
+
+    var slider = document.getElementById(sliderId);
+    slider.classList.remove('slider-unselect');
+}
+
+
+
+function selectHorizonButton(selectedButton, sliderId) {
+    var buttons = selectedButton.parentNode.querySelectorAll('button');
+    buttons.forEach(function (button) {
+	button.classList.remove('selected');
+    });
+    selectedButton.classList.add('selected');
+    
+    
+    var slider = document.getElementById(sliderId);
+    slider.classList.add('slider-unselect');
+    
+}
+
+
+
 
 
 function toggleMenu() {
@@ -39,7 +93,15 @@ function toggleMenu() {
 
 function toggleDrawer(drawerId) {
     var drawerContent = document.getElementById(drawerId + "-content");
-    drawerContent.classList.toggle("expanded");
+    var drawerIcon = document.getElementById(drawerId + "-icon");
+
+    if (drawerContent.classList.contains("expanded")) {
+        drawerContent.classList.remove("expanded");
+        drawerIcon.classList.remove("rotated"); // Remove rotated class
+    } else {
+        drawerContent.classList.add("expanded");
+        drawerIcon.classList.add("rotated"); // Add rotated class
+    }
 }
 
 
@@ -65,49 +127,116 @@ var GCM = null;
 var RCM = null;
 
 
-function get_selectedClimateChain() {
-    var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
-    if (RCM_block.length > 0) {
-	var RCM_button = RCM_block.find('.selected')[0];
-	var RCP = RCM_button.id.split('_')[0];
-	var GCM = RCM_button.id.split('_')[1];
-	var RCM = RCM_button.id.split('_')[2];
-	
-	var RCM_class = RCM_button.getAttribute('class').split(' ');
-	var RCM_class = RCM_class.filter(function(chr) {
-	    return chr !== 'selected';})[0];
+// function get_selectedClimateChain() {
+//     var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
+    
+//     if (RCM_block.length > 0) {
 
-	if (RCM_class && RCM_class.length > 0) {
-	    if (RCM_class === "ASTER" || RCM_class === "EUPHORBE") {
-		var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_Model'];
-	    } else {
-		var button_id = ['85_GCM', 'ADAMONT_Model'];
-	    }
-	    button_id.forEach(function(id) {
-		document.getElementById('icon_' + id).innerHTML = icon_storyLines[RCM_class]
-		var button_class = $('#' + id)[0].getAttribute('class').split(' ');
-		if (button_class.includes('selected')) {
-		    $('#' + id).removeClass().addClass(RCM_class + ' selected');
-		} else {
-		    $('#' + id).removeClass().addClass(RCM_class);
-		}
-	    });
+// 	console.log(RCM_block.find('.selected'));
+	
+// 	var RCM_button = RCM_block.find('.selected')[0];
+// 	var RCP = RCM_button.id.split('_')[0];
+// 	var GCM = RCM_button.id.split('_')[1];
+// 	var RCM = RCM_button.id.split('_')[2];
+	
+// 	var RCM_class = RCM_button.getAttribute('class').split(' ');
+// 	var RCM_class = RCM_class.filter(function(chr) {
+// 	    return chr !== 'selected';})[0];
+
+// 	if (RCM_class && RCM_class.length > 0) {
+// 	    if (RCM_class === "ASTER" || RCM_class === "EUPHORBE") {
+// 		var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_Model'];
+// 	    } else {
+// 		var button_id = ['85_GCM', 'ADAMONT_Model'];
+// 	    }
+// 	    button_id.forEach(function(id) {
+// 		document.getElementById('icon_' + id).innerHTML = icon_storyLines[RCM_class]
+// 		var button_class = $('#' + id)[0].getAttribute('class').split(' ');
+// 		if (button_class.includes('selected')) {
+// 		    $('#' + id).removeClass().addClass(RCM_class + ' selected');
+// 		} else {
+// 		    $('#' + id).removeClass().addClass(RCM_class);
+// 		}
+// 	    });
+// 	}
+//     }
+// }
+function get_selectedClimateChain() {
+    var iconContainers = ['#icon_85_GCM', '#icon_ADAMONT_Model', '#icon_85_HadGEM2-ES_RCM'];
+
+    iconContainers.forEach(function(containerID) {
+
+	if (containerID === '#icon_85_HadGEM2-ES_RCM') {
+	    var icon_storyLines = {
+		"ASTER": "local_fire_department",
+		"DAHLIA": "",
+		"NARCISSE": "",
+		"EUPHORBE": "umbrella"
+	    };
+	} else {
+	    var icon_storyLines = {
+		"ASTER": "local_fire_department",
+		"DAHLIA": "wb_sunny",
+		"NARCISSE": "filter_drama",
+		"EUPHORBE": "umbrella"
+	    };
 	}
-    }
+	
+        var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
+        var iconContainer = $(containerID);
+
+        // Reset style to display icons
+        iconContainer.removeAttr('style');
+
+        if (RCM_block.length > 0) {
+            var selectedRCMButtons = RCM_block.find('.selected');
+
+            if (selectedRCMButtons.length > 0) {
+                var iconsAdded = false;
+                iconContainer.empty();
+
+                selectedRCMButtons.each(function() {
+                    var RCM_button = this;
+                    var RCM_class = RCM_button.getAttribute('class').split(' ').filter(function(chr) {
+                        return chr !== 'selected';
+                    });
+
+                    RCM_class.forEach(function(cls, index) {
+                        var icon = icon_storyLines[cls];
+                        iconContainer.append('<span class="material-icons-outlined inline-front">' + icon + '</span>');
+
+                        // Check if the icon is the "umbrella" icon
+                        if (icon === 'umbrella') {
+                            // Apply smaller left and right margins to reduce spacing
+                            iconContainer.children().last().addClass('reduce-space');
+                        }
+
+                        // Set iconsAdded to true if any icon is added
+                        iconsAdded = true;
+                    });
+                });
+
+                if (!iconsAdded) {
+                    iconContainer.attr('style', 'display: none;');
+                }
+            }
+        }
+    });
 }
+
 get_selectedClimateChain();
 
 
-function update_colorModel() {
-    var Model_bunch = $('[id^="bunch_"][id$="_Model"]:visible');
-    if (Model_bunch.length > 0) {
-	var Model_button = Model_bunch.find('.selected')[0];
-	var BC = Model_button.id.split('_')[0];
-	var Model = Model_button.id.split('_')[1];
-	$('#colorModel').css('color', eval(Model.replace(/-/, "") + '_color'));
-    }
-}
-update_colorModel();
+// function update_colorModel() {
+//     var Model_bunch = $('[id^="bunch_"][id$="_Model"]:visible');
+//     if (Model_bunch.length > 0) {
+// 	var Model_button = Model_bunch.find('.selected')[0];
+// 	var BC = Model_button.id.split('_')[0];
+// 	var Model = Model_button.id.split('_')[1];
+// 	$('#colorModel').css('color', eval(Model.replace(/-/, "") + '_color'));
+//     }
+// }
+// update_colorModel();
 
 
 
@@ -118,7 +247,7 @@ function selectAllButton(selectedButton) {
     });
     selectedButton.classList.add('selected');
 
-    update_colorModel();
+    // update_colorModel();
     get_selectedClimateChain();
 }
 
@@ -131,15 +260,13 @@ function selectButton(selectedButton) {
         selectedButton.classList.add('selected');
     }
 
-    update_colorModel();
+    // update_colorModel();
     get_selectedClimateChain();
 }
 
 
 
 function toggleBlock(selectedBlock) {
-    console.log(selectedBlock);
-
     var bunch = document.getElementById(selectedBlock.id.replace("button", "bunch"));
     var buttons = bunch.children;
     var buttons = Array.from(buttons);
@@ -409,161 +536,161 @@ function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHy
 
 
 
-// document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-//     var rangeSlider_reference = document.getElementById('period_reference');
-//     noUiSlider.create(rangeSlider_reference, {
-// 	start: [1970, 2000],
-// 	margin: 30,
-// 	behaviour: 'drag-smooth-steps-tap',
-// 	step: 5,
-// 	connect: true,
-// 	keyboardDefaultStep: 1,
-// 	keyboardPageMultiplier: 2,
-// 	keyboardMultiplier: 1,
-// 	tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-// 	format: {
-// 	    from: function(value) {
-// 		return parseInt(value);
-// 	    },
-// 	    to: function(value) {
-// 		return parseInt(value);
-// 	    }
-// 	},
-// 	range: {
-// 	    'min': 1970,
-// 	    'max': 2020
-// 	},
-// 	pips: {
-// 	    mode: 'values',
-// 	    values: [1970, 2000, 2020],
-// 	    density: 10,
-// 	    format: wNumb({
-// 		decimals: 0,
-// 	    })
-// 	}
+    var rangeSlider_reference = document.getElementById('period_reference');
+    noUiSlider.create(rangeSlider_reference, {
+	start: [1970, 2000],
+	margin: 30,
+	behaviour: 'drag-smooth-steps-tap',
+	step: 5,
+	connect: true,
+	keyboardDefaultStep: 1,
+	keyboardPageMultiplier: 2,
+	keyboardMultiplier: 1,
+	tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+	format: {
+	    from: function(value) {
+		return parseInt(value);
+	    },
+	    to: function(value) {
+		return parseInt(value);
+	    }
+	},
+	range: {
+	    'min': 1970,
+	    'max': 2020
+	},
+	pips: {
+	    mode: 'values',
+	    values: [1970, 2000, 2020],
+	    density: 10,
+	    format: wNumb({
+		decimals: 0,
+	    })
+	}
 	
-//     });
-//     mergeTooltips(rangeSlider_reference, 100, ' - ');
+    });
+    mergeTooltips(rangeSlider_reference, 100, ' - ');
 
 
-//     var rangeSlider_futur = document.getElementById('period_futur');
-//     noUiSlider.create(rangeSlider_futur, {
-// 	start: [2040, 2070],
-// 	margin: 30,
-// 	behaviour: 'drag-smooth-steps-tap',
-// 	step: 5,
-// 	connect: true,
-// 	keyboardDefaultStep: 1,
-// 	keyboardPageMultiplier: 2,
-// 	keyboardMultiplier: 1,
-// 	tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-// 	format: {
-// 	    from: function(value) {
-// 		return parseInt(value);
-// 	    },
-// 	    to: function(value) {
-// 		return parseInt(value);
-// 	    }
-// 	},
-// 	range: {
-// 	    'min': 2020,
-// 	    'max': 2100
-// 	},
-// 	pips: {
-// 	    mode: 'values',
-// 	    values: [2020, 2050, 2100],
-// 	    density: 10,
-// 	    format: wNumb({
-// 		decimals: 0,
-// 	    })
-// 	}
+    var rangeSlider_futur = document.getElementById('period_futur');
+    noUiSlider.create(rangeSlider_futur, {
+	start: [2040, 2070],
+	margin: 30,
+	behaviour: 'drag-smooth-steps-tap',
+	step: 5,
+	connect: true,
+	keyboardDefaultStep: 1,
+	keyboardPageMultiplier: 2,
+	keyboardMultiplier: 1,
+	tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+	format: {
+	    from: function(value) {
+		return parseInt(value);
+	    },
+	    to: function(value) {
+		return parseInt(value);
+	    }
+	},
+	range: {
+	    'min': 2020,
+	    'max': 2100
+	},
+	pips: {
+	    mode: 'values',
+	    values: [2020, 2050, 2100],
+	    density: 10,
+	    format: wNumb({
+		decimals: 0,
+	    })
+	}
 	
-//     });
-//     mergeTooltips(rangeSlider_futur, 100, ' - ');
-// })
+    });
+    mergeTooltips(rangeSlider_futur, 100, ' - ');
+})
 
 
 
 
-// function mergeTooltips(slider, threshold, separator) {
-//     var textIsRtl = getComputedStyle(slider).direction === 'rtl';
-//     var isRtl = slider.noUiSlider.options.direction === 'rtl';
-//     var isVertical = slider.noUiSlider.options.orientation === 'vertical';
-//     var tooltips = slider.noUiSlider.getTooltips();
-//     var origins = slider.noUiSlider.getOrigins();
-//     var arrows = [];
-//     tooltips.forEach(function (tooltip, index) {
-// 	if (tooltip) {
-// 	    let div = document.createElement('div');
-// 	    div.classList.add('noUi-tooltip-arrow');
-// 	    origins[index].appendChild(div);
-// 	    origins[index].appendChild(tooltip);
-// 	    arrows.push(div);
-// 	}
-//     });
+function mergeTooltips(slider, threshold, separator) {
+    var textIsRtl = getComputedStyle(slider).direction === 'rtl';
+    var isRtl = slider.noUiSlider.options.direction === 'rtl';
+    var isVertical = slider.noUiSlider.options.orientation === 'vertical';
+    var tooltips = slider.noUiSlider.getTooltips();
+    var origins = slider.noUiSlider.getOrigins();
+    var arrows = [];
+    tooltips.forEach(function (tooltip, index) {
+	if (tooltip) {
+	    let div = document.createElement('div');
+	    div.classList.add('noUi-tooltip-arrow');
+	    origins[index].appendChild(div);
+	    origins[index].appendChild(tooltip);
+	    arrows.push(div);
+	}
+    });
     
-//     slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
+    slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
 	
-// 	var pools = [[]];
-// 	var poolPositions = [[]];
-// 	var poolValues = [[]];
-// 	var atPool = 0;
+	var pools = [[]];
+	var poolPositions = [[]];
+	var poolValues = [[]];
+	var atPool = 0;
 
-// 	// Assign the first tooltip to the first pool, if the tooltip is configured
-// 	if (tooltips[0]) {
-// 	    pools[0][0] = 0;
-// 	    poolPositions[0][0] = positions[0];
-// 	    poolValues[0][0] = values[0];
-// 	}
+	// Assign the first tooltip to the first pool, if the tooltip is configured
+	if (tooltips[0]) {
+	    pools[0][0] = 0;
+	    poolPositions[0][0] = positions[0];
+	    poolValues[0][0] = values[0];
+	}
 
-// 	for (var i = 1; i < positions.length; i++) {
-// 	    if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
-// 		atPool++;
-// 		pools[atPool] = [];
-// 		poolValues[atPool] = [];
-// 		poolPositions[atPool] = [];
-// 	    }
+	for (var i = 1; i < positions.length; i++) {
+	    if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
+		atPool++;
+		pools[atPool] = [];
+		poolValues[atPool] = [];
+		poolPositions[atPool] = [];
+	    }
 
-// 	    if (tooltips[i]) {
-// 		pools[atPool].push(i);
-// 		poolValues[atPool].push(values[i]);
-// 		poolPositions[atPool].push(positions[i]);
-// 	    }
-// 	}
+	    if (tooltips[i]) {
+		pools[atPool].push(i);
+		poolValues[atPool].push(values[i]);
+		poolPositions[atPool].push(positions[i]);
+	    }
+	}
 
-// 	pools.forEach(function (pool, poolIndex) {
-// 	    var handlesInPool = pool.length;
+	pools.forEach(function (pool, poolIndex) {
+	    var handlesInPool = pool.length;
 
-// 	    for (var j = 0; j < handlesInPool; j++) {
-// 		var handleNumber = pool[j];
+	    for (var j = 0; j < handlesInPool; j++) {
+		var handleNumber = pool[j];
 
-// 		if (j === handlesInPool - 1) {
-// 		    var offset = 0;
+		if (j === handlesInPool - 1) {
+		    var offset = 0;
 
-// 		    poolPositions[poolIndex].forEach(function (value) {
-// 			offset += 1000 - value;
-// 		    });
+		    poolPositions[poolIndex].forEach(function (value) {
+			offset += 1000 - value;
+		    });
 
-// 		    var direction = isVertical ? 'bottom' : 'right';
-// 		    var last = isRtl ? 0 : handlesInPool - 1;
-// 		    var lastOffset = 1000 - poolPositions[poolIndex][last];
-// 		    offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
+		    var direction = isVertical ? 'bottom' : 'right';
+		    var last = isRtl ? 0 : handlesInPool - 1;
+		    var lastOffset = 1000 - poolPositions[poolIndex][last];
+		    offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
 		    
-// 		    // Center this tooltip over the affected handles
-// 		    tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
-// 		    tooltips[handleNumber].style.display = 'block';
-// 		    tooltips[handleNumber].style[direction] = offset + '%';
+		    // Center this tooltip over the affected handles
+		    tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
+		    tooltips[handleNumber].style.display = 'block';
+		    tooltips[handleNumber].style[direction] = offset + '%';
 
-// 		    arrows[handleNumber].style.display = 'block';
-// 		    arrows[handleNumber].style[direction] = offset + '%';
+		    arrows[handleNumber].style.display = 'block';
+		    arrows[handleNumber].style[direction] = offset + '%';
 		    
-// 		} else {
-// 		    // Hide this tooltip
-// 		    tooltips[handleNumber].style.display = 'none';
-// 		    arrows[handleNumber].style.display = 'none';
-// 		}
-// 	    }
-// 	});
-//     });
-// }
+		} else {
+		    // Hide this tooltip
+		    tooltips[handleNumber].style.display = 'none';
+		    arrows[handleNumber].style.display = 'none';
+		}
+	    }
+	});
+    });
+}

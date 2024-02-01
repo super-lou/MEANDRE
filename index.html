@@ -28,9 +28,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	
 	<!-- Slider -->
-	<!-- <link rel="stylesheet" href="/src/nouislider.css">
-	     <script src="/src/nouislider.js"></script>
-	     <script src="/src/wNumb.js"></script> -->
+	<link rel="stylesheet" href="/src/nouislider.css">
+	<script src="/src/nouislider.js"></script>
+	<script src="/src/wNumb.js"></script>
 
 	<!-- MEANDRE -->
 	<script src="/script.js"></script>
@@ -55,22 +55,86 @@
 		    </div>
 
 
-		    <!-- <h2 class="top-section">Période de référence</h2>
-			 <div class="range-container">
-			 <div id="period_reference" class="slider-styled slider-round"></div>
-			 </div>
-			 
-			 <h2>Période futur</h2>
-			 <div class="range-container">
-			 <div id="period_futur" class="slider-styled slider-round"></div>
-			 </div> -->
 
-		    <!-- DRAWER 1 -->
+
 		    <div class="drawer">
-			<div class="drawer-label" onclick="toggleDrawer('drawer1')">
-			    <h1>Chaîne de projection</h1>
+			<div class="drawer-label" onclick="toggleDrawer('drawer-variable')">
+			    <h1>Variable <span id="drawer-variable-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span></h1>
 			</div>
-			<div class="drawer-content" id="drawer1-content">
+			<div id="drawer-variable-content" class="drawer-content">
+			    
+			    <div id="bunch_variable" class="bunch space">
+				<button id="QJXA" onclick="selectVariableButton(this);">
+				    <span>QJXA</span>
+				</button>
+				<button id="QA" onclick="selectVariableButton(this);">
+				    <span>QA</span>
+				</button>
+				<button id="VCN10" class="selected" onclick="selectVariableButton(this);">
+				    <!-- <span id="icon_85_GCM" class="material-icons-outlined inline-front">filter_drama</span> -->
+				    <span>VCN10</span>
+				</button>
+			    </div>
+
+			    <div class="end-drawer"></div>
+			</div>
+		    </div>
+
+
+		    <div class="drawer">
+			<div class="drawer-label" onclick="toggleDrawer('drawer-horizon')">
+			    <h1>Horizon <span id="drawer-horizon-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span></h1>
+			</div>
+			<div id="drawer-horizon-content" class="drawer-content">
+			    
+			    <h2 class="top-section">Période de référence</h2>
+			    <div id="bunch_horizon_reference" class="bunch space">
+				<button id="horizon_reference" class="selected" onclick="selectHorizonButton(this, 'period_reference');">
+				    <span>1976-2005</span>
+				</button>
+			    </div>
+			    
+			    <div class="range-container"
+				 onmouseover="addUnselectedClass('bunch_horizon_reference')"
+				 onmouseout="removeUnselectedClass('bunch_horizon_reference')"
+				 onclick="removeSelectedClass('period_reference', 'bunch_horizon_reference')">
+				<div id="period_reference" class="slider-styled slider-round slider-unselect"></div>
+			    </div>
+
+			    
+			    <h2>Période futur</h2>
+			    <div id="bunch_horizon_futur" class="bunch space">
+				<button id="horizon_near" onclick="selectHorizonButton(this, 'period_futur');">
+				    <span>2011-2040</span>
+				</button>
+				<button id="horizon_middle" class="selected" onclick="selectHorizonButton(this, 'period_futur');">
+				    <span>2041-2070</span>
+				</button>
+				<button id="horizon_distant" onclick="selectHorizonButton(this, 'period_futur');">
+				    <span>2071-2100</span>
+				</button>
+			    </div>
+
+			    <div id="period_futur-container" class="range-container"
+				 onmouseover="addUnselectedClass('bunch_horizon_futur')"
+				 onmouseout="removeUnselectedClass('bunch_horizon_futur')"
+				 onclick="removeSelectedClass('period_futur', 'bunch_horizon_futur')">
+				<div id="period_futur" class="slider-styled slider-round slider-unselect"></div>
+			    </div>
+
+			    <div class="end-drawer"></div>
+			</div>
+		    </div>
+
+		    
+
+		    <div class="drawer">
+			<div class="drawer-label" onclick="toggleDrawer('drawer-projection')">
+			    <h1>Chaîne de projection
+				<span id="drawer-projection-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+			    </h1>
+			</div>
+			<div class="drawer-content" id="drawer-projection-content">
 
 			    <h2 class="top-section">Scénario Climatique</h2>
 			    <div id="bunch_RCP" class="bunch space">
@@ -83,7 +147,7 @@
 				<button id="85_GCM" class="selected" onclick="selectAllButton(this); show_GCM_RCM(this);">
 				    <span id="icon_85_GCM" class="material-icons-outlined inline-front">filter_drama</span>
 				    <span>RCP 8.5</span>
-				    <span class="notif"></span>
+				    <!-- <span class="notif"></span> -->
 				</button>
 			    </div>
 
@@ -145,17 +209,17 @@
 				    <button id="85_CNRM-CM5_RCM" class="NARCISSE selected" onclick="selectButton(this); show_GCM_RCM(this);">
 					<span class="material-icons inline-front">filter_drama</span>
 					<span>CNRM-CM5</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				    <button id="85_EC-EARTH_RCM" class="DAHLIA selected" onclick="selectButton(this); show_GCM_RCM(this);">
 					<span class="material-icons-outlined inline-front">wb_sunny</span>
 					<span>EC-EARTH</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				    <button id="85_HadGEM2-ES_RCM" class="ASTER selected" onclick="selectButton(this); show_GCM_RCM(this);">
 					<span id="icon_85_HadGEM2-ES_RCM" class="material-icons-outlined inline-front">local_fire_department</span>
 					<span>HadGEM2-ES</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				    <button id="85_IPSL-CM5A-MR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
 					<span>IPSL-CM5A-MR</span>
@@ -202,11 +266,11 @@
 				<button id="button_85_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
 				    CNRM-CM5
 				</button>
-				<div id="bunch_CNRM-CM5_RCM" class="bunch space left-border">
+				<div id="bunch_85_CNRM-CM5_RCM" class="bunch space left-border">
 				    <button id="85_CNRM-CM5_ALADIN63" class="NARCISSE selected" onclick="selectButton(this)">
 					<span class="material-icons inline-front">filter_drama</span>
 					<span>ALADIN63</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				    <button id="85_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
 					<span>RACMO22E</span>
@@ -261,7 +325,7 @@
 				    <button id="85_EC-EARTH_HadREM3-GA7" class="DAHLIA selected" onclick="selectButton(this)">
 					<span class="material-icons-outlined inline-front">wb_sunny</span>
 					<span>HadREM3-GA7</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				</div>
 			    </div>
@@ -296,14 +360,14 @@
 				</button>
 				<div id="bunch_85_HadGEM2-ES_RCM" class="bunch space left-border">
 				    <button id="85_HadGEM2-ES_ALADIN63" class="EUPHORBE selected" onclick="selectButton(this)">
-					<span class="material-icons-outlined inline-front">umbrella</span>
+					<span class="material-icons-outlined inline-front reduce-space">umbrella</span>
 					<span>ALADIN63</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				    <button id="85_HadGEM2-ES_CCLM4-8-17" class="ASTER selected" onclick="selectButton(this)">
 					<span class="material-icons-outlined inline-front">local_fire_department</span>
 					<span>CCLM4-8-17</span>
-					<span class="notif"></span>
+					<!-- <span class="notif"></span> -->
 				    </button>
 				    <button id="85_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
 					<span>RegCM4-6</span>
@@ -439,7 +503,7 @@
 				<button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
 				    <span id="icon_ADAMONT_Model" class="material-icons-outlined inline-front">filter_drama</span>
 				    <span>ADAMONT</span>
-				    <span class="notif"></span>
+				    <!-- <span class="notif"></span> -->
 				</button>
 				<button id="CDFt_Model" class="selected" onclick="selectButton(this); show_Model(this);">
 				    <span>CDFt</span>
@@ -510,15 +574,6 @@
 			</div>
 		    </div>
 
-		    <!-- DRAWER 2 -->
-		    <div class="drawer">
-			<div class="drawer-label" onclick="toggleDrawer('drawer2')">
-			    <h1>Drawer 2</h1>
-			</div>
-			<div class="drawer-content" id="drawer2-content">
-			    HI
-			</div>
-		    </div>
 
 
 		    
@@ -533,7 +588,8 @@
 		<div id="bar" class="bunch">
 		    
 		    <div id="menuSep" class="sep big"></div>
-		    <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorModel();">
+		    <!-- <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorModel();"> -->
+		    <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain();">
 			<div class='threebar hamburger'>	
 			    <div class='bar'></div>
 			    <div class='bar'></div>
