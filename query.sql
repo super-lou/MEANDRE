@@ -92,27 +92,37 @@ ORDER BY code;
 
 
 
+        
+-- "HadGEM2-ES|historical-rcp85|CCLM4-8-17|ADAMONT"
+-- "EC-EARTH|historical-rcp85|HadREM3-GA7|ADAMONT"
+-- "CNRM-CM5|historical-rcp85|ALADIN63|ADAMONT"
+-- "HadGEM2-ES|historical-rcp85|ALADIN63|ADAMONT"
+
+
 -- EXPLAIN
+-- EXPLAIN ANALYZE
 WITH historical AS (
     SELECT code, gcm, rcm, bc, hm, AVG(value) AS historical_value
     FROM data
-    WHERE gcm = 'CNRM-CM5'
+    -- WHERE gcm = 'CNRM-CM5'
+    	  -- AND exp = 'historical-rcp85'
+    	  -- AND rcm = 'ALADIN63'
+    	  -- AND bc = 'ADAMONT'
+    WHERE
+    gcm IN ('HadGEM2-ES', 'EC-EARTH', 'CNRM-CM5')
     	  AND exp = 'historical-rcp85'
-    	  AND rcm = 'ALADIN63'
+    	  AND rcm IN ('CCLM4-8-17', 'HadREM3-GA7', 'ALADIN63')
     	  AND bc = 'ADAMONT'
-    -- WHERE gcm IN ('CNRM-CM5', 'EARTH')
-    -- 	  AND exp = 'historical-rcp85'
-    -- 	  AND rcm IN ('ALADIN63', 'HadREM3')
-    -- 	  AND bc = 'ADAMONT'
-    AND hm IN ('CTRIP',
-               'EROS',
-	       'GRSD',
-	       'J2000',
-	       'MORDOR-SD',
-	       'MORDOR-TS',
-	       'ORCHIDEE',
-	       'SIM2',
-	       'SMASH')
+    AND hm = 'SMASH'
+    -- AND hm IN ('CTRIP',
+    --            'EROS',
+    -- 	       'GRSD',
+    -- 	       'J2000',
+    -- 	       'MORDOR-SD',
+    -- 	       'MORDOR-TS',
+    -- 	       'ORCHIDEE',
+    -- 	       'SIM2',
+    -- 	       'SMASH')
     AND variable_en = 'QA'
     AND date BETWEEN '1975-01-01' AND '2005-12-31'
     GROUP BY code, gcm, rcm, bc, hm
@@ -120,23 +130,25 @@ WITH historical AS (
 future AS (
     SELECT code, gcm, rcm, bc, hm, AVG(value) AS future_value
     FROM data
-    WHERE gcm = 'CNRM-CM5'
+    -- WHERE gcm = 'CNRM-CM5'
+    	  -- AND exp = 'historical-rcp85'
+    	  -- AND rcm = 'ALADIN63'
+    	  -- AND bc = 'ADAMONT'
+    WHERE
+    gcm IN ('HadGEM2-ES', 'EC-EARTH', 'CNRM-CM5')
     	  AND exp = 'historical-rcp85'
-    	  AND rcm = 'ALADIN63'
+    	  AND rcm IN ('CCLM4-8-17', 'HadREM3-GA7', 'ALADIN63')
     	  AND bc = 'ADAMONT'
-    -- WHERE gcm IN ('CNRM-CM5', 'EARTH')
-    -- 	  AND exp = 'historical-rcp85'
-    -- 	  AND rcm IN ('ALADIN63', 'HadREM3')
-    -- 	  AND bc = 'ADAMONT'
-    AND hm IN ('CTRIP',
-               'EROS',
-	       'GRSD',
-	       'J2000',
-	       'MORDOR-SD',
-	       'MORDOR-TS',
-	       'ORCHIDEE',
-	       'SIM2',
-	       'SMASH')
+    AND hm = 'SMASH'
+    -- AND hm IN ('CTRIP',
+    --            'EROS',
+    -- 	       'GRSD',
+    -- 	       'J2000',
+    -- 	       'MORDOR-SD',
+    -- 	       'MORDOR-TS',
+    -- 	       'ORCHIDEE',
+    -- 	       'SIM2',
+    -- 	       'SMASH')
     AND variable_en = 'QA'
     AND date BETWEEN '2050-01-01' AND '2080-12-31'
     GROUP BY code, gcm, rcm, bc, hm

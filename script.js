@@ -1,5 +1,28 @@
 
 
+
+
+
+function getVariable() {
+    var selectedButton = document.querySelector('.bunch button.selected');
+    if (selectedButton) {
+        var variableName = selectedButton.querySelector('span').innerText;
+        console.log('Selected variable:', variableName);
+        return variableName;
+    } else {
+        console.log('No variable selected');
+        return null;
+    }
+}
+
+getVariable()
+
+
+
+
+
+
+
 function selectVariableButton(selectedButton) {
     var buttons = selectedButton.parentNode.querySelectorAll('button');
     buttons.forEach(function (button) {

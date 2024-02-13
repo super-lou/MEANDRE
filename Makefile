@@ -1,7 +1,4 @@
-
-# remote:
-	# sudo scp -r * louis@nuage.unverredelaitsilvousplait.fr:
-
-
-local:
+front:
 	python3 -m http.server
+back:
+	python3 app.py
