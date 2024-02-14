@@ -54,24 +54,26 @@
 			</span>
 		    </div>
 
-
-		    <button id="updateButton">Acutaliser</button>
-
+		    <div id="container-update">
+			<button id="button-update" onclick="update();">
+			    Acutaliser
+			</button>
+		    </div>
+		    
 		    <div class="drawer">
 			<div class="drawer-label" onclick="toggleDrawer('drawer-variable')">
 			    <h1>Variable <span id="drawer-variable-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span></h1>
 			</div>
 			<div id="drawer-variable-content" class="drawer-content">
 			    
-			    <div id="bunch_variable" class="bunch space">
-				<button id="QJXA" onclick="selectVariableButton(this);">
+			    <div id="bunch-variable" class="bunch space">
+				<button id="button-QJXA" value="QJXA" onclick="selectVariableButton(this);">
 				    <span>QJXA</span>
 				</button>
-				<button id="QA" onclick="selectVariableButton(this);">
+				<button id="button-QA" value="QA" class="selected" onclick="selectVariableButton(this);">
 				    <span>QA</span>
 				</button>
-				<button id="VCN10" class="selected" onclick="selectVariableButton(this);">
-				    <!-- <span id="icon_85_GCM" class="material-icons-outlined inline-front">filter_drama</span> -->
+				<button id="button-VCN10" value="VCN10" onclick="selectVariableButton(this);">
 				    <span>VCN10</span>
 				</button>
 			    </div>
@@ -87,39 +89,47 @@
 			</div>
 			<div id="drawer-horizon-content" class="drawer-content">
 			    
-			    <h2 class="top-section">Période de référence</h2>
-			    <div id="bunch_horizon_reference" class="bunch space">
-				<button id="horizon_reference" class="selected" onclick="selectHorizonButton(this, 'period_reference');">
+			    <h2 class="top-section">
+				Période de référence
+			    </h2>
+			    <div id="bunch-horizon_historical" class="bunch space">
+				<button id="button-horizon_historical" value="1976-01-01, 2005-08-31" class="selected"
+					    onclick="selectHorizonButton(this, 'slider-horizon_historical');">
 				    <span>1976-2005</span>
 				</button>
 			    </div>
 			    
-			    <div class="range-container"
-				 onmouseover="addUnselectedClass('bunch_horizon_reference')"
-				 onmouseout="removeUnselectedClass('bunch_horizon_reference')"
-				 onclick="removeSelectedClass('period_reference', 'bunch_horizon_reference')">
-				<div id="period_reference" class="slider-styled slider-round slider-unselect"></div>
+			    <div id="container-slider-horizon_historical" class="range-container"
+				 onmouseover="addUnselectedClass('bunch-horizon_historical')"
+				 onmouseout="removeUnselectedClass('bunch-horizon_historical')"
+				 onclick="removeSelectedClass('slider-horizon_historical', 'bunch-horizon_historical')">
+				<div id="slider-horizon_historical" class="slider-styled slider-round slider-unselect"></div>
 			    </div>
 
 			    
-			    <h2>Période futur</h2>
-			    <div id="bunch_horizon_futur" class="bunch space">
-				<button id="horizon_near" onclick="selectHorizonButton(this, 'period_futur');">
-				    <span>2011-2040</span>
+			    <h2>
+				Période futur
+			    </h2>
+			    <div id="bunch-horizon_futur" class="bunch space">
+				<button id="button-horizon_near" value="2021-01-01, 2050-12-31"
+					    onclick="selectHorizonButton(this, 'slider-horizon_futur');">
+				    <span>2021-2050</span>
 				</button>
-				<button id="horizon_middle" class="selected" onclick="selectHorizonButton(this, 'period_futur');">
+				<button id="button-horizon_middle" value="2041-01-01, 2070-12-31" class="selected"
+					onclick="selectHorizonButton(this, 'slider-horizon_futur');">
 				    <span>2041-2070</span>
 				</button>
-				<button id="horizon_distant" onclick="selectHorizonButton(this, 'period_futur');">
-				    <span>2071-2100</span>
+				<button id="button-horizon_distant" value="2070-01-01, 2099-12-31"
+					onclick="selectHorizonButton(this, 'slider-horizon_futur');">
+				    <span>2070-2099</span>
 				</button>
 			    </div>
 
-			    <div id="period_futur-container" class="range-container"
-				 onmouseover="addUnselectedClass('bunch_horizon_futur')"
-				 onmouseout="removeUnselectedClass('bunch_horizon_futur')"
-				 onclick="removeSelectedClass('period_futur', 'bunch_horizon_futur')">
-				<div id="period_futur" class="slider-styled slider-round slider-unselect"></div>
+			    <div id="container-slider-horizon_futur" class="range-container"
+				 onmouseover="addUnselectedClass('bunch-horizon_futur')"
+				 onmouseout="removeUnselectedClass('bunch-horizon_futur')"
+				 onclick="removeSelectedClass('slider-horizon_futur', 'bunch-horizon_futur')">
+				<div id="slider-horizon_futur" class="slider-styled slider-round slider-unselect"></div>
 			    </div>
 
 			    <div class="end-drawer"></div>
@@ -500,24 +510,24 @@
 
 			    <h2>Correction de Biais</h2>
 			    <div id="bunch_BC" class="bunch space" style="display: flex;">
-				<button id="ADAMONT_Model" class="selected" onclick="selectButton(this); show_Model(this);">
-				    <span id="icon_ADAMONT_Model" class="material-icons-outlined inline-front">filter_drama</span>
+				<button id="ADAMONT_HM" class="selected" onclick="selectButton(this); show_HM(this);">
+				    <span id="icon_ADAMONT_HM" class="material-icons-outlined inline-front">filter_drama</span>
 				    <span>ADAMONT</span>
 				    <!-- <span class="notif"></span> -->
 				</button>
-				<button id="CDFt_Model" class="selected" onclick="selectButton(this); show_Model(this);">
+				<button id="CDFt_HM" class="selected" onclick="selectButton(this); show_HM(this);">
 				    <span>CDFt</span>
 				</button>
 			    </div>
 			    
 			    <h2>Modèle Hydrologique
-				<!-- <span id="colorModel" class="material-icons-round" style="margin-left:0.2rem;">gesture</span> -->
+				<!-- <span id="colorHM" class="material-icons-round" style="margin-left:0.2rem;">gesture</span> -->
 			    </h2>
-			    <div id="block_ADAMONT_Model" class="chain_block" style="display: flex;">
-				<button id="button_ADAMONT_Model" class="chain_block_button" onclick="toggleBlock(this)">
+			    <div id="block_ADAMONT_HM" class="chain_block" style="display: flex;">
+				<button id="button_ADAMONT_HM" class="chain_block_button" onclick="toggleBlock(this)">
 				    ADAMONT
 				</button>
-				<div id="bunch_ADAMONT_Model" class="bunch space left-border">
+				<div id="bunch_ADAMONT_HM" class="bunch space left-border">
 				    <button id="ADAMONT_CTRIP" class="selected" onclick="selectButton(this)">
 					<span>CTRIP</span>
 				    </button>
@@ -547,11 +557,11 @@
 				    </button>
 				</div>
 			    </div>
-			    <div id="block_CDFt_Model" class="chain_block" style="display: flex;">
-				<button id="button_CDFt_Model" class="chain_block_button" onclick="toggleBlock(this)">
+			    <div id="block_CDFt_HM" class="chain_block" style="display: flex;">
+				<button id="button_CDFt_HM" class="chain_block_button" onclick="toggleBlock(this)">
 				    CDFt
 				</button>
-				<div id="bunch_CDFt_Model" class="bunch space left-border">
+				<div id="bunch_CDFt_HM" class="bunch space left-border">
 				    <button id="CDFt_EROS" class="selected" onclick="selectButton(this)">
 					<span>EROS</span>
 				    </button>
@@ -563,6 +573,9 @@
 				    </button>
 				    <button id="CDFt_MORDOR-SD" class="selected" onclick="selectButton(this)">
 					<span>MORDOR-SD</span>
+				    </button>
+				    <button id="CDFt_MORDOR-TS" class="selected" onclick="selectButton(this)">
+					<span>MORDOR-TS</span>
 				    </button>
 				    <button id="CDFt_SMASH" class="selected" onclick="selectButton(this)">
 					<span>SMASH</span>
@@ -588,7 +601,7 @@
 		<div id="bar" class="bunch">
 		    
 		    <div id="menuSep" class="sep big"></div>
-		    <!-- <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorModel();"> -->
+		    <!-- <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorHM();"> -->
 		    <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain();">
 			<div class='threebar hamburger'>	
 			    <div class='bar'></div>

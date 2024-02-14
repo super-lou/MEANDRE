@@ -2,20 +2,72 @@
 
 
 
+function update() {
+    var variable = get_variable();
+    var historical = get_period("historical");
+    var futur = get_period("futur");
 
-function getVariable() {
-    var selectedButton = document.querySelector('.bunch button.selected');
-    if (selectedButton) {
-        var variableName = selectedButton.querySelector('span').innerText;
-        console.log('Selected variable:', variableName);
-        return variableName;
-    } else {
-        console.log('No variable selected');
-        return null;
-    }
+    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
+    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    
+    console.log(variable);
+    console.log(historical);
+    console.log(futur);
+    console.log(EXP_GCM_RCM);
+    console.log(BC_HM);
+    console.log(chain);
 }
 
-getVariable()
+
+function get_variable() {
+    var variableBunch = $('#bunch-variable');
+    var selectedButton = variableBunch.find('.selected')[0];
+    var variableName = selectedButton.getAttribute('value');
+    return variableName;
+}
+
+function get_period(horizon) {
+    var sliderHorizon = $('#slider-horizon_'+horizon)[0];
+    var bunchHorizon = $('#bunch-horizon_'+horizon);
+    if (sliderHorizon.classList.contains("slider-unselect")) {
+	var buttonHorizon = bunchHorizon.find('.selected')[0];
+	var period = buttonHorizon.getAttribute('value').split(', ');
+    } else {
+	var period = sliderHorizon.noUiSlider.get();
+	futur[0] = futur[0] + "-01-01"
+	futur[1] = futur[1] + "-12-31"
+    }
+    return period;
+}
+
+
+function get_chunk_of_chain(value) {
+    var blockChain = $(value);
+    var buttonsChain = blockChain.find('.selected');
+    var Chain = [];
+    buttonsChain.each(function() {
+	Chain.push($(this).attr('id'));
+    });
+    var Chain = Chain.filter(function(item, index, self) {
+	return self.indexOf(item) === index;
+    });
+    return Chain;
+}
+
+function get_chain(array1, array2) {
+    var chain = [];
+    array1.forEach(function(item1) {
+        array2.forEach(function(item2) {
+            chain.push(item1 + "_" + item2);
+        });
+    });
+    var chain = chain.map(function(element) {
+	return "historical-rcp" + element;
+    });
+    return chain;
+}
+
 
 
 
@@ -68,11 +120,9 @@ function selectHorizonButton(selectedButton, sliderId) {
 	button.classList.remove('selected');
     });
     selectedButton.classList.add('selected');
-    
-    
+        
     var slider = document.getElementById(sliderId);
     slider.classList.add('slider-unselect');
-    
 }
 
 
@@ -168,9 +218,9 @@ var RCM = null;
 
 // 	if (RCM_class && RCM_class.length > 0) {
 // 	    if (RCM_class === "ASTER" || RCM_class === "EUPHORBE") {
-// 		var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_Model'];
+// 		var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_HM'];
 // 	    } else {
-// 		var button_id = ['85_GCM', 'ADAMONT_Model'];
+// 		var button_id = ['85_GCM', 'ADAMONT_HM'];
 // 	    }
 // 	    button_id.forEach(function(id) {
 // 		document.getElementById('icon_' + id).innerHTML = icon_storyLines[RCM_class]
@@ -185,7 +235,7 @@ var RCM = null;
 //     }
 // }
 function get_selectedClimateChain() {
-    var iconContainers = ['#icon_85_GCM', '#icon_ADAMONT_Model', '#icon_85_HadGEM2-ES_RCM'];
+    var iconContainers = ['#icon_85_GCM', '#icon_ADAMONT_HM', '#icon_85_HadGEM2-ES_RCM'];
 
     iconContainers.forEach(function(containerID) {
 
@@ -207,6 +257,7 @@ function get_selectedClimateChain() {
 	
         var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
         var iconContainer = $(containerID);
+	
 
         // Reset style to display icons
         iconContainer.removeAttr('style');
@@ -250,16 +301,16 @@ function get_selectedClimateChain() {
 get_selectedClimateChain();
 
 
-// function update_colorModel() {
-//     var Model_bunch = $('[id^="bunch_"][id$="_Model"]:visible');
-//     if (Model_bunch.length > 0) {
-// 	var Model_button = Model_bunch.find('.selected')[0];
-// 	var BC = Model_button.id.split('_')[0];
-// 	var Model = Model_button.id.split('_')[1];
-// 	$('#colorModel').css('color', eval(Model.replace(/-/, "") + '_color'));
+// function update_colorHM() {
+//     var HM_bunch = $('[id^="bunch_"][id$="_HM"]:visible');
+//     if (HM_bunch.length > 0) {
+// 	var HM_button = HM_bunch.find('.selected')[0];
+// 	var BC = HM_button.id.split('_')[0];
+// 	var HM = HM_button.id.split('_')[1];
+// 	$('#colorHM').css('color', eval(HM.replace(/-/, "") + '_color'));
 //     }
 // }
-// update_colorModel();
+// update_colorHM();
 
 
 
@@ -270,7 +321,7 @@ function selectAllButton(selectedButton) {
     });
     selectedButton.classList.add('selected');
 
-    // update_colorModel();
+    // update_colorHM();
     get_selectedClimateChain();
 }
 
@@ -283,7 +334,7 @@ function selectButton(selectedButton) {
         selectedButton.classList.add('selected');
     }
 
-    // update_colorModel();
+    // update_colorHM();
     get_selectedClimateChain();
 }
 
@@ -374,20 +425,20 @@ function show_GCM_RCM(selectedButton) {
 
 
 
-function show_Model(selectedButton) {
+function show_HM(selectedButton) {
     var BC = selectedButton.id.split('_')[0];
-    var Model = selectedButton.id.split('_')[1];
+    var HM = selectedButton.id.split('_')[1];
     
-    if (Model === "Model") {
-	// var Model_blockAll = document.querySelectorAll(`[id^="block_"][id$="_Model"]`);
-	// Model_blockAll.forEach(function (Model_block) {
-	    // Model_block.style.display = 'none';
+    if (HM === "HM") {
+	// var HM_blockAll = document.querySelectorAll(`[id^="block_"][id$="_HM"]`);
+	// HM_blockAll.forEach(function (HM_block) {
+	    // HM_block.style.display = 'none';
 	// });
-	var Model_selectedBlock = document.getElementById(`block_${BC}_Model`);
-	if (Model_selectedBlock.style.display === 'flex') {
-	    Model_selectedBlock.style.display = 'none';
+	var HM_selectedBlock = document.getElementById(`block_${BC}_HM`);
+	if (HM_selectedBlock.style.display === 'flex') {
+	    HM_selectedBlock.style.display = 'none';
 	} else {
-	    Model_selectedBlock.style.display = 'flex';
+	    HM_selectedBlock.style.display = 'flex';
 	}
     }
 }
@@ -561,7 +612,7 @@ function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHy
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    var rangeSlider_reference = document.getElementById('period_reference');
+    var rangeSlider_reference = document.getElementById('slider-horizon_historical');
     noUiSlider.create(rangeSlider_reference, {
 	start: [1970, 2000],
 	margin: 30,
@@ -597,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function () {
     mergeTooltips(rangeSlider_reference, 100, ' - ');
 
 
-    var rangeSlider_futur = document.getElementById('period_futur');
+    var rangeSlider_futur = document.getElementById('slider-horizon_futur');
     noUiSlider.create(rangeSlider_futur, {
 	start: [2040, 2070],
 	margin: 30,

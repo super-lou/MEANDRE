@@ -49,8 +49,15 @@ a {
 }
 
 
-
-#updateButton {
+#container-update {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+#button-update {
     color: white;
     background: #16171f;
     border-radius: 5rem 5rem;
@@ -60,7 +67,9 @@ a {
     padding-right: 1rem;
     padding-bottom: 0.1rem;
 }
-
+#button-update:hover {
+    color: #70757A;
+}
 
 button {
     font: inherit;
