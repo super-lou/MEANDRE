@@ -17,7 +17,39 @@ function update() {
     console.log(EXP_GCM_RCM);
     console.log(BC_HM);
     console.log(chain);
+
+    // Construct the data payload to send to the backend
+    var data = {
+        chain: chain,
+        variable: variable,
+        historical_start: historical[0],
+        historical_end: historical[1],
+        futur_start: futur[0],
+        futur_end: futur[1]
+    };
+
+    // Make a POST request to the Flask backend using fetch API
+    fetch('http://127.0.0.1:5000/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Process the response data from the backend
+        console.log('Received data from backend:', data);
+        // Update the UI with the received data
+        // Example: Display the data in a table on the webpage
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors
+    });
 }
+
+
 
 
 function get_variable() {
