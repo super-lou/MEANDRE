@@ -67,7 +67,7 @@ def index_post():
     Delta = [x['value'] for x in data]
 
     sql_query = f"""
-    SELECT palette
+    SELECT variable_fr, unit_fr, name_fr, description_fr, method_fr, sampling_period_fr, topic_fr, palette
     FROM variables
     WHERE variable_en = :variable;
     """
@@ -75,9 +75,13 @@ def index_post():
         text(sql_query),
         {'variable': variable}
     )
+    columns = result.keys()
     rows = result.fetchall()
-    Palette = rows[0][0]
-    Palette = Palette.split(" ")
+    meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
+    
+    palette = meta['palette']
+    palette = palette.split(" ")
+    meta['palette'] = palette
 
     q01Delta = np.quantile(Delta, 0.01)
     q99Delta = np.quantile(Delta, 0.99)
@@ -88,7 +92,7 @@ def index_post():
         "--min", str(q01Delta),
         "--max", str(q99Delta),
         "--delta", json.dumps(Delta),
-        "--palette", json.dumps(Palette)
+        "--palette", json.dumps(palette)
     ]
     process = subprocess.Popen(command,
                            stdout=subprocess.PIPE,
@@ -99,11 +103,28 @@ def index_post():
     for i, d in enumerate(data):
         d['fill'] = Fill[i]
 
+    command = [
+        "Rscript",
+        "compute_bin.R",
+        "--min", str(q01Delta),
+        "--max", str(q99Delta),
+        "--delta", json.dumps(Delta),
+        "--palette", json.dumps(palette)
+    ]
+    process = subprocess.Popen(command,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    output, error = process.communicate()
+    bin = output.decode().strip().split('\n')
     
     connection.close()
+
+    response = {'data': data,
+                'bin': bin}
+    response.update(meta)
     
     # Return the data as JSON response
-    response = jsonify({'data': data})
+    response = jsonify(response)
     return response
 
 if __name__ == '__main__':
@@ -113,36 +134,36 @@ if __name__ == '__main__':
 
 
 
-Palette = list(['#543005', '#8C510A', '#BF812D', '#DFC27D', '#F6E8C3', '#C7EAE5', '#80CDC1', '#35978F', '#01665E', '#003C30'])
+# palette = list(['#543005', '#8C510A', '#BF812D', '#DFC27D', '#F6E8C3', '#C7EAE5', '#80CDC1', '#35978F', '#01665E', '#003C30'])
 
-data = np.array([{'code': 'Y603561001', 'delta': -7.79405570774717},
-                 {'code': 'Y604201001', 'delta': -9.83602093231473},
-                 {'code': 'Y611050000', 'delta': -6.84004845313229},
-                 {'code': 'Y611501001', 'delta': -8.8980261995047},
-                 {'code': 'Y612501201', 'delta': -6.66320155043784},
-                 {'code': 'Y620581301', 'delta': -13.7629691066986}])
+# data = np.array([{'code': 'Y603561001', 'delta': -7.79405570774717},
+#                  {'code': 'Y604201001', 'delta': -9.83602093231473},
+#                  {'code': 'Y611050000', 'delta': -6.84004845313229},
+#                  {'code': 'Y611501001', 'delta': -8.8980261995047},
+#                  {'code': 'Y612501201', 'delta': -6.66320155043784},
+#                  {'code': 'Y620581301', 'delta': -13.7629691066986}])
 
-Code = [item['code'] for item in data]
-Delta = [item['delta'] for item in data]
+# Code = [item['code'] for item in data]
+# Delta = [item['delta'] for item in data]
 
-q01Delta = np.quantile(Delta, 0.01)
-q99Delta = np.quantile(Delta, 0.99)
+# q01Delta = np.quantile(Delta, 0.01)
+# q99Delta = np.quantile(Delta, 0.99)
 
 
 
-command = [
-    "Rscript",
-    "compute_color.R",
-    "--min", str(q01Delta),
-    "--max", str(q99Delta),
-    "--delta", json.dumps(Delta),
-    "--palette", json.dumps(Palette)
-]
-process = subprocess.Popen(command,
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE)
-output, error = process.communicate()
-output = output.decode().strip().split('\n')
+# command = [
+#     "Rscript",
+#     "compute_color.R",
+#     "--min", str(q01Delta),
+#     "--max", str(q99Delta),
+#     "--delta", json.dumps(Delta),
+#     "--palette", json.dumps(palette)
+# ]
+# process = subprocess.Popen(command,
+#                            stdout=subprocess.PIPE,
+#                            stderr=subprocess.PIPE)
+# output, error = process.communicate()
+# output = output.decode().strip().split('\n')
 
 
 

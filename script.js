@@ -445,66 +445,20 @@ function get_chain(array1, array2) {
 
 function update() {
 
-    update_title();
+    
 
     update_data();
-}
 
-
-
-
-
-
-function update_title() {
-
-    var n = get_n();
-    var variable = get_variable();
-    var horizon = get_horizon("futur");
-    
-    if (horizon === "H1") {
-	var period = "01/01/2021 - 31/12/2050";
-	var horizon_name = "proche";
-    } else if (horizon === "H2") {
-	var period = "01/01/2041 - 31/12/2070";
-	var horizon_name = "moyen";
-    } else if (horizon === "H3") {
-	var period = "01/01/2070 - 31/12/2099";
-	var horizon_name = "lointain";
-    }
-    period = period.replace(/ - /g, "</b> - <b>");
-
-
-    
-    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
-    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-    var chain = get_chain(EXP_GCM_RCM, BC_HM);
-    var exp = chain[0].split('_')[0].replace('-', '_');
-
-    
-    var gridElement = document.getElementById("grid-variable_variable");
-    gridElement.textContent = variable;
-
-    var gridElement = document.getElementById("grid-variable_name");
-    gridElement.innerHTML = "nom de la variable ........";
-    
-
-    var gridElement = document.getElementById("grid-horizon_name");
-    gridElement.innerHTML = "Horizon " + horizon_name;
-
-    var gridElement = document.getElementById("grid-horizon_period");
-    gridElement.innerHTML = "Différence relative de la moyenne sur la période <b>" + period + "</b> par rapport à <b>01/01/1976</b> - <b>31/08/2005</b>";
-
-
-
-    // var gridElement = document.getElementById("grid-title_n");
-    // gridElement.textContent = n;
     
 }
 
 
 
 
+let dataBackend;
 let data;
+
+
 
 function update_data() {
 
@@ -516,14 +470,6 @@ function update_data() {
     var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
     var chain = get_chain(EXP_GCM_RCM, BC_HM);
     var exp = chain[0].split('_')[0].replace('-', '_');
-
-    // console.log(n);
-    // console.log(exp);
-    // console.log(EXP_GCM_RCM);
-    // console.log(BC_HM);
-    // console.log(chain);
-    // console.log(variable);
-    // console.log(horizon);
 
     var data_query = {
 	n: n,
@@ -541,16 +487,152 @@ function update_data() {
         body: JSON.stringify(data_query)
     })
     .then(response => response.json())
-    .then(data_received => {
+    .then(dataBackend => {
         console.log('Data received from backend');	
-	// return (data);
-	data = data_received.data;
-	drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro, data);
+	console.log(dataBackend);
+
+	data = dataBackend.data
+	
+	draw_map(geoJSONdata_france,
+		    geoJSONdata_river,
+		    geoJSONdata_entiteHydro,
+		    data);
+
+	update_grid(dataBackend);
+	draw_colorbar(dataBackend);
+	
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
+
+
+function update_grid(dataBackend) {
+
+    var variable = dataBackend.variable_fr;
+    if (variable.includes("_")) {
+	variable = variable.match(/([^_]*)_/)[1];
+    }
+    
+    var n = get_n();
+    var horizon = get_horizon("futur");
+    
+    if (horizon === "H1") {
+	var period = "01/01/2021 - 31/12/2050";
+	var horizon_name = "proche";
+    } else if (horizon === "H2") {
+	var period = "01/01/2041 - 31/12/2070";
+	var horizon_name = "moyen";
+    } else if (horizon === "H3") {
+	var period = "01/01/2070 - 31/12/2099";
+	var horizon_name = "lointain";
+    }
+
+    const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+		    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    var sampling_period = dataBackend.sampling_period_fr;    
+    if (sampling_period.includes(",")) {
+	sampling_period = sampling_period.split(", ")
+	sampling_period_start = months[sampling_period[0].match(/-(\d+)/)[1] -1];
+	sampling_period_end = months[sampling_period[1].match(/-(\d+)/)[1] -1];
+	sampling_period = "de " + sampling_period_start + " à fin " + sampling_period_end;
+	
+    } else if (sampling_period.includes("-")) {
+	sampling_period = months[sampling_period.match(/-(\d+)/)[1] -1];
+	sampling_period = "débutant en " + sampling_period;
+    } else {
+	sampling_period = "débutant au " + sampling_period.toLowerCase();
+    }    
+    
+    
+    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
+    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var exp = chain[0].split('_')[0].replace('-', '_');
+
+    
+    document.getElementById("grid-variable_variable").textContent = variable;
+    document.getElementById("grid-variable_sampling-period").innerHTML = "Année hydrologique " + sampling_period;
+    document.getElementById("grid-variable_name").innerHTML = dataBackend.name_fr;
+    
+    document.getElementById("grid-horizon_name").innerHTML = "Horizon " + horizon_name;
+
+    period = period.replace(/ - /g, "</b> au <b>");
+    document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur du <b>" + period + "</b>";
+    document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence du <b>01/01/1976</b> au <b>31/08/2005</b>";
+
+
+    // var gridElement = document.getElementById("grid-title_n");
+    // gridElement.textContent = n;
+    
+}
+
+
+
+
+
+
+
+
+function draw_colorbar(dataBackend) {
+
+    document.getElementById("grid-variable_unit").innerHTML = dataBackend.unit_fr;
+    
+    var bin = dataBackend.bin.slice(1, -1).reverse();
+    var palette = dataBackend.palette.reverse();
+    var step = 25;
+    var shift = 20;
+
+    const svg = d3.select("#svg-colorbar")
+	  .attr("height", (palette.length-1)*step + shift*2)
+	  .attr("width", 70);
+
+
+    let bin_tmp = bin.map(element => {
+	if (element >= 0) {
+            return String.fromCharCode(160).repeat(2) + element;
+	} else {
+            return element;
+	}
+    });
+    bin = bin_tmp;
+    
+    svg.selectAll(".color-circle")
+        .data(palette)
+        .enter().append("circle")
+        .attr("cx", 10)
+        .attr("cy", (d, i) => i*step + shift)
+        .attr("r", 6)
+        .attr("fill", (d, i) => palette[i]);
+
+    svg.selectAll(".tick-line")
+        .data(bin)
+        .enter().append("line")
+        .attr("class", "tick-line")
+        .attr("x1", 5)
+        .attr("x2", 15)
+        .attr("y1", (d, i) => i*step + step/2 + shift)
+        .attr("y2", (d, i) => i*step + step/2 + shift);
+
+    svg.selectAll(".bin-text")
+        .data(bin)
+        .enter().append("text")
+        .attr("class", "bin-text")
+        .attr("x", 28)
+        .attr("y", (d, i) => i*step + step/2 + shift+4)
+        .text(d => d);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -582,10 +664,10 @@ Promise.all(promises)
 	geoJSONdata_entiteHydro = geoJSONdata[2];
 
 	// update_data();
-	drawGeoJSON(geoJSONdata_france,
-		    geoJSONdata_river,
-		    geoJSONdata_entiteHydro,
-		    data);
+	draw_map(geoJSONdata_france,
+		 geoJSONdata_river,
+		 geoJSONdata_entiteHydro,
+		 data);
     })
     .catch(error => {
 	console.error("Error loading or processing GeoJSON files:", error);
@@ -594,7 +676,7 @@ Promise.all(promises)
 
 
 
-function drawGeoJSON(geoJSONdata_france,
+function draw_map(geoJSONdata_france,
 		     geoJSONdata_river,
 		     geoJSONdata_entiteHydro,
 		     data) {
@@ -710,11 +792,7 @@ function drawGeoJSON(geoJSONdata_france,
 
 	    
 	    if (data) {
-		console.log("draw point");
-		console.log(data);
-
 		svg.selectAll(".point").remove();
-
 		svg.selectAll("circle.point")
 		    .data(data)
 		    .join("circle")

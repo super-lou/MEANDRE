@@ -610,18 +610,37 @@
 		<div id="container_gallery">
 		    <div class="gallery">
 
-			<div class="gallery-item vertical-mid">
-			    <span>3</span>
+			<div class="gallery-item align-center justify-center"
+			     style="width: 6.5rem; height:16rem;">
+			    <!-- style="grid-column: span 1; grid-row: span 3;"> -->
+
+			    <div class="bunch row nowrap column-small-gap center">
+				<span id="grid-variable_unit"></span>
+				<svg id="svg-colorbar"></svg>
+			    </div>
 			</div>
 			
-			<div id="grid-variable" class="gallery-item horizontal-small">
-			    <span id="grid-variable_variable"></span>
-			    <span id="grid-variable_name"></span>
+			<div id="grid-variable" class="gallery-item"
+			     style="grid-column: span 4; grid-row: span 1;">
+			    <div class="bunch column">
+				<div class="bunch row column-gap baseline">
+				    <span id="grid-variable_variable"></span>
+				    <span id="grid-variable_name"></span>
+				</div>
+				<span id="grid-variable_sampling-period"></span>
+			    </div>
 			</div>
 			
-			<div id="grid-horizon" class="gallery-item horizontal-small">
+			<div id="grid-horizon" class="gallery-item"
+			     style="grid-column: span 5; grid-row: span 1;">
 			    <span id="grid-horizon_name"></span>
-			    <span id="grid-horizon_period"></span>
+			    <span id="grid-horizon_period-l1"></span>
+			    <span id="grid-horizon_period-l2"></span>
+			</div>
+
+
+			<div class="gallery-item"
+			     style="grid-column: span 6; grid-row: span 1;">
 			</div>
 
 			
@@ -629,24 +648,24 @@
 			<div class="gallery-item">
 			    <span>4</span>
 			</div>
-			<div class="gallery-item horizontal-mid">
-			    <span>5</span>
-			</div>
-			<div class="gallery-item vertical-mid horizontal-mid">
-			    <span>6</span>
-			</div>
-			<div class="gallery-item">
-			    <span>7</span>
-			</div>
-			<div class="gallery-item horizontal-small vertical-mid">
-			    <span>8</span>
-			</div>
-			<div class="gallery-item vertical-small">
-			    <span>9</span>
-			</div>
-			<div class="gallery-item">
-			    <span>10</span>
-			</div>
+			<!-- <div class="gallery-item horizontal-big">
+			     <span>5</span>
+			     </div>
+			     <div class="gallery-item vertical-big horizontal-big">
+			     <span>6</span>
+			     </div>
+			     <div class="gallery-item">
+			     <span>7</span>
+			     </div>
+			     <div class="gallery-item horizontal-mid vertical-big">
+			     <span>8</span>
+			     </div>
+			     <div class="gallery-item vertical-mid">
+			     <span>9</span>
+			     </div>
+			     <div class="gallery-item">
+			     <span>10</span>
+			     </div> -->
 		    </div>
 		</div>
 	    </div>
