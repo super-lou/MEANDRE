@@ -2,103 +2,6 @@
 
 
 
-function update() {
-    var variable = get_variable();
-    var historical = get_period("historical");
-    var futur = get_period("futur");
-
-    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
-    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-    var chain = get_chain(EXP_GCM_RCM, BC_HM);
-    
-    console.log(variable);
-    console.log(historical);
-    console.log(futur);
-    console.log(EXP_GCM_RCM);
-    console.log(BC_HM);
-    console.log(chain);
-
-    // Construct the data payload to send to the backend
-    var data = {
-        chain: chain,
-        variable: variable,
-        historical_start: historical[0],
-        historical_end: historical[1],
-        futur_start: futur[0],
-        futur_end: futur[1]
-    };
-
-    // Make a POST request to the Flask backend using fetch API
-    fetch('http://127.0.0.1:5000/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Process the response data from the backend
-        console.log('Received data from backend:', data);
-        // Update the UI with the received data
-        // Example: Display the data in a table on the webpage
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle errors
-    });
-}
-
-
-
-
-function get_variable() {
-    var variableBunch = $('#bunch-variable');
-    var selectedButton = variableBunch.find('.selected')[0];
-    var variableName = selectedButton.getAttribute('value');
-    return variableName;
-}
-
-function get_period(horizon) {
-    var sliderHorizon = $('#slider-horizon_'+horizon)[0];
-    var bunchHorizon = $('#bunch-horizon_'+horizon);
-    if (sliderHorizon.classList.contains("slider-unselect")) {
-	var buttonHorizon = bunchHorizon.find('.selected')[0];
-	var period = buttonHorizon.getAttribute('value').split(', ');
-    } else {
-	var period = sliderHorizon.noUiSlider.get();
-	futur[0] = futur[0] + "-01-01"
-	futur[1] = futur[1] + "-12-31"
-    }
-    return period;
-}
-
-
-function get_chunk_of_chain(value) {
-    var blockChain = $(value);
-    var buttonsChain = blockChain.find('.selected');
-    var Chain = [];
-    buttonsChain.each(function() {
-	Chain.push($(this).attr('id'));
-    });
-    var Chain = Chain.filter(function(item, index, self) {
-	return self.indexOf(item) === index;
-    });
-    return Chain;
-}
-
-function get_chain(array1, array2) {
-    var chain = [];
-    array1.forEach(function(item1) {
-        array2.forEach(function(item2) {
-            chain.push(item1 + "_" + item2);
-        });
-    });
-    var chain = chain.map(function(element) {
-	return "historical-rcp" + element;
-    });
-    return chain;
-}
 
 
 
@@ -483,6 +386,177 @@ function show_HM(selectedButton) {
 
 
 
+
+
+
+
+function get_n() {
+    var slider = document.getElementById('slider-n');
+    var n = parseInt(slider.noUiSlider.get());
+    return n;
+}
+
+
+function get_variable() {
+    var variableBunch = $('#bunch-variable');
+    var selectedButton = variableBunch.find('.selected')[0];
+    var variableName = selectedButton.getAttribute('value');
+    return variableName;
+}
+
+function get_horizon(horizon) {
+    var bunchHorizon = $('#bunch-horizon_'+horizon);
+    var buttonHorizon = bunchHorizon.find('.selected')[0];
+    var horizon = buttonHorizon.getAttribute('value');
+    return horizon;
+}
+
+
+function get_chunk_of_chain(value) {
+    var blockChain = $(value);
+    var buttonsChain = blockChain.find('.selected');
+    var Chain = [];
+    buttonsChain.each(function() {
+	Chain.push($(this).attr('id'));
+    });
+    var Chain = Chain.filter(function(item, index, self) {
+	return self.indexOf(item) === index;
+    });
+    return Chain;
+}
+
+function get_chain(array1, array2) {
+    var chain = [];
+    array1.forEach(function(item1) {
+        array2.forEach(function(item2) {
+            chain.push(item1 + "_" + item2);
+        });
+    });
+    var chain = chain.map(function(element) {
+	return "historical-rcp" + element;
+    });
+    return chain;
+}
+
+
+
+
+
+
+function update() {
+
+    update_title();
+
+    update_data();
+}
+
+
+
+
+
+
+function update_title() {
+
+    var n = get_n();
+    var variable = get_variable();
+    var horizon = get_horizon("futur");
+    
+    if (horizon === "H1") {
+	var period = "01/01/2021 - 31/12/2050";
+	var horizon_name = "proche";
+    } else if (horizon === "H2") {
+	var period = "01/01/2041 - 31/12/2070";
+	var horizon_name = "moyen";
+    } else if (horizon === "H3") {
+	var period = "01/01/2070 - 31/12/2099";
+	var horizon_name = "lointain";
+    }
+    period = period.replace(/ - /g, "</b> - <b>");
+
+
+    
+    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
+    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var exp = chain[0].split('_')[0].replace('-', '_');
+
+    
+    var gridElement = document.getElementById("grid-variable_variable");
+    gridElement.textContent = variable;
+
+    var gridElement = document.getElementById("grid-variable_name");
+    gridElement.innerHTML = "nom de la variable ........";
+    
+
+    var gridElement = document.getElementById("grid-horizon_name");
+    gridElement.innerHTML = "Horizon " + horizon_name;
+
+    var gridElement = document.getElementById("grid-horizon_period");
+    gridElement.innerHTML = "Différence relative de la moyenne sur la période <b>" + period + "</b> par rapport à <b>01/01/1976</b> - <b>31/08/2005</b>";
+
+
+
+    // var gridElement = document.getElementById("grid-title_n");
+    // gridElement.textContent = n;
+    
+}
+
+
+
+
+let data;
+
+function update_data() {
+
+    var n = get_n();
+    var variable = get_variable();
+    var horizon = get_horizon("futur");
+
+    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
+    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var exp = chain[0].split('_')[0].replace('-', '_');
+
+    // console.log(n);
+    // console.log(exp);
+    // console.log(EXP_GCM_RCM);
+    // console.log(BC_HM);
+    // console.log(chain);
+    // console.log(variable);
+    // console.log(horizon);
+
+    var data_query = {
+	n: n,
+        exp: exp,
+        chain: chain,
+        variable: variable,
+        horizon: horizon,
+    };
+
+    fetch('http://127.0.0.1:5000/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data_query)
+    })
+    .then(response => response.json())
+    .then(data_received => {
+        console.log('Data received from backend');	
+	// return (data);
+	data = data_received.data;
+	drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro, data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+let geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro;
+
 const geoJSONfiles = [
     "data/france.geo.json",
     "data/river.geo.json",
@@ -500,12 +574,18 @@ function loadGeoJSON(fileURL) {
 
 const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
 
+
 Promise.all(promises)
     .then(geoJSONdata => {
-	const geoJSONdata_france = geoJSONdata[0];
-	const geoJSONdata_river = geoJSONdata[1];
-	const geoJSONdata_entiteHydro = geoJSONdata[2];
-	drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro);
+	geoJSONdata_france = geoJSONdata[0];
+	geoJSONdata_river = geoJSONdata[1];
+	geoJSONdata_entiteHydro = geoJSONdata[2];
+
+	// update_data();
+	drawGeoJSON(geoJSONdata_france,
+		    geoJSONdata_river,
+		    geoJSONdata_entiteHydro,
+		    data);
     })
     .catch(error => {
 	console.error("Error loading or processing GeoJSON files:", error);
@@ -513,9 +593,17 @@ Promise.all(promises)
 
 
 
-function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro) {
-    if (geoJSONdata_france && geoJSONdata_river) {
 
+function drawGeoJSON(geoJSONdata_france,
+		     geoJSONdata_river,
+		     geoJSONdata_entiteHydro,
+		     data) {
+
+
+    d3.select("#geoJSONsvg_france").selectAll("*").remove();
+    
+    if (geoJSONdata_france && geoJSONdata_river) {
+	
 	const fill_entiteHydro = "transparent";
 	const stroke_entiteHydro = "#000000";
 	
@@ -561,14 +649,13 @@ function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHy
 
 	const projection = d3.geoMercator()
 	      .center(geoJSONdata_france.features[0].properties.centroid);
-	
+
+
 	const svg = d3.select("#geoJSONsvg_france")
 	      .attr("width", "100%")
 	      .attr("height", "100%")
 	      .call(zoom)
 	      .append("g");
-
-	
 
 	function handleResize() {
 	    if (window.innerWidth < window.innerHeight) {
@@ -580,15 +667,14 @@ function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHy
 	    }
 	    zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
 	    svg.attr("width", width).attr("height", height);
-	    projection.scale([height*3.2]).translate([width / 2, height / 2]);
+	    projection.scale([height*3.2]).translate([width / 2, height / 2]);	    
 	    redrawMap();
 	}
 
 	window.addEventListener("resize", handleResize.bind(null, k_simplify, riverLength));
 
-
-	
 	function redrawMap() {
+	    
 	    const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
 	    const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.norm >= riverLength);
 	    const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
@@ -621,17 +707,36 @@ function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHy
 		.attr("stroke-linejoin", "miter")
 		.attr("stroke-linecap", "round")
 		.attr("stroke-miterlimit", 1);
+
+	    
+	    if (data) {
+		console.log("draw point");
+		console.log(data);
+
+		svg.selectAll(".point").remove();
+
+		svg.selectAll("circle.point")
+		    .data(data)
+		    .join("circle")
+		    .attr("class", "point")
+		    .attr("cx", function(d) {
+			return projection([d.lon_deg, d.lat_deg])[0];
+		    })
+		    .attr("cy", function(d) {
+			return projection([d.lon_deg, d.lat_deg])[1];
+		    })
+		    .attr("r", 3)
+		    .attr("fill", function(d) {
+			return d.fill;
+		    });
+	    }
+	    
 	}
-
-
 
 	const pathGenerator = d3.geoPath(projection);
 
-	redrawMap();
-	handleResize();
-	
-
-	return svg.node();
+        redrawMap();
+        handleResize();
     }
 }
 
@@ -642,161 +747,61 @@ function drawGeoJSON(geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHy
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    var rangeSlider_reference = document.getElementById('slider-horizon_historical');
-    noUiSlider.create(rangeSlider_reference, {
-	start: [1970, 2000],
-	margin: 30,
+    var slider = document.getElementById('slider-n');
+    
+    noUiSlider.create(slider, {
+	start: [4],
 	behaviour: 'drag-smooth-steps-tap',
-	step: 5,
+	step: 1,
 	connect: true,
 	keyboardDefaultStep: 1,
 	keyboardPageMultiplier: 2,
 	keyboardMultiplier: 1,
-	tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-	format: {
-	    from: function(value) {
-		return parseInt(value);
-	    },
-	    to: function(value) {
-		return parseInt(value);
-	    }
-	},
 	range: {
-	    'min': 1970,
-	    'max': 2020
+	    'min': 1,
+	    'max': 9
 	},
 	pips: {
 	    mode: 'values',
-	    values: [1970, 2000, 2020],
-	    density: 10,
-	    format: wNumb({
-		decimals: 0,
-	    })
+	    values: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+	    density: 100,
 	}
-	
     });
-    mergeTooltips(rangeSlider_reference, 100, ' - ');
 
 
-    var rangeSlider_futur = document.getElementById('slider-horizon_futur');
-    noUiSlider.create(rangeSlider_futur, {
-	start: [2040, 2070],
-	margin: 30,
-	behaviour: 'drag-smooth-steps-tap',
-	step: 5,
-	connect: true,
-	keyboardDefaultStep: 1,
-	keyboardPageMultiplier: 2,
-	keyboardMultiplier: 1,
-	tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
-	format: {
-	    from: function(value) {
-		return parseInt(value);
-	    },
-	    to: function(value) {
-		return parseInt(value);
-	    }
-	},
-	range: {
-	    'min': 2020,
-	    'max': 2100
-	},
-	pips: {
-	    mode: 'values',
-	    values: [2020, 2050, 2100],
-	    density: 10,
-	    format: wNumb({
-		decimals: 0,
-	    })
-	}
-	
+    var startValue = slider.noUiSlider.get();
+    var maxPos = Math.max(startValue) - 1;
+    $(slider).find('.noUi-value:visible').removeClass('highlight').eq(maxPos).addClass('highlight');
+    
+    slider.noUiSlider.on('change', function(values) {
+    	var maxPos = Math.max(values) -1;
+        $(slider).find('.noUi-value:visible').removeClass('highlight').eq(maxPos).addClass('highlight');
     });
-    mergeTooltips(rangeSlider_futur, 100, ' - ');
+
 })
 
 
 
 
-function mergeTooltips(slider, threshold, separator) {
-    var textIsRtl = getComputedStyle(slider).direction === 'rtl';
-    var isRtl = slider.noUiSlider.options.direction === 'rtl';
-    var isVertical = slider.noUiSlider.options.orientation === 'vertical';
-    var tooltips = slider.noUiSlider.getTooltips();
-    var origins = slider.noUiSlider.getOrigins();
-    var arrows = [];
-    tooltips.forEach(function (tooltip, index) {
-	if (tooltip) {
-	    let div = document.createElement('div');
-	    div.classList.add('noUi-tooltip-arrow');
-	    origins[index].appendChild(div);
-	    origins[index].appendChild(tooltip);
-	    arrows.push(div);
-	}
-    });
-    
-    slider.noUiSlider.on('update', function (values, handle, unencoded, tap, positions) {
-	
-	var pools = [[]];
-	var poolPositions = [[]];
-	var poolValues = [[]];
-	var atPool = 0;
 
-	// Assign the first tooltip to the first pool, if the tooltip is configured
-	if (tooltips[0]) {
-	    pools[0][0] = 0;
-	    poolPositions[0][0] = positions[0];
-	    poolValues[0][0] = values[0];
-	}
 
-	for (var i = 1; i < positions.length; i++) {
-	    if (!tooltips[i] || (positions[i] - positions[i - 1]) > threshold) {
-		atPool++;
-		pools[atPool] = [];
-		poolValues[atPool] = [];
-		poolPositions[atPool] = [];
-	    }
 
-	    if (tooltips[i]) {
-		pools[atPool].push(i);
-		poolValues[atPool].push(values[i]);
-		poolPositions[atPool].push(positions[i]);
-	    }
-	}
-
-	pools.forEach(function (pool, poolIndex) {
-	    var handlesInPool = pool.length;
-
-	    for (var j = 0; j < handlesInPool; j++) {
-		var handleNumber = pool[j];
-
-		if (j === handlesInPool - 1) {
-		    var offset = 0;
-
-		    poolPositions[poolIndex].forEach(function (value) {
-			offset += 1000 - value;
-		    });
-
-		    var direction = isVertical ? 'bottom' : 'right';
-		    var last = isRtl ? 0 : handlesInPool - 1;
-		    var lastOffset = 1000 - poolPositions[poolIndex][last];
-		    offset = (textIsRtl && !isVertical ? 100 : 0) + (offset / handlesInPool) - lastOffset;
-		    
-		    // Center this tooltip over the affected handles
-		    tooltips[handleNumber].innerHTML = poolValues[poolIndex].join(separator);
-		    tooltips[handleNumber].style.display = 'block';
-		    tooltips[handleNumber].style[direction] = offset + '%';
-
-		    arrows[handleNumber].style.display = 'block';
-		    arrows[handleNumber].style[direction] = offset + '%';
-		    
-		} else {
-		    // Hide this tooltip
-		    tooltips[handleNumber].style.display = 'none';
-		    arrows[handleNumber].style.display = 'none';
-		}
-	    }
-	});
-    });
-}

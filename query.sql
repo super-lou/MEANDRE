@@ -38,57 +38,8 @@ LIMIT 100;
 
 
 
-WITH historical AS (
-    SELECT d.code, p.chain, p.gcm, p.rcm, p.bc, p.hm, AVG(d.value) AS historical_value
-    FROM data d
-    JOIN projections p ON d.chain = p.chain
-    WHERE (p.gcm = 'CNRM-CM5'
-    	  AND p.exp = 'historical-rcp85'
-	  AND p.rcm = 'ALADIN63'
-	  AND p.bc = 'ADAMONT')
-    OR (p.gcm = 'EARTH'
-       AND p.exp = 'historical-rcp85'
-       AND p.rcm = 'HadREM3'
-       AND p.bc = 'ADAMONT')
-    AND d.variable_en = 'QA'
-    AND d.date BETWEEN '1975-01-01' AND '2005-12-31'
-    GROUP BY d.code, p.chain
-),
-future AS (
-    SELECT d.code, p.chain, p.gcm, p.rcm, p.bc, p.hm, AVG(d.value) AS future_value
-    FROM data d
-    JOIN projections p ON d.chain = p.chain
-    WHERE (p.gcm = 'CNRM-CM5'
-    	  AND p.exp = 'historical-rcp85'
-	  AND p.rcm = 'ALADIN63'
-	  AND p.bc = 'ADAMONT')
-    OR (p.gcm = 'EARTH'
-       AND p.exp = 'historical-rcp85'
-       AND p.rcm = 'HadREM3'
-       AND p.bc = 'ADAMONT')
-    AND d.variable_en = 'QA'
-    AND d.date BETWEEN '2050-01-01' AND '2080-12-31'
-    GROUP BY d.code, p.chain
-),
-chain_delta AS (
-    SELECT h.code, h.gcm, h.rcm, h.bc, h.hm, (f.future_value - h.historical_value) / NULLIF(h.historical_value, 0) * 100 AS delta
-    FROM historical h
-    JOIN future f ON h.code = f.code AND h.chain = f.chain
-),
-hm_average AS (
-    SELECT code, gcm, rcm, bc, AVG(delta) AS delta
-    FROM chain_delta
-    GROUP BY code, gcm, rcm, bc
-),
-bc_average AS (
-    SELECT code, AVG(delta) AS delta
-    FROM hm_average
-    GROUP BY code, gcm, rcm
-)
-SELECT code, AVG(delta) AS delta
-FROM bc_average
-GROUP BY code
-ORDER BY code;
+
+
 
 
 
@@ -100,12 +51,11 @@ ORDER BY code;
 
 
 -- EXPLAIN
-EXPLAIN ANALYZE
+-- EXPLAIN ANALYZE
 WITH historical AS (
     SELECT code, chain, AVG(value) AS historical_value
-    FROM data
-    WHERE
-    chain IN
+    FROM data_historical_rcp85_qjxa
+    WHERE chain IN
     ('historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_CTRIP',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_EROS',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_GRSD',
@@ -115,15 +65,13 @@ WITH historical AS (
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_ORCHIDEE',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SIM2',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SMASH')
-    AND variable_en = 'QA'
-    AND date BETWEEN '1975-01-01' AND '2005-12-31'
+    AND d.date BETWEEN '1975-01-01' AND '2005-12-31'
     GROUP BY code, chain
 ),
 future AS (
     SELECT code, chain, AVG(value) AS future_value
-    FROM data
-    WHERE
-    chain IN
+    FROM data_historical_rcp85_qjxa
+    WHERE chain IN
     ('historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_CTRIP',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_EROS',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_GRSD',
@@ -133,8 +81,7 @@ future AS (
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_ORCHIDEE',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SIM2',
     'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SMASH')
-    AND variable_en = 'QA'
-    AND date BETWEEN '2050-01-01' AND '2080-12-31'
+    AND d.date BETWEEN '2050-01-01' AND '2080-12-31'
     GROUP BY code, chain
 ),
 chain_delta AS (
@@ -167,44 +114,44 @@ ORDER BY code;
 
 
 
--- DELETE FROM data
--- WHERE variable_en = 'fQ10A';
-
-
-CREATE TABLE data_rcp26 AS
-SELECT *
-FROM data d
-WHERE EXISTS (
-    SELECT 1
-    FROM projections p
-    WHERE p.chain = d.chain
-    AND p.exp = 'historical-rcp26'
-);
-
-CREATE TABLE data_rcp45 AS
-SELECT *
-FROM data d
-WHERE EXISTS (
-    SELECT 1
-    FROM projections p
-    WHERE p.chain = d.chain
-    AND p.exp = 'historical-rcp45'
-);
 
 
 
-CREATE TABLE data_rcp85 AS
-SELECT *
-FROM data d
-WHERE EXISTS (
-    SELECT 1
-    FROM projections p
-    WHERE p.chain = d.chain
-    AND p.exp = 'historical-rcp85'
-);
 
 
 
+WITH hm_average AS (
+    SELECT code, gcm, rcm, bc, AVG(value) AS value
+    FROM delta_historical_rcp85_qa_h3
+    WHERE
+    -- chain IN (
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_CTRIP',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_EROS',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_GRSD',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_J2000',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_MORDOR-SD',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_MORDOR-TS',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_ORCHIDEE',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SIM2',
+        -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SMASH'
+    -- )
+    -- AND
+    n >= 6
+    GROUP BY code, gcm, rcm, bc
+),
+bc_average AS (
+    SELECT code, AVG(value) AS value
+    FROM hm_average
+    GROUP BY code, gcm, rcm
+)
+-- SELECT s.*, b.value
+-- FROM stations s
+-- JOIN (
+    SELECT code, AVG(value) AS value
+    FROM bc_average
+    GROUP BY code
+    ORDER BY code;
+-- ) b ON s.code = b.code;
 
 
 

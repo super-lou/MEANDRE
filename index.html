@@ -73,7 +73,7 @@
 				<button id="button-QA" value="QA" class="selected" onclick="selectVariableButton(this);">
 				    <span>QA</span>
 				</button>
-				<button id="button-VCN10" value="VCN10" onclick="selectVariableButton(this);">
+				<button id="button-VCN10" value="VCN10_summer" onclick="selectVariableButton(this);">
 				    <span>VCN10</span>
 				</button>
 			    </div>
@@ -89,47 +89,29 @@
 			</div>
 			<div id="drawer-horizon-content" class="drawer-content">
 			    
-			    <h2 class="top-section">
-				Période de référence
-			    </h2>
+			    <h2 class="top-section">Période de référence</h2>
 			    <div id="bunch-horizon_historical" class="bunch space">
-				<button id="button-horizon_historical" value="1976-01-01, 2005-08-31" class="selected"
+				<button id="button-horizon_historical" value="H0" class="selected"
 					    onclick="selectHorizonButton(this, 'slider-horizon_historical');">
 				    <span>1976-2005</span>
 				</button>
 			    </div>
 			    
-			    <div id="container-slider-horizon_historical" class="range-container"
-				 onmouseover="addUnselectedClass('bunch-horizon_historical')"
-				 onmouseout="removeUnselectedClass('bunch-horizon_historical')"
-				 onclick="removeSelectedClass('slider-horizon_historical', 'bunch-horizon_historical')">
-				<div id="slider-horizon_historical" class="slider-styled slider-round slider-unselect"></div>
-			    </div>
-
 			    
-			    <h2>
-				Période futur
-			    </h2>
+			    <h2>Période futur</h2>
 			    <div id="bunch-horizon_futur" class="bunch space">
-				<button id="button-horizon_near" value="2021-01-01, 2050-12-31"
+				<button id="button-horizon_near" value="H1"
 					    onclick="selectHorizonButton(this, 'slider-horizon_futur');">
 				    <span>2021-2050</span>
 				</button>
-				<button id="button-horizon_middle" value="2041-01-01, 2070-12-31" class="selected"
+				<button id="button-horizon_middle" value="H2"
 					onclick="selectHorizonButton(this, 'slider-horizon_futur');">
 				    <span>2041-2070</span>
 				</button>
-				<button id="button-horizon_distant" value="2070-01-01, 2099-12-31"
+				<button id="button-horizon_distant" value="H3" class="selected"
 					onclick="selectHorizonButton(this, 'slider-horizon_futur');">
 				    <span>2070-2099</span>
 				</button>
-			    </div>
-
-			    <div id="container-slider-horizon_futur" class="range-container"
-				 onmouseover="addUnselectedClass('bunch-horizon_futur')"
-				 onmouseout="removeUnselectedClass('bunch-horizon_futur')"
-				 onclick="removeSelectedClass('slider-horizon_futur', 'bunch-horizon_futur')">
-				<div id="slider-horizon_futur" class="slider-styled slider-round slider-unselect"></div>
 			    </div>
 
 			    <div class="end-drawer"></div>
@@ -146,7 +128,12 @@
 			</div>
 			<div class="drawer-content" id="drawer-projection-content">
 
-			    <h2 class="top-section">Scénario Climatique</h2>
+			    <h2 class="top-section">Nombre de modèle au point simulé</h2>
+			    <div id="container-slider-n" class="range-container">
+				<div id="slider-n" class="slider-styled slider-round"></div>
+			    </div>
+			    
+			    <h2>Scénario Climatique</h2>
 			    <div id="bunch_RCP" class="bunch space">
 				<button id="26_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
 				    <span>RCP 2.6</span>
@@ -622,31 +609,39 @@
 		
 		<div id="container_gallery">
 		    <div class="gallery">
-			<div class="gallery-item horizontal">
-			    <span>1</span>
-			</div>
-			<div class="gallery-item">
-			    <span>2</span>
-			</div>
-			<div class="gallery-item vertical">
+
+			<div class="gallery-item vertical-mid">
 			    <span>3</span>
 			</div>
+			
+			<div id="grid-variable" class="gallery-item horizontal-small">
+			    <span id="grid-variable_variable"></span>
+			    <span id="grid-variable_name"></span>
+			</div>
+			
+			<div id="grid-horizon" class="gallery-item horizontal-small">
+			    <span id="grid-horizon_name"></span>
+			    <span id="grid-horizon_period"></span>
+			</div>
+
+			
+
 			<div class="gallery-item">
 			    <span>4</span>
 			</div>
-			<div class="gallery-item horizontal">
+			<div class="gallery-item horizontal-mid">
 			    <span>5</span>
 			</div>
-			<div class="gallery-item vertical horizontal ">
+			<div class="gallery-item vertical-mid horizontal-mid">
 			    <span>6</span>
 			</div>
 			<div class="gallery-item">
 			    <span>7</span>
 			</div>
-			<div class="gallery-item horizontal vertical">
+			<div class="gallery-item horizontal-small vertical-mid">
 			    <span>8</span>
 			</div>
-			<div class="gallery-item vertical">
+			<div class="gallery-item vertical-small">
 			    <span>9</span>
 			</div>
 			<div class="gallery-item">
