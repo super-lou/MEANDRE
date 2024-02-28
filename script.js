@@ -489,7 +489,7 @@ function update_data() {
     .then(response => response.json())
     .then(dataBackend => {
         console.log('Data received from backend');	
-	console.log(dataBackend);
+	// console.log(dataBackend);
 
 	data = dataBackend.data
 	
@@ -576,53 +576,64 @@ function update_grid(dataBackend) {
 
 
 function draw_colorbar(dataBackend) {
-
     document.getElementById("grid-variable_unit").innerHTML = dataBackend.unit_fr;
-    
+
     var bin = dataBackend.bin.slice(1, -1).reverse();
     var palette = dataBackend.palette.reverse();
     var step = 25;
     var shift = 20;
 
-    const svg = d3.select("#svg-colorbar")
-	  .attr("height", (palette.length-1)*step + shift*2)
-	  .attr("width", 70);
+    const svg = d3.select("#svg-colorbar");
 
+    svg.attr("height", (palette.length - 1) * step + shift * 2);
+    svg.attr("width", "70");
 
-    let bin_tmp = bin.map(element => {
-	if (element >= 0) {
-            return String.fromCharCode(160).repeat(2) + element;
-	} else {
-            return element;
-	}
-    });
-    bin = bin_tmp;
-    
-    svg.selectAll(".color-circle")
-        .data(palette)
-        .enter().append("circle")
+    // Update color circles
+    const circles = svg.selectAll(".color-circle")
+        .data(palette);
+
+    circles.enter()
+        .append("circle")
+        .attr("class", "color-circle")
         .attr("cx", 10)
-        .attr("cy", (d, i) => i*step + shift)
         .attr("r", 6)
-        .attr("fill", (d, i) => palette[i]);
+        .merge(circles)
+        .attr("cy", (d, i) => i * step + shift)
+        .attr("fill", d => d);
 
-    svg.selectAll(".tick-line")
-        .data(bin)
-        .enter().append("line")
+    circles.exit().remove();
+
+    // Update tick lines
+    const lines = svg.selectAll(".tick-line")
+        .data(bin);
+
+    lines.enter()
+        .append("line")
         .attr("class", "tick-line")
         .attr("x1", 5)
         .attr("x2", 15)
-        .attr("y1", (d, i) => i*step + step/2 + shift)
-        .attr("y2", (d, i) => i*step + step/2 + shift);
+        .merge(lines)
+        .attr("y1", (d, i) => i * step + step / 2 + shift)
+        .attr("y2", (d, i) => i * step + step / 2 + shift);
 
-    svg.selectAll(".bin-text")
-        .data(bin)
-        .enter().append("text")
+    lines.exit().remove();
+
+    // Update bin text
+    const texts = svg.selectAll(".bin-text")
+        .data(bin);
+
+    texts.enter()
+        .append("text")
         .attr("class", "bin-text")
         .attr("x", 28)
-        .attr("y", (d, i) => i*step + step/2 + shift+4)
+        .merge(texts)
+        .attr("y", (d, i) => i * step + step / 2 + shift + 4)
         .text(d => d);
+
+    texts.exit().remove();
 }
+
+
 
 
 
@@ -668,6 +679,7 @@ Promise.all(promises)
 		 geoJSONdata_river,
 		 geoJSONdata_entiteHydro,
 		 data);
+	update();
     })
     .catch(error => {
 	console.error("Error loading or processing GeoJSON files:", error);
