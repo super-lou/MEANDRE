@@ -6,10 +6,12 @@ from flask_cors import CORS
 import numpy as np
 import subprocess
 import json
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Configure the database connection URL
 db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
@@ -83,9 +85,12 @@ def index_post():
     q01Delta = np.quantile(Delta, 0.01)
     q99Delta = np.quantile(Delta, 0.99)
 
+
+    print(os.path.join(current_dir, "compute_color.R"))
+    
     command = [
         "Rscript",
-        "compute_color.R",
+        os.path.join(current_dir, "compute_color.R"),
         "--min", str(q01Delta),
         "--max", str(q99Delta),
         "--delta", json.dumps(Delta),
@@ -107,7 +112,7 @@ def index_post():
 
     command = [
         "Rscript",
-        "compute_bin.R",
+        os.path.join(current_dir, "compute_bin.R"),
         "--min", str(q01Delta),
         "--max", str(q99Delta),
         "--delta", json.dumps(Delta),
