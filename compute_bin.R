@@ -28,4 +28,6 @@ bin <- res$bin
 upBin <- res$upBin
 lowBin <- res$lowBin
 
+print(paste0("process R ", res))
+
 cat(bin, sep = "\n")
