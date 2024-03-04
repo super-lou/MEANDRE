@@ -1,5 +1,3 @@
-import logging
-from logging.handlers import RotatingFileHandler
 from flask import Flask, request, jsonify
 from sqlalchemy import create_engine, text
 from sqlalchemy.pool import QueuePool
@@ -12,12 +10,6 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-file_handler = RotatingFileHandler('/tmp/app.log', maxBytes=1024*1024, backupCount=10)
-file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-file_handler.setLevel(logging.DEBUG)
-app.logger.addHandler(file_handler)
 
 # Configure the database connection URL
 db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
@@ -27,7 +19,6 @@ engine = create_engine(db_url, poolclass=QueuePool)
 
 @app.route('/', methods=['POST'])
 def index_post():
-    app.logger.info('Received request')
     # Get parameters from the JSON payload
     data = request.json
     n = data.get('n')
@@ -134,5 +125,4 @@ def index_post():
     return response
 
 if __name__ == '__main__':
-    app.logger.info('Starting Flask application')
     app.run(debug=True)
