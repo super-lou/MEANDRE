@@ -100,6 +100,11 @@ def index_post():
                            stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     output, error = process.communicate()
+
+    print("compute_color")
+    print(output)
+    print(error)
+    
     Fill = output.decode().strip().split('\n')
 
     
@@ -122,6 +127,12 @@ def index_post():
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     output, error = process.communicate()
+
+    print("compute_bin")
+    print(output)
+    print(error)
+
+
     bin = output.decode().strip().split('\n')
     
     connection.close()
