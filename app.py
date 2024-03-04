@@ -97,6 +97,11 @@ def index_post():
     output, error = process.communicate()
     Fill = output.decode().strip().split('\n')
 
+    
+    print(data)
+    print(Fill)
+    
+    
     for i, d in enumerate(data):
         d['fill'] = Fill[i]
 
