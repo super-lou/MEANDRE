@@ -85,9 +85,6 @@ def index_post():
     q01Delta = np.quantile(Delta, 0.01)
     q99Delta = np.quantile(Delta, 0.99)
 
-
-    print(os.path.join(current_dir, "compute_color.R"))
-    
     command = [
         "Rscript",
         os.path.join(current_dir, "compute_color.R"),
@@ -100,17 +97,7 @@ def index_post():
                            stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     output, error = process.communicate()
-
-    print("compute_color")
-    print(output)
-    print(error)
-    
     Fill = output.decode().strip().split('\n')
-
-    
-    print(data)
-    print(Fill)
-    
     
     for i, d in enumerate(data):
         d['fill'] = Fill[i]
@@ -127,12 +114,6 @@ def index_post():
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     output, error = process.communicate()
-
-    print("compute_bin")
-    print(output)
-    print(error)
-
-
     bin = output.decode().strip().split('\n')
     
     connection.close()
