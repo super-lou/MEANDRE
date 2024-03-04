@@ -14,7 +14,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
-file_handler = RotatingFileHandler('app.log', maxBytes=1024*1024, backupCount=10)
+file_handler = RotatingFileHandler('/tmp/app.log', maxBytes=1024*1024, backupCount=10)
 file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
 file_handler.setLevel(logging.DEBUG)
 app.logger.addHandler(file_handler)
