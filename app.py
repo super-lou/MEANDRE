@@ -1,3 +1,5 @@
+import logging
+from logging.handlers import RotatingFileHandler
 from flask import Flask, request, jsonify
 from sqlalchemy import create_engine, text
 from sqlalchemy.pool import QueuePool
@@ -7,9 +9,15 @@ import numpy as np
 import subprocess
 import json
 
-
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+file_handler = RotatingFileHandler('app.log', maxBytes=1024*1024, backupCount=10)
+file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+file_handler.setLevel(logging.DEBUG)
+app.logger.addHandler(file_handler)
 
 # Configure the database connection URL
 db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
@@ -17,9 +25,9 @@ db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
 # Create the engine with a connection pool
 engine = create_engine(db_url, poolclass=QueuePool)
 
-
 @app.route('/', methods=['POST'])
 def index_post():
+    app.logger.info('Received request')
     # Get parameters from the JSON payload
     data = request.json
     n = data.get('n')
@@ -27,8 +35,6 @@ def index_post():
     chain = data.get('chain')
     variable = data.get('variable')
     horizon = data.get('horizon')
-
-    
 
     connection = engine.connect()
 
@@ -128,42 +134,5 @@ def index_post():
     return response
 
 if __name__ == '__main__':
+    app.logger.info('Starting Flask application')
     app.run(debug=True)
-
-
-
-
-
-# palette = list(['#543005', '#8C510A', '#BF812D', '#DFC27D', '#F6E8C3', '#C7EAE5', '#80CDC1', '#35978F', '#01665E', '#003C30'])
-
-# data = np.array([{'code': 'Y603561001', 'delta': -7.79405570774717},
-#                  {'code': 'Y604201001', 'delta': -9.83602093231473},
-#                  {'code': 'Y611050000', 'delta': -6.84004845313229},
-#                  {'code': 'Y611501001', 'delta': -8.8980261995047},
-#                  {'code': 'Y612501201', 'delta': -6.66320155043784},
-#                  {'code': 'Y620581301', 'delta': -13.7629691066986}])
-
-# Code = [item['code'] for item in data]
-# Delta = [item['delta'] for item in data]
-
-# q01Delta = np.quantile(Delta, 0.01)
-# q99Delta = np.quantile(Delta, 0.99)
-
-
-
-# command = [
-#     "Rscript",
-#     "compute_color.R",
-#     "--min", str(q01Delta),
-#     "--max", str(q99Delta),
-#     "--delta", json.dumps(Delta),
-#     "--palette", json.dumps(palette)
-# ]
-# process = subprocess.Popen(command,
-#                            stdout=subprocess.PIPE,
-#                            stderr=subprocess.PIPE)
-# output, error = process.communicate()
-# output = output.decode().strip().split('\n')
-
-
-
