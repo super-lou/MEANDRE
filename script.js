@@ -818,9 +818,77 @@ function draw_map(geoJSONdata_france,
 		    .attr("r", 3)
 		    .attr("fill", function(d) {
 			return d.fill;
+		    })
+		    .attr("index", function(d, i) { return i; })
+		    .on("click", function(event, d) {
+			const index = d3.select(this).attr("index");
+			const point = data[index];
+
+			console.log(data);
+
+			document.getElementById("grid-point").style.display = "block";
+			document.getElementById("grid-point_code").innerHTML = point.code;
+			document.getElementById("grid-point_name").innerHTML = point.name;
+
+			document.getElementById("grid-point_hr").innerHTML =
+			    "<span class='text-light'>Région hydrologique: </span>" +
+			    point.hydrological_region;
+
+			document.getElementById("grid-point_reference").innerHTML =
+			    "<span class='text-light'>Station de référence: </span>" +
+			    (point.is_reference ? "oui" : "non");
+
+			document.getElementById("grid-point_n").innerHTML =
+			    "<span class='text-light'>Nombre de modèles hydrologiques: </span>" +
+			    point.n;
+			    
+			document.getElementById("grid-point_xl93").innerHTML =
+			    "<span class='text-light'>XL93: </span>" +
+			    Math.round(point.xl93_m) +
+			    " <span class='text-light'>m</span>";
+			document.getElementById("grid-point_yl93").innerHTML =	
+			    "<span class='text-light'>YL93: </span>" + 
+			    Math.round(point.yl93_m) +
+			    " <span class='text-light'>m</span>";
+
+			document.getElementById("grid-point_lat").innerHTML =
+			    "<span class='text-light'>lat: </span>" +
+			    Math.abs(point.lat_deg.toFixed(2)) +
+			    " <span class='text-light'>°</span>" + (point.lat_deg >= 0 ? "N" : "S");
+			document.getElementById("grid-point_lon").innerHTML =	
+			    "<span class='text-light'>lon: </span>" + 
+			    Math.abs(point.lon_deg.toFixed(2)) +
+			    " <span class='text-light'>°</span>" + (point.lon_deg >= 0 ? "E" : "W") ;
+
+
+// surface_ctrip_km2: 233.411148071289
+// ​​​
+// surface_eros_km2: null
+// ​​​
+// surface_grsd_km2: 238.19
+// ​​​
+// surface_j2000_km2: null
+// ​​​
+// surface_km2: 233
+// ​​​
+// surface_mordor_sd_km2: 233
+// ​​​
+// surface_mordor_ts_km2: null
+// ​​​
+// surface_orchidee_km2: 244.703456
+// ​​​
+// surface_sim2_km2: null
+// ​​​
+// surface_smash_km2: 252
+// ​​​
+// value: -0.649719867784965
+			
 		    });
+
+		
+
 	    }
-	    
+
 	}
 
 	const pathGenerator = d3.geoPath(projection);
