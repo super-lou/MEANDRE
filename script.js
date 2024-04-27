@@ -8,7 +8,11 @@
 
 
 
-
+function unique(array) {
+    return array.filter(function(item, index) {
+        return array.indexOf(item) === index;
+    });
+}
 
 function selectVariableButton(selectedButton) {
     var buttons = selectedButton.parentNode.querySelectorAll('button');
@@ -425,6 +429,15 @@ function get_chunk_of_chain(value) {
     return Chain;
 }
 
+
+function get_HM() {
+    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+    var HM = BC_HM.map(item => item.split('_')[1]);
+    HM = unique(HM);
+    return HM;
+}
+
+
 function get_chain(array1, array2) {
     var chain = [];
     array1.forEach(function(item1) {
@@ -444,12 +457,7 @@ function get_chain(array1, array2) {
 
 
 function update() {
-
-    
-
     update_data();
-
-    
 }
 
 
@@ -571,7 +579,11 @@ function update_grid(dataBackend) {
 
 
 
-
+function close_grid(element) {
+    element.parentNode.style.display = "none";
+    selected_code = null;
+    highlight_selected_point();
+}
 
 
 
@@ -586,22 +598,7 @@ function draw_colorbar(dataBackend) {
     const svg = d3.select("#svg-colorbar");
 
     svg.attr("height", (palette.length - 1) * step + shift * 2);
-    svg.attr("width", "70");
-
-    // Update color circles
-    const circles = svg.selectAll(".color-circle")
-        .data(palette);
-
-    circles.enter()
-        .append("circle")
-        .attr("class", "color-circle")
-        .attr("cx", 10)
-        .attr("r", 6)
-        .merge(circles)
-        .attr("cy", (d, i) => i * step + shift)
-        .attr("fill", d => d);
-
-    circles.exit().remove();
+    svg.attr("width", "50%");
 
     // Update tick lines
     const lines = svg.selectAll(".tick-line")
@@ -621,22 +618,90 @@ function draw_colorbar(dataBackend) {
     // Update bin text
     const texts = svg.selectAll(".bin-text")
         .data(bin);
-
     texts.enter()
         .append("text")
         .attr("class", "bin-text")
         .attr("x", 28)
         .merge(texts)
         .attr("y", (d, i) => i * step + step / 2 + shift + 4)
-        .text(d => d);
-
+        .text(d => {
+            return d > 0 ? "+" + d : d;
+	});
     texts.exit().remove();
+
+    var selectedColor = null;
+    const circles = svg.selectAll(".color-circle")
+        .data(palette);
+    circles.enter()
+        .append("circle")
+        .attr("class", "color-circle")
+        .attr("cx", 10)
+        .attr("r", 6)
+        .merge(circles)
+        .attr("cy", (d, i) => i * step + shift)
+        .attr("fill", d => d)
+    	.on("mouseover", function(event, d) {
+	    d3.select(this).attr("r", 7);
+	})
+	.on("mouseout", function(event, d) {
+	    d3.select(this).attr("r", 6);
+	})
+	.each(function(d, i) {
+            d3.select(this)
+	        .on("click", function(event, d) {
+		    var clickedColor = d;
+
+		    if (selectedColor === clickedColor) {
+			d3.select("#geoJSONsvg_france").selectAll(".point")
+			    .attr("opacity", 1);
+			selectedColor = null;
+			svg.selectAll(".color-circle, .tick-line, .bin-text")
+			    .attr("opacity", 1);
+			
+		    } else {
+			d3.select("#geoJSONsvg_france").selectAll(".point")
+			    .attr("opacity", function(d) {
+				return d.fill === clickedColor ? 1 : 0.1;
+			    });
+			selectedColor = clickedColor;
+
+			svg.selectAll(".color-circle")
+			    .attr("opacity", function() {
+				return this === event.target ? 1 : 0.3;
+			    });
+			svg.selectAll(".tick-line")
+			    .attr("opacity", function(d, j) {
+				return j === i || j === i - 1 ? 1 : 0.3;
+			    });
+			svg.selectAll(".bin-text")
+			    .attr("opacity", function(d, j) {
+				return j === i || j === i - 1 ? 1 : 0.3;
+			    });
+		    }
+		});
+	});
+    circles.exit().remove();
+    
+
+    
+
+    // svg.selectAll(".color-circle")
+    //     .on("click", function(event, d) {
+    //         var clickedColor = d;
+
+    //         if (selectedColor === clickedColor) {
+    //             d3.select("#geoJSONsvg_france").selectAll(".point")
+    //                 .attr("opacity", 1);
+    //             selectedColor = null;
+    //         } else {
+    //             d3.select("#geoJSONsvg_france").selectAll(".point")
+    //                 .attr("opacity", function(d) {
+    //                     return d.fill === clickedColor ? 1 : 0.1;
+    //                 });
+    //             selectedColor = clickedColor;
+    //         }
+    //     });
 }
-
-
-
-
-
 
 
 
@@ -687,6 +752,41 @@ Promise.all(promises)
 
 
 
+let selected_code = null;
+function highlight_selected_point() {
+    
+    const svg = d3.select("#geoJSONsvg_france");
+    svg.selectAll(".point.clicked")
+        .attr("stroke-width", 0)
+        .attr("r", 3)
+        .classed("clicked", false);
+    
+    if (selected_code !== null) {
+        const svg = d3.select("#geoJSONsvg_france");
+
+        svg.selectAll(".point.clicked")
+            .attr("stroke-width", 0)
+            .attr("r", 3)
+            .classed("clicked", false);
+
+        var clickedPoint = svg.selectAll(".point")
+            .filter(function(d) {
+                return d.code === selected_code;
+            });
+
+        clickedPoint
+            .attr("r", 4)
+            .attr("stroke", "#060508")
+            .attr("stroke-width", 1)
+            .classed("clicked", true);
+
+        var parentNode = clickedPoint.node().parentNode;
+        parentNode.appendChild(clickedPoint.node());
+    }
+}
+
+
+
 
 function draw_map(geoJSONdata_france,
 		     geoJSONdata_river,
@@ -725,7 +825,6 @@ function draw_map(geoJSONdata_france,
 	
 	let width = window.innerHeight;
 	let height = window.innerHeight;
-	
 
 	const zoom = d3.zoom()
 	      .scaleExtent([minZoom, maxZoom])
@@ -734,6 +833,7 @@ function draw_map(geoJSONdata_france,
 		  k_simplify = k_simplify_ref + (event.transform.k - minZoom)/(maxZoom-minZoom)*(1-k_simplify_ref);
 
 		  redrawMap();
+		  highlight_selected_point();
 		  
 		  svg.attr("transform", event.transform);
 		  svg.style("width", width * event.transform.k + "px");
@@ -763,6 +863,7 @@ function draw_map(geoJSONdata_france,
 	    svg.attr("width", width).attr("height", height);
 	    projection.scale([height*3.2]).translate([width / 2, height / 2]);	    
 	    redrawMap();
+	    highlight_selected_point();
 	}
 
 	window.addEventListener("resize", handleResize.bind(null, k_simplify, riverLength));
@@ -804,6 +905,7 @@ function draw_map(geoJSONdata_france,
 
 	    
 	    if (data) {
+
 		svg.selectAll(".point").remove();
 		svg.selectAll("circle.point")
 		    .data(data)
@@ -819,15 +921,46 @@ function draw_map(geoJSONdata_france,
 		    .attr("fill", function(d) {
 			return d.fill;
 		    })
-		    .attr("index", function(d, i) { return i; })
-		    .on("click", function(event, d) {
-			const index = d3.select(this).attr("index");
-			const point = data[index];
 
-			console.log(data);
+		    .on("mouseover", function(event, d) {
+		    	if (!d3.select(this).classed("clicked")) {
+		    	    d3.select(this).attr("stroke", "#060508");
+		    	}
 
-			document.getElementById("grid-point").style.display = "block";
+			document.getElementById("panel-hover").style.display = "block";
+			document.getElementById("panel-hover_code").innerHTML = d.code;
+			const value = d.value.toFixed(2);
+			document.getElementById("panel-hover_value").innerHTML =
+			    "<span style='color:" + d.fill_text + ";'>" +
+			    "<span style='font-weight: 900;'>" +
+			    (value > 0 ? "+" : "") + value + " </span>%</span>";
+			
+		    })
+		    .on("mouseout", function(event, d) {
+		    	if (!d3.select(this).classed("clicked")) {
+		    	    d3.select(this).attr("stroke", "none");
+		    	}
+			document.getElementById("panel-hover").style.display = "none";
+		    })
+		    .on("click", function(d, point) {
+
+			if (selected_code === point.code) {
+			    selected_code = null;
+			    document.getElementById("grid-point").style.display = "none";
+			} else {
+			    selected_code = point.code;
+			    document.getElementById("grid-point").style.display = "flex";
+			}
+			highlight_selected_point();
+			
 			document.getElementById("grid-point_code").innerHTML = point.code;
+
+			const value = point.value.toFixed(2);
+			document.getElementById("grid-point_value").innerHTML =
+			    "<span style='color:" + point.fill_text + ";'>" +
+			    "<span style='font-weight: 900;'>" +
+			    (value > 0 ? "+" : "") + value + " </span>%</span>";
+			
 			document.getElementById("grid-point_name").innerHTML = point.name;
 
 			document.getElementById("grid-point_hr").innerHTML =
@@ -836,12 +969,12 @@ function draw_map(geoJSONdata_france,
 
 			document.getElementById("grid-point_reference").innerHTML =
 			    "<span class='text-light'>Station de référence: </span>" +
-			    (point.is_reference ? "oui" : "non");
+			    (point.is_reference ? "Oui" : "Non");
 
 			document.getElementById("grid-point_n").innerHTML =
 			    "<span class='text-light'>Nombre de modèles hydrologiques: </span>" +
 			    point.n;
-			    
+			
 			document.getElementById("grid-point_xl93").innerHTML =
 			    "<span class='text-light'>XL93: </span>" +
 			    Math.round(point.xl93_m) +
@@ -860,33 +993,29 @@ function draw_map(geoJSONdata_france,
 			    Math.abs(point.lon_deg.toFixed(2)) +
 			    " <span class='text-light'>°</span>" + (point.lon_deg >= 0 ? "E" : "W") ;
 
+			var HM = get_HM();
+			var surface_HM = HM.map(hm => "surface_" +
+						hm.toLowerCase().replace('-', '_') +
+						"_km2");
+			surface_HM = surface_HM.map(x => point[x]);
+			var isnotNull = surface_HM.map(value => value !== null);
+			HM = HM.filter((_, index) => isnotNull[index]);
+			surface_HM = surface_HM.filter((_, index) => isnotNull[index]);
+			surface_HM = surface_HM.map(x => Math.round(x));
 
-// surface_ctrip_km2: 233.411148071289
-// ​​​
-// surface_eros_km2: null
-// ​​​
-// surface_grsd_km2: 238.19
-// ​​​
-// surface_j2000_km2: null
-// ​​​
-// surface_km2: 233
-// ​​​
-// surface_mordor_sd_km2: 233
-// ​​​
-// surface_mordor_ts_km2: null
-// ​​​
-// surface_orchidee_km2: 244.703456
-// ​​​
-// surface_sim2_km2: null
-// ​​​
-// surface_smash_km2: 252
-// ​​​
-// value: -0.649719867784965
+			document.getElementById("grid-point_surface").innerHTML =
+			    "<span class='text-light'>Surface: </span>" +
+			    Math.round(point.surface_km2) +
+			    " <span class='text-light'>km<sup>2</sup></span>";
 			
+			surface =
+			    HM.reduce((str, hm, index) =>
+				      str +
+				      `<span class='text-light nowrap'>${hm}:&nbsp;</span>${surface_HM[index]}` +
+				      "&nbsp;<span class='text-light'>km<sup>2</sup></span>&nbsp;&nbsp; ",
+				      "");
+			document.getElementById("grid-point_surface_HM").innerHTML = surface;
 		    });
-
-		
-
 	    }
 
 	}

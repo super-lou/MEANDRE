@@ -20,7 +20,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/geotoolbox" charset="utf-8"></script>
 
 	<!-- d3 -->
-	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<!-- <script src="https://d3js.org/d3.v6.min.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 	<!-- d3 interpolate path -->
 	<script src="https://unpkg.com/d3-interpolate-path@2.3.0/build/d3-interpolate-path.js"></script>
 
@@ -604,6 +605,12 @@
 
 		
 		<div id="container_map">
+		    <div id="panel-hover">
+			<div class="bunch row column-small-gap center cross-center">
+			    <div id="panel-hover_code"></div>
+			    <div id="panel-hover_value"></div>
+			</div>
+		    </div>
 		    <svg id="geoJSONsvg_france"></svg>
 		</div>
 		
@@ -611,58 +618,59 @@
 		    <div class="gallery">
 			
 			
-			<div class="gallery-item align-center justify-center"
+			<div class="gallery-item cross-center center row nowrap column-small-gap"
 			     style="grid-column: span 1; grid-row: span 5;">
-			    <div class="bunch row nowrap column-small-gap center">
-				<span id="grid-variable_unit"></span>
-				<svg id="svg-colorbar"></svg>
-			    </div>
+			    <span id="grid-variable_unit"></span>
+			    <svg id="svg-colorbar"></svg>
 			</div>
 
 			
-			<div id="grid-variable" class="gallery-item"
+			<div id="grid-variable"
+			     class="gallery-item column center"
 			     style="grid-column: span 2; grid-row: span 2;">
-			    <div class="bunch column">
-				<div class="bunch row column-gap baseline">
-				    <span id="grid-variable_variable"></span>
-				    <span id="grid-variable_name"></span>
-				</div>
-				<span id="grid-variable_sampling-period"></span>
+			    <div class="bunch row column-gap baseline">
+				<span id="grid-variable_variable"></span>
+				<span id="grid-variable_name"></span>
 			    </div>
+			    <span id="grid-variable_sampling-period"></span>
 			</div>
 
 			
-			<!-- <div class="gallery-item"
-			     style="grid-column: span 1; grid-row: span 1;">
-			     <span id="grid-variable_unit"></span>
-			     </div> -->
-			
-			<div id="grid-horizon" class="gallery-item"
+			<div id="grid-horizon"
+			     class="gallery-item column center"
 			     style="grid-column: span 3; grid-row: span 3;">
-			    <div class="bunch column">
-				<span id="grid-horizon_name"></span>
-				<span id="grid-horizon_period-l1"></span>
-				<span id="grid-horizon_period-l2"></span>
-			    </div>
+			    <span id="grid-horizon_name"></span>
+			    <span id="grid-horizon_period-l1"></span>
+			    <span id="grid-horizon_period-l2"></span>
 			</div>
 
-			<div id="grid-point" class="gallery-item"
+			
+			<div id="grid-point"
+			     class="gallery-item column"
 			     style="grid-column: span 2; grid-row: span 1; display: none;">
-			    <div class="bunch column">
+			    <div id="grid-point_cross"
+				 class="cross material-icons-outlined" onclick="close_grid(this)">close</div>
+			    <div id="grid-point_code-value"
+				     class="bunch row column-gap cross-center">
 				<span id="grid-point_code"></span>
-				<span id="grid-point_name"></span>
-				<span id="grid-point_hr" class="grid-point_info"></span>
-				<span id="grid-point_n" class="grid-point_info"></span>
-				<span id="grid-point_reference" class="grid-point_info"></span>
-				<div class="bunch row column-gap">
-				    <span id="grid-point_xl93" class="grid-point_info"></span>
-				    <span id="grid-point_yl93" class="grid-point_info"></span>
-				</div>
-				<div class="bunch row column-gap">
-				    <span id="grid-point_lat" class="grid-point_info"></span>
-				    <span id="grid-point_lon" class="grid-point_info"></span>
-				</div>
+				<span id="grid-point_value"></span>
 			    </div>
+			    <span id="grid-point_name"></span>
+			    <span id="grid-point_hr" class="grid-point_info"></span>
+			    <span id="grid-point_n" class="grid-point_info"></span>
+			    <span id="grid-point_reference" class="grid-point_info"></span>
+
+			    <div class="bunch row column-gap">
+				<span id="grid-point_lat" class="grid-point_info"></span>
+				<span id="grid-point_lon" class="grid-point_info"></span>
+			    </div>
+			    <div class="bunch row column-gap">
+				<span id="grid-point_xl93" class="grid-point_info"></span>
+				<span id="grid-point_yl93" class="grid-point_info"></span>
+			    </div>
+
+			    <span id="grid-point_surface"></span>
+			    <span id="grid-point_surface_HM"></span>
 			</div>
 
 

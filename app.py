@@ -8,6 +8,18 @@ import subprocess
 import json
 import os
 
+
+def switch_color(color, color_to_find, color_to_switch):
+    #switch 12% https://mdigi.tools/darken-color/#f6e8c3
+    color = color.upper()
+    color_to_find = np.char.upper(color_to_find)
+    color_to_switch = np.char.upper(color_to_switch)
+    if color in color_to_find:
+        color = color_to_switch[color_to_find == color][0]
+    return color
+
+
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -98,9 +110,17 @@ def index_post():
                                stderr=subprocess.PIPE)
     output, error = process.communicate()
     Fill = output.decode().strip().split('\n')
+
+    color_to_find = np.array(["#F6E8C3", "#C7EAE5",
+                              "#EFE2E9", "#F5E4E2"])
+    color_to_switch = np.array(["#EFD695", "#A1DCD3",
+                                "#DBBECE", "#E7BDB8"])
     
     for i, d in enumerate(data):
         d['fill'] = Fill[i]
+        d['fill_text'] = switch_color(Fill[i],
+                                      color_to_find,
+                                      color_to_switch)
 
     command = [
         "Rscript",
