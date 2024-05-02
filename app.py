@@ -7,6 +7,7 @@ import numpy as np
 import subprocess
 import json
 import os
+from datetime import datetime
 
 
 def switch_color(color, color_to_find, color_to_switch):
@@ -87,6 +88,8 @@ def delta_post():
         text(sql_query),
         {'variable': variable}
     )
+    connection.close()
+    
     columns = result.keys()
     rows = result.fetchall()
     meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
@@ -137,8 +140,6 @@ def delta_post():
     output, error = process.communicate()
     bin = output.decode().strip().split('\n')
     
-    connection.close()
-
     response = {'data': data,
                 'bin': bin}
     response.update(meta)
@@ -161,7 +162,7 @@ def serie_post():
     connection = engine.connect()
 
     sql_query = f"""
-    SELECT code, chain, date, value
+    SELECT chain, date, value
     FROM data_{exp}_{variable}
     WHERE chain IN :chain AND code = '{code}';
     """
@@ -170,18 +171,28 @@ def serie_post():
         text(sql_query),
         {'chain': tuple(chain)}
     )
+    connection.close()
+    
     columns = result.keys()
     rows = result.fetchall()
 
-    data = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows]
-
-    print(data)
+    data = {}
+    for row in rows:
+        chain = row[0]
+        date_str = row[1].strftime("%Y-%m-%d")
+        value = row[2]
+        
+        if chain not in data:
+            data[chain] = {
+                "name": chain,
+                "color": "red",
+                "values": []
+            }
+        data[chain]["values"].append({"date": date_str, "y": value})
     
-    connection.close()
-    response = data
+    data = list(data.values())
     
-    # Return the data as JSON response
-    response = jsonify(response)
+    response = jsonify(data)
     return response
 
 

@@ -23,6 +23,17 @@ a {
 }
 
 
+p {
+  margin: 0rem;
+}
+p.top-space {
+    margin-top: 0.4rem;
+}
+p.bottom-space {
+    margin-bottom: 0.4rem;
+}
+
+
 .chain_block {
     flex-wrap: wrap;
     flex-direction: column;
@@ -75,6 +86,9 @@ a {
     justify-content: center;
 }
 
+span.top-space {
+    margin-top: 0.4rem;
+}
 
 .bunch.space {
     margin-top: 0.1rem;
@@ -257,7 +271,7 @@ button:hover .material-icons-outlined {
 }
 
 .top-section {
-   margin-top: 0.4rem; 
+   margin-top: 0rem; 
 }
 
 h1 {
@@ -273,13 +287,21 @@ h1 {
 h2 {
     font-family: "Raleway", sans-serif;
     font-weight: 400;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-top: 1rem;
     margin-bottom: 0rem;
 }
 
+h3 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 200;
+    font-size: 1.2rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0rem;
+}
 
-.menuTitle {
+
+.logo {
     font-family: "Raleway", sans-serif;
     font-weight: 900;
     font-size: 1.3rem;
@@ -289,9 +311,11 @@ h2 {
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
+    margin-left: 0.5rem;
+    margin-right: 1.5rem;
 }
 
-.menuTitle img {
+.logo img {
     height: 40px;
     padding-bottom: 10px;
     padding-right: 10px;
@@ -309,8 +333,8 @@ h2 {
 }
 #menu.expanded {
     pointer-events: auto;
-    width: 270px;
-    padding-top: 0.5rem;
+    width: 18rem;
+    padding-top: 0rem;
     padding-bottom: 1rem;
 }
 
@@ -328,17 +352,31 @@ h2 {
 /* DRAWER */
 .drawer {
     position: relative;
-    border-top: 2px solid #70757A;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    border-top: 2px solid #70757A;
+}
+.subdrawer {
+    position: relative;
 }
 
-.drawer-label {
+.drawer-label,
+.subdrawer-label {
     margin-top: 0.7rem;
     margin-bottom: 0.7rem;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.subdrawer-label {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 .drawer-label h1:hover,
+.subdrawer-label h2:hover,
+.drawer-icon.material-icons-outlined,
 .drawer-icon.material-icons-outlined {
     color: #70757A;
 }
@@ -364,15 +402,18 @@ h2 {
 .end-drawer {
     height: 1.5rem;
 }
+.end-subdrawer {
+    height: 0.5rem;
+}
 
 
 
 /* SLIDER */
 .range-container {
-    padding-top: 0rem;
+    padding-top: 0.2rem;
     padding-right: 1.3rem;
     padding-left: 1.3rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.7rem;
     position: relative;
     height: 2rem;
 }
@@ -470,33 +511,6 @@ h2 {
     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 1px 3px 1px rgba(60,64,67,0.15);
 }
 
-/* .slider-round .noUi-tooltip::before { */
-/*     content: ""; */
-/*     display: block; */
-/*     background: #ffffff; */
-/*     border-radius: 3px; */
-/*     bottom: -5px; */
-/*     height: 12px; */
-/*     position: absolute; */
-/*     transform: translateX(-50%) rotate(45deg); */
-/*     width: 12px; */
-/*     left: 50%; */
-/*     border: 0; */
-/* } */
-
-/* .slider-round .noUi-tooltip-arrow { */
-/*     content: ""; */
-/*     display: block; */
-/*     background: transparent; */
-/*     border-radius: 3px; */
-/*     bottom: 5px; */
-/*     height: 12px; */
-/*     position: absolute; */
-/*     transform: translateX(50%) rotate(45deg); */
-/*     width: 12px; */
-/*     border: 0; */
-/*     box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 2px 4px 2px rgba(60,64,67,0.15); */
-/* } */
 
 .slider-round .noUi-marker {
     position: absolute;
@@ -556,14 +570,14 @@ h2 {
 }
 
 #bar {
-    height: 50px;
+    height: 3rem;
     width: 100%; 
     background: #ffffff;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-between;
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* flex-wrap: nowrap; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
 }
 
 .bar-tab {
@@ -585,6 +599,7 @@ h2 {
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
+    white-space: nowrap;
 }
 .bar-tab:hover,
 .bar-tab:hover .material-icons-outlined{
@@ -598,27 +613,31 @@ h2 {
     flex-grow: 1;
 }
 
+#button-advance {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #ffffff;
+    broder: none;
+}
 #bar-tab_advance {
     width: 7.5rem;
+    height: 3rem;
     margin-right: 0.6rem;
     transition: width 0.3s ease;
 }
 #bar-tab_advance-icon, #bar-tab_advance-text, #bar-tab_advance-close {
     transition: opacity 0.3s ease;
 }
-#bar-tab_advance-close {
-    display: none;
-    margin: 0 0.2rem;
-}
-#bar-tab_advance-close:hover {
-    color: #70757A;
+#bar-tab_close-advance {
+    height: 3rem;
 }
 
 
 
 .subbar {
-    transition: width 0.3s ease;
-    width: 0rem;
+    transition: max-width 0.3s ease;
+    max-width: 0rem;
     margin-left: 0.8rem;
     margin-right: 0.5rem;
     display: flex;
@@ -627,18 +646,11 @@ h2 {
     align-items: center;
     justify-content: start;
     column-gap: 1.3rem;
+    text-wrap: nowrap;
+    white-space: nowrap;
 }
 .subbar.expanded {
-    width: 30rem;
-}
-#bar-tab_intro-tab.expanded {
-    width: 25rem !important;
-}
-#bar-tab_nord-tab.expanded {
-    width: 15rem !important;
-}
-#bar-tab_sud-tab.expanded {
-    width: 20rem !important;
+    max-width: 30rem;
 }
 
 .subbar-tab {
@@ -653,12 +665,13 @@ h2 {
     transition: opacity 0.3s ease;
     opacity: 0;
     display: none;
-    text-wrap: wrap;
     line-height: 0.8rem;
     gap: 0.2rem;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
+    text-wrap: nowrap;
+    white-space: nowrap;
 }
 .subbar-tab.expanded {
     opacity: 1;
@@ -669,7 +682,9 @@ h2 {
 .subbar-tab:hover .material-icons-outlined {
     color: #70757A;
 }
-
+.subbar-tab:last-child {
+    margin-right: 1rem;
+}
 
 
 .sep {
@@ -677,8 +692,8 @@ h2 {
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
-    height: 50px;	     
-    border-left: 3px solid #F5F5F5;
+    height: 3rem;	     
+    border-left: 3px solid #EDEDED;
 }
 
 .subbar-sep {
@@ -686,9 +701,9 @@ h2 {
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: center;
-    height: 20px;
+    height: 1.4rem;
     margin-right: 0.1rem;
-    border-left: 3px solid #F5F5F5;
+    border-left: 3px solid #EDEDED;
 }
 
 

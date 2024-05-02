@@ -20,6 +20,7 @@ function selectVariableButton(selectedButton) {
 	button.classList.remove('selected');
     });
     selectedButton.classList.add('selected');
+    update_data_debounce();
 }
 
 
@@ -53,15 +54,13 @@ function removeSelectedClass(sliderId, bunchId) {
 
 
 
-function selectHorizonButton(selectedButton, sliderId) {
+function selectHorizonButton(selectedButton) {
     var buttons = selectedButton.parentNode.querySelectorAll('button');
     buttons.forEach(function (button) {
 	button.classList.remove('selected');
     });
     selectedButton.classList.add('selected');
-        
-    var slider = document.getElementById(sliderId);
-    slider.classList.add('slider-unselect');
+    update_data_debounce();
 }
 
 
@@ -96,10 +95,28 @@ function showSubTabs(tab) {
     }
 }
 
-function hideSubTabs(tab) {
+// function hideSubTabs(tab) {
+//     var subbar = $("[id^='" + tab.id+ "'][class^='subbar']");
+//     var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
+    
+//     if (subbar.hasClass("expanded")) {
+// 	subtabs.each(function() {
+// 	    $(this).removeClass("expanded");
+// 	});
+// 	setTimeout(() => {
+// 	    subbar.removeClass("expanded");
+// 	    subtabs.each(function() {
+// 		$(this).css("display", "none");
+// 	    });
+// 	}, 300);
+	
+//     }
+// }
+
+function toggle_subtab(tab) {
     var subbar = $("[id^='" + tab.id+ "'][class^='subbar']");
     var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
-    
+
     if (subbar.hasClass("expanded")) {
 	subtabs.each(function() {
 	    $(this).removeClass("expanded");
@@ -111,6 +128,16 @@ function hideSubTabs(tab) {
 	    });
 	}, 300);
 	
+    } else {
+	subbar.addClass("expanded");
+	subtabs.each(function() {
+	    $(this).css("display", "flex");
+	});
+	setTimeout(() => {
+	    subtabs.each(function() {
+		$(this).addClass("expanded");
+	    });
+	}, 300);
     }
 }
 
@@ -118,38 +145,30 @@ function hideSubTabs(tab) {
 function toggleMenu() {
     const menu = document.getElementById("menu");
     const menuExpand = document.getElementById("menuExpand");
-    const sep = document.getElementById("bar-tab_advance-sep");
     const menuIcon = document.getElementById("bar-tab_advance-icon");
     const title = document.getElementById("bar-tab_advance-text");
-    const crossIcon = document.getElementById("bar-tab_advance-close");
     const button = document.getElementById("bar-tab_advance");
     
     if (menu.classList.contains("expanded")) {
         menu.classList.remove("expanded");
         menuExpand.classList.add("hidden");
-        sep.classList.remove("sep");
-        menuIcon.style.opacity = "1"; // Reset opacity for the menu icon
-        title.style.opacity = "1"; // Reset opacity for the title
-        crossIcon.style.opacity = "0"; // Hide the cross icon
+        menuIcon.style.opacity = "1";
+        title.style.opacity = "1";
 	button.style.width = "7.5rem";
         setTimeout(() => {
-            crossIcon.style.display = "none";
-            menuIcon.style.display = "block"; // Show the menu icon
-            title.style.display = "block"; // Show the title
-        }, 300); // Delay hiding the cross icon after transition
+            menuIcon.style.display = "block"; 
+            title.style.display = "block";
+        }, 300);
     } else {
         menu.classList.add("expanded");
         menuExpand.classList.remove("hidden");
-        sep.classList.add("sep");
-	menuIcon.style.opacity = "0"; // Hide the menu icon
-        title.style.opacity = "0"; // Hide the title
-        crossIcon.style.display = "block";
-	button.style.width = "2rem";
+	menuIcon.style.opacity = "0";
+        title.style.opacity = "0";
+	button.style.width = "0rem";
         setTimeout(() => { 
-            crossIcon.style.opacity = "1"; // Fade in the cross icon after showing it
-            menuIcon.style.display = "none"; // Hide the menu icon
-            title.style.display = "none"; // Hide the title
-        }, 300); // Delay showing the cross icon after transition
+            menuIcon.style.display = "none";
+            title.style.display = "none";
+        }, 300);
     }
 }
 
@@ -223,83 +242,73 @@ var RCM = null;
 // 	}
 //     }
 // }
-function get_selectedClimateChain() {
-    var iconContainers = ['#icon_85_GCM', '#icon_ADAMONT_HM', '#icon_85_HadGEM2-ES_RCM'];
+// function get_selectedClimateChain() {
+//     var iconContainers = ['#icon_85_GCM', '#icon_ADAMONT_HM', '#icon_85_HadGEM2-ES_RCM'];
 
-    iconContainers.forEach(function(containerID) {
+//     iconContainers.forEach(function(containerID) {
 
-	if (containerID === '#icon_85_HadGEM2-ES_RCM') {
-	    var icon_storyLines = {
-		"ASTER": "local_fire_department",
-		"DAHLIA": "",
-		"NARCISSE": "",
-		"EUPHORBE": "umbrella"
-	    };
-	} else {
-	    var icon_storyLines = {
-		"ASTER": "local_fire_department",
-		"DAHLIA": "wb_sunny",
-		"NARCISSE": "filter_drama",
-		"EUPHORBE": "umbrella"
-	    };
-	}
+// 	if (containerID === '#icon_85_HadGEM2-ES_RCM') {
+// 	    var icon_storyLines = {
+// 		"ASTER": "local_fire_department",
+// 		"DAHLIA": "",
+// 		"NARCISSE": "",
+// 		"EUPHORBE": "umbrella"
+// 	    };
+// 	} else {
+// 	    var icon_storyLines = {
+// 		"ASTER": "local_fire_department",
+// 		"DAHLIA": "wb_sunny",
+// 		"NARCISSE": "filter_drama",
+// 		"EUPHORBE": "umbrella"
+// 	    };
+// 	}
 	
-        var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
-        var iconContainer = $(containerID);
+//         var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
+//         var iconContainer = $(containerID);
 	
 
-        // Reset style to display icons
-        iconContainer.removeAttr('style');
+//         // Reset style to display icons
+//         iconContainer.removeAttr('style');
 
-        if (RCM_block.length > 0) {
-            var selectedRCMButtons = RCM_block.find('.selected');
+//         if (RCM_block.length > 0) {
+//             var selectedRCMButtons = RCM_block.find('.selected');
 
-            if (selectedRCMButtons.length > 0) {
-                var iconsAdded = false;
-                iconContainer.empty();
+//             if (selectedRCMButtons.length > 0) {
+//                 var iconsAdded = false;
+//                 iconContainer.empty();
 
-                selectedRCMButtons.each(function() {
-                    var RCM_button = this;
-                    var RCM_class = RCM_button.getAttribute('class').split(' ').filter(function(chr) {
-                        return chr !== 'selected';
-                    });
+//                 selectedRCMButtons.each(function() {
+//                     var RCM_button = this;
+//                     var RCM_class = RCM_button.getAttribute('class').split(' ').filter(function(chr) {
+//                         return chr !== 'selected';
+//                     });
 
-                    RCM_class.forEach(function(cls, index) {
-                        var icon = icon_storyLines[cls];
-                        iconContainer.append('<span class="material-icons-outlined inline-front">' + icon + '</span>');
+//                     RCM_class.forEach(function(cls, index) {
+//                         var icon = icon_storyLines[cls];
+//                         iconContainer.append('<span class="material-icons-outlined inline-front">' + icon + '</span>');
 
-                        // Check if the icon is the "umbrella" icon
-                        if (icon === 'umbrella') {
-                            // Apply smaller left and right margins to reduce spacing
-                            iconContainer.children().last().addClass('reduce-space');
-                        }
+//                         // Check if the icon is the "umbrella" icon
+//                         if (icon === 'umbrella') {
+//                             // Apply smaller left and right margins to reduce spacing
+//                             iconContainer.children().last().addClass('reduce-space');
+//                         }
 
-                        // Set iconsAdded to true if any icon is added
-                        iconsAdded = true;
-                    });
-                });
+//                         // Set iconsAdded to true if any icon is added
+//                         iconsAdded = true;
+//                     });
+//                 });
 
-                if (!iconsAdded) {
-                    iconContainer.attr('style', 'display: none;');
-                }
-            }
-        }
-    });
-}
-
-get_selectedClimateChain();
-
-
-// function update_colorHM() {
-//     var HM_bunch = $('[id^="bunch_"][id$="_HM"]:visible');
-//     if (HM_bunch.length > 0) {
-// 	var HM_button = HM_bunch.find('.selected')[0];
-// 	var BC = HM_button.id.split('_')[0];
-// 	var HM = HM_button.id.split('_')[1];
-// 	$('#colorHM').css('color', eval(HM.replace(/-/, "") + '_color'));
-//     }
+//                 if (!iconsAdded) {
+//                     iconContainer.attr('style', 'display: none;');
+//                 }
+//             }
+//         }
+//     });
 // }
-// update_colorHM();
+
+// get_selectedClimateChain();
+
+
 
 
 
@@ -310,8 +319,8 @@ function selectAllButton(selectedButton) {
     });
     selectedButton.classList.add('selected');
 
-    // update_colorHM();
-    get_selectedClimateChain();
+    // get_selectedClimateChain();
+    update_data_debounce();
 }
 
 
@@ -323,8 +332,8 @@ function selectButton(selectedButton) {
         selectedButton.classList.add('selected');
     }
 
-    // update_colorHM();
-    get_selectedClimateChain();
+    // get_selectedClimateChain();
+    update_data_debounce();
 }
 
 
@@ -373,8 +382,6 @@ function show_GCM_RCM(selectedButton) {
 	if (GCM_selectedBlock) {
 	    GCM_selectedBlock.style.display = 'flex';
 	}
-
-
 	
 	var RCM_blockAll = document.querySelectorAll(`[id^="block_"][id$="_RCM"]`);
 	RCM_blockAll.forEach(function (RCM_block) {
@@ -407,7 +414,7 @@ function show_GCM_RCM(selectedButton) {
 	}
     }
 
-    get_selectedClimateChain();
+    // get_selectedClimateChain();
 }
 
 
@@ -419,10 +426,6 @@ function show_HM(selectedButton) {
     var HM = selectedButton.id.split('_')[1];
     
     if (HM === "HM") {
-	// var HM_blockAll = document.querySelectorAll(`[id^="block_"][id$="_HM"]`);
-	// HM_blockAll.forEach(function (HM_block) {
-	    // HM_block.style.display = 'none';
-	// });
 	var HM_selectedBlock = document.getElementById(`block_${BC}_HM`);
 	if (HM_selectedBlock.style.display === 'flex') {
 	    HM_selectedBlock.style.display = 'none';
@@ -506,20 +509,25 @@ function get_chain(array1, array2) {
 
 
 
-// function update() {
-    // update_data();
-// }
 
-
+function debounce(func, delay) {
+    let timerId;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timerId);
+        timerId = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+}
 
 
 let dataBackend;
 let data;
 let data_point;
 
-
 function update_data() {
-
     var n = get_n();
     var variable = get_variable();
     var horizon = get_horizon("futur");
@@ -560,10 +568,10 @@ function update_data() {
         console.error('Error:', error);
     });
 }
-
+const update_data_debounce = debounce(update_data, 1000);
+update_data_debounce();
 
 function update_data_point() {
-
     var variable = get_variable();
 
     var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
@@ -587,13 +595,14 @@ function update_data_point() {
     })
     .then(response => response.json())
     .then(dataBackend => {
-	data_point = dataBackend.data
+	data_point = dataBackend
 	console.log(data_point);
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
+const update_data_point_debounce = debounce(update_data_point, 1000);
 
 
 
@@ -819,13 +828,13 @@ Promise.all(promises)
 	geoJSONdata_river = geoJSONdata[1];
 	geoJSONdata_entiteHydro = geoJSONdata[2];
 
-	// update_data();
 	draw_map(geoJSONdata_france,
 		 geoJSONdata_river,
 		 geoJSONdata_entiteHydro,
 		 data);
-	// update();
-	update_data();
+
+	// update_data();
+	
     })
     .catch(error => {
 	console.error("Error loading or processing GeoJSON files:", error);
@@ -1034,8 +1043,7 @@ function draw_map(geoJSONdata_france,
 			}
 			highlight_selected_point();
 
-
-			update_data_point();
+			update_data_point_debounce();
 			
 			
 			document.getElementById("grid-point_code").innerHTML = point.code;
