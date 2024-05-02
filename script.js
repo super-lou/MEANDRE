@@ -67,39 +67,89 @@ function selectHorizonButton(selectedButton, sliderId) {
 
 
 
+// var threebar = $('.threebar')[0];
+// var threebar_class = threebar.getAttribute('class').split(' ')[1];
+// if (threebar_class === "hamburger") {
+// 	$('.threebar')
+// 	    .removeClass('hamburger')
+// 	    .addClass('cross');
+// } else if (threebar_class === "cross") {
+// 	$('.threebar')
+// 	    .removeClass('cross')
+// 	    .addClass('hamburger');
+// }
+
+function showSubTabs(tab) {
+    var subbar = $("[id^='" + tab.id+ "'][class='subbar']");
+    var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
+    
+    if (!subbar.hasClass("expanded")) {
+	subbar.addClass("expanded");
+	subtabs.each(function() {
+	    $(this).css("display", "flex");
+	});
+	setTimeout(() => {
+	    subtabs.each(function() {
+		$(this).addClass("expanded");
+	    });
+	}, 300);
+    }
+}
+
+function hideSubTabs(tab) {
+    var subbar = $("[id^='" + tab.id+ "'][class^='subbar']");
+    var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
+    
+    if (subbar.hasClass("expanded")) {
+	subtabs.each(function() {
+	    $(this).removeClass("expanded");
+	});
+	setTimeout(() => {
+	    subbar.removeClass("expanded");
+	    subtabs.each(function() {
+		$(this).css("display", "none");
+	    });
+	}, 300);
+	
+    }
+}
+
 
 function toggleMenu() {
-    var threebar = $('.threebar')[0];
-    var threebar_class = threebar.getAttribute('class').split(' ')[1];
-    if (threebar_class === "hamburger") {
-	$('.threebar')
-	    .removeClass('hamburger')
-	    .addClass('cross');
-    } else if (threebar_class === "cross") {
-	$('.threebar')
-	    .removeClass('cross')
-	    .addClass('hamburger');
-    }
-
-    /* const menuButton = document.getElementById("menuButton");
-       if (menuButton.classList.contains("expanded")) {
-       menuButton.classList.remove("expanded");
-       } else {
-       menuButton.classList.add("expanded");
-       } */
-
     const menu = document.getElementById("menu");
     const menuExpand = document.getElementById("menuExpand");
-    const menuSep = document.getElementById("menuSep");
-
+    const sep = document.getElementById("bar-tab_advance-sep");
+    const menuIcon = document.getElementById("bar-tab_advance-icon");
+    const title = document.getElementById("bar-tab_advance-text");
+    const crossIcon = document.getElementById("bar-tab_advance-close");
+    const button = document.getElementById("bar-tab_advance");
+    
     if (menu.classList.contains("expanded")) {
-	menu.classList.remove("expanded");
-	menuExpand.classList.add("hidden");
-	menuSep.classList.remove("sep");
+        menu.classList.remove("expanded");
+        menuExpand.classList.add("hidden");
+        sep.classList.remove("sep");
+        menuIcon.style.opacity = "1"; // Reset opacity for the menu icon
+        title.style.opacity = "1"; // Reset opacity for the title
+        crossIcon.style.opacity = "0"; // Hide the cross icon
+	button.style.width = "7.5rem";
+        setTimeout(() => {
+            crossIcon.style.display = "none";
+            menuIcon.style.display = "block"; // Show the menu icon
+            title.style.display = "block"; // Show the title
+        }, 300); // Delay hiding the cross icon after transition
     } else {
-	menu.classList.add("expanded");
-	menuExpand.classList.remove("hidden");
-	menuSep.classList.add("sep");
+        menu.classList.add("expanded");
+        menuExpand.classList.remove("hidden");
+        sep.classList.add("sep");
+	menuIcon.style.opacity = "0"; // Hide the menu icon
+        title.style.opacity = "0"; // Hide the title
+        crossIcon.style.display = "block";
+	button.style.width = "2rem";
+        setTimeout(() => { 
+            crossIcon.style.opacity = "1"; // Fade in the cross icon after showing it
+            menuIcon.style.display = "none"; // Hide the menu icon
+            title.style.display = "none"; // Hide the title
+        }, 300); // Delay showing the cross icon after transition
     }
 }
 
@@ -456,16 +506,16 @@ function get_chain(array1, array2) {
 
 
 
-function update() {
-    update_data();
-}
+// function update() {
+    // update_data();
+// }
 
 
 
 
 let dataBackend;
 let data;
-
+let data_point;
 
 
 function update_data() {
@@ -487,7 +537,7 @@ function update_data() {
         horizon: horizon,
     };
 
-    fetch('http://127.0.0.1:5000/', {
+    fetch('http://127.0.0.1:5000/delta', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -496,11 +546,7 @@ function update_data() {
     })
     .then(response => response.json())
     .then(dataBackend => {
-        console.log('Data received from backend');	
-	// console.log(dataBackend);
-
 	data = dataBackend.data
-	
 	draw_map(geoJSONdata_france,
 		    geoJSONdata_river,
 		    geoJSONdata_entiteHydro,
@@ -514,6 +560,41 @@ function update_data() {
         console.error('Error:', error);
     });
 }
+
+
+function update_data_point() {
+
+    var variable = get_variable();
+
+    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
+    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var exp = chain[0].split('_')[0].replace('-', '_');
+
+    var data_query = {
+	code: selected_code,
+        exp: exp,
+        chain: chain,
+        variable: variable
+    };
+
+    fetch('http://127.0.0.1:5000/serie', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data_query)
+    })
+    .then(response => response.json())
+    .then(dataBackend => {
+	data_point = dataBackend.data
+	console.log(data_point);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 
 
 function update_grid(dataBackend) {
@@ -570,10 +651,6 @@ function update_grid(dataBackend) {
     document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur du <b>" + period + "</b>";
     document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence du <b>01/01/1976</b> au <b>31/08/2005</b>";
 
-
-    // var gridElement = document.getElementById("grid-title_n");
-    // gridElement.textContent = n;
-    
 }
 
 
@@ -588,7 +665,7 @@ function close_grid(element) {
 
 
 function draw_colorbar(dataBackend) {
-    document.getElementById("grid-variable_unit").innerHTML = dataBackend.unit_fr;
+    // document.getElementById("grid-variable_unit").innerHTML = dataBackend.unit_fr;
 
     var bin = dataBackend.bin.slice(1, -1).reverse();
     var palette = dataBackend.palette.reverse();
@@ -598,7 +675,7 @@ function draw_colorbar(dataBackend) {
     const svg = d3.select("#svg-colorbar");
 
     svg.attr("height", (palette.length - 1) * step + shift * 2);
-    svg.attr("width", "50%");
+    svg.attr("width", "75%");
 
     // Update tick lines
     const lines = svg.selectAll(".tick-line")
@@ -619,13 +696,16 @@ function draw_colorbar(dataBackend) {
     const texts = svg.selectAll(".bin-text")
         .data(bin);
     texts.enter()
-        .append("text")
-        .attr("class", "bin-text")
-        .attr("x", 28)
-        .merge(texts)
-        .attr("y", (d, i) => i * step + step / 2 + shift + 4)
-        .text(d => {
-            return d > 0 ? "+" + d : d;
+	.append("text")
+	.attr("class", "bin-text")
+	.attr("x", 28)
+	.merge(texts)
+	.attr("y", (d, i) => i * step + step / 2 + shift + 4)
+	.html(d => {
+            console.log("Data:", d);
+            d = d > 0 ? "+" + d : d;
+	    d = d == 0 ? d : `<tspan>${d}</tspan>&nbsp;<tspan class="colorbar-unit">%</tspan>`;
+            return d;
 	});
     texts.exit().remove();
 
@@ -744,7 +824,8 @@ Promise.all(promises)
 		 geoJSONdata_river,
 		 geoJSONdata_entiteHydro,
 		 data);
-	update();
+	// update();
+	update_data();
     })
     .catch(error => {
 	console.error("Error loading or processing GeoJSON files:", error);
@@ -952,6 +1033,10 @@ function draw_map(geoJSONdata_france,
 			    document.getElementById("grid-point").style.display = "flex";
 			}
 			highlight_selected_point();
+
+
+			update_data_point();
+			
 			
 			document.getElementById("grid-point_code").innerHTML = point.code;
 
@@ -975,6 +1060,18 @@ function draw_map(geoJSONdata_france,
 			    "<span class='text-light'>Nombre de modèles hydrologiques: </span>" +
 			    point.n;
 			
+			var HM = get_HM();
+			var surface_HM = HM.map(hm => "surface_" +
+						hm.toLowerCase().replace('-', '_') +
+						"_km2");
+			surface_HM = surface_HM.map(x => point[x]);
+			var isnotNull = surface_HM.map(value => value !== null);
+			HM = HM.filter((_, index) => isnotNull[index]);
+
+			HM_available =
+			    HM.reduce((str, hm) => str + `${hm}&nbsp; `, "");
+			document.getElementById("grid-point_HM").innerHTML = HM_available;
+			
 			document.getElementById("grid-point_xl93").innerHTML =
 			    "<span class='text-light'>XL93: </span>" +
 			    Math.round(point.xl93_m) +
@@ -993,28 +1090,10 @@ function draw_map(geoJSONdata_france,
 			    Math.abs(point.lon_deg.toFixed(2)) +
 			    " <span class='text-light'>°</span>" + (point.lon_deg >= 0 ? "E" : "W") ;
 
-			var HM = get_HM();
-			var surface_HM = HM.map(hm => "surface_" +
-						hm.toLowerCase().replace('-', '_') +
-						"_km2");
-			surface_HM = surface_HM.map(x => point[x]);
-			var isnotNull = surface_HM.map(value => value !== null);
-			HM = HM.filter((_, index) => isnotNull[index]);
-			surface_HM = surface_HM.filter((_, index) => isnotNull[index]);
-			surface_HM = surface_HM.map(x => Math.round(x));
-
 			document.getElementById("grid-point_surface").innerHTML =
 			    "<span class='text-light'>Surface: </span>" +
 			    Math.round(point.surface_km2) +
 			    " <span class='text-light'>km<sup>2</sup></span>";
-			
-			surface =
-			    HM.reduce((str, hm, index) =>
-				      str +
-				      `<span class='text-light nowrap'>${hm}:&nbsp;</span>${surface_HM[index]}` +
-				      "&nbsp;<span class='text-light'>km<sup>2</sup></span>&nbsp;&nbsp; ",
-				      "");
-			document.getElementById("grid-point_surface_HM").innerHTML = surface;
 		    });
 	    }
 

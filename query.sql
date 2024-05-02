@@ -154,4 +154,14 @@ bc_average AS (
 -- ) b ON s.code = b.code;
 
 
+SELECT *
+FROM data_historical_rcp85_qa
+WHERE
+chain IN (
+'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SIM2',
+'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SMASH'
+)
+AND
+code = 'X211401001'
+LIMIT 100;
 

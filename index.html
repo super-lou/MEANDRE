@@ -45,6 +45,199 @@
 	
 	<div id="container_menu_bar_map_gallery">
 	    
+
+
+	    <div id="container_bar">
+		<div id="bar">
+
+		    <div class="bunch row nowrap">
+
+			<div id="bar-tab_intro" class="bar-tab"
+			     onmouseover="showSubTabs(this)" onmouseleave="hideSubTabs(this)">
+			    <span id="bar-tab_intro-icon" class="material-icons-outlined">water_drop</span>
+			    <span id="bar-tab_intro-text">Plus d'eau ou<br>moins d'eau ?</span>
+
+			    <div id="bar-tab_intro-tab" class="subbar">
+				<div id="bar-tab_intro-tab_disparite" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Disparité sur<br>le territoire
+				</div>
+				<div id="bar-tab_intro-tab_multi-modele" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    L'approche<br>multi-modèles
+				</div>
+				<div id="bar-tab_intro-tab_trajectoires" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Les trajectoires
+				</div>
+				<div id="bar-tab_intro-tab_narratifs" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Les narratifs
+				</div>
+			    </div>
+			</div>
+
+
+			<div class="sep"></div>
+
+			<div id="bar-tab_nord" class="bar-tab"
+				 onmouseover="showSubTabs(this)" onmouseleave="hideSubTabs(this)">
+			    <span id="bar-tab_nord-icon" class="material-icons-outlined">flood</span>
+			    <span id="bar-tab_nord-text">L'incertitude des crues</span>
+
+			    <div id="bar-tab_nord-tab" class="subbar">
+				<div id="bar-tab_nord-tab_crues" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Le régime<br>des crues
+				</div>
+				<div id="bar-tab_nord-tab_limite" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Où est la<br>limite ?
+				</div>
+				<div id="bar-tab_nord-tab_incertains" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Des futurs<br>incertains
+				</div>
+			    </div>
+			</div>
+
+			<div class="sep"></div>
+
+			<div id="bar-tab_sud" class="bar-tab"
+			     onmouseover="showSubTabs(this)" onmouseleave="hideSubTabs(this)">
+			    <span id="bar-tab_sud-icon" class="material-icons-outlined">trending_down</span>
+			    <span id="bar-tab_sud-text">La peur du manque</span>
+
+			    <div id="bar-tab_sud-tab" class="subbar">
+				<div id="bar-tab_sud-tab_crues" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Le régime<br>des étiages
+				</div>
+				<div id="bar-tab_sud-tab_intensite" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    L'intensité
+				</div>
+				<div id="bar-tab_sud-tab_duree" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    La durée
+				</div>
+				<div id="bar-tab_sud-tab_constat" class="subbar-tab">
+				    <div class="subbar-sep"></div>
+				    Le constat
+				</div>
+			    </div>
+			</div>
+
+
+			<div class="sep"></div>
+
+			<div id="bar-tab_other" class="bar-tab"
+				 onmouseover="showSubTabs(this)" onmouseleave="hideSubTabs(this)">
+			    <span id="bar-tab_sud-icon" class="material-icons-outlined">troubleshoot</span>
+			    <span id="bar-tab_sud-text">Prenons du recul</span>
+			</div>
+
+			<div class="sep"></div>
+			
+		    </div>
+
+		   
+
+		    <div id="bar-tab_space"></div>
+		    
+
+		    <div class="bunch row nowrap center cross-center">
+			<div class="sep"></div>
+			<div id="bar-tab_advance" class="bar-tab"
+			     onclick="toggleMenu(); get_selectedClimateChain();">
+			    <span id="bar-tab_advance-icon" class="material-icons-outlined">design_services</span>
+			    <span id="bar-tab_advance-text">Personnalisation avancée</span>
+			    <span id="bar-tab_advance-close" class="material-icons-outlined">close</span>
+			</div>
+			<div id="bar-tab_advance-sep" class="sep"></div>
+		    </div>
+		    
+		</div>
+		
+
+		
+		<div id="container_map">
+		    <div id="panel-hover">
+			<div class="bunch row column-small-gap center cross-center">
+			    <div id="panel-hover_code"></div>
+			    <div id="panel-hover_value"></div>
+			</div>
+		    </div>
+		    <svg id="geoJSONsvg_france"></svg>
+		</div>
+		
+		<div id="container_gallery">
+		    <div class="gallery">
+			
+			
+			<div class="gallery-item cross-center center row nowrap column-small-gap"
+			     style="grid-column: span 1; grid-row: span 5;">
+			    <!-- <span id="grid-variable_unit"></span> -->
+			    <svg id="svg-colorbar"></svg>
+			</div>
+
+			
+			<div id="grid-variable"
+			     class="gallery-item column center"
+			     style="grid-column: span 2; grid-row: span 2;">
+			    <div class="bunch row column-gap baseline">
+				<span id="grid-variable_variable"></span>
+				<span id="grid-variable_name"></span>
+			    </div>
+			    <span id="grid-variable_sampling-period"></span>
+			</div>
+
+			
+			<div id="grid-horizon"
+			     class="gallery-item column center"
+			     style="grid-column: span 3; grid-row: span 3;">
+			    <span id="grid-horizon_name"></span>
+			    <span id="grid-horizon_period-l1"></span>
+			    <span id="grid-horizon_period-l2"></span>
+			</div>
+
+			
+			<div id="grid-point"
+			     class="gallery-item column"
+			     style="grid-column: span 2; grid-row: span 1; display: none;">
+			    <div id="grid-point_cross"
+				 class="grid-cross material-icons-outlined" onclick="close_grid(this)">close</div>
+			    <div id="grid-point_code-value"
+				     class="bunch row column-gap cross-center">
+				<span id="grid-point_code"></span>
+				<span id="grid-point_value"></span>
+			    </div>
+			    <span id="grid-point_name"></span>
+			    <span id="grid-point_hr" class="grid-point_info"></span>
+			    <span id="grid-point_reference" class="grid-point_info"></span>
+			    <span id="grid-point_surface" class="grid-point_info"></span>
+			    
+			    <div class="bunch row column-gap">
+				<span id="grid-point_lat" class="grid-point_info"></span>
+				<span id="grid-point_lon" class="grid-point_info"></span>
+			    </div>
+			    <div class="bunch row column-gap">
+				<span id="grid-point_xl93" class="grid-point_info"></span>
+				<span id="grid-point_yl93" class="grid-point_info"></span>
+			    </div>
+
+			    <span id="grid-point_n" class="grid-point_info"></span>
+			    <span id="grid-point_HM" class="grid-point_info"></span>
+						    
+			</div>
+
+		    </div>
+		</div>
+	    </div>
+
+
+
+
             <div id="menu">
 		<div id="menuExpand" class="hidden">
 
@@ -574,133 +767,10 @@
 			    <div class="end-drawer"></div>
 			</div>
 		    </div>
-
-
-
-		    
-		    
-
-
 		</div>
             </div>
 
-
-	    <div id="container_bar">
-		<div id="bar" class="bunch">
-		    
-		    <div id="menuSep" class="sep big"></div>
-		    <!-- <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain(); update_colorHM();"> -->
-		    <div id="menuButton" onclick="toggleMenu(); get_selectedClimateChain();">
-			<div class='threebar hamburger'>	
-			    <div class='bar'></div>
-			    <div class='bar'></div>
-			    <div class='bar'></div>
-			</div>
-			<span class="threebarTitle">MENU</span>
-		    </div>
-		    
-		    <div class="sep"></div>
-		</div>
-		
-
-		
-		<div id="container_map">
-		    <div id="panel-hover">
-			<div class="bunch row column-small-gap center cross-center">
-			    <div id="panel-hover_code"></div>
-			    <div id="panel-hover_value"></div>
-			</div>
-		    </div>
-		    <svg id="geoJSONsvg_france"></svg>
-		</div>
-		
-		<div id="container_gallery">
-		    <div class="gallery">
-			
-			
-			<div class="gallery-item cross-center center row nowrap column-small-gap"
-			     style="grid-column: span 1; grid-row: span 5;">
-			    <span id="grid-variable_unit"></span>
-			    <svg id="svg-colorbar"></svg>
-			</div>
-
-			
-			<div id="grid-variable"
-			     class="gallery-item column center"
-			     style="grid-column: span 2; grid-row: span 2;">
-			    <div class="bunch row column-gap baseline">
-				<span id="grid-variable_variable"></span>
-				<span id="grid-variable_name"></span>
-			    </div>
-			    <span id="grid-variable_sampling-period"></span>
-			</div>
-
-			
-			<div id="grid-horizon"
-			     class="gallery-item column center"
-			     style="grid-column: span 3; grid-row: span 3;">
-			    <span id="grid-horizon_name"></span>
-			    <span id="grid-horizon_period-l1"></span>
-			    <span id="grid-horizon_period-l2"></span>
-			</div>
-
-			
-			<div id="grid-point"
-			     class="gallery-item column"
-			     style="grid-column: span 2; grid-row: span 1; display: none;">
-			    <div id="grid-point_cross"
-				 class="cross material-icons-outlined" onclick="close_grid(this)">close</div>
-			    <div id="grid-point_code-value"
-				     class="bunch row column-gap cross-center">
-				<span id="grid-point_code"></span>
-				<span id="grid-point_value"></span>
-			    </div>
-			    <span id="grid-point_name"></span>
-			    <span id="grid-point_hr" class="grid-point_info"></span>
-			    <span id="grid-point_n" class="grid-point_info"></span>
-			    <span id="grid-point_reference" class="grid-point_info"></span>
-
-			    <div class="bunch row column-gap">
-				<span id="grid-point_lat" class="grid-point_info"></span>
-				<span id="grid-point_lon" class="grid-point_info"></span>
-			    </div>
-			    <div class="bunch row column-gap">
-				<span id="grid-point_xl93" class="grid-point_info"></span>
-				<span id="grid-point_yl93" class="grid-point_info"></span>
-			    </div>
-
-			    <span id="grid-point_surface"></span>
-			    <span id="grid-point_surface_HM"></span>
-			</div>
-
-
-			
-
-			<!-- <div class="gallery-item"
-			     style="grid-column: span 1; grid-row: span 6;">
-			     <span>4</span>
-			     </div> -->
-			<!-- <div class="gallery-item horizontal-big">
-			     <span>5</span>
-			     </div>
-			     <div class="gallery-item vertical-big horizontal-big">
-			     <span>6</span>
-			     </div>
-			     <div class="gallery-item">
-			     <span>7</span>
-			     </div>
-			     <div class="gallery-item horizontal-mid vertical-big">
-			     <span>8</span>
-			     </div>
-			     <div class="gallery-item vertical-mid">
-			     <span>9</span>
-			     </div>
-			     <div class="gallery-item">
-			     <span>10</span>
-			     </div> -->
-		    </div>
-		</div>
-	    </div>
+	    
 	</div>
 	
 	

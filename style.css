@@ -304,16 +304,9 @@ h2 {
     background-color: #ffffff;
     color: #060508;
     transition: width 0.3s ease;
-    /* position: absolute; */
-    /* top: 0; */
-    /* bottom: 0; */
     z-index: 2;
     overflow-y: auto;
-    /* scrollbar-width: none; */
 }
-/* #menu::-webkit-scrollbar { */
-    /* display: none; */
-/* } */
 #menu.expanded {
     pointer-events: auto;
     width: 270px;
@@ -568,63 +561,113 @@ h2 {
     background: #ffffff;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
+    justify-content: space-between;
 }
 
-
-#menuButton {
+.bar-tab {
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
     cursor: pointer;
     background-color: transparent;
     color: #060508;
     cursor: pointer;
     height: auto;
-    width: auto;
-    margin: 0 0.6rem;   
+    transition: width 0.3s ease;
+    margin-left: 0.6rem;
+    margin-right: 0rem;
+    text-wrap: wrap;
+    line-height: 0.8rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
 }
-#menuButton:hover {
+.bar-tab:hover,
+.bar-tab:hover .material-icons-outlined{
     color: #70757A;
 }
-#menuButton:hover .threebar .bar {
-    background-color: #70757A;
-    /* transition: none; */
+
+#bar-tab_other {
+    margin-right: 0.6rem;
+}
+#bar-tab_space {
+    flex-grow: 1;
 }
 
-.threebarTitle {
+#bar-tab_advance {
+    width: 7.5rem;
+    margin-right: 0.6rem;
+    transition: width 0.3s ease;
+}
+#bar-tab_advance-icon, #bar-tab_advance-text, #bar-tab_advance-close {
+    transition: opacity 0.3s ease;
+}
+#bar-tab_advance-close {
+    display: none;
+    margin: 0 0.2rem;
+}
+#bar-tab_advance-close:hover {
+    color: #70757A;
+}
+
+
+
+.subbar {
+    transition: width 0.3s ease;
+    width: 0rem;
+    margin-left: 0.8rem;
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+    column-gap: 1.3rem;
+}
+.subbar.expanded {
+    width: 30rem;
+}
+#bar-tab_intro-tab.expanded {
+    width: 25rem !important;
+}
+#bar-tab_nord-tab.expanded {
+    width: 15rem !important;
+}
+#bar-tab_sud-tab.expanded {
+    width: 20rem !important;
+}
+
+.subbar-tab {
     font-family: "Raleway", sans-serif;
     font-weight: 600;
     font-size: 0.7rem;
+    cursor: pointer;
+    background-color: transparent;
+    color: #060508;
+    cursor: pointer;
+    min-height: 2rem;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    display: none;
+    text-wrap: wrap;
+    line-height: 0.8rem;
+    gap: 0.2rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.subbar-tab.expanded {
+    opacity: 1;
 }
 
-.threebar {
-    height: 11px;
-    width: 21px;
-    padding-top: 7px;
-    padding-left: 7px;
-    margin-bottom: -3px;
-}
-.threebar .bar {
-    position: absolute;
-    width: 18px;
-    height: 3px;
-    background: #060508;
-    /* transition: all 0.6s ease; */
-    transition: transform 0.6s ease;
-}
-.threebar .bar:nth-child(1) {
-    transform: translateY(-5px);
-}
-.threebar .bar:nth-child(3) {
-    transform: translateY(5px);
-}
-.threebar.cross .bar:nth-child(1) {
-    transform: rotate(45deg);
-}
-.threebar.cross .bar:nth-child(2) {
-    opacity: 0;
-}
-.threebar.cross .bar:nth-child(3) {
-    transform: rotate(-45deg);
+/* Hover effect for sub-tabs */
+.subbar-tab:hover,
+.subbar-tab:hover .material-icons-outlined {
+    color: #70757A;
 }
 
 
@@ -635,11 +678,59 @@ h2 {
     flex-wrap: nowrap;
     align-items: center;
     height: 50px;	     
-    border-left: 2px solid #F5F5F5;
-}
-.sep.big {
     border-left: 3px solid #F5F5F5;
 }
+
+.subbar-sep {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 20px;
+    margin-right: 0.1rem;
+    border-left: 3px solid #F5F5F5;
+}
+
+
+/* #bar-tab_advance-button:hover .threebar .bar { */
+/*     background-color: #70757A; */
+/* } */
+/* <div class='threebar hamburger'>	 */
+/* <div class='bar'></div> */
+/* <div class='bar'></div> */
+/* <div class='bar'></div> */
+/* </div> */
+/* .threebar { */
+/*     height: 11px; */
+/*     width: 21px; */
+/*     padding-top: 7px; */
+/*     padding-left: 7px; */
+/*     margin-bottom: -3px; */
+/* } */
+/* .threebar .bar { */
+/*     position: absolute; */
+/*     width: 18px; */
+/*     height: 3px; */
+/*     background: #060508; */
+/*     /\* transition: all 0.6s ease; *\/ */
+/*     transition: transform 0.6s ease; */
+/* } */
+/* .threebar .bar:nth-child(1) { */
+/*     transform: translateY(-5px); */
+/* } */
+/* .threebar .bar:nth-child(3) { */
+/*     transform: translateY(5px); */
+/* } */
+/* .threebar.cross .bar:nth-child(1) { */
+/*     transform: rotate(45deg); */
+/* } */
+/* .threebar.cross .bar:nth-child(2) { */
+/*     opacity: 0; */
+/* } */
+/* .threebar.cross .bar:nth-child(3) { */
+/*     transform: rotate(-45deg); */
+/* } */
+
 
 
 #container_map {
@@ -716,7 +807,7 @@ h2 {
 }
 
 
-.cross {
+.grid-cross {
     cursor: pointer;
     position: absolute;
     top: 0.4rem;
@@ -773,12 +864,13 @@ h2 {
 
 
 
-#grid-variable_unit {
-    font-family: "Raleway", sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #70757A;
-    writing-mode: sideways-lr;
+.colorbar-unit {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 0.7rem;
+    fill: #70757A;
+    
+    /* writing-mode: sideways-lr; */
 }
 .tick-line {
     stroke: #060508;
@@ -822,18 +914,13 @@ h2 {
     white-space: nowrap;
 }
 
-#grid-point_reference {
-    margin-bottom: 0.25rem;
-}
-
 #grid-point_surface {
-    margin-top: 0.2rem;
-}
-#grid-point_surface_HM {
-    margin-left: 0.3rem;
+    margin-bottom: 0.3rem;
 }
 
-
+#grid-point_n {
+    margin-top: 0.3rem;
+}
 
 @media (max-width: 768px) {
     /* #back { */

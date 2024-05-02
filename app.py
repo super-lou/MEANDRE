@@ -31,8 +31,9 @@ db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
 # Create the engine with a connection pool
 engine = create_engine(db_url, poolclass=QueuePool)
 
-@app.route('/', methods=['POST'])
-def index_post():
+
+@app.route('/delta', methods=['POST'])
+def delta_post():
     # Get parameters from the JSON payload
     data = request.json
     n = data.get('n')
@@ -145,6 +146,45 @@ def index_post():
     # Return the data as JSON response
     response = jsonify(response)
     return response
+
+
+
+@app.route('/serie', methods=['POST'])
+def serie_post():
+    # Get parameters from the JSON payload
+    data = request.json
+    code = data.get('code')
+    exp = data.get('exp')
+    chain = data.get('chain')
+    variable = data.get('variable')
+
+    connection = engine.connect()
+
+    sql_query = f"""
+    SELECT code, chain, date, value
+    FROM data_{exp}_{variable}
+    WHERE chain IN :chain AND code = '{code}';
+    """
+
+    result = connection.execute(
+        text(sql_query),
+        {'chain': tuple(chain)}
+    )
+    columns = result.keys()
+    rows = result.fetchall()
+
+    data = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows]
+
+    print(data)
+    
+    connection.close()
+    response = data
+    
+    # Return the data as JSON response
+    response = jsonify(response)
+    return response
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
