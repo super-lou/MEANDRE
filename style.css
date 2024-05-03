@@ -29,10 +29,15 @@ p {
 p.top-space {
     margin-top: 0.4rem;
 }
+p.top-big-space {
+    margin-top: 0.8rem;
+}
 p.bottom-space {
     margin-bottom: 0.4rem;
 }
-
+p.bottom-big-space {
+    margin-bottom: 0.8rem;
+}
 
 .chain_block {
     flex-wrap: wrap;
@@ -88,6 +93,9 @@ p.bottom-space {
 
 span.top-space {
     margin-top: 0.4rem;
+}
+span.align-start {
+    text-align: start;
 }
 
 .bunch.space {
@@ -225,40 +233,34 @@ button:hover .material-icons-outlined {
     font-weight: normal;
 }
 
-.EUPHORBE {
-    &.selected .notif {
-	background: #447C57;
-    }
-    &:hover .notif {
-	background: #447C5795;
-    }
+.vert, .vert.selected {
+    color: #569A71;
 }
-.NARCISSE {
-    &.selected .notif {
-	background: #E5E840;
-    }
-    &:hover .notif {
-	background: #E5E84095;
-    }
+.vert:hover {
+    color: #569A71;
+    opacity: 0.6;
 }
-.DAHLIA {
-    &.selected .notif {
-	background: #E2A13B;
-    }
-    &:hover .notif {
-	background: #E2A13B95;
-    }
+.jaune, .jaune.selected {
+    color: #EECC66;
 }
-.ASTER {
-    &.selected .notif {
-	background: #70194E;
-    }
-    &:hover .notif {
-	background: #70194E95;
-    }
+.jaune:hover {
+    color: #EECC66;
+    opacity: 0.6;
 }
-
-
+.orange, .orange.selected {
+    color: #E09B2F;
+}
+.orange:hover {
+    color: #E09B2F;
+    opacity: 0.6;
+}
+.violet, .violet.selected {
+    color: #791F5D;
+}
+.violet:hover {
+    color: #791F5D;
+    opacity: 0.6;
+}
 
 
 #container_menu_bar_map_gallery {
@@ -306,19 +308,24 @@ h3 {
     font-weight: 900;
     font-size: 1.3rem;
 
+    width: 14rem;
+    height: 3rem;
     color: #16171f;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    margin-left: 0.5rem;
-    margin-right: 1.5rem;
+
 }
 
 .logo img {
-    height: 40px;
-    padding-bottom: 10px;
-    padding-right: 10px;
+    height: 2.5rem;
+    padding-bottom: 0.4rem;
+    padding-right: 0.8rem;
+    padding-left: 0.5rem;
+}
+.logo span {
+    padding-right: 1.5rem;
 }
 
 
@@ -352,8 +359,8 @@ h3 {
 /* DRAWER */
 .drawer {
     position: relative;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
     border-top: 2px solid #70757A;
 }
 .subdrawer {
@@ -569,16 +576,36 @@ h3 {
     flex-wrap: wrap;
 }
 
-#bar {
+#full-bar {
+    width: 100%;
     height: 3rem;
-    width: 100%; 
     background: #ffffff;
-    /* display: flex; */
-    /* flex-direction: row; */
-    /* flex-wrap: nowrap; */
-    /* align-items: center; */
-    /* justify-content: space-between; */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
 }
+
+#bar {
+    width: calc(100vw - 14rem - 9rem - 6px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+    transition: width 0.3s ease;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+}
+#bar.expanded {
+    width: calc(100vw - 14rem - 18rem - 6px);
+}
+
+
 
 .bar-tab {
     font-family: "Raleway", sans-serif;
@@ -607,7 +634,7 @@ h3 {
 }
 
 #bar-tab_other {
-    margin-right: 0.6rem;
+    margin-right: 0.9rem;
 }
 #bar-tab_space {
     flex-grow: 1;
@@ -618,22 +645,55 @@ h3 {
     right: 0;
     top: 0;
     background: #ffffff;
-    broder: none;
+    width: 9rem;
+    height: 3rem;
+}
+#button-advance.expanded {
+    width: 0rem;
 }
 #bar-tab_advance {
-    width: 7.5rem;
-    height: 3rem;
     margin-right: 0.6rem;
     transition: width 0.3s ease;
 }
 #bar-tab_advance-icon, #bar-tab_advance-text, #bar-tab_advance-close {
     transition: opacity 0.3s ease;
+    opacity: 1; 
 }
+#bar-tab_advance-icon.expanded,
+#bar-tab_advance-text.expanded {
+    opacity: 0; 
+}
+
 #bar-tab_close-advance {
     height: 3rem;
 }
 
 
+#left-arrow {
+    left: 0.5rem;
+}
+#right-arrow {
+    right: 0.5rem;
+}
+.arrow {
+    cursor: pointer;
+    position: sticky;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    display: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+    z-index: 10;
+    margin: 0.1rem;
+}
+.arrow.show {
+    display: flex;
+}
 
 .subbar {
     transition: max-width 0.3s ease;

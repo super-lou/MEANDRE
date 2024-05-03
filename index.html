@@ -48,17 +48,21 @@
 
 
 	    <div id="container_bar">
-		<div id="bar">
 
-		    <div class="bunch row nowrap">
+		<div id="full-bar">
 
-			<div class="logo">
-			    <img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
-			    <span>MEANDRE</span>
-			</div>
+		    <div class="logo">
+			<img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
+			<span>MEANDRE</span>
+		    </div>
 
-			<div class="sep"></div>
+		    <div class="sep"></div>
 
+		    <div id="bar">
+			
+			<div id="left-arrow" class="arrow material-icons-outlined"
+			     onclick="scroll_bar_left()">keyboard_arrow_left</div>
+			
 			<div id="bar-tab_intro" class="bar-tab"
 			     onclick="toggle_subtab(this)">
 			    <span id="bar-tab_intro-icon" class="material-icons-outlined">water_drop</span>
@@ -143,29 +147,27 @@
 			    <span id="bar-tab_sud-text">Prenons du recul</span>
 			</div>
 
-			<div class="sep"></div>
+			<div id="last-sep" class="sep"></div>
 
-			<div id="bar-tab_space"></div>
-			<div id="advance-sep_left" class="sep"></div>
-					    
-		    </div>
-
-		   
-
-
-		    
-		    <div id="button-advance" class="bunch row nowrap center cross-center">
-			<div class="sep"></div>
-			<div id="bar-tab_advance" class="bar-tab"
-			     onclick="toggleMenu();">
-			    <span id="bar-tab_advance-icon" class="material-icons-outlined">design_services</span>
-			    <span id="bar-tab_advance-text">Personnalisation<br>avancée</span>
-			</div>
+			<div id="right-arrow" class="arrow material-icons-outlined"
+			     onclick="scroll_bar_right()">keyboard_arrow_right</div>
+			<!-- <div id="bar-tab_space"></div> -->
 			
 		    </div>
 		    
+		    <div class="sep" style="z-index:10;"></div>
+		    
 		</div>
 		
+		
+		<div id="button-advance" class="bunch row nowrap center cross-center">
+		    <div id="bar-tab_advance" class="bar-tab"
+			 onclick="toggleMenu();">
+			<span id="bar-tab_advance-icon" class="material-icons-outlined">design_services</span>
+			<span id="bar-tab_advance-text">Personnalisation<br>avancée</span>
+		    </div>
+		</div>
+				    
 
 		
 		<div id="container_map">
@@ -248,6 +250,7 @@
 		<div id="menuExpand" class="hidden">
 
 		    <div class="bunch row nowrap cross-center">
+			<!-- <div class="sep"></div> -->
 			<div id="bar-tab_close-advance" class="bar-tab"
 			     onclick="toggleMenu();">
 			    <span id="bar-tab_close-advance-icon" class="material-icons-outlined">close</span>
@@ -358,14 +361,18 @@
 				</div>
 				<div class="drawer-content" id="drawer-RCP-content">
 				    <p class="bottom-space">Le scénario climatique défini le niveau d'émission de gaz à effet de serre.</p>
-				    <div id="bunch_RCP" class="bunch space">
-					<button id="26_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				    <p class="bottom-space">Le RCP 2.6 est un scénario où des efforts importants sont fait pour réduire les émissions.<br>Le RCP 4.5 est un scénario médian.<br>Le RCP 8.5 est le scénario où l'augmentation des émissions continue selon la tendance actuelle.</p>
+				    <div id="bunch_RCP_only" class="bunch space">
+					<button id="26_only" value="26"
+						onclick="selectAllButton(this); show_GCM_RCM(this);">
 					    <span>RCP 2.6</span>
 					</button>
-					<button id="45_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
+					<button id="45_only" value="45"
+						onclick="selectAllButton(this); show_GCM_RCM(this);">
 					    <span>RCP 4.5</span>
 					</button>
-					<button id="85_GCM" class="selected" onclick="selectAllButton(this); show_GCM_RCM(this);">
+					<button id="85_only" value="85" class="selected"
+						onclick="selectAllButton(this); show_GCM_RCM(this);">
 					    <span>RCP 8.5</span>
 					</button>
 				    </div>
@@ -379,19 +386,36 @@
 				    <span id="drawer-narratif-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
 				</div>
 				<div class="drawer-content" id="drawer-narratif-content">
-				    <p class="bottom-space">Les narratif sont.</p>
+				    <p class="bottom-big-space">Quatres futurs climatiques possibles sont mis en avant. Ils sont appelé narratifs et on été selectionné pour représenter quatres types de futures possibles en terme de précipitation et de température.</p>
+				    
 				    <div id="bunch_narratif" class="bunch column space">
-					<button id="N1">
-					    <span>RCP 2.6</span>
+
+					<p class="top-space">Fort réchauffement et fort assèchement en été</p>
+					<button id="narratif-violet"
+						value="85_HadGEM2-ES_CCLM4-8-17_ADAMONT"
+						class="violet selected" onclick="selectAllButton(this);">
+					    <span class="align-start">RCP 8.5 HadGEM2-ES CCLM4-8-17 ADAMONT</span>
 					</button>
-					<button id="N2">
-					    <span>RCP 4.5</span>
+
+					<p class="top-space">Sec toute l’année, recharge moindre en hiver</p>
+					<button id="narratif-orange"
+						value="85_EC-EARTH_HadREM3-GA7_ADAMONT"
+						class="orange" onclick="selectAllButton(this);">
+					    <span class="align-start">RCP 8.5 EC-EARTH HadREM3-GA7 ADAMONT</span>
 					</button>
-					<button id="N3">
-					    <span>RCP 8.5</span>
+
+					<p class="top-space">Modéré en réchauffement et en changement de précipitations</p>
+					<button id="narratif-jaune"
+						value="85_CNRM-CM5_ALADIN63_ADAMONT"
+						class="jaune" onclick="selectAllButton(this);">
+					    <span class="align-start">RCP 8.5 CNRM-CM5 ALADIN63 ADAMONT</span>
 					</button>
-					<button id="N4" class="selected">
-					    <span>RCP 8.5</span>
+
+					<p class="top-space">Chaud et humide à toutes les saisons</p>
+					<button id="narratif-vert"
+						value="85_HadGEM2-ES_ALADIN63_ADAMONT"
+						class="vert" onclick="selectAllButton(this);">
+					    <span class="align-start">RCP 8.5 HadGEM2-ES ALADIN63 ADAMONT</span>
 					</button>
 				    </div>
 				    <div class="end-subdrawer"></div>
@@ -419,25 +443,25 @@
 					</button>
 				    </div>
 				    
-				    <h3 class="top-section">Modèle de Circulation Générale</h3>
+				    <h3>Modèle de Circulation Générale</h3>
 				    <div id="block_26_GCM" class="chain_block" style="display: none;">
 					<button id="button_26_GCM" class="chain_block_button" onclick="toggleBlock(this)">
 					    RCP 2.6
 					</button>
 					<div id="bunch_26_GCM" class="bunch space left-border">
-					    <button id="26_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="26_CNRM-CM5_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>CNRM-CM5</span>
 					    </button>
-					    <button id="26_EC-EARTH_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="26_EC-EARTH_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>EC-EARTH</span>
 					    </button>
-					    <button id="26_HadGEM2-ES_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="26_HadGEM2-ES_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>HadGEM2-ES</span>
 					    </button>
-					    <button id="26_MPI-ESM-LR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="26_MPI-ESM-LR_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>MPI-ESM-LR</span>
 					    </button>
-					    <button id="26_NorESM1-M_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="26_NorESM1-M_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>NorESM1-M</span>
 					    </button>
 					</div>
@@ -448,22 +472,22 @@
 					    RCP 4.5
 					</button>
 					<div id="bunch_45_GCM" class="bunch space left-border">
-					    <button id="45_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="45_CNRM-CM5_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>CNRM-CM5</span>
 					    </button>
-					    <button id="45_EC-EARTH_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="45_EC-EARTH_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>EC-EARTH</span>
 					    </button>
-					    <button id="45_HadGEM2-ES_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="45_HadGEM2-ES_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>HadGEM2-ES</span>
 					    </button>
-					    <button id="45_IPSL-CM5A-MR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="45_IPSL-CM5A-MR_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>IPSL-CM5A-MR</span>
 					    </button>
-					    <button id="45_MPI-ESM-LR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="45_MPI-ESM-LR_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>MPI-ESM-LR</span>
 					    </button>
-					    <button id="45_NorESM1-M_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="45_NorESM1-M_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>NorESM1-M</span>
 					    </button>
 					</div>
@@ -474,22 +498,22 @@
 					    RCP 8.5
 					</button>
 					<div id="bunch_85_GCM" class="bunch space left-border">
-					    <button id="85_CNRM-CM5_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="85_CNRM-CM5_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>CNRM-CM5</span>
 					    </button>
-					    <button id="85_EC-EARTH_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="85_EC-EARTH_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>EC-EARTH</span>
 					    </button>
-					    <button id="85_HadGEM2-ES_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="85_HadGEM2-ES_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>HadGEM2-ES</span>
 					    </button>
-					    <button id="85_IPSL-CM5A-MR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="85_IPSL-CM5A-MR_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>IPSL-CM5A-MR</span>
 					    </button>
-					    <button id="85_MPI-ESM-LR_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="85_MPI-ESM-LR_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>MPI-ESM-LR</span>
 					    </button>
-					    <button id="85_NorESM1-M_RCM" class="selected" onclick="selectButton(this); show_GCM_RCM(this);">
+					    <button id="85_NorESM1-M_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
 						<span>NorESM1-M</span>
 					    </button>
 					</div>
@@ -503,11 +527,8 @@
 					    CNRM-CM5
 					</button>
 					<div id="bunch_26_CNRM-CM5_RCM" class="bunch space left-border">
-					    <button id="26_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+					    <button id="26_CNRM-CM5_ALADIN63" class="chain_26 selected" onclick="selectButton(this)">
 						<span>ALADIN63</span>
-					    </button>
-					    <button id="26_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
-						<span>RACMO22E</span>
 					    </button>
 					</div>
 				    </div>
@@ -516,11 +537,8 @@
 					    CNRM-CM5
 					</button>
 					<div id="bunch_45_CNRM-CM5_RCM" class="bunch space left-border">
-					    <button id="45_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+					    <button id="45_CNRM-CM5_ALADIN63" class="chain_45 selected" onclick="selectButton(this)">
 						<span>ALADIN63</span>
-					    </button>
-					    <button id="45_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
-						<span>RACMO22E</span>
 					    </button>
 					</div>
 				    </div>
@@ -529,13 +547,10 @@
 					    CNRM-CM5
 					</button>
 					<div id="bunch_85_CNRM-CM5_RCM" class="bunch space left-border">
-					    <button id="85_CNRM-CM5_ALADIN63" class="selected" onclick="selectButton(this)">
+					    <button id="85_CNRM-CM5_ALADIN63" class="chain_85 selected" onclick="selectButton(this)">
 						<span>ALADIN63</span>
 					    </button>
-					    <button id="85_CNRM-CM5_RACMO22E" class="selected" onclick="selectButton(this)">
-						<span>RACMO22E</span>
-					    </button>
-					    <button id="85_CNRM-CM5_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					    <button id="85_CNRM-CM5_HadREM3-GA7" class="chain_85 selected" onclick="selectButton(this)">
 						<span>HadREM3-GA7</span>
 					    </button>
 					</div>
@@ -547,13 +562,13 @@
 					    EC-EARTH
 					</button>
 					<div id="bunch_26_EC-EARTH_RCM" class="bunch space left-border">
-					    <button id="26_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+					    <button id="26_EC-EARTH_RACMO22E" class="chain_26 selected" onclick="selectButton(this)">
 						<span>RACMO22E</span>
 					    </button>
-					    <button id="26_EC-EARTH_RCA4" class="selected" onclick="selectButton(this)">
+					    <button id="26_EC-EARTH_RCA4" class="chain_26 selected" onclick="selectButton(this)">
 						<span>RCA4</span>
 					    </button>
-					    <button id="26_EC-EARTH_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					    <button id="26_EC-EARTH_HadREM3-GA7" class="chain_26 selected" onclick="selectButton(this)">
 						<span>HadREM3-GA7</span>
 					    </button>
 					</div>
@@ -563,10 +578,10 @@
 					    EC-EARTH
 					</button>
 					<div id="bunch_45_EC-EARTH_RCM" class="bunch space left-border">
-					    <button id="45_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+					    <button id="45_EC-EARTH_RACMO22E" class="chain_45 selected" onclick="selectButton(this)">
 						<span>RACMO22E</span>
 					    </button>
-					    <button id="45_EC-EARTH_RCA4" class="selected" onclick="selectButton(this)">
+					    <button id="45_EC-EARTH_RCA4" class="chain_45 selected" onclick="selectButton(this)">
 						<span>RCA4</span>
 					    </button>
 					</div>
@@ -576,13 +591,13 @@
 					    EC-EARTH
 					</button>
 					<div id="bunch_85_EC-EARTH_RCM" class="bunch space left-border">
-					    <button id="85_EC-EARTH_RACMO22E" class="selected" onclick="selectButton(this)">
+					    <button id="85_EC-EARTH_RACMO22E" class="chain_85 selected" onclick="selectButton(this)">
 						<span>RACMO22E</span>
 					    </button>
-					    <button id="85_EC-EARTH_RCA4" class="selected" onclick="selectButton(this)">
+					    <button id="85_EC-EARTH_RCA4" class="chain_85 selected" onclick="selectButton(this)">
 						<span>RCA4</span>
 					    </button>
-					    <button id="85_EC-EARTH_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					    <button id="85_EC-EARTH_HadREM3-GA7" class="chain_85 selected" onclick="selectButton(this)">
 						<span>HadREM3-GA7</span>
 					    </button>
 					</div>
@@ -594,10 +609,10 @@
 					    HadGEM2-ES
 					</button>
 					<div id="bunch_26_HadGEM2-ES_RCM" class="bunch space left-border">
-					    <button id="26_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
+					    <button id="26_HadGEM2-ES_RegCM4-6" class="chain_26 selected" onclick="selectButton(this)">
 						<span>RegCM4-6</span>
 					    </button>
-					    <button id="26_HadGEM2-ES_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					    <button id="26_HadGEM2-ES_HadREM3-GA7" class="chain_26 selected" onclick="selectButton(this)">
 						<span>HadREM3-GA7</span>
 					    </button>
 					</div>
@@ -607,7 +622,7 @@
 					    HadGEM2-ES
 					</button>
 					<div id="bunch_45_HadGEM2-ES_RCM" class="bunch space left-border">
-					    <button id="45_HadGEM2-ES_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					    <button id="45_HadGEM2-ES_CCLM4-8-17" class="chain_45 selected" onclick="selectButton(this)">
 						<span>CCLM4-8-17</span>
 					    </button>
 					</div>
@@ -617,16 +632,16 @@
 					    HadGEM2-ES
 					</button>
 					<div id="bunch_85_HadGEM2-ES_RCM" class="bunch space left-border">
-					    <button id="85_HadGEM2-ES_ALADIN63" class="selected" onclick="selectButton(this)">
+					    <button id="85_HadGEM2-ES_ALADIN63" class="chain_85 selected" onclick="selectButton(this)">
 						<span>ALADIN63</span>
 					    </button>
-					    <button id="85_HadGEM2-ES_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					    <button id="85_HadGEM2-ES_CCLM4-8-17" class="chain_85 selected" onclick="selectButton(this)">
 						<span>CCLM4-8-17</span>
 					    </button>
-					    <button id="85_HadGEM2-ES_RegCM4-6" class="selected" onclick="selectButton(this)">
+					    <button id="85_HadGEM2-ES_RegCM4-6" class="chain_85 selected" onclick="selectButton(this)">
 						<span>RegCM4-6</span>
 					    </button>
-					    <button id="85_HadGEM2-ES_HadREM3-GA7" class="selected" onclick="selectButton(this)">
+					    <button id="85_HadGEM2-ES_HadREM3-GA7" class="chain_85 selected" onclick="selectButton(this)">
 						<span>HadREM3-GA7</span>
 					    </button>
 					</div>
@@ -638,11 +653,8 @@
 					    IPSL-CM5A-MR
 					</button>
 					<div id="bunch_45_IPSL-CM5A-MR_RCM" class="bunch space left-border">
-					    <button id="45_IPSL-CM5A-MR_RCA4" class="selected" onclick="selectButton(this)">
+					    <button id="45_IPSL-CM5A-MR_RCA4" class="chain_45 selected" onclick="selectButton(this)">
 						<span>RCA4</span>
-					    </button>
-					    <button id="45_IPSL-CM5A-MR_WRF381P" class="selected" onclick="selectButton(this)">
-						<span>WRF381P</span>
 					    </button>
 					</div>
 				    </div>
@@ -651,14 +663,11 @@
 					    IPSL-CM5A-MR
 					</button>
 					<div id="bunch_85_IPSL-CM5A-MR_RCM" class="bunch space left-border">
-					    <button id="85_IPSL-CM5A-MR_HIRHAM5" class="selected" onclick="selectButton(this)">
+					    <button id="85_IPSL-CM5A-MR_HIRHAM5" class="chain_85 selected" onclick="selectButton(this)">
 						<span>HIRHAM5</span>
 					    </button>
-					    <button id="85_IPSL-CM5A-MR_RCA4" class="selected" onclick="selectButton(this)">
+					    <button id="85_IPSL-CM5A-MR_RCA4" class="chain_85 selected" onclick="selectButton(this)">
 						<span>RCA4</span>
-					    </button>
-					    <button id="85_IPSL-CM5A-MR_WRF381P" class="selected" onclick="selectButton(this)">
-						<span>WRF381P</span>
 					    </button>
 					</div>
 				    </div>
@@ -669,13 +678,13 @@
 					    MPI-ESM-LR
 					</button>
 					<div id="bunch_26_MPI-ESM-LR_RCM" class="bunch space left-border">
-					    <button id="26_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					    <button id="26_MPI-ESM-LR_CCLM4-8-17" class="chain_26 selected" onclick="selectButton(this)">
 						<span>CCLM4-8-17</span>
 					    </button>
-					    <button id="26_MPI-ESM-LR_RegCM4-6" class="selected" onclick="selectButton(this)">
+					    <button id="26_MPI-ESM-LR_RegCM4-6" class="chain_26 selected" onclick="selectButton(this)">
 						<span>RegCM4-6</span>
 					    </button>
-					    <button id="26_MPI-ESM-LR_REMO" class="selected" onclick="selectButton(this)">
+					    <button id="26_MPI-ESM-LR_REMO" class="chain_26 selected" onclick="selectButton(this)">
 						<span>REMO</span>
 					    </button>
 					</div>
@@ -685,10 +694,10 @@
 					    MPI-ESM-LR
 					</button>
 					<div id="bunch_45_MPI-ESM-LR_RCM" class="bunch space left-border">
-					    <button id="45_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					    <button id="45_MPI-ESM-LR_CCLM4-8-17" class="chain_45 selected" onclick="selectButton(this)">
 						<span>CCLM4-8-17</span>
 					    </button>
-					    <button id="45_MPI-ESM-LR_REMO" class="selected" onclick="selectButton(this)">
+					    <button id="45_MPI-ESM-LR_REMO" class="chain_45 selected" onclick="selectButton(this)">
 						<span>REMO</span>
 					    </button>
 					</div>
@@ -698,13 +707,13 @@
 					    MPI-ESM-LR
 					</button>
 					<div id="bunch_85_MPI-ESM-LR_RCM" class="bunch space left-border">
-					    <button id="85_MPI-ESM-LR_CCLM4-8-17" class="selected" onclick="selectButton(this)">
+					    <button id="85_MPI-ESM-LR_CCLM4-8-17" class="chain_85 selected" onclick="selectButton(this)">
 						<span>CCLM4-8-17</span>
 					    </button>
-					    <button id="85_MPI-ESM-LR_RegCM4-6" class="selected" onclick="selectButton(this)">
+					    <button id="85_MPI-ESM-LR_RegCM4-6" class="chain_85 selected" onclick="selectButton(this)">
 						<span>RegCM4-6</span>
 					    </button>
-					    <button id="85_MPI-ESM-LR_REMO" class="selected" onclick="selectButton(this)">
+					    <button id="85_MPI-ESM-LR_REMO" class="chain_85 selected" onclick="selectButton(this)">
 						<span>REMO</span>
 					    </button>
 					</div>
@@ -716,7 +725,7 @@
 					    NorESM1-M
 					</button>
 					<div id="bunch_26_NorESM1-M_RCM" class="bunch space left-border">
-					    <button id="26_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
+					    <button id="26_NorESM1-M_REMO" class="chain_26 selected" onclick="selectButton(this)">
 						<span>REMO</span>
 					    </button>
 					</div>
@@ -726,10 +735,10 @@
 					    NorESM1-M
 					</button>
 					<div id="bunch_45_NorESM1-M_RCM" class="bunch space left-border">
-					    <button id="45_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
+					    <button id="45_NorESM1-M_HIRHAM5" class="chain_45 selected" onclick="selectButton(this)">
 						<span>HIRHAM5</span>
 					    </button>
-					    <button id="45_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
+					    <button id="45_NorESM1-M_REMO" class="chain_45 selected" onclick="selectButton(this)">
 						<span>REMO</span>
 					    </button>
 					</div>
@@ -739,13 +748,13 @@
 					    <span>NorESM1-M</span>
 					</button>
 					<div id="bunch_85_NorESM1-M_RCM" class="bunch space left-border">
-					    <button id="85_NorESM1-M_HIRHAM5" class="selected" onclick="selectButton(this)">
+					    <button id="85_NorESM1-M_HIRHAM5" class="chain_85 selected" onclick="selectButton(this)">
 						<span>HIRHAM5</span>
 					    </button>
-					    <button id="85_NorESM1-M_REMO" class="selected" onclick="selectButton(this)">
+					    <button id="85_NorESM1-M_REMO" class="chain_85 selected" onclick="selectButton(this)">
 						<span>REMO</span>
 					    </button>
-					    <button id="85_NorESM1-M_WRF381P" class="selected" onclick="selectButton(this)">
+					    <button id="85_NorESM1-M_WRF381P" class="chain_85 selected" onclick="selectButton(this)">
 						<span>WRF381P</span>
 					    </button>
 					</div>
@@ -754,10 +763,10 @@
 
 				    <h3>Correction de Biais</h3>
 				    <div id="bunch_BC" class="bunch space" style="display: flex;">
-					<button id="ADAMONT_HM" class="selected" onclick="selectButton(this); show_HM(this);">
+					<button id="ADAMONT_HM" class="chain selected" onclick="selectButton(this); show_HM(this);">
 					    <span>ADAMONT</span>
 					</button>
-					<button id="CDFt_HM" class="selected" onclick="selectButton(this); show_HM(this);">
+					<button id="CDFt_HM" class="chain selected" onclick="selectButton(this); show_HM(this);">
 					    <span>CDFt</span>
 					</button>
 				    </div>
@@ -768,31 +777,31 @@
 					    ADAMONT
 					</button>
 					<div id="bunch_ADAMONT_HM" class="bunch space left-border">
-					    <button id="ADAMONT_CTRIP" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_CTRIP" class="chain selected" onclick="selectButton(this)">
 						<span>CTRIP</span>
 					    </button>
-					    <button id="ADAMONT_EROS" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_EROS" class="chain selected" onclick="selectButton(this)">
 						<span>EROS</span>
 					    </button>
-					    <button id="ADAMONT_GRSD" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_GRSD" class="chain selected" onclick="selectButton(this)">
 						<span>GRSD</span>
 					    </button>
-					    <button id="ADAMONT_J2000" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_J2000" class="chain selected" onclick="selectButton(this)">
 						<span>J2000</span>
 					    </button>
-					    <button id="ADAMONT_MORDOR-SD" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_MORDOR-SD" class="chain selected" onclick="selectButton(this)">
 						<span>MORDOR-SD</span>
 					    </button>
-					    <button id="ADAMONT_MORDOR-TS" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_MORDOR-TS" class="chain selected" onclick="selectButton(this)">
 						<span>MORDOR-TS</span>
 					    </button>
-					    <button id="ADAMONT_ORCHIDEE" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_ORCHIDEE" class="chain selected" onclick="selectButton(this)">
 						<span>ORCHIDEE</span>
 					    </button>
-					    <button id="ADAMONT_SIM2" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_SIM2" class="chain selected" onclick="selectButton(this)">
 						<span>SIM2</span>
 					    </button>
-					    <button id="ADAMONT_SMASH" class="selected" onclick="selectButton(this)">
+					    <button id="ADAMONT_SMASH" class="chain selected" onclick="selectButton(this)">
 						<span>SMASH</span>
 					    </button>
 					</div>
@@ -802,22 +811,22 @@
 					    CDFt
 					</button>
 					<div id="bunch_CDFt_HM" class="bunch space left-border">
-					    <button id="CDFt_EROS" class="selected" onclick="selectButton(this)">
+					    <button id="CDFt_EROS" class="chain selected" onclick="selectButton(this)">
 						<span>EROS</span>
 					    </button>
-					    <button id="CDFt_GRSD" class="selected" onclick="selectButton(this)">
+					    <button id="CDFt_GRSD" class="chain selected" onclick="selectButton(this)">
 						<span>GRSD</span>
 					    </button>
-					    <button id="CDFt_J2000" class="selected" onclick="selectButton(this)">
+					    <button id="CDFt_J2000" class="chain selected" onclick="selectButton(this)">
 						<span>J2000</span>
 					    </button>
-					    <button id="CDFt_MORDOR-SD" class="selected" onclick="selectButton(this)">
+					    <button id="CDFt_MORDOR-SD" class="chain selected" onclick="selectButton(this)">
 						<span>MORDOR-SD</span>
 					    </button>
-					    <button id="CDFt_MORDOR-TS" class="selected" onclick="selectButton(this)">
+					    <button id="CDFt_MORDOR-TS" class="chain selected" onclick="selectButton(this)">
 						<span>MORDOR-TS</span>
 					    </button>
-					    <button id="CDFt_SMASH" class="selected" onclick="selectButton(this)">
+					    <button id="CDFt_SMASH" class="chain selected" onclick="selectButton(this)">
 						<span>SMASH</span>
 					    </button>
 					</div>

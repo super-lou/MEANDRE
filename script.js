@@ -78,68 +78,70 @@ function selectHorizonButton(selectedButton) {
 // 	    .addClass('hamburger');
 // }
 
-function showSubTabs(tab) {
-    var subbar = $("[id^='" + tab.id+ "'][class='subbar']");
-    var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
-    
-    if (!subbar.hasClass("expanded")) {
-	subbar.addClass("expanded");
-	subtabs.each(function() {
-	    $(this).css("display", "flex");
-	});
-	setTimeout(() => {
-	    subtabs.each(function() {
-		$(this).addClass("expanded");
-	    });
-	}, 300);
-    }
-}
-
-// function hideSubTabs(tab) {
-//     var subbar = $("[id^='" + tab.id+ "'][class^='subbar']");
-//     var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
-    
-//     if (subbar.hasClass("expanded")) {
-// 	subtabs.each(function() {
-// 	    $(this).removeClass("expanded");
-// 	});
-// 	setTimeout(() => {
-// 	    subbar.removeClass("expanded");
-// 	    subtabs.each(function() {
-// 		$(this).css("display", "none");
-// 	    });
-// 	}, 300);
-	
-//     }
-// }
 
 function toggle_subtab(tab) {
-    var subbar = $("[id^='" + tab.id+ "'][class^='subbar']");
-    var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
+    var subbars = $('.subbar');
+    subbars.each(function() {
+	var subbar = $(this);
+	var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
 
-    if (subbar.hasClass("expanded")) {
-	subtabs.each(function() {
-	    $(this).removeClass("expanded");
-	});
-	setTimeout(() => {
-	    subbar.removeClass("expanded");
+	if (subbar.hasClass("expanded")) {
 	    subtabs.each(function() {
-		$(this).css("display", "none");
+		$(this).removeClass("expanded");
 	    });
-	}, 300);
-	
+	    setTimeout(() => {
+		subbar.removeClass("expanded");
+		subtabs.each(function() {
+		    $(this).css("display", "none");
+		});
+	    }, 300);
+	    
+	} else if (subbar.attr("id").startsWith(tab.id)) {
+	    subbar.addClass("expanded");
+	    subtabs.each(function() {
+		$(this).css("display", "flex");
+	    });
+	    setTimeout(() => {
+		subtabs.each(function() {
+		    $(this).addClass("expanded");
+		});
+	    }, 300);
+	}
+    });
+
+    setTimeout(() => {
+	check_bar();
+    }, 300);
+}
+
+
+function check_bar() {
+    var bar = document.getElementById("bar");
+    var sep = document.getElementById("last-sep");
+    var arrows = $('.arrow');
+    
+    if (bar.scrollWidth > bar.offsetWidth) {
+	arrows.each(function() {
+	    $(this).addClass("show");
+	});
+	sep.style.display = "none";
     } else {
-	subbar.addClass("expanded");
-	subtabs.each(function() {
-	    $(this).css("display", "flex");
+	arrows.each(function() {
+	    $(this).removeClass("show");
 	});
-	setTimeout(() => {
-	    subtabs.each(function() {
-		$(this).addClass("expanded");
-	    });
-	}, 300);
+	sep.style.display = "inline-flex";
     }
 }
+
+function scroll_bar_left() {
+    var bar = document.getElementById('bar');
+    bar.scrollBy({ left: -200, behavior: 'smooth' });
+}
+function scroll_bar_right() {
+    var bar = document.getElementById('bar');
+    bar.scrollBy({ left: 200, behavior: 'smooth' });
+}
+
 
 
 function toggleMenu() {
@@ -148,40 +150,77 @@ function toggleMenu() {
     const menuIcon = document.getElementById("bar-tab_advance-icon");
     const title = document.getElementById("bar-tab_advance-text");
     const button = document.getElementById("bar-tab_advance");
+    const bar = document.getElementById("bar");
     
     if (menu.classList.contains("expanded")) {
         menu.classList.remove("expanded");
         menuExpand.classList.add("hidden");
-        menuIcon.style.opacity = "1";
-        title.style.opacity = "1";
-	button.style.width = "7.5rem";
+        menuIcon.style.display = "block"; 
+        title.style.display = "block";
+	bar.classList.remove("expanded");
+	button.classList.remove("expanded");
         setTimeout(() => {
-            menuIcon.style.display = "block"; 
-            title.style.display = "block";
+	    menuIcon.classList.remove("expanded");
+	    title.classList.remove("expanded");
+
         }, 300);
     } else {
         menu.classList.add("expanded");
         menuExpand.classList.remove("hidden");
-	menuIcon.style.opacity = "0";
-        title.style.opacity = "0";
-	button.style.width = "0rem";
-        setTimeout(() => { 
+	menuIcon.classList.add("expanded");
+	title.classList.add("expanded");
+	button.classList.add("expanded");
+	bar.classList.add("expanded");
+        setTimeout(() => {
             menuIcon.style.display = "none";
             title.style.display = "none";
         }, 300);
     }
+
+    setTimeout(() => {
+	check_bar();
+    }, 300);
 }
 
-function toggleDrawer(drawerId) {
-    var drawerContent = document.getElementById(drawerId + "-content");
-    var drawerIcon = document.getElementById(drawerId + "-icon");
 
-    if (drawerContent.classList.contains("expanded")) {
-        drawerContent.classList.remove("expanded");
-        drawerIcon.classList.remove("rotated"); // Remove rotated class
+let drawer_mode = 'drawer-chain';
+function toggleDrawer(drawerId) {
+    var drawer_to_check = ['drawer-narratif',
+			   'drawer-RCP',
+			   'drawer-chain'];
+
+    if (drawer_to_check.includes(drawerId)) {
+	drawer_mode = drawerId;
+	drawer_to_check.forEach(function(id) {
+	    var drawerContent = document.getElementById(id + "-content");
+	    var drawerIcon = document.getElementById(id + "-icon");
+	    if (id === drawerId) {
+		if (drawerContent.classList.contains("expanded")) {
+		    drawerContent.classList.remove("expanded");
+		    drawerIcon.classList.remove("rotated");
+		} else {
+		    drawerContent.classList.add("expanded");
+		    drawerIcon.classList.add("rotated");
+		    update_data_debounce();
+		}
+	    } else {
+		if (drawerContent.classList.contains("expanded")) {
+		    drawerContent.classList.remove("expanded");
+		    drawerIcon.classList.remove("rotated");
+		}	
+	    }
+	})
+	
     } else {
-        drawerContent.classList.add("expanded");
-        drawerIcon.classList.add("rotated"); // Add rotated class
+	var drawerContent = document.getElementById(drawerId + "-content");
+	var drawerIcon = document.getElementById(drawerId + "-icon");
+	if (drawerContent.classList.contains("expanded")) {
+            drawerContent.classList.remove("expanded");
+            drawerIcon.classList.remove("rotated");
+	} else {
+            drawerContent.classList.add("expanded");
+            drawerIcon.classList.add("rotated");
+	}
     }
 }
 
@@ -203,9 +242,9 @@ var icon_storyLines = {
     "EUPHORBE": "umbrella"
 };
 
-var RCP = null;
-var GCM = null;
-var RCM = null;
+// var RCP = null;
+// var GCM = null;
+// var RCM = null;
 
 
 // function get_selectedClimateChain() {
@@ -319,7 +358,6 @@ function selectAllButton(selectedButton) {
     });
     selectedButton.classList.add('selected');
 
-    // get_selectedClimateChain();
     update_data_debounce();
 }
 
@@ -332,7 +370,6 @@ function selectButton(selectedButton) {
         selectedButton.classList.add('selected');
     }
 
-    // get_selectedClimateChain();
     update_data_debounce();
 }
 
@@ -469,9 +506,10 @@ function get_horizon(horizon) {
 }
 
 
-function get_chunk_of_chain(value) {
+function get_chunk_of_chain(value, search="selected") {
     var blockChain = $(value);
-    var buttonsChain = blockChain.find('.selected');
+    var buttonsChain = blockChain.find("." + search);
+    
     var Chain = [];
     buttonsChain.each(function() {
 	Chain.push($(this).attr('id'));
@@ -491,22 +529,64 @@ function get_HM() {
 }
 
 
-function get_chain(array1, array2) {
-    var chain = [];
-    array1.forEach(function(item1) {
-        array2.forEach(function(item2) {
-            chain.push(item1 + "_" + item2);
-        });
-    });
+function get_RCP_only() {
+    var container = document.getElementById('bunch_RCP_only');
+    var selectedButton = container.querySelector('button.selected');
+    return selectedButton.value;
+}
+
+function get_narratif_only() {
+    var container = document.getElementById('bunch_narratif');
+    var selectedButton = container.querySelector('button.selected');
+    return [selectedButton.value];
+}
+
+function get_chain() {
+    // var drawer_to_check = ['drawer-narratif',
+    // 			   'drawer-RCP',
+    // 			   'drawer-chain'];
+
+    if (drawer_mode === 'drawer-chain') {
+	var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
+	var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
+	var chain = [];
+	EXP_GCM_RCM.forEach(function(item1) {
+            BC_HM.forEach(function(item2) {
+		chain.push(item1 + "_" + item2);
+            });
+	});
+	
+    } else if (drawer_mode === 'drawer-narratif') {
+	var EXP_GCM_RCM_BC = get_narratif_only();
+	var HM = ["CTRIP", "EROS", "GRSD", "J2000", "MORDOR-SD",
+		  "MORDOR-TS", "ORCHIDEE", "SIM2", "SMASH"];
+	var chain = [];
+	EXP_GCM_RCM_BC.forEach(function(item1) {
+            HM.forEach(function(item2) {
+		chain.push(item1 + "_" + item2);
+            });
+	});
+
+    } else if (drawer_mode === 'drawer-RCP') {
+	var rcp = "chain_" + get_RCP_only();
+	var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]',
+					     search=rcp);
+	var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]',
+				       search="chain");
+	var chain = [];
+	EXP_GCM_RCM.forEach(function(item1) {
+            BC_HM.forEach(function(item2) {
+		chain.push(item1 + "_" + item2);
+            });
+	});
+    }
+
     var chain = chain.map(function(element) {
 	return "historical-rcp" + element;
     });
+
     return chain;
 }
-
-
-
-
 
 
 
@@ -531,12 +611,9 @@ function update_data() {
     var n = get_n();
     var variable = get_variable();
     var horizon = get_horizon("futur");
-
-    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
-    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var chain = get_chain();
     var exp = chain[0].split('_')[0].replace('-', '_');
-
+    
     var data_query = {
 	n: n,
         exp: exp,
@@ -573,10 +650,7 @@ update_data_debounce();
 
 function update_data_point() {
     var variable = get_variable();
-
-    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
-    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var chain = get_chain();
     var exp = chain[0].split('_')[0].replace('-', '_');
 
     var data_query = {
@@ -643,12 +717,8 @@ function update_grid(dataBackend) {
 	sampling_period = "débutant au " + sampling_period.toLowerCase();
     }    
     
-    
-    var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
-    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-    var chain = get_chain(EXP_GCM_RCM, BC_HM);
+    var chain = get_chain();
     var exp = chain[0].split('_')[0].replace('-', '_');
-
     
     document.getElementById("grid-variable_variable").textContent = variable;
     document.getElementById("grid-variable_sampling-period").innerHTML = "Année hydrologique " + sampling_period;
@@ -711,7 +781,6 @@ function draw_colorbar(dataBackend) {
 	.merge(texts)
 	.attr("y", (d, i) => i * step + step / 2 + shift + 4)
 	.html(d => {
-            console.log("Data:", d);
             d = d > 0 ? "+" + d : d;
 	    d = d == 0 ? d : `<tspan>${d}</tspan>&nbsp;<tspan class="colorbar-unit">%</tspan>`;
             return d;
