@@ -399,8 +399,6 @@ function toggleBlock(selectedBlock) {
 	    show_GCM_RCM(button)
     	}
     });
-
-
 }
 
 
@@ -451,7 +449,6 @@ function show_GCM_RCM(selectedButton) {
 	}
     }
 
-    // get_selectedClimateChain();
 }
 
 
@@ -671,6 +668,82 @@ function update_data_point() {
     .then(dataBackend => {
 	data_point = dataBackend
 	console.log(data_point);
+
+
+
+	
+	// Define dimensions
+	var margin = { top: 20, right: 30, bottom: 30, left: 50 },
+	    width = 600 - margin.left - margin.right,
+	    height = 400 - margin.top - margin.bottom;
+
+	// Create SVG element
+	var svg = d3.select("#svg-line")
+	    // .selectAll("*").remove()
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	    .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	data_point.forEach(function(line) {
+	    line.values.forEach(function(d) {
+		d.x = new Date(d.x); // Assuming d.x is in a format that Date constructor can parse
+	    });
+	});
+	
+
+	// Define scales
+	var xScale = d3.scaleTime()
+	    .domain(d3.extent(data_point[0].values, function(d) { return d.x; })) // Assuming all lines have same x domain
+	    .range([0, width]);
+
+	var yScale = d3.scaleLinear()
+	    .domain([0, d3.max(data_point, function(line) {
+		return d3.max(line.values, function(d) { return d.y; });
+	    })])
+	    .range([height, 0]);
+
+	// Define axes
+	var xAxis = d3.axisBottom().scale(xScale);
+	var yAxis = d3.axisLeft().scale(yScale);
+
+	// Append axes
+	svg.append("g")
+	    .attr("class", "x axis")
+	    .attr("transform", "translate(0," + height + ")")
+	    .call(xAxis);
+
+	svg.append("g")
+	    .attr("class", "y axis")
+	    .call(yAxis);
+
+	// Define line function
+	var line = d3.line()
+	    .x(function(d) { return xScale(d.x); })
+	    .y(function(d) { return yScale(d.y); });
+
+	// Draw lines
+	// svg.selectAll(".line")
+	//     .data(data_point)
+	//     .enter().append("path")
+	//     .attr("class", "line")
+	//     .attr("d", function(d) { return line(d.values); })
+	//     .style("color", function(d) { return d.color; });
+
+	data_point.forEach(function(lineData) {
+	    svg.append("path")
+		.datum(lineData.values)
+		.attr("class", "line")
+		.attr("fill", "none")
+		.attr("opacity", "0.1")
+		.attr("d", line)
+		.style("stroke", lineData.color);
+	});
+
+	
+	
+	
+	
     })
     .catch(error => {
         console.error('Error:', error);
@@ -1107,14 +1180,14 @@ function draw_map(geoJSONdata_france,
 			    selected_code = null;
 			    document.getElementById("grid-point").style.display = "none";
 			} else {
+			    d3.select("#svg-line").selectAll("*").remove();
 			    selected_code = point.code;
 			    document.getElementById("grid-point").style.display = "flex";
 			}
 			highlight_selected_point();
 
 			update_data_point_debounce();
-			
-			
+
 			document.getElementById("grid-point_code").innerHTML = point.code;
 
 			const value = point.value.toFixed(2);

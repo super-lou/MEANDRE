@@ -184,11 +184,11 @@ def serie_post():
         
         if chain not in data:
             data[chain] = {
-                "name": chain,
-                "color": "red",
+                "chain": chain,
+                "color": "#ADABAA",
                 "values": []
             }
-        data[chain]["values"].append({"date": date_str, "y": value})
+        data[chain]["values"].append({"x": date_str, "y": value})
     
     data = list(data.values())
     

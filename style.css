@@ -233,34 +233,52 @@ button:hover .material-icons-outlined {
     font-weight: normal;
 }
 
-.vert, .vert.selected {
+.vert {
     color: #569A71;
 }
 .vert:hover {
     color: #569A71;
-    opacity: 0.6;
+    opacity: 0.7;
 }
-.jaune, .jaune.selected {
+.vert.selected {
+    color: #569A71;
+    font-weight: bold;
+}
+.jaune {
     color: #EECC66;
 }
 .jaune:hover {
     color: #EECC66;
-    opacity: 0.6;
+    opacity: 0.7;
 }
-.orange, .orange.selected {
+.jaune.selected {
+    color: #EECC66;
+    font-weight: bold;
+}
+.orange {
     color: #E09B2F;
 }
 .orange:hover {
     color: #E09B2F;
-    opacity: 0.6;
+    opacity: 0.7;
 }
-.violet, .violet.selected {
+.orange.selected {
+    color: #E09B2F;
+    font-weight: bold;
+}
+.violet {
     color: #791F5D;
 }
 .violet:hover {
     color: #791F5D;
-    opacity: 0.6;
+    opacity: 0.7;
 }
+.violet.selected {
+    color: #791F5D;
+    font-weight: bold;
+}
+
+
 
 
 #container_menu_bar_map_gallery {
