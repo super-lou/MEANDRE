@@ -235,12 +235,12 @@ const ORCHIDEE_color = "#EFA59D";
 const SIM2_color = "#475E6A";
 const SMASH_color = "#F6BA62";
 
-var icon_storyLines = {
-    "ASTER": "local_fire_department",
-    "DAHLIA": "wb_sunny",
-    "NARCISSE": "filter_drama",
-    "EUPHORBE": "umbrella"
-};
+// var icon_storyLines = {
+//     "ASTER": "local_fire_department",
+//     "DAHLIA": "wb_sunny",
+//     "NARCISSE": "filter_drama",
+//     "EUPHORBE": "umbrella"
+// };
 
 // var RCP = null;
 // var GCM = null;
@@ -605,6 +605,7 @@ let data;
 let data_point;
 
 function update_data() {
+    
     var n = get_n();
     var variable = get_variable();
     var horizon = get_horizon("futur");
@@ -668,81 +669,7 @@ function update_data_point() {
     .then(dataBackend => {
 	data_point = dataBackend
 	console.log(data_point);
-
-
-
-	
-	// Define dimensions
-	var margin = { top: 20, right: 30, bottom: 30, left: 50 },
-	    width = 600 - margin.left - margin.right,
-	    height = 400 - margin.top - margin.bottom;
-
-	// Create SVG element
-	var svg = d3.select("#svg-line")
-	    // .selectAll("*").remove()
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
-	    .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	data_point.forEach(function(line) {
-	    line.values.forEach(function(d) {
-		d.x = new Date(d.x); // Assuming d.x is in a format that Date constructor can parse
-	    });
-	});
-	
-
-	// Define scales
-	var xScale = d3.scaleTime()
-	    .domain(d3.extent(data_point[0].values, function(d) { return d.x; })) // Assuming all lines have same x domain
-	    .range([0, width]);
-
-	var yScale = d3.scaleLinear()
-	    .domain([0, d3.max(data_point, function(line) {
-		return d3.max(line.values, function(d) { return d.y; });
-	    })])
-	    .range([height, 0]);
-
-	// Define axes
-	var xAxis = d3.axisBottom().scale(xScale);
-	var yAxis = d3.axisLeft().scale(yScale);
-
-	// Append axes
-	svg.append("g")
-	    .attr("class", "x axis")
-	    .attr("transform", "translate(0," + height + ")")
-	    .call(xAxis);
-
-	svg.append("g")
-	    .attr("class", "y axis")
-	    .call(yAxis);
-
-	// Define line function
-	var line = d3.line()
-	    .x(function(d) { return xScale(d.x); })
-	    .y(function(d) { return yScale(d.y); });
-
-	// Draw lines
-	// svg.selectAll(".line")
-	//     .data(data_point)
-	//     .enter().append("path")
-	//     .attr("class", "line")
-	//     .attr("d", function(d) { return line(d.values); })
-	//     .style("color", function(d) { return d.color; });
-
-	data_point.forEach(function(lineData) {
-	    svg.append("path")
-		.datum(lineData.values)
-		.attr("class", "line")
-		.attr("fill", "none")
-		.attr("opacity", "0.1")
-		.attr("d", line)
-		.style("stroke", lineData.color);
-	});
-
-	
-	
-	
+	plot_data_serie();
 	
     })
     .catch(error => {
@@ -750,6 +677,161 @@ function update_data_point() {
     });
 }
 const update_data_point_debounce = debounce(update_data_point, 1000);
+
+
+
+
+
+function plot_data_serie() {
+
+    d3.select("#svg-line").selectAll("*").remove();
+    
+    var svgContainer = d3.select("#svg-line");
+
+    // var svgWidth = 500;
+    var svgWidth = +svgContainer.node().getBoundingClientRect().width;
+    // var svgWidth = document.querySelector(".gallery").offsetWidth;
+    var svgHeight_min = 250;
+    var svgHeight = Math.max(svgHeight_min,
+			     +svgContainer.node().getBoundingClientRect().height);
+
+    var margin = { top: 10, right: 10, bottom: 20, left: 40 };
+    var width = svgWidth - margin.left - margin.right;
+    var height = svgHeight - margin.top - margin.bottom;
+    
+    var svg = svgContainer
+	.attr("width", width + margin.left + margin.right)
+	.attr("height", height + margin.top + margin.bottom)
+	.append("g")
+	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    data_point.forEach(function(line) {
+	line.values.forEach(function(d) {
+	    d.x = new Date(d.x);
+	});
+    });
+    
+    var xScale = d3.scaleTime()
+	.domain(d3.extent(data_point[0].values, function(d) { return d.x; }))
+	.range([0, width]);
+
+    var yScale = d3.scaleLinear()
+	.domain([
+            d3.min(data_point, function(line) {
+		return d3.min(line.values, function(d) { return d.y; });
+            }),
+            d3.max(data_point, function(line) {
+		return d3.max(line.values, function(d) { return d.y; });
+            })
+	])
+	.range([height, 0]);
+
+    // Define axes
+    var xAxis = d3.axisBottom().scale(xScale)
+	.tickSize(0)
+	.tickSizeInner(5)
+        .tickFormat(d3.timeFormat("%Y"));
+
+    var customTickFormat = function(d) {
+	return d > 0 ? "+" + d : d;
+    };
+    
+    var yAxis = d3.axisLeft().scale(yScale)
+	.tickSize(0)
+	.tickSizeInner(-width)
+	.ticks(5)
+	.tickPadding(6)
+	.tickFormat(customTickFormat);
+    
+    // Append axes
+    svg.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + height + ")")
+	.call(xAxis)
+	.selectAll("text")
+        .style("fill", "grey")
+        .style("font-size", "12px");
+
+    svg.selectAll('.x.axis').selectAll("line")
+	.style("stroke", "#ccc");
+    svg.select(".x.axis").select(".domain")
+	.style("stroke", "#aaa");
+    
+    svg.append("g")
+    	.attr("class", "y axis")
+    	.call(yAxis)
+    	.selectAll("text")
+        .style("fill", "grey")
+        .style("font-size", "12px");
+    
+    svg.selectAll('.y.axis').selectAll("line")
+	.style("stroke", "#ccc")
+	.filter(function(d) { return d === 0; })
+	.remove();
+
+    svg.select(".y.axis").select(".domain").remove();
+
+
+    var line = d3.line()
+	.x(function(d) { return xScale(d.x); })
+	.y(function(d) { return yScale(d.y); });
+
+
+    var tooltip = d3.select("#grid-line_tooltip");
+
+    var lines = svg.selectAll(".line")
+	.data(data_point)
+	.enter().append("path")
+	.attr("class", "line")
+	.attr("fill", "none")
+	.attr("id", function(d) { return d.chain; })
+	.attr("d", function(d) { return line(d.values); })
+	.attr("opacity", function(d) { return d.opacity; })
+	.attr("stroke", function(d) { return d.color; })
+	.attr("stroke-width", function(d) { return d.stroke_width; });
+    
+    lines.on("mouseover", function(event, d) {
+	if (d.order === 2) {
+            d3.select(this)
+		.attr("stroke-width", "2px");
+            d3.select("#" + d.chain + "_back")
+		.attr("stroke-width", "5px");
+	    tooltip.style("opacity", 1)
+		.style("color", d.color)
+		.html(d.chain.replace(/_/g, " "));
+	    
+	} else if (d.order === 0) {
+            d3.select(this)
+		.attr("opacity", "1");
+	    tooltip.style("opacity", 1)
+		.style("color", d.color)
+		.html(d.chain.replace(/_/g, " "));
+	}
+
+
+    });
+    lines.on("mouseout", function(event, d) {
+        d3.select(this)
+	    .attr("opacity", d.opacity)
+	    .attr("stroke-width", d.stroke_width);
+	if (d.order === 2) {
+            d3.select("#" + d.chain + "_back")
+		.attr("stroke-width", "3px");
+	}
+        tooltip.style("opacity", 0);
+    });
+
+    svg.append("line")
+	.attr("class", "zero-line")
+	.attr("x1", 0)
+	.attr("y1", yScale(0))
+	.attr("x2", width)
+	.attr("y2", yScale(0))
+	.style("stroke", "gray")
+	.style("stroke-width", 2);
+
+}
+
 
 
 
@@ -1160,12 +1242,14 @@ function draw_map(geoJSONdata_france,
 		    	}
 
 			document.getElementById("panel-hover").style.display = "block";
-			document.getElementById("panel-hover_code").innerHTML = d.code;
-			const value = d.value.toFixed(2);
-			document.getElementById("panel-hover_value").innerHTML =
-			    "<span style='color:" + d.fill_text + ";'>" +
-			    "<span style='font-weight: 900;'>" +
-			    (value > 0 ? "+" : "") + value + " </span>%</span>";
+			document.getElementById("panel-hover_code").innerHTML =
+			    "<span style='font-weight: 900; color:" + d.fill_text + ";'>" +
+			    d.code + "</span>";
+			// const value = d.value.toFixed(2);
+			// document.getElementById("panel-hover_value").innerHTML =
+			    // "<span style='color:" + d.fill_text + ";'>" +
+			    // "<span style='font-weight: 900;'>" +
+			    // (value > 0 ? "+" : "") + value + " </span>%</span>";
 			
 		    })
 		    .on("mouseout", function(event, d) {
@@ -1179,22 +1263,25 @@ function draw_map(geoJSONdata_france,
 			if (selected_code === point.code) {
 			    selected_code = null;
 			    document.getElementById("grid-point").style.display = "none";
+			    document.getElementById("grid-line").style.display = "none";
 			} else {
-			    d3.select("#svg-line").selectAll("*").remove();
 			    selected_code = point.code;
 			    document.getElementById("grid-point").style.display = "flex";
+			    document.getElementById("grid-line").style.display = "flex";
 			}
 			highlight_selected_point();
 
 			update_data_point_debounce();
 
-			document.getElementById("grid-point_code").innerHTML = point.code;
+			document.getElementById("grid-point_code").innerHTML =
+			    "<span style='font-weight: 900; color:" + point.fill_text + ";'>" +
+			    point.code + "</span>";
 
-			const value = point.value.toFixed(2);
-			document.getElementById("grid-point_value").innerHTML =
-			    "<span style='color:" + point.fill_text + ";'>" +
-			    "<span style='font-weight: 900;'>" +
-			    (value > 0 ? "+" : "") + value + " </span>%</span>";
+			// const value = point.value.toFixed(2);
+			// document.getElementById("grid-point_value").innerHTML =
+			//     "<span style='color:" + point.fill_text + ";'>" +
+			//     "<span style='font-weight: 900;'>" +
+			//     (value > 0 ? "+" : "") + value + " </span>%</span>";
 			
 			document.getElementById("grid-point_name").innerHTML = point.name;
 

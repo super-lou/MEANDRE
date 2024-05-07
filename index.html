@@ -174,7 +174,7 @@
 		    <div id="panel-hover">
 			<div class="bunch row column-small-gap center cross-center">
 			    <div id="panel-hover_code"></div>
-			    <div id="panel-hover_value"></div>
+			    <!-- <div id="panel-hover_value"></div> -->
 			</div>
 		    </div>
 		    <svg id="geoJSONsvg_france"></svg>
@@ -218,7 +218,7 @@
 			    <div id="grid-point_code-value"
 				 class="bunch row column-gap cross-center">
 				<span id="grid-point_code"></span>
-				<span id="grid-point_value"></span>
+				<!-- <span id="grid-point_value"></span> -->
 			    </div>
 			    <span id="grid-point_name"></span>
 			    <span id="grid-point_hr" class="grid-point_info"></span>
@@ -242,10 +242,19 @@
 
 			<div id="grid-line"
 			     class="gallery-item column center"
-			     style="grid-column: span 4; grid-row: span 2;">
-			    <svg id="svg-line"></svg>
+			     style="grid-column: 1 / -1; grid-row: span 3; display: none;">
+			    <div id="grid-line_cross"
+				 class="grid-cross material-icons-outlined" onclick="close_grid(this)">close</div>
+			    <div class="bunch column">
+				<div class="bunch column">
+				    <div id="grid-line_title">
+					Série des changements relatifs
+				    </div>
+				    <div id="grid-line_tooltip"></div>
+				</div>
+				<svg id="svg-line"></svg>			    
+			    </div>
 			</div>
-			
 
 		    </div>
 		</div>

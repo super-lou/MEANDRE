@@ -8,8 +8,26 @@ import subprocess
 import json
 import os
 from datetime import datetime
+import pandas as pd
+# from scipy.interpolate import interp1d
+# from scipy.interpolate import UnivariateSpline
+import rpy2.robjects as robjects
 
 
+name_of_storylines = np.array([
+    "historical-rcp85_HadGEM2-ES_ALADIN63_ADAMONT",
+    "historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT",
+    "historical-rcp85_EC-EARTH_HadREM3-GA7_ADAMONT",
+    "historical-rcp85_HadGEM2-ES_CCLM4-8-17_ADAMONT"
+])
+color_of_storylines = np.array([
+    "#569A71",
+    "#EECC66",
+    "#E09B2F",
+    "#791F5D"
+])
+
+  
 def switch_color(color, color_to_find, color_to_switch):
     #switch 12% https://mdigi.tools/darken-color/#f6e8c3
     color = color.upper()
@@ -18,7 +36,6 @@ def switch_color(color, color_to_find, color_to_switch):
     if color in color_to_find:
         color = color_to_switch[color_to_find == color][0]
     return color
-
 
 
 app = Flask(__name__)
@@ -176,24 +193,96 @@ def serie_post():
     columns = result.keys()
     rows = result.fetchall()
 
-    data = {}
-    for row in rows:
-        chain = row[0]
-        date_str = row[1].strftime("%Y-%m-%d")
-        value = row[2]
+
+    data = pd.DataFrame(rows, columns=columns)
+    data['date'] = pd.to_datetime(data['date'])
+    data['climate_chain'] = data['chain'].str.rsplit("_", n=1).str[0]
+    data['opacity'] = "0.08"
+    data['stroke_width'] = "1px"
+    data['color'] = "#ADABAA"
+    data['order'] = 0
+
+
+    ### not need to be done after cleaning
+    filtered_data = data[(data['date'] >= '1976-01-01') &
+                         (data['date'] <= '2005-08-31')]
+    mean_values = filtered_data.groupby('chain')['value'].mean().reset_index()
+    mean_values.columns = ['chain', 'mean_value']
+
+    data = pd.merge(data, mean_values, on='chain', how='left')
+
+    data['value'] = (data['value'] - data['mean_value']) / data['mean_value']
+    data.drop(columns=['mean_value'], inplace=True)
+    ###
+    
+
+    for storyline in name_of_storylines:
+        data_med = data[data['climate_chain'] == storyline].groupby(['date'])['value'].median().reset_index()
+
+        data_med = data_med.dropna()
+        x = pd.to_numeric(data_med['date']) / 10**9
+        y = data_med['value']
+        x_str = ' '.join(map(str, x))
+        y_str = ' '.join(map(str, y))
+        command = [
+            "Rscript",
+            os.path.join(current_dir, "compute_spline.R"),
+            "--x", x_str,
+            "--y", y_str
+        ]
+        process = subprocess.Popen(command,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        y = output.decode().strip().split('\n')
+
+        data_med['value'] = pd.to_numeric(y)
         
-        if chain not in data:
-            data[chain] = {
-                "chain": chain,
-                "color": "#ADABAA",
-                "values": []
-            }
-        data[chain]["values"].append({"x": date_str, "y": value})
+        data_med['chain'] = storyline + "_back"
+        data_med['climate_chain'] = storyline + "_back"
+        data_med['opacity'] = "1"
+        data_med['stroke_width'] = "3px"
+        data_med['color'] = "#ffffff"
+        data_med['order'] = 1
+        data = pd.concat([data, data_med], ignore_index=True)
+        
+        data_med['chain'] = storyline
+        data_med['climate_chain'] = storyline
+        data_med['opacity'] = "1"
+        data_med['stroke_width'] = "1px"
+        data_med['color'] = color_of_storylines[name_of_storylines == storyline][0]
+        data_med['order'] = 2
+        data = pd.concat([data, data_med], ignore_index=True)
+       
+    data['date'] = data['date'].dt.strftime("%Y-%m-%d")
+    data = data.rename(columns={'value': 'y', 'date': 'x'})
+
+    group = ['chain', 'color', 'stroke_width', 'opacity', 'order']
+    data = data.groupby(group).apply(lambda x: x[['x', 'y']].to_dict('records')).reset_index(name='values')
+
+    data = data.sort_values(by=['order'], ascending=True)
     
-    data = list(data.values())
-    
-    response = jsonify(data)
-    return response
+    json_output = []
+    for index, row in data.iterrows():
+        json_row = {'chain': row['chain'],
+                    'color': row['color'],
+                    'order': row['order'],
+                    'stroke_width': row['stroke_width'],
+                    'opacity': row['opacity'],
+                    'values': row['values']}
+        json_output.append(json_row)
+   
+    json_output_cleaned = json_output.copy()
+    for item in json_output_cleaned:
+        for record in item['values']:
+            if np.isnan(record['y']):
+                record['y'] = None
+   
+    json_output_str = json.dumps(json_output_cleaned)
+   
+    return json_output_str
+
+
 
 
 
