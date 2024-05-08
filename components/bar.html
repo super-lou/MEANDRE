@@ -1,0 +1,115 @@
+<div id="container-bar">
+
+    <div class="logo">
+	<img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
+	<span>MEANDRE</span>
+    </div>
+
+    <div class="sep"></div>
+
+    <div id="bar">
+	
+	<div id="left-arrow" class="arrow material-icons-outlined"
+	     onclick="scroll_bar_left()">keyboard_arrow_left</div>
+	
+	<div id="bar-tab_intro" class="bar-tab"
+	     onclick="toggle_subtab(this)">
+	    <span id="bar-tab_intro-icon" class="material-icons-outlined">water_drop</span>
+	    <span id="bar-tab_intro-text">Plus d'eau ou<br>moins d'eau ?</span>
+
+	    <div id="bar-tab_intro-tab" class="subbar">
+		<div id="bar-tab_intro-tab_disparite" class="subbar-tab"
+		     onclick="change_url('A')">
+		    <div class="subbar-sep"></div>
+		    Disparité sur<br>le territoire
+		</div>
+		<div id="bar-tab_intro-tab_multi-modele" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    L'approche<br>multi-modèles
+		</div>
+		<div id="bar-tab_intro-tab_trajectoires" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Les trajectoires
+		</div>
+		<div id="bar-tab_intro-tab_narratifs" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Les narratifs
+		</div>
+	    </div>
+	</div>
+
+	<div class="sep"></div>
+
+	<div id="bar-tab_nord" class="bar-tab"
+	     onclick="toggle_subtab(this)">
+	    <span id="bar-tab_nord-icon" class="material-icons-outlined">flood</span>
+	    <span id="bar-tab_nord-text">L'incertitude des crues</span>
+
+	    <div id="bar-tab_nord-tab" class="subbar">
+		<div id="bar-tab_nord-tab_crues" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Le régime<br>des crues
+		</div>
+		<div id="bar-tab_nord-tab_limite" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Où est la<br>limite ?
+		</div>
+		<div id="bar-tab_nord-tab_incertains" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Des futurs<br>incertains
+		</div>
+	    </div>
+	</div>
+
+	<div class="sep"></div>
+
+	<div id="bar-tab_sud" class="bar-tab"
+	     onclick="toggle_subtab(this)">
+	    <span id="bar-tab_sud-icon" class="material-icons-outlined">trending_down</span>
+	    <span id="bar-tab_sud-text">La peur du manque</span>
+
+	    <div id="bar-tab_sud-tab" class="subbar">
+		<div id="bar-tab_sud-tab_crues" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Le régime<br>des étiages
+		</div>
+		<div id="bar-tab_sud-tab_intensite" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    L'intensité
+		</div>
+		<div id="bar-tab_sud-tab_duree" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    La durée
+		</div>
+		<div id="bar-tab_sud-tab_constat" class="subbar-tab">
+		    <div class="subbar-sep"></div>
+		    Le constat
+		</div>
+	    </div>
+	</div>
+
+
+	<div class="sep"></div>
+
+	<div id="bar-tab_other" class="bar-tab"
+	     onclick="toggle_subtab(this)">
+	    <span id="bar-tab_sud-icon" class="material-icons-outlined">troubleshoot</span>
+	    <span id="bar-tab_sud-text">Prenons du recul</span>
+	</div>
+
+	<div id="last-sep" class="sep"></div>
+
+	<div id="right-arrow" class="arrow material-icons-outlined"
+	     onclick="scroll_bar_right()">keyboard_arrow_right</div>
+    </div>
+    <div class="sep"></div>
+</div>
+
+<div id="button-advance" class="bunch row nowrap center cross-center">
+    <div id="bar-tab_advance" class="bar-tab"
+	 onclick="toggle_menu();">
+	<span id="bar-tab_advance-icon" class="material-icons-outlined">design_services</span>
+	<span id="bar-tab_advance-text">Personnalisation<br>avancée</span>
+    </div>
+</div>
+

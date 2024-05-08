@@ -1,0 +1,132 @@
+
+.logo {
+    font-family: "Raleway", sans-serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+
+    width: 14rem;
+    height: 3rem;
+    color: #16171f;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.logo img {
+    height: 2.5rem;
+    padding-bottom: 0.4rem;
+    padding-right: 0.8rem;
+    padding-left: 0.5rem;
+}
+.logo span {
+    padding-right: 1.5rem;
+}
+
+#container-menu {
+    position: absolute;
+    right: 0;
+    top: 0;
+    box-shadow: 0 1px 3px rgba(60,64,67,0.3),0 4px 8px 3px rgba(60,64,67,0.15);
+    pointer-events: auto;
+    width: 0px;
+    background-color: #ffffff;
+    color: #060508;
+    transition: width 0.3s ease;
+    z-index: 2;
+    overflow-y: auto;
+    height: 100vh;
+}
+#container-menu.expanded {
+    pointer-events: auto;
+    width: 18rem;
+    padding-top: 0rem;
+    padding-bottom: 1rem;
+}
+.hidden {
+    display: none;
+}
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+#button-close-advance {
+    position: sticky;
+    top: 0;
+    background: white;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(60,64,67,0.3),0 2px 6px 2px rgba(60,64,67,0.15);
+}
+
+
+/* DRAWER */
+.drawer {
+    position: relative;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    border-top: 2px solid #70757A;
+}
+.drawer.no-border {
+    border-top: none;
+}
+.subdrawer {
+    position: relative;
+}
+
+.drawer-label,
+.subdrawer-label {
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.subdrawer-label {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.drawer-label h1:hover,
+.subdrawer-label h2:hover,
+.drawer-icon.material-icons-outlined,
+.drawer-icon.material-icons-outlined {
+    color: #70757A;
+}
+
+.drawer-icon.rotated {
+    transform: rotate(-180deg);
+}
+.drawer-icon {
+    transition: transform 0.3s ease;
+}
+
+
+.drawer-content {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.drawer-content.expanded {
+    max-height: 1000px;
+}
+
+.end-drawer {
+    height: 1.5rem;
+}
+.end-subdrawer {
+    height: 0.5rem;
+}
+
+

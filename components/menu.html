@@ -1,0 +1,593 @@
+<div id="container-menu">
+    <div id="menu" class="hidden">
+
+	<div id="button-close-advance">
+	    <div id="bar-tab_close-advance" class="bar-tab"
+		 onclick="toggle_menu();">
+		<span id="bar-tab_close-advance-icon" class="material-icons-outlined">close</span>
+		<span id="bar-tab_close-advance-text">Personnalisation<br>avancée</span>
+	    </div>
+	</div>
+	
+	<div class="drawer no-border">
+	    <div class="drawer-label" onclick="toggle_drawer('drawer-variable')">
+		<h1>Variable</h1>
+		<span id="drawer-variable-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+	    </div>
+	    <div id="drawer-variable-content" class="drawer-content">
+
+		
+		<div id="bunch-variable" class="bunch column space">
+
+		    <h2 class="top-section">Hautes Eaux</h2>
+		    <p class="bottom-space">L'intensité des crues est donnée par le maximum annuel des débits journaliers.</p>
+		    <button id="button-QJXA" value="QJXA" onclick="selectVariableButton(this);">
+			<span>QJXA</span>
+		    </button>
+
+		    <h2>Moyennes Eaux</h2>
+		    <p class="bottom-space">La moyennes annuelles des débits journaliers permet de donner un ordre d'idée de la ressource en eau mais masque les variations à l'intérieure d'une année.</p>
+		    <button id="button-QA" value="QA" class="selected" onclick="selectVariableButton(this);">
+			<span>QA</span>
+		    </button>
+
+		    <h2>Basses Eaux</h2>
+		    <p class="bottom-space">La sévérité des étiages est caractérisée par le minimum annuel du débit journalier moyen sur 10 jours.</p>
+		    <button id="button-VCN10" value="VCN10_summer" onclick="selectVariableButton(this);">
+			<span>VCN10</span>
+		    </button>
+
+		    <p class="top-space bottom-space">La durée des étiages est donnée par le temps passé sous un débit critique.</p>
+		    <button id="button-dtBE" value="VCN10_summer" onclick="selectVariableButton(this);">
+			<span>dtBE</span>
+		    </button>
+		</div>
+
+		<div class="end-drawer"></div>
+	    </div>
+	</div>
+
+
+	<div class="drawer">
+	    <div class="drawer-label" onclick="toggle_drawer('drawer-horizon')">
+		<h1>Horizon</h1>
+		<span id="drawer-horizon-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+	    </div>
+	    <div id="drawer-horizon-content" class="drawer-content">
+		
+		<h2 class="top-section">Période de référence</h2>
+		<div id="bunch-horizon_historical" class="bunch space">
+		    <span>de 1976 à 2005</span>
+		</div>
+		
+		<h2>Période futur</h2>
+		<p class="bottom-space">Fixer une période d'analyse des futurs possibles permet de calculer des changements d'une variable par rapport à la période de référence pour comparer les chaînes de modélisations entre-elles.</p>
+		<div id="bunch-horizon_futur" class="bunch space">
+		    <button id="button-horizon_near" value="H1"
+			    onclick="selectHorizonButton(this);">
+			<span>2021-2050</span>
+		    </button>
+		    <button id="button-horizon_middle" value="H2"
+				onclick="selectHorizonButton(this);">
+			<span>2041-2070</span>
+		    </button>
+		    <button id="button-horizon_distant" value="H3" class="selected"
+				onclick="selectHorizonButton(this);">
+			<span>2070-2099</span>
+		    </button>
+		</div>
+
+		<div class="end-drawer"></div>
+	    </div>
+	</div>
+
+	
+
+	<div class="drawer">
+	    <div class="drawer-label" onclick="toggle_drawer('drawer-projection')">
+		<h1>Chaînes de modélisations</h1>
+		<span id="drawer-projection-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+	    </div>
+	    <div class="drawer-content" id="drawer-projection-content">
+
+		<div class="subdrawer">
+		    <div class="subdrawer-label" onclick="toggle_drawer('drawer-n')">
+			<h2 class="top-section">Nombre de point</h2>
+			<span id="drawer-n-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+		    </div>
+		    <div class="drawer-content" id="drawer-n-content">
+			<p>Le nombre de point représenté est défini par le nombre de modèle hydrologique qui simulent chaque point.</p>
+			<div id="container-slider-n" class="range-container">
+			    <div id="slider-n" class="slider-styled slider-round"></div>
+			</div>
+			<div class="end-subdrawer"></div>
+		    </div>
+		</div>
+		
+		
+		<div class="subdrawer">
+		    <div class="subdrawer-label" onclick="toggle_drawer('drawer-RCP')">
+			<h2 class="top-section">Par niveau d'émission</h2>
+			<span id="drawer-RCP-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+		    </div>
+		    <div class="drawer-content" id="drawer-RCP-content">
+			<p class="bottom-space">Le scénario climatique défini le niveau d'émission de gaz à effet de serre.</p>
+			<p class="bottom-space">Le RCP 2.6 est un scénario où des efforts importants sont fait pour réduire les émissions.<br>Le RCP 4.5 est un scénario médian.<br>Le RCP 8.5 est le scénario où l'augmentation des émissions continue selon la tendance actuelle.</p>
+			<div id="bunch_RCP_only" class="bunch space">
+			    <button id="26_only" value="26"
+					onclick="selectAllButton(this); show_GCM_RCM(this);">
+				<span>RCP 2.6</span>
+			    </button>
+			    <button id="45_only" value="45"
+					onclick="selectAllButton(this); show_GCM_RCM(this);">
+				<span>RCP 4.5</span>
+			    </button>
+			    <button id="85_only" value="85" class="selected"
+					onclick="selectAllButton(this); show_GCM_RCM(this);">
+				<span>RCP 8.5</span>
+			    </button>
+			</div>
+			<div class="end-subdrawer"></div>
+		    </div>
+		</div>
+
+		<div class="subdrawer">
+		    <div class="subdrawer-label" onclick="toggle_drawer('drawer-narratif')">
+			<h2 class="top-section">Par narratif</h2>
+			<span id="drawer-narratif-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+		    </div>
+		    <div class="drawer-content" id="drawer-narratif-content">
+			<p class="bottom-big-space">Quatres futurs climatiques possibles sont mis en avant. Ils sont appelé narratifs et on été selectionné pour représenter quatres types de futures possibles en terme de précipitation et de température.</p>
+			
+			<div id="bunch_narratif" class="bunch column space">
+
+			    <p class="top-space">Fort réchauffement et fort assèchement en été</p>
+			    <button id="narratif-violet"
+					value="85_HadGEM2-ES_CCLM4-8-17_ADAMONT"
+					class="violet selected" onclick="selectAllButton(this);">
+				<span class="align-start">RCP 8.5 HadGEM2-ES CCLM4-8-17 ADAMONT</span>
+			    </button>
+
+			    <p class="top-space">Sec toute l’année, recharge moindre en hiver</p>
+			    <button id="narratif-orange"
+					value="85_EC-EARTH_HadREM3-GA7_ADAMONT"
+					class="orange" onclick="selectAllButton(this);">
+				<span class="align-start">RCP 8.5 EC-EARTH HadREM3-GA7 ADAMONT</span>
+			    </button>
+
+			    <p class="top-space">Modéré en réchauffement et en changement de précipitations</p>
+			    <button id="narratif-jaune"
+					value="85_CNRM-CM5_ALADIN63_ADAMONT"
+					class="jaune" onclick="selectAllButton(this);">
+				<span class="align-start">RCP 8.5 CNRM-CM5 ALADIN63 ADAMONT</span>
+			    </button>
+
+			    <p class="top-space">Chaud et humide à toutes les saisons</p>
+			    <button id="narratif-vert"
+					value="85_HadGEM2-ES_ALADIN63_ADAMONT"
+					class="vert" onclick="selectAllButton(this);">
+				<span class="align-start">RCP 8.5 HadGEM2-ES ALADIN63 ADAMONT</span>
+			    </button>
+			</div>
+			<div class="end-subdrawer"></div>
+		    </div>
+		</div>
+
+
+		<div class="subdrawer">
+		    <div class="subdrawer-label" onclick="toggle_drawer('drawer-chain')">
+			<h2 class="top-section">Sélection avancée</h2>
+			<span id="drawer-chain-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
+		    </div>
+		    <div class="drawer-content" id="drawer-chain-content">
+
+			<h3 class="top-section">Scénario Climatique</h3>
+			<div id="bunch_RCP" class="bunch space">
+			    <button id="26_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				<span>RCP 2.6</span>
+			    </button>
+			    <button id="45_GCM" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				<span>RCP 4.5</span>
+			    </button>
+			    <button id="85_GCM" class="selected" onclick="selectAllButton(this); show_GCM_RCM(this);">
+				<span>RCP 8.5</span>
+			    </button>
+			</div>
+			
+			<h3>Modèle de Circulation Générale</h3>
+			<div id="block_26_GCM" class="chain_block" style="display: none;">
+			    <button id="button_26_GCM" class="chain_block_button" onclick="toggleBlock(this)">
+				RCP 2.6
+			    </button>
+			    <div id="bunch_26_GCM" class="bunch space left-border">
+				<button id="26_CNRM-CM5_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>CNRM-CM5</span>
+				</button>
+				<button id="26_EC-EARTH_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>EC-EARTH</span>
+				</button>
+				<button id="26_HadGEM2-ES_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>HadGEM2-ES</span>
+				</button>
+				<button id="26_MPI-ESM-LR_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>MPI-ESM-LR</span>
+				</button>
+				<button id="26_NorESM1-M_RCM" class="chain_26 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>NorESM1-M</span>
+				</button>
+			    </div>
+			</div>
+
+			<div id="block_45_GCM" class="chain_block" style="display: none;">
+			    <button id="button_45_GCM" class="chain_block_button" onclick="toggleBlock(this)">
+				RCP 4.5
+			    </button>
+			    <div id="bunch_45_GCM" class="bunch space left-border">
+				<button id="45_CNRM-CM5_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>CNRM-CM5</span>
+				</button>
+				<button id="45_EC-EARTH_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>EC-EARTH</span>
+				</button>
+				<button id="45_HadGEM2-ES_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>HadGEM2-ES</span>
+				</button>
+				<button id="45_IPSL-CM5A-MR_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>IPSL-CM5A-MR</span>
+				</button>
+				<button id="45_MPI-ESM-LR_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>MPI-ESM-LR</span>
+				</button>
+				<button id="45_NorESM1-M_RCM" class="chain_45 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>NorESM1-M</span>
+				</button>
+			    </div>
+			</div>
+
+			<div id="block_85_GCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_GCM" class="chain_block_button" onclick="toggleBlock(this)">
+				RCP 8.5
+			    </button>
+			    <div id="bunch_85_GCM" class="bunch space left-border">
+				<button id="85_CNRM-CM5_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>CNRM-CM5</span>
+				</button>
+				<button id="85_EC-EARTH_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>EC-EARTH</span>
+				</button>
+				<button id="85_HadGEM2-ES_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>HadGEM2-ES</span>
+				</button>
+				<button id="85_IPSL-CM5A-MR_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>IPSL-CM5A-MR</span>
+				</button>
+				<button id="85_MPI-ESM-LR_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>MPI-ESM-LR</span>
+				</button>
+				<button id="85_NorESM1-M_RCM" class="chain_85 selected" onclick="selectButton(this); show_GCM_RCM(this);">
+				    <span>NorESM1-M</span>
+				</button>
+			    </div>
+			</div>
+			
+
+			<h3>Modèle Climatique Régional</h3>
+			<!-- CNRM-CM5 -->
+			<div id="block_26_CNRM-CM5_RCM" class="chain_block" style="display: none;">
+			    <button id="button_26_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				CNRM-CM5
+			    </button>
+			    <div id="bunch_26_CNRM-CM5_RCM" class="bunch space left-border">
+				<button id="26_CNRM-CM5_ALADIN63" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>ALADIN63</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_45_CNRM-CM5_RCM" class="chain_block" style="display: none;">
+			    <button id="button_45_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				CNRM-CM5
+			    </button>
+			    <div id="bunch_45_CNRM-CM5_RCM" class="bunch space left-border">
+				<button id="45_CNRM-CM5_ALADIN63" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>ALADIN63</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_85_CNRM-CM5_RCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_CNRM-CM5_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				CNRM-CM5
+			    </button>
+			    <div id="bunch_85_CNRM-CM5_RCM" class="bunch space left-border">
+				<button id="85_CNRM-CM5_ALADIN63" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>ALADIN63</span>
+				</button>
+				<button id="85_CNRM-CM5_HadREM3-GA7" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>HadREM3-GA7</span>
+				</button>
+			    </div>
+			</div>
+			
+			<!-- EC-EARTH -->
+			<div id="block_26_EC-EARTH_RCM" class="chain_block" style="display: none;">
+			    <button id="button_26_EC-EARTH_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				EC-EARTH
+			    </button>
+			    <div id="bunch_26_EC-EARTH_RCM" class="bunch space left-border">
+				<button id="26_EC-EARTH_RACMO22E" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>RACMO22E</span>
+				</button>
+				<button id="26_EC-EARTH_RCA4" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>RCA4</span>
+				</button>
+				<button id="26_EC-EARTH_HadREM3-GA7" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>HadREM3-GA7</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_45_EC-EARTH_RCM" class="chain_block" style="display: none;">
+			    <button id="button_45_EC-EARTH_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				EC-EARTH
+			    </button>
+			    <div id="bunch_45_EC-EARTH_RCM" class="bunch space left-border">
+				<button id="45_EC-EARTH_RACMO22E" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>RACMO22E</span>
+				</button>
+				<button id="45_EC-EARTH_RCA4" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>RCA4</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_85_EC-EARTH_RCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_EC-EARTH_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				EC-EARTH
+			    </button>
+			    <div id="bunch_85_EC-EARTH_RCM" class="bunch space left-border">
+				<button id="85_EC-EARTH_RACMO22E" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>RACMO22E</span>
+				</button>
+				<button id="85_EC-EARTH_RCA4" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>RCA4</span>
+				</button>
+				<button id="85_EC-EARTH_HadREM3-GA7" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>HadREM3-GA7</span>
+				</button>
+			    </div>
+			</div>
+
+			<!-- HadGEM2-ES -->
+			<div id="block_26_HadGEM2-ES_RCM" class="chain_block" style="display: none;">
+			    <button id="button_26_HadGEM2-ES_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				HadGEM2-ES
+			    </button>
+			    <div id="bunch_26_HadGEM2-ES_RCM" class="bunch space left-border">
+				<button id="26_HadGEM2-ES_RegCM4-6" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>RegCM4-6</span>
+				</button>
+				<button id="26_HadGEM2-ES_HadREM3-GA7" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>HadREM3-GA7</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_45_HadGEM2-ES_RCM" class="chain_block" style="display: none;">
+			    <button id="button_45_HadGEM2-ES_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				HadGEM2-ES
+			    </button>
+			    <div id="bunch_45_HadGEM2-ES_RCM" class="bunch space left-border">
+				<button id="45_HadGEM2-ES_CCLM4-8-17" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>CCLM4-8-17</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_85_HadGEM2-ES_RCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_HadGEM2-ES_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				HadGEM2-ES
+			    </button>
+			    <div id="bunch_85_HadGEM2-ES_RCM" class="bunch space left-border">
+				<button id="85_HadGEM2-ES_ALADIN63" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>ALADIN63</span>
+				</button>
+				<button id="85_HadGEM2-ES_CCLM4-8-17" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>CCLM4-8-17</span>
+				</button>
+				<button id="85_HadGEM2-ES_RegCM4-6" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>RegCM4-6</span>
+				</button>
+				<button id="85_HadGEM2-ES_HadREM3-GA7" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>HadREM3-GA7</span>
+				</button>
+			    </div>
+			</div>
+			
+			<!-- IPSL-CM5A-MR -->
+			<div id="block_45_IPSL-CM5A-MR_RCM" class="chain_block" style="display: none;">
+			    <button id="button_45_IPSL-CM5A-MR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				IPSL-CM5A-MR
+			    </button>
+			    <div id="bunch_45_IPSL-CM5A-MR_RCM" class="bunch space left-border">
+				<button id="45_IPSL-CM5A-MR_RCA4" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>RCA4</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_85_IPSL-CM5A-MR_RCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_IPSL-CM5A-MR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				IPSL-CM5A-MR
+			    </button>
+			    <div id="bunch_85_IPSL-CM5A-MR_RCM" class="bunch space left-border">
+				<button id="85_IPSL-CM5A-MR_HIRHAM5" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>HIRHAM5</span>
+				</button>
+				<button id="85_IPSL-CM5A-MR_RCA4" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>RCA4</span>
+				</button>
+			    </div>
+			</div>
+
+			<!-- MPI-ESM-LR -->
+			<div id="block_26_MPI-ESM-LR_RCM" class="chain_block" style="display: none;">
+			    <button id="button_26_MPI-ESM-LR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				MPI-ESM-LR
+			    </button>
+			    <div id="bunch_26_MPI-ESM-LR_RCM" class="bunch space left-border">
+				<button id="26_MPI-ESM-LR_CCLM4-8-17" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>CCLM4-8-17</span>
+				</button>
+				<button id="26_MPI-ESM-LR_RegCM4-6" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>RegCM4-6</span>
+				</button>
+				<button id="26_MPI-ESM-LR_REMO" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>REMO</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_45_MPI-ESM-LR_RCM" class="chain_block" style="display: none;">
+			    <button id="button_45_MPI-ESM-LR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				MPI-ESM-LR
+			    </button>
+			    <div id="bunch_45_MPI-ESM-LR_RCM" class="bunch space left-border">
+				<button id="45_MPI-ESM-LR_CCLM4-8-17" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>CCLM4-8-17</span>
+				</button>
+				<button id="45_MPI-ESM-LR_REMO" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>REMO</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_85_MPI-ESM-LR_RCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_MPI-ESM-LR_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				MPI-ESM-LR
+			    </button>
+			    <div id="bunch_85_MPI-ESM-LR_RCM" class="bunch space left-border">
+				<button id="85_MPI-ESM-LR_CCLM4-8-17" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>CCLM4-8-17</span>
+				</button>
+				<button id="85_MPI-ESM-LR_RegCM4-6" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>RegCM4-6</span>
+				</button>
+				<button id="85_MPI-ESM-LR_REMO" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>REMO</span>
+				</button>
+			    </div>
+			</div>
+
+			<!-- NorESM1-M -->
+			<div id="block_26_NorESM1-M_RCM" class="chain_block" style="display: none;">
+			    <button id="button_26_NorESM1-M_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				NorESM1-M
+			    </button>
+			    <div id="bunch_26_NorESM1-M_RCM" class="bunch space left-border">
+				<button id="26_NorESM1-M_REMO" class="chain_26 selected" onclick="selectButton(this)">
+				    <span>REMO</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_45_NorESM1-M_RCM" class="chain_block" style="display: none;">
+			    <button id="button_45_NorESM1-M_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				NorESM1-M
+			    </button>
+			    <div id="bunch_45_NorESM1-M_RCM" class="bunch space left-border">
+				<button id="45_NorESM1-M_HIRHAM5" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>HIRHAM5</span>
+				</button>
+				<button id="45_NorESM1-M_REMO" class="chain_45 selected" onclick="selectButton(this)">
+				    <span>REMO</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_85_NorESM1-M_RCM" class="chain_block" style="display: flex;">
+			    <button id="button_85_NorESM1-M_RCM" class="chain_block_button" onclick="toggleBlock(this)">
+				<span>NorESM1-M</span>
+			    </button>
+			    <div id="bunch_85_NorESM1-M_RCM" class="bunch space left-border">
+				<button id="85_NorESM1-M_HIRHAM5" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>HIRHAM5</span>
+				</button>
+				<button id="85_NorESM1-M_REMO" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>REMO</span>
+				</button>
+				<button id="85_NorESM1-M_WRF381P" class="chain_85 selected" onclick="selectButton(this)">
+				    <span>WRF381P</span>
+				</button>
+			    </div>
+			</div>
+
+
+			<h3>Correction de Biais</h3>
+			<div id="bunch_BC" class="bunch space" style="display: flex;">
+			    <button id="ADAMONT_HM" class="chain selected" onclick="selectButton(this); show_HM(this);">
+				<span>ADAMONT</span>
+			    </button>
+			    <button id="CDFt_HM" class="chain selected" onclick="selectButton(this); show_HM(this);">
+				<span>CDFt</span>
+			    </button>
+			</div>
+			
+			<h3>Modèle Hydrologique</h3>
+			<div id="block_ADAMONT_HM" class="chain_block" style="display: flex;">
+			    <button id="button_ADAMONT_HM" class="chain_block_button" onclick="toggleBlock(this)">
+				ADAMONT
+			    </button>
+			    <div id="bunch_ADAMONT_HM" class="bunch space left-border">
+				<button id="ADAMONT_CTRIP" class="chain selected" onclick="selectButton(this)">
+				    <span>CTRIP</span>
+				</button>
+				<button id="ADAMONT_EROS" class="chain selected" onclick="selectButton(this)">
+				    <span>EROS</span>
+				</button>
+				<button id="ADAMONT_GRSD" class="chain selected" onclick="selectButton(this)">
+				    <span>GRSD</span>
+				</button>
+				<button id="ADAMONT_J2000" class="chain selected" onclick="selectButton(this)">
+				    <span>J2000</span>
+				</button>
+				<button id="ADAMONT_MORDOR-SD" class="chain selected" onclick="selectButton(this)">
+				    <span>MORDOR-SD</span>
+				</button>
+				<button id="ADAMONT_MORDOR-TS" class="chain selected" onclick="selectButton(this)">
+				    <span>MORDOR-TS</span>
+				</button>
+				<button id="ADAMONT_ORCHIDEE" class="chain selected" onclick="selectButton(this)">
+				    <span>ORCHIDEE</span>
+				</button>
+				<button id="ADAMONT_SIM2" class="chain selected" onclick="selectButton(this)">
+				    <span>SIM2</span>
+				</button>
+				<button id="ADAMONT_SMASH" class="chain selected" onclick="selectButton(this)">
+				    <span>SMASH</span>
+				</button>
+			    </div>
+			</div>
+			<div id="block_CDFt_HM" class="chain_block" style="display: flex;">
+			    <button id="button_CDFt_HM" class="chain_block_button" onclick="toggleBlock(this)">
+				CDFt
+			    </button>
+			    <div id="bunch_CDFt_HM" class="bunch space left-border">
+				<button id="CDFt_EROS" class="chain selected" onclick="selectButton(this)">
+				    <span>EROS</span>
+				</button>
+				<button id="CDFt_GRSD" class="chain selected" onclick="selectButton(this)">
+				    <span>GRSD</span>
+				</button>
+				<button id="CDFt_J2000" class="chain selected" onclick="selectButton(this)">
+				    <span>J2000</span>
+				</button>
+				<button id="CDFt_MORDOR-SD" class="chain selected" onclick="selectButton(this)">
+				    <span>MORDOR-SD</span>
+				</button>
+				<button id="CDFt_MORDOR-TS" class="chain selected" onclick="selectButton(this)">
+				    <span>MORDOR-TS</span>
+				</button>
+				<button id="CDFt_SMASH" class="chain selected" onclick="selectButton(this)">
+				    <span>SMASH</span>
+				</button>
+			    </div>
+			</div>
+			<div class="end-subdrawer"></div>
+		    </div>
+		</div>
+		
+		<div class="end-drawer"></div>
+	    </div>
+	</div>
+    </div>
+</div>

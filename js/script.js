@@ -1,7 +1,50 @@
+Promise.all([
+    fetch('/components/bar.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('bar-element').innerHTML = html;
+        }),
+
+    fetch('/components/menu.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('menu-element').innerHTML = html;
+        })
+]).then(() => {
+    load_slider();
+});
+
+
+
+function change_url(url) {
+    history.pushState({}, "", "/" + url);
+    fetchContent("/" + url);
+}
+
+window.addEventListener('popstate', function(event) {
+    // This function will be called whenever the URL changes
+    // You can update the content of the webpage based on the new URL here
+    fetchContent(window.location.pathname);
+});
 
 
 
 
+function fetchContent(url) {
+    console.log(url);
+    fetch('http://127.0.0.1:5000' + url)
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            document.getElementById("content").innerHTML = data;
+
+	    update_data_debounce();
+	    
+        })
+        .catch(error => {
+            console.error('Error fetching content:', error);
+        });
+}
 
 
 
@@ -14,576 +57,45 @@ function unique(array) {
     });
 }
 
-function selectVariableButton(selectedButton) {
-    var buttons = selectedButton.parentNode.querySelectorAll('button');
-    buttons.forEach(function (button) {
-	button.classList.remove('selected');
-    });
-    selectedButton.classList.add('selected');
-    update_data_debounce();
-}
 
 
-
-function addUnselectedClass(bunchId) {
-    var bunch = document.getElementById(bunchId);
-    bunch.classList.add('unselected');
-}
-
-function removeUnselectedClass(bunchId) {
-    var bunch = document.getElementById(bunchId);
-    bunch.classList.remove('unselected');
-}
-
-function removeSelectedClass(bunchId) {
-    var buttons = document.querySelectorAll('#' + bunchId + ' button');
-    buttons.forEach(function(button) {
-        button.classList.remove('selected');
-    });
-}
-
-function removeSelectedClass(sliderId, bunchId) {
-    var buttons = document.querySelectorAll('#' + bunchId + ' button');
-    buttons.forEach(function(button) {
-        button.classList.remove('selected');
-    });
-
-    var slider = document.getElementById(sliderId);
-    slider.classList.remove('slider-unselect');
-}
-
-
-
-function selectHorizonButton(selectedButton) {
-    var buttons = selectedButton.parentNode.querySelectorAll('button');
-    buttons.forEach(function (button) {
-	button.classList.remove('selected');
-    });
-    selectedButton.classList.add('selected');
-    update_data_debounce();
-}
-
-
-
-
-// var threebar = $('.threebar')[0];
-// var threebar_class = threebar.getAttribute('class').split(' ')[1];
-// if (threebar_class === "hamburger") {
-// 	$('.threebar')
-// 	    .removeClass('hamburger')
-// 	    .addClass('cross');
-// } else if (threebar_class === "cross") {
-// 	$('.threebar')
-// 	    .removeClass('cross')
-// 	    .addClass('hamburger');
+// function addUnselectedClass(bunchId) {
+//     var bunch = document.getElementById(bunchId);
+//     bunch.classList.add('unselected');
 // }
 
-
-function toggle_subtab(tab) {
-    var subbars = $('.subbar');
-    subbars.each(function() {
-	var subbar = $(this);
-	var subtabs = $("[id^='" + subbar.attr("id") + "'][class^='subbar-tab']");
-
-	if (subbar.hasClass("expanded")) {
-	    subtabs.each(function() {
-		$(this).removeClass("expanded");
-	    });
-	    setTimeout(() => {
-		subbar.removeClass("expanded");
-		subtabs.each(function() {
-		    $(this).css("display", "none");
-		});
-	    }, 300);
-	    
-	} else if (subbar.attr("id").startsWith(tab.id)) {
-	    subbar.addClass("expanded");
-	    subtabs.each(function() {
-		$(this).css("display", "flex");
-	    });
-	    setTimeout(() => {
-		subtabs.each(function() {
-		    $(this).addClass("expanded");
-		});
-	    }, 300);
-	}
-    });
-
-    setTimeout(() => {
-	check_bar();
-    }, 300);
-}
-
-
-function check_bar() {
-    var bar = document.getElementById("bar");
-    var sep = document.getElementById("last-sep");
-    var arrows = $('.arrow');
-    
-    if (bar.scrollWidth > bar.offsetWidth) {
-	arrows.each(function() {
-	    $(this).addClass("show");
-	});
-	sep.style.display = "none";
-    } else {
-	arrows.each(function() {
-	    $(this).removeClass("show");
-	});
-	sep.style.display = "inline-flex";
-    }
-}
-
-function scroll_bar_left() {
-    var bar = document.getElementById('bar');
-    bar.scrollBy({ left: -200, behavior: 'smooth' });
-}
-function scroll_bar_right() {
-    var bar = document.getElementById('bar');
-    bar.scrollBy({ left: 200, behavior: 'smooth' });
-}
-
-
-
-function toggleMenu() {
-    const menu = document.getElementById("menu");
-    const menuExpand = document.getElementById("menuExpand");
-    const menuIcon = document.getElementById("bar-tab_advance-icon");
-    const title = document.getElementById("bar-tab_advance-text");
-    const button = document.getElementById("bar-tab_advance");
-    const bar = document.getElementById("bar");
-    
-    if (menu.classList.contains("expanded")) {
-        menu.classList.remove("expanded");
-        menuExpand.classList.add("hidden");
-        menuIcon.style.display = "block"; 
-        title.style.display = "block";
-	bar.classList.remove("expanded");
-	button.classList.remove("expanded");
-        setTimeout(() => {
-	    menuIcon.classList.remove("expanded");
-	    title.classList.remove("expanded");
-
-        }, 300);
-    } else {
-        menu.classList.add("expanded");
-        menuExpand.classList.remove("hidden");
-	menuIcon.classList.add("expanded");
-	title.classList.add("expanded");
-	button.classList.add("expanded");
-	bar.classList.add("expanded");
-        setTimeout(() => {
-            menuIcon.style.display = "none";
-            title.style.display = "none";
-        }, 300);
-    }
-
-    setTimeout(() => {
-	check_bar();
-    }, 300);
-}
-
-
-let drawer_mode = 'drawer-chain';
-function toggleDrawer(drawerId) {
-    var drawer_to_check = ['drawer-narratif',
-			   'drawer-RCP',
-			   'drawer-chain'];
-
-    if (drawer_to_check.includes(drawerId)) {
-	drawer_mode = drawerId;
-	drawer_to_check.forEach(function(id) {
-	    var drawerContent = document.getElementById(id + "-content");
-	    var drawerIcon = document.getElementById(id + "-icon");
-	    if (id === drawerId) {
-		if (drawerContent.classList.contains("expanded")) {
-		    drawerContent.classList.remove("expanded");
-		    drawerIcon.classList.remove("rotated");
-		} else {
-		    drawerContent.classList.add("expanded");
-		    drawerIcon.classList.add("rotated");
-		    update_data_debounce();
-		}
-	    } else {
-		if (drawerContent.classList.contains("expanded")) {
-		    drawerContent.classList.remove("expanded");
-		    drawerIcon.classList.remove("rotated");
-		}	
-	    }
-	})
-	
-    } else {
-	var drawerContent = document.getElementById(drawerId + "-content");
-	var drawerIcon = document.getElementById(drawerId + "-icon");
-	if (drawerContent.classList.contains("expanded")) {
-            drawerContent.classList.remove("expanded");
-            drawerIcon.classList.remove("rotated");
-	} else {
-            drawerContent.classList.add("expanded");
-            drawerIcon.classList.add("rotated");
-	}
-    }
-}
-
-
-const CTRIP_color = "#A88D72";
-const EROS_color = "#CECD8D";
-const GRSD_color = "#619C6C";
-const J2000_color = "#00a3a6";
-const MORDORSD_color = "#D8714E";
-const MORDORTS_color = "#AE473E";
-const ORCHIDEE_color = "#EFA59D";
-const SIM2_color = "#475E6A";
-const SMASH_color = "#F6BA62";
-
-// var icon_storyLines = {
-//     "ASTER": "local_fire_department",
-//     "DAHLIA": "wb_sunny",
-//     "NARCISSE": "filter_drama",
-//     "EUPHORBE": "umbrella"
-// };
-
-// var RCP = null;
-// var GCM = null;
-// var RCM = null;
-
-
-// function get_selectedClimateChain() {
-//     var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
-    
-//     if (RCM_block.length > 0) {
-
-// 	console.log(RCM_block.find('.selected'));
-	
-// 	var RCM_button = RCM_block.find('.selected')[0];
-// 	var RCP = RCM_button.id.split('_')[0];
-// 	var GCM = RCM_button.id.split('_')[1];
-// 	var RCM = RCM_button.id.split('_')[2];
-	
-// 	var RCM_class = RCM_button.getAttribute('class').split(' ');
-// 	var RCM_class = RCM_class.filter(function(chr) {
-// 	    return chr !== 'selected';})[0];
-
-// 	if (RCM_class && RCM_class.length > 0) {
-// 	    if (RCM_class === "ASTER" || RCM_class === "EUPHORBE") {
-// 		var button_id = ['85_GCM', '85_HadGEM2-ES_RCM', 'ADAMONT_HM'];
-// 	    } else {
-// 		var button_id = ['85_GCM', 'ADAMONT_HM'];
-// 	    }
-// 	    button_id.forEach(function(id) {
-// 		document.getElementById('icon_' + id).innerHTML = icon_storyLines[RCM_class]
-// 		var button_class = $('#' + id)[0].getAttribute('class').split(' ');
-// 		if (button_class.includes('selected')) {
-// 		    $('#' + id).removeClass().addClass(RCM_class + ' selected');
-// 		} else {
-// 		    $('#' + id).removeClass().addClass(RCM_class);
-// 		}
-// 	    });
-// 	}
-//     }
+// function removeUnselectedClass(bunchId) {
+//     var bunch = document.getElementById(bunchId);
+//     bunch.classList.remove('unselected');
 // }
-// function get_selectedClimateChain() {
-//     var iconContainers = ['#icon_85_GCM', '#icon_ADAMONT_HM', '#icon_85_HadGEM2-ES_RCM'];
 
-//     iconContainers.forEach(function(containerID) {
-
-// 	if (containerID === '#icon_85_HadGEM2-ES_RCM') {
-// 	    var icon_storyLines = {
-// 		"ASTER": "local_fire_department",
-// 		"DAHLIA": "",
-// 		"NARCISSE": "",
-// 		"EUPHORBE": "umbrella"
-// 	    };
-// 	} else {
-// 	    var icon_storyLines = {
-// 		"ASTER": "local_fire_department",
-// 		"DAHLIA": "wb_sunny",
-// 		"NARCISSE": "filter_drama",
-// 		"EUPHORBE": "umbrella"
-// 	    };
-// 	}
-	
-//         var RCM_block = $('[id^="block_"][id$="_RCM"]:visible');
-//         var iconContainer = $(containerID);
-	
-
-//         // Reset style to display icons
-//         iconContainer.removeAttr('style');
-
-//         if (RCM_block.length > 0) {
-//             var selectedRCMButtons = RCM_block.find('.selected');
-
-//             if (selectedRCMButtons.length > 0) {
-//                 var iconsAdded = false;
-//                 iconContainer.empty();
-
-//                 selectedRCMButtons.each(function() {
-//                     var RCM_button = this;
-//                     var RCM_class = RCM_button.getAttribute('class').split(' ').filter(function(chr) {
-//                         return chr !== 'selected';
-//                     });
-
-//                     RCM_class.forEach(function(cls, index) {
-//                         var icon = icon_storyLines[cls];
-//                         iconContainer.append('<span class="material-icons-outlined inline-front">' + icon + '</span>');
-
-//                         // Check if the icon is the "umbrella" icon
-//                         if (icon === 'umbrella') {
-//                             // Apply smaller left and right margins to reduce spacing
-//                             iconContainer.children().last().addClass('reduce-space');
-//                         }
-
-//                         // Set iconsAdded to true if any icon is added
-//                         iconsAdded = true;
-//                     });
-//                 });
-
-//                 if (!iconsAdded) {
-//                     iconContainer.attr('style', 'display: none;');
-//                 }
-//             }
-//         }
+// function removeSelectedClass(bunchId) {
+//     var buttons = document.querySelectorAll('#' + bunchId + ' button');
+//     buttons.forEach(function(button) {
+//         button.classList.remove('selected');
 //     });
 // }
 
-// get_selectedClimateChain();
+// function removeSelectedClass(sliderId, bunchId) {
+//     var buttons = document.querySelectorAll('#' + bunchId + ' button');
+//     buttons.forEach(function(button) {
+//         button.classList.remove('selected');
+//     });
+
+//     var slider = document.getElementById(sliderId);
+//     slider.classList.remove('slider-unselect');
+// }
 
 
-
-
-
-function selectAllButton(selectedButton) {
-    var buttons = selectedButton.parentNode.querySelectorAll('button');
-    buttons.forEach(function (button) {
-	button.classList.remove('selected');
-    });
-    selectedButton.classList.add('selected');
-
-    update_data_debounce();
-}
-
-
-
-function selectButton(selectedButton) {
-    if (selectedButton.classList.contains('selected')) {
-        selectedButton.classList.remove('selected');
-    } else {
-        selectedButton.classList.add('selected');
-    }
-
-    update_data_debounce();
-}
-
-
-
-function toggleBlock(selectedBlock) {
-    var bunch = document.getElementById(selectedBlock.id.replace("button", "bunch"));
-    var buttons = bunch.children;
-    var buttons = Array.from(buttons);
-
-    var hasSelected = false;
-    buttons.forEach(function(button) {
-    	if (button.classList.contains("selected")) {
-            hasSelected = true;
-            return;
-    	}
-    });
-
-    buttons.forEach(function(button) {
-    	if (hasSelected) {
-	    if (button.classList.contains("selected")) {
-		button.classList.remove("selected");
-		show_GCM_RCM(button)
-	    }
-    	} else {
-            button.classList.add("selected");
-	    show_GCM_RCM(button)
-    	}
-    });
-}
-
-
-function show_GCM_RCM(selectedButton) {
-    var RCP = selectedButton.id.split('_')[0];
-    var GCM = selectedButton.id.split('_')[1];
-    var RCM = selectedButton.id.split('_')[2];
-
-    if (GCM === "GCM") {
-
-	var GCM_blockAll = document.querySelectorAll(`[id^="block_"][id$="_GCM"]`);
-	GCM_blockAll.forEach(function (GCM_block) {
-	    GCM_block.style.display = 'none';
-	});
-	var GCM_selectedBlock = document.getElementById(`block_${RCP}_GCM`);
-	if (GCM_selectedBlock) {
-	    GCM_selectedBlock.style.display = 'flex';
-	}
-	
-	var RCM_blockAll = document.querySelectorAll(`[id^="block_"][id$="_RCM"]`);
-	RCM_blockAll.forEach(function (RCM_block) {
-	    RCM_block.style.display = 'none';
-	});
-
-	var RCM_blockAll = document.querySelectorAll(`[id^="block_${RCP}"][id$="_RCM"]`);
-
-	var GCM_selectedBunch = document.getElementById(`bunch_${RCP}_GCM`);
-	var GCM_buttonSelected = GCM_selectedBunch.querySelectorAll('.selected');
-	var GCM_selected = Array.from(GCM_buttonSelected).map(button => button.id.split('_')[1]);
-
-	
-	RCM_blockAll.forEach(function (RCM_block) {
-	    var GCM = RCM_block.id.split('_')[2];
-	    if (GCM_selected.includes(GCM)) {
-		RCM_block.style.display = 'flex';
-	    } else {
-		RCM_block.style.display = 'none';
-	    }
-	});
-
-    }
-    if (RCM === "RCM") {
-	var RCM_selectedBlock = document.getElementById(`block_${RCP}_${GCM}_RCM`);
-	if (RCM_selectedBlock.style.display === 'flex') {
-	    RCM_selectedBlock.style.display = 'none';
-	} else {
-	    RCM_selectedBlock.style.display = 'flex';
-	}
-    }
-
-}
-
-
-
-
-
-function show_HM(selectedButton) {
-    var BC = selectedButton.id.split('_')[0];
-    var HM = selectedButton.id.split('_')[1];
-    
-    if (HM === "HM") {
-	var HM_selectedBlock = document.getElementById(`block_${BC}_HM`);
-	if (HM_selectedBlock.style.display === 'flex') {
-	    HM_selectedBlock.style.display = 'none';
-	} else {
-	    HM_selectedBlock.style.display = 'flex';
-	}
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-function get_n() {
-    var slider = document.getElementById('slider-n');
-    var n = parseInt(slider.noUiSlider.get());
-    return n;
-}
-
-
-function get_variable() {
-    var variableBunch = $('#bunch-variable');
-    var selectedButton = variableBunch.find('.selected')[0];
-    var variableName = selectedButton.getAttribute('value');
-    return variableName;
-}
-
-function get_horizon(horizon) {
-    var bunchHorizon = $('#bunch-horizon_'+horizon);
-    var buttonHorizon = bunchHorizon.find('.selected')[0];
-    var horizon = buttonHorizon.getAttribute('value');
-    return horizon;
-}
-
-
-function get_chunk_of_chain(value, search="selected") {
-    var blockChain = $(value);
-    var buttonsChain = blockChain.find("." + search);
-    
-    var Chain = [];
-    buttonsChain.each(function() {
-	Chain.push($(this).attr('id'));
-    });
-    var Chain = Chain.filter(function(item, index, self) {
-	return self.indexOf(item) === index;
-    });
-    return Chain;
-}
-
-
-function get_HM() {
-    var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-    var HM = BC_HM.map(item => item.split('_')[1]);
-    HM = unique(HM);
-    return HM;
-}
-
-
-function get_RCP_only() {
-    var container = document.getElementById('bunch_RCP_only');
-    var selectedButton = container.querySelector('button.selected');
-    return selectedButton.value;
-}
-
-function get_narratif_only() {
-    var container = document.getElementById('bunch_narratif');
-    var selectedButton = container.querySelector('button.selected');
-    return [selectedButton.value];
-}
-
-function get_chain() {
-    // var drawer_to_check = ['drawer-narratif',
-    // 			   'drawer-RCP',
-    // 			   'drawer-chain'];
-
-    if (drawer_mode === 'drawer-chain') {
-	var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
-	var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
-	var chain = [];
-	EXP_GCM_RCM.forEach(function(item1) {
-            BC_HM.forEach(function(item2) {
-		chain.push(item1 + "_" + item2);
-            });
-	});
-	
-    } else if (drawer_mode === 'drawer-narratif') {
-	var EXP_GCM_RCM_BC = get_narratif_only();
-	var HM = ["CTRIP", "EROS", "GRSD", "J2000", "MORDOR-SD",
-		  "MORDOR-TS", "ORCHIDEE", "SIM2", "SMASH"];
-	var chain = [];
-	EXP_GCM_RCM_BC.forEach(function(item1) {
-            HM.forEach(function(item2) {
-		chain.push(item1 + "_" + item2);
-            });
-	});
-
-    } else if (drawer_mode === 'drawer-RCP') {
-	var rcp = "chain_" + get_RCP_only();
-	var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]',
-					     search=rcp);
-	var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]',
-				       search="chain");
-	var chain = [];
-	EXP_GCM_RCM.forEach(function(item1) {
-            BC_HM.forEach(function(item2) {
-		chain.push(item1 + "_" + item2);
-            });
-	});
-    }
-
-    var chain = chain.map(function(element) {
-	return "historical-rcp" + element;
-    });
-
-    return chain;
-}
+// const CTRIP_color = "#A88D72";
+// const EROS_color = "#CECD8D";
+// const GRSD_color = "#619C6C";
+// const J2000_color = "#00a3a6";
+// const MORDORSD_color = "#D8714E";
+// const MORDORTS_color = "#AE473E";
+// const ORCHIDEE_color = "#EFA59D";
+// const SIM2_color = "#475E6A";
+// const SMASH_color = "#F6BA62";
 
 
 
@@ -644,7 +156,7 @@ function update_data() {
     });
 }
 const update_data_debounce = debounce(update_data, 1000);
-update_data_debounce();
+// update_data_debounce();
 
 function update_data_point() {
     var variable = get_variable();
@@ -965,14 +477,14 @@ function draw_colorbar(dataBackend) {
 		    var clickedColor = d;
 
 		    if (selectedColor === clickedColor) {
-			d3.select("#geoJSONsvg_france").selectAll(".point")
+			d3.select("#svg-france").selectAll(".point")
 			    .attr("opacity", 1);
 			selectedColor = null;
 			svg.selectAll(".color-circle, .tick-line, .bin-text")
 			    .attr("opacity", 1);
 			
 		    } else {
-			d3.select("#geoJSONsvg_france").selectAll(".point")
+			d3.select("#svg-france").selectAll(".point")
 			    .attr("opacity", function(d) {
 				return d.fill === clickedColor ? 1 : 0.1;
 			    });
@@ -994,26 +506,6 @@ function draw_colorbar(dataBackend) {
 		});
 	});
     circles.exit().remove();
-    
-
-    
-
-    // svg.selectAll(".color-circle")
-    //     .on("click", function(event, d) {
-    //         var clickedColor = d;
-
-    //         if (selectedColor === clickedColor) {
-    //             d3.select("#geoJSONsvg_france").selectAll(".point")
-    //                 .attr("opacity", 1);
-    //             selectedColor = null;
-    //         } else {
-    //             d3.select("#geoJSONsvg_france").selectAll(".point")
-    //                 .attr("opacity", function(d) {
-    //                     return d.fill === clickedColor ? 1 : 0.1;
-    //                 });
-    //             selectedColor = clickedColor;
-    //         }
-    //     });
 }
 
 
@@ -1057,8 +549,6 @@ Promise.all(promises)
 		 geoJSONdata_entiteHydro,
 		 data);
 
-	// update_data();
-	
     })
     .catch(error => {
 	console.error("Error loading or processing GeoJSON files:", error);
@@ -1069,14 +559,14 @@ Promise.all(promises)
 let selected_code = null;
 function highlight_selected_point() {
     
-    const svg = d3.select("#geoJSONsvg_france");
+    const svg = d3.select("#svg-france");
     svg.selectAll(".point.clicked")
         .attr("stroke-width", 0)
         .attr("r", 3)
         .classed("clicked", false);
     
     if (selected_code !== null) {
-        const svg = d3.select("#geoJSONsvg_france");
+        const svg = d3.select("#svg-france");
 
         svg.selectAll(".point.clicked")
             .attr("stroke-width", 0)
@@ -1108,7 +598,7 @@ function draw_map(geoJSONdata_france,
 		     data) {
 
 
-    d3.select("#geoJSONsvg_france").selectAll("*").remove();
+    d3.select("#svg-france").selectAll("*").remove();
     
     if (geoJSONdata_france && geoJSONdata_river) {
 	
@@ -1159,7 +649,7 @@ function draw_map(geoJSONdata_france,
 	      .center(geoJSONdata_france.features[0].properties.centroid);
 
 
-	const svg = d3.select("#geoJSONsvg_france")
+	const svg = d3.select("#svg-france")
 	      .attr("width", "100%")
 	      .attr("height", "100%")
 	      .call(zoom)
@@ -1342,68 +832,6 @@ function draw_map(geoJSONdata_france,
         handleResize();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    var slider = document.getElementById('slider-n');
-    
-    noUiSlider.create(slider, {
-	start: [4],
-	behaviour: 'drag-smooth-steps-tap',
-	step: 1,
-	connect: true,
-	keyboardDefaultStep: 1,
-	keyboardPageMultiplier: 2,
-	keyboardMultiplier: 1,
-	range: {
-	    'min': 1,
-	    'max': 9
-	},
-	pips: {
-	    mode: 'values',
-	    values: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-	    density: 100,
-	}
-    });
-
-
-    var startValue = slider.noUiSlider.get();
-    var maxPos = Math.max(startValue) - 1;
-    $(slider).find('.noUi-value:visible').removeClass('highlight').eq(maxPos).addClass('highlight');
-    
-    slider.noUiSlider.on('change', function(values) {
-    	var maxPos = Math.max(values) -1;
-        $(slider).find('.noUi-value:visible').removeClass('highlight').eq(maxPos).addClass('highlight');
-    });
-
-})
-
-
-
 
 
 

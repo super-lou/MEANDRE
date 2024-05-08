@@ -1,0 +1,213 @@
+
+#container-bar {
+    width: 100%;
+    height: 3rem;
+    background: #ffffff;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+}
+
+#bar {
+    width: calc(100vw - 14rem - 9rem - 6px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+    transition: width 0.3s ease;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+}
+#bar.expanded {
+    width: calc(100vw - 14rem - 18rem - 6px);
+}
+
+
+
+.bar-tab {
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    cursor: pointer;
+    background-color: transparent;
+    color: #060508;
+    cursor: pointer;
+    height: auto;
+    transition: width 0.3s ease;
+    margin-left: 0.6rem;
+    margin-right: 0rem;
+    text-wrap: wrap;
+    line-height: 0.8rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+}
+.bar-tab:hover,
+.bar-tab:hover .material-icons-outlined{
+    color: #70757A;
+}
+
+#bar-tab_other {
+    margin-right: 0.9rem;
+}
+#bar-tab_space {
+    flex-grow: 1;
+}
+
+#button-advance {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #ffffff;
+    width: 9rem;
+    height: 3rem;
+}
+#button-advance.expanded {
+    width: 0rem;
+}
+#bar-tab_advance {
+    margin-right: 0.6rem;
+    transition: width 0.3s ease;
+}
+#bar-tab_advance-icon, #bar-tab_advance-text, #bar-tab_advance-close {
+    transition: opacity 0.3s ease;
+    opacity: 1; 
+}
+#bar-tab_advance-icon.expanded,
+#bar-tab_advance-text.expanded {
+    opacity: 0; 
+}
+
+#bar-tab_close-advance {
+    height: 3rem;
+}
+
+
+#left-arrow {
+    left: 0.5rem;
+}
+#right-arrow {
+    right: 0.5rem;
+}
+.arrow {
+    cursor: pointer;
+    position: sticky;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    display: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+    z-index: 10;
+    margin: 0.1rem;
+}
+.arrow.show {
+    display: flex;
+}
+
+.subbar {
+    transition: max-width 0.3s ease;
+    max-width: 0rem;
+    margin-left: 0.8rem;
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: start;
+    column-gap: 1.3rem;
+    text-wrap: nowrap;
+    white-space: nowrap;
+}
+.subbar.expanded {
+    max-width: 30rem;
+}
+
+.subbar-tab {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 0.7rem;
+    cursor: pointer;
+    background-color: transparent;
+    color: #060508;
+    cursor: pointer;
+    min-height: 2rem;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    display: none;
+    line-height: 0.8rem;
+    gap: 0.2rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    text-wrap: nowrap;
+    white-space: nowrap;
+}
+.subbar-tab.expanded {
+    opacity: 1;
+}
+
+/* Hover effect for sub-tabs */
+.subbar-tab:hover,
+.subbar-tab:hover .material-icons-outlined {
+    color: #70757A;
+}
+.subbar-tab:last-child {
+    margin-right: 1rem;
+}
+
+
+.sep {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 3rem;	     
+    border-left: 3px solid #EDEDED;
+}
+
+.subbar-sep {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 1.4rem;
+    margin-right: 0.1rem;
+    border-left: 3px solid #EDEDED;
+}
+
+
+#container-update {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+#button-update {
+    color: white;
+    background: #16171f;
+    border-radius: 5rem 5rem;
+    width: fit-content;
+    padding-top: 0.1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.1rem;
+}
+#button-update:hover {
+    color: #70757A;
+}
