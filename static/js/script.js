@@ -1,54 +1,69 @@
-Promise.all([
-    fetch('/components/bar.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('bar-element').innerHTML = html;
-        }),
 
-    fetch('/components/menu.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('menu-element').innerHTML = html;
-        })
-]).then(() => {
-    load_slider();
+
+
+$(document).ready(function() {
+    updateContent(start=true);
 });
-
-
-
-function change_url(url) {
-    history.pushState({}, "", "/" + url);
-    fetchContent("/" + url);
-}
 
 window.addEventListener('popstate', function(event) {
-    // This function will be called whenever the URL changes
-    // You can update the content of the webpage based on the new URL here
-    fetchContent(window.location.pathname);
+    updateContent();
 });
 
+function change_url(url) {
+    url = "/" + url;
+    history.pushState({}, "", url);
+    updateContent();
+}
 
-
-
-function fetchContent(url) {
+function updateContent(start=false) {
+    var url = window.location.pathname;
     console.log(url);
-    fetch('http://127.0.0.1:5000' + url)
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-            document.getElementById("content").innerHTML = data;
 
-	    update_data_debounce();
-	    
-        })
-        .catch(error => {
-            console.error('Error fetching content:', error);
-        });
+    if (url !== "/") {
+	hide_home();
+    }
+    if (start || url !== "/personnalisation_avancee") {
+    	fetch_components();
+    }
+    if (start || url !== "/" && url !== "/personnalisation_avancee") {
+    	$("#container-map-gallery").load("/pages" + url + ".html");
+    	update_data_debounce();
+    }
 }
 
 
 
 
+function fetch_components() {
+    fetch('/components/bar.html')
+	.then(response => response.text())
+	.then(html => {
+            if (document.getElementById('bar-element')) {
+		document.getElementById('bar-element').innerHTML = html;
+            }
+	});
+
+    fetch('/components/menu.html')
+	.then(response => response.text())
+	.then(html => {
+            if (document.getElementById('menu-element')) {
+		document.getElementById('menu-element').innerHTML = html;
+		load_slider(); 
+            }
+	});
+}
+
+
+
+
+
+
+
+
+
+function hide_home() {
+    document.getElementById('home').style.display = "none";
+}
 
 
 function unique(array) {
@@ -59,32 +74,7 @@ function unique(array) {
 
 
 
-// function addUnselectedClass(bunchId) {
-//     var bunch = document.getElementById(bunchId);
-//     bunch.classList.add('unselected');
-// }
 
-// function removeUnselectedClass(bunchId) {
-//     var bunch = document.getElementById(bunchId);
-//     bunch.classList.remove('unselected');
-// }
-
-// function removeSelectedClass(bunchId) {
-//     var buttons = document.querySelectorAll('#' + bunchId + ' button');
-//     buttons.forEach(function(button) {
-//         button.classList.remove('selected');
-//     });
-// }
-
-// function removeSelectedClass(sliderId, bunchId) {
-//     var buttons = document.querySelectorAll('#' + bunchId + ' button');
-//     buttons.forEach(function(button) {
-//         button.classList.remove('selected');
-//     });
-
-//     var slider = document.getElementById(sliderId);
-//     slider.classList.remove('slider-unselect');
-// }
 
 
 // const CTRIP_color = "#A88D72";
@@ -142,18 +132,19 @@ function update_data() {
     .then(response => response.json())
     .then(dataBackend => {
 	data = dataBackend.data
-	draw_map(geoJSONdata_france,
-		    geoJSONdata_river,
-		    geoJSONdata_entiteHydro,
-		    data);
+	// draw_map(geoJSONdata_france,
+	// 	    geoJSONdata_river,
+	// 	    geoJSONdata_entiteHydro,
+	// 	    data);
+	update_map();
 
 	update_grid(dataBackend);
 	draw_colorbar(dataBackend);
 	
     })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    // .catch(error => {
+        // console.error('Error:', error);
+    // });
 }
 const update_data_debounce = debounce(update_data, 1000);
 // update_data_debounce();
@@ -184,9 +175,9 @@ function update_data_point() {
 	plot_data_serie();
 	
     })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    // .catch(error => {
+        // console.error('Error:', error);
+    // });
 }
 const update_data_point_debounce = debounce(update_data_point, 1000);
 
@@ -521,9 +512,9 @@ function draw_colorbar(dataBackend) {
 let geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro;
 
 const geoJSONfiles = [
-    "data/france.geo.json",
-    "data/river.geo.json",
-    "data/entiteHydro.geo.json"
+    "/data/france.geo.json",
+    "/data/river.geo.json",
+    "/data/entiteHydro.geo.json"
 ];
 
 function loadGeoJSON(fileURL) {
@@ -536,22 +527,14 @@ function loadGeoJSON(fileURL) {
 }
 
 const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
-
-
 Promise.all(promises)
     .then(geoJSONdata => {
 	geoJSONdata_france = geoJSONdata[0];
 	geoJSONdata_river = geoJSONdata[1];
 	geoJSONdata_entiteHydro = geoJSONdata[2];
 
-	draw_map(geoJSONdata_france,
-		 geoJSONdata_river,
-		 geoJSONdata_entiteHydro,
-		 data);
-
-    })
-    .catch(error => {
-	console.error("Error loading or processing GeoJSON files:", error);
+	// update_map();
+	
     });
 
 
@@ -592,11 +575,7 @@ function highlight_selected_point() {
 
 
 
-function draw_map(geoJSONdata_france,
-		     geoJSONdata_river,
-		     geoJSONdata_entiteHydro,
-		     data) {
-
+function update_map() {
 
     d3.select("#svg-france").selectAll("*").remove();
     

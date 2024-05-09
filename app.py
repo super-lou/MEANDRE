@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 from sqlalchemy import create_engine, text
 from sqlalchemy.pool import QueuePool
 from flask_cors import CORS
@@ -38,9 +38,12 @@ def switch_color(color, color_to_find, color_to_switch):
     return color
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static')
+
 CORS(app, resources={r"/*": {"origins": "*"}})
 current_dir = os.path.dirname(os.path.abspath(__file__))
+R_dir = os.path.join(current_dir, "static", "R")
 
 # Configure the database connection URL
 db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
@@ -49,16 +52,25 @@ db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
 engine = create_engine(db_url, poolclass=QueuePool)
 
 
-# @app.route('/')
-# def url_home():
-    # return render_template('index.html')
 
-@app.route('/A')
-def url_A():
-    path = os.path.join("plus_ou_moins", "disparite.html")
-    print(path)
-    return render_template(path)
 
+@app.route('/')
+@app.route('/plus_eau_moins_eau/disparite')
+@app.route('/personnalisation_avancee')
+def index():
+    return render_template('index.html')
+
+
+
+
+
+# @app.route('/plus-eau-moin-eau_disparite')
+# def plus_eau_moin_eau_disparite():
+#     # Read the content of dynamic_content.html
+#     path = os.path.join("templates", "plus-eau-moin-eau", "disparite.html")
+#     with open(path, 'r') as f:
+#         content = f.read()
+#     return render_template('index.html', content=content)
 
 
 @app.route('/delta', methods=['POST'])
@@ -131,7 +143,7 @@ def delta_post():
 
     command = [
         "Rscript",
-        os.path.join(current_dir, "R", "compute_color.R"),
+        os.path.join(R_dir, "compute_color.R"),
         "--min", str(q01Delta),
         "--max", str(q99Delta),
         "--delta", json.dumps(Delta),
@@ -156,7 +168,7 @@ def delta_post():
 
     command = [
         "Rscript",
-        os.path.join(current_dir, "R", "compute_bin.R"),
+        os.path.join(R_dir, "compute_bin.R"),
         "--min", str(q01Delta),
         "--max", str(q99Delta),
         "--delta", json.dumps(Delta),
@@ -237,7 +249,7 @@ def serie_post():
         y_str = ' '.join(map(str, y))
         command = [
             "Rscript",
-            os.path.join(current_dir, "R", "compute_spline.R"),
+            os.path.join(R_dir, "compute_spline.R"),
             "--x", x_str,
             "--y", y_str
         ]

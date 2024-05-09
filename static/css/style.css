@@ -299,12 +299,19 @@ h3 {
 
 
 
+#home {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
 
 
 
 
-
-
+#container-map-gallery {
+    display: flex;
+    flex-grow: 1;
+}
 
 
 #container-map {
