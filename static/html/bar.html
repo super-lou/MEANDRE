@@ -1,6 +1,6 @@
 <div id="container-bar">
 
-    <div class="logo">
+    <div id="logo" class="logo" onclick="change_url('')">
 	<img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
 	<span>MEANDRE</span>
     </div>
@@ -19,19 +19,22 @@
 
 	    <div id="bar-tab_intro-tab" class="subbar">
 		<div id="bar-tab_intro-tab_disparite" class="subbar-tab"
-		     onclick="change_url('plus_eau_moins_eau/disparite')">
+		     onclick="change_url('/plus_d_eau_d_moins_eau/disparite_sur_le_territoire')">
 		    <div class="subbar-sep"></div>
 		    Disparité sur<br>le territoire
 		</div>
-		<div id="bar-tab_intro-tab_multi-modele" class="subbar-tab">
+		<div id="bar-tab_intro-tab_multi-modele" class="subbar-tab"
+		     onclick="change_url('/plus_d_eau_d_moins_eau/l_approche_multi-modeles')">
 		    <div class="subbar-sep"></div>
 		    L'approche<br>multi-modèles
 		</div>
-		<div id="bar-tab_intro-tab_trajectoires" class="subbar-tab">
+		<div id="bar-tab_intro-tab_trajectoires" class="subbar-tab"
+		     onclick="change_url('/plus_d_eau_d_moins_eau/les_trajectoires')">
 		    <div class="subbar-sep"></div>
 		    Les trajectoires
 		</div>
-		<div id="bar-tab_intro-tab_narratifs" class="subbar-tab">
+		<div id="bar-tab_intro-tab_narratifs" class="subbar-tab"
+		     onclick="change_url('/plus_d_eau_d_moins_eau/les_narratifs')">
 		    <div class="subbar-sep"></div>
 		    Les narratifs
 		</div>
@@ -46,15 +49,18 @@
 	    <span id="bar-tab_nord-text">L'incertitude des crues</span>
 
 	    <div id="bar-tab_nord-tab" class="subbar">
-		<div id="bar-tab_nord-tab_crues" class="subbar-tab">
+		<div id="bar-tab_nord-tab_crues" class="subbar-tab"
+		     onclick="change_url('/l_incertitude_des_crues/le_regime_des_crues')">
 		    <div class="subbar-sep"></div>
 		    Le régime<br>des crues
 		</div>
-		<div id="bar-tab_nord-tab_limite" class="subbar-tab">
+		<div id="bar-tab_nord-tab_limite" class="subbar-tab"
+		     onclick="change_url('/l_incertitude_des_crues/ou_est_la_limite')">
 		    <div class="subbar-sep"></div>
 		    Où est la<br>limite ?
 		</div>
-		<div id="bar-tab_nord-tab_incertains" class="subbar-tab">
+		<div id="bar-tab_nord-tab_incertains" class="subbar-tab"
+		     onclick="change_url('/l_incertitude_des_crues/des_futurs_incertains')">
 		    <div class="subbar-sep"></div>
 		    Des futurs<br>incertains
 		</div>
@@ -69,19 +75,23 @@
 	    <span id="bar-tab_sud-text">La peur du manque</span>
 
 	    <div id="bar-tab_sud-tab" class="subbar">
-		<div id="bar-tab_sud-tab_crues" class="subbar-tab">
+		<div id="bar-tab_sud-tab_crues" class="subbar-tab"
+		     onclick="change_url('/la_peur_du_manque/le_regime_des_etiages')">
 		    <div class="subbar-sep"></div>
 		    Le régime<br>des étiages
 		</div>
-		<div id="bar-tab_sud-tab_intensite" class="subbar-tab">
+		<div id="bar-tab_sud-tab_intensite" class="subbar-tab"
+		     onclick="change_url('/la_peur_du_manque/l_intensite')">
 		    <div class="subbar-sep"></div>
 		    L'intensité
 		</div>
-		<div id="bar-tab_sud-tab_duree" class="subbar-tab">
+		<div id="bar-tab_sud-tab_duree" class="subbar-tab"
+		     onclick="change_url('/la_peur_du_manque/la_duree')">
 		    <div class="subbar-sep"></div>
 		    La durée
 		</div>
-		<div id="bar-tab_sud-tab_constat" class="subbar-tab">
+		<div id="bar-tab_sud-tab_constat" class="subbar-tab"
+		     onclick="change_url('/la_peur_du_manque/le_constat')">
 		    <div class="subbar-sep"></div>
 		    Le constat
 		</div>

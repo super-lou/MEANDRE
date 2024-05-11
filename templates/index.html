@@ -42,12 +42,34 @@
 	<link rel="stylesheet" href="/css/menu.css">
 	<link rel="stylesheet" href="/css/bar.css">
 	<link rel="stylesheet" href="/css/slider.css">
+	<link rel="stylesheet" href="/css/loading.css">
+	<link rel="stylesheet" href="/css/home.css">
+	<link rel="stylesheet" href="/css/gallery.css">
 	
     </head>
     <body>
 
-	<div id="home" onclick="change_url('plus_eau_moins_eau/disparite'); hide_home();">
-	    aaa
+	<div id="container-home" onclick="change_url('/plus_d_eau_d_moins_eau/disparite_sur_le_territoire', actualise=false);">
+
+	    <div id="home">
+		<div id="home-logo" class="logo">
+		    <img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
+		    <span>MEANDRE</span>
+		</div>
+		<p>MEANDRE présente de manière guidé un regard d'expert sur les résultats des projections hydrologiques réalisées sur la France. La mise à jour de ces projections a été réalisé entre 2022 et 2024 dans le cadre du projet national Explore2.<br>Ces résultats sont un aperçu de quelques futures possibles pour la ressources en eau.</p>
+	    </div>
+
+	    <div id="home-by">
+		<a href="https://professionnels.ofb.fr/fr/node/1244" target="_blank"
+		   onclick="stopPropagation(event)">
+		    <img id="home-by_Explore2"  src="/resources/LogoExplore2_white.png" alt="Explore2"/>
+		</a>
+		<a href="https://www.inrae.fr/" target="_blank"
+		   onclick="stopPropagation(event)">
+		    <img id="home-by_INRAE"  src="/resources/INRAElogo_white_crop.svg" alt="INRAE"/>
+		</a>
+	    </div>
+			
 	</div> 
 
 	<div id="bar-element"></div>

@@ -6,6 +6,9 @@
 	    <!-- <div id="panel-hover_value"></div> -->
 	</div>
     </div>
+    <div id="map-loading" class="container-loading">
+	<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
     <svg id="svg-france"></svg>
 </div>
 
@@ -42,7 +45,7 @@
 	     class="gallery-item column"
 	     style="grid-column: span 2; grid-row: span 1; display: none;">
 	    <div id="grid-point_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_grid(this)">close</div>
+		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
 	    <div id="grid-point_code-value"
 		 class="bunch row column-gap cross-center">
 		<span id="grid-point_code"></span>
@@ -72,13 +75,16 @@
 	     class="gallery-item column center"
 	     style="grid-column: 1 / -1; grid-row: span 3; display: none;">
 	    <div id="grid-line_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_grid(this)">close</div>
+		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
 	    <div class="bunch column">
 		<div class="bunch column">
 		    <div id="grid-line_title">
 			Série des changements relatifs
 		    </div>
 		    <div id="grid-line_tooltip"></div>
+		</div>
+		<div id="line-loading" class="container-loading">
+		    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 		</div>
 		<svg id="svg-line"></svg>			    
 	    </div>

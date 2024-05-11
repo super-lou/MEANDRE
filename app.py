@@ -55,7 +55,17 @@ engine = create_engine(db_url, poolclass=QueuePool)
 
 
 @app.route('/')
-@app.route('/plus_eau_moins_eau/disparite')
+@app.route('/plus_d_eau_d_moins_eau/disparite_sur_le_territoire')
+@app.route('/plus_d_eau_d_moins_eau/l_approche_multi-modeles')
+@app.route('/plus_d_eau_d_moins_eau/les_trajectoires')
+@app.route('/plus_d_eau_d_moins_eau/les_narratifs')
+@app.route('/l_incertitude_des_crues/le_regime_des_crues')
+@app.route('/l_incertitude_des_crues/ou_est_la_limite')
+@app.route('/l_incertitude_des_crues/des_futurs_incertains')
+@app.route('/la_peur_du_manque/le_regime_des_etiages')
+@app.route('/la_peur_du_manque/l_intensite')
+@app.route('/la_peur_du_manque/la_duree')
+@app.route('/la_peur_du_manque/le_constat')
 @app.route('/personnalisation_avancee')
 def index():
     return render_template('index.html')

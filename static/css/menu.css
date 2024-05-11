@@ -1,28 +1,4 @@
 
-.logo {
-    font-family: "Raleway", sans-serif;
-    font-weight: 900;
-    font-size: 1.3rem;
-
-    width: 14rem;
-    height: 3rem;
-    color: #16171f;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.logo img {
-    height: 2.5rem;
-    padding-bottom: 0.4rem;
-    padding-right: 0.8rem;
-    padding-left: 0.5rem;
-}
-.logo span {
-    padding-right: 1.5rem;
-}
 
 #container-menu {
     position: absolute;
