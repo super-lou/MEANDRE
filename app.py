@@ -237,18 +237,17 @@ def serie_post():
 
 
     ### not need to be done after cleaning
-    filtered_data = data[(data['date'] >= '1976-01-01') &
-                         (data['date'] <= '2005-08-31')]
-    mean_values = filtered_data.groupby('chain')['value'].mean().reset_index()
-    mean_values.columns = ['chain', 'mean_value']
+    # filtered_data = data[(data['date'] >= '1976-01-01') &
+    #                      (data['date'] <= '2005-08-31')]
+    # mean_values = filtered_data.groupby('chain')['value'].mean().reset_index()
+    # mean_values.columns = ['chain', 'mean_value']
 
-    data = pd.merge(data, mean_values, on='chain', how='left')
+    # data = pd.merge(data, mean_values, on='chain', how='left')
 
-    data['value'] = (data['value'] - data['mean_value']) / data['mean_value']
-    data.drop(columns=['mean_value'], inplace=True)
+    # data['value'] = (data['value'] - data['mean_value']) / data['mean_value']
+    # data.drop(columns=['mean_value'], inplace=True)
     ###
     
-
     for storyline in name_of_storylines:
         data_med = data[data['climate_chain'] == storyline].groupby(['date'])['value'].median().reset_index()
 
