@@ -122,7 +122,7 @@ ORDER BY code;
 
 WITH hm_average AS (
     SELECT code, gcm, rcm, bc, AVG(value) AS value
-    FROM delta_historical_rcp85_qa_h3
+    FROM delta_historical_rcp26_qa_h3
     WHERE
     -- chain IN (
         -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_CTRIP',
@@ -136,7 +136,7 @@ WITH hm_average AS (
         -- 'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SMASH'
     -- )
     -- AND
-    n >= 6
+    n >= 4
     GROUP BY code, gcm, rcm, bc
 ),
 bc_average AS (
@@ -155,11 +155,11 @@ bc_average AS (
 
 
 SELECT *
-FROM data_historical_rcp85_qa
+FROM delta_historical_rcp26_qa
 WHERE
 chain IN (
-'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SIM2',
-'historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT_SMASH'
+'historical-rcp26_CNRM-CM5_ALADIN63_ADAMONT_SIM2',
+'historical-rcp26_CNRM-CM5_ALADIN63_ADAMONT_SMASH'
 )
 AND
 code = 'X211401001'

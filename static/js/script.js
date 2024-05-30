@@ -1,4 +1,5 @@
 
+let api_base_url = "http://127.0.0.1:5000";
 
 
 $(document).ready(function() {
@@ -10,7 +11,7 @@ window.addEventListener('popstate', function(event) {
 });
 
 function change_url(url, actualise=true) {
-    // url = "/" + url;
+    console.log(url)
     history.pushState({}, "", url);
     updateContent(start=false, actualise=actualise);
 }
@@ -28,16 +29,13 @@ function updateContent(start=false, actualise=true) {
     }
     if (actualise && url !== "/" && (start || url !== "/personnalisation_avancee")) {
     	$("#container-map-gallery").load("/html" + url + ".html");
-    	// update_data_debounce();
+    	update_data_debounce();
 	
     } else if (url === "/") {
 	$("#container-map-gallery").load("/html" + "/plus_d_eau_d_moins_eau/disparite_sur_le_territoire" + ".html");
-    	// update_data_debounce();
+    	update_data_debounce();
     }
 }
-
-
-
 
 function fetch_components() {
     $.get('/html/bar.html', function(html) {
@@ -54,13 +52,9 @@ function fetch_components() {
     });
 }
 
-
 function stopPropagation(event) {
     event.stopPropagation();
 }
-
-
-
 
 
 
@@ -130,7 +124,7 @@ function update_data() {
         horizon: horizon,
     };
 
-    fetch('http://127.0.0.1:5000/delta', {
+    fetch(api_base_url + "/get_delta_on_horizon", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -170,7 +164,7 @@ function update_data_point() {
         variable: variable
     };
 
-    fetch('http://127.0.0.1:5000/serie', {
+    fetch(api_base_url + "/get_delta_serie", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -414,10 +408,18 @@ function close_point_grid() {
 function draw_colorbar(dataBackend) {
     // document.getElementById("grid-variable_unit").innerHTML = dataBackend.unit_fr;
 
+
     var bin = dataBackend.bin.slice(1, -1).reverse();
     var palette = dataBackend.palette.reverse();
     var step = 25;
     var shift = 20;
+    var to_normalise = dataBackend.to_normalise;
+
+    if (to_normalise) {
+	var unit = "%";
+    } else {
+	var unit = "jours";
+    }
 
     const svg = d3.select("#svg-colorbar");
 
@@ -450,7 +452,7 @@ function draw_colorbar(dataBackend) {
 	.attr("y", (d, i) => i * step + step / 2 + shift + 4)
 	.html(d => {
             d = d > 0 ? "+" + d : d;
-	    d = d == 0 ? d : `<tspan>${d}</tspan>&nbsp;<tspan class="colorbar-unit">%</tspan>`;
+	    d = d == 0 ? d : `<tspan>${d}</tspan>&nbsp;<tspan class="colorbar-unit">${unit}</tspan>`;
             return d;
 	});
     texts.exit().remove();
@@ -512,13 +514,6 @@ function draw_colorbar(dataBackend) {
 
 
 
-
-
-
-
-
-
-
 let geoJSONdata_france, geoJSONdata_river, geoJSONdata_entiteHydro;
 
 const geoJSONfiles = [
@@ -548,40 +543,6 @@ Promise.all(promises)
 
 
 let selected_code = null;
-function highlight_selected_point() {
-    
-    const svg = d3.select("#svg-france");
-    svg.selectAll(".point.clicked")
-        .attr("stroke-width", 0)
-        .attr("r", 3)
-        .classed("clicked", false);
-    
-    if (selected_code !== null) {
-        const svg = d3.select("#svg-france");
-
-        svg.selectAll(".point.clicked")
-            .attr("stroke-width", 0)
-            .attr("r", 3)
-            .classed("clicked", false);
-
-        var clickedPoint = svg.selectAll(".point")
-            .filter(function(d) {
-                return d.code === selected_code;
-            });
-
-        clickedPoint
-            .attr("r", 4)
-            .attr("stroke", "#060508")
-            .attr("stroke-width", 1)
-            .classed("clicked", true);
-
-        var parentNode = clickedPoint.node().parentNode;
-        parentNode.appendChild(clickedPoint.node());
-    }
-}
-
-
-
 
 const fill_entiteHydro = "transparent";
 const stroke_entiteHydro = "#000000";
@@ -612,7 +573,6 @@ let width = window.innerHeight;
 let height = window.innerHeight;
 
 let projection;
-
 let svgFrance;
 
 function update_map() {
@@ -622,25 +582,17 @@ function update_map() {
     const zoom = d3.zoom()
 	  .scaleExtent([minZoom, maxZoom])
 	  .on("zoom", function (event) {
-
 	      riverLength = riverLength_max - (event.transform.k - minZoom)/(maxZoom-minZoom)*(riverLength_max-riverLength_min);
 	      k_simplify = k_simplify_ref + (event.transform.k - minZoom)/(maxZoom-minZoom)*(1-k_simplify_ref);
-
-
-	      console.log(width * event.transform.k);
-	      
 	      svgFrance.attr("transform", event.transform);
 	      svgFrance.style("width", width * event.transform.k + "px");
 	      svgFrance.style("height", height * event.transform.k + "px");
-
-	      redrawMap();
+	      redrawMap_debounce();
 	      highlight_selected_point();
 	  });
 
-
     projection = d3.geoMercator()
 	  .center(geoJSONdata_france.features[0].properties.centroid);
-
 
      svgFrance = d3.select("#svg-france")
 	  .attr("width", "100%")
@@ -662,10 +614,7 @@ function update_map() {
 	redrawMap();
 	highlight_selected_point();
     }
-
     window.addEventListener("resize", handleResize.bind(null, k_simplify, riverLength));
-    
-    // const pathGenerator = d3.geoPath(projection);
 
     redrawMap();
     handleResize();
@@ -683,32 +632,67 @@ function redrawMap() {
 	.data(simplifiedGeoJSON_france.features)
 	.join("path")
 	.attr("class", "france")
-	.attr("d", pathGenerator)
-	.transition()
-	.duration(1000)
-	.attr("fill", fill_france)
+    	.attr("fill", fill_france)
 	.attr("stroke", stroke_france)
 	.attr("stroke-width", strokeWith_france)
 	.attr("stroke-linejoin", "miter")
-	.attr("stroke-miterlimit", 1);
+	.attr("stroke-miterlimit", 1)
+	.attr("d", pathGenerator)
+	.transition()
+	.duration(1000);
 
     svgFrance.selectAll("path.river")
 	.data(simplifiedselectedGeoJSON_river.features)
 	.join("path")
 	.attr("class", "river")
-	.attr("d", pathGenerator)
-	.transition()
-	.duration(1000)
-	.attr("fill", "transparent")
+    	.attr("fill", "transparent")
 	.attr("stroke", stroke_river)
 	.attr("stroke-width", function(d) {
 	    return strokeWith_river_max - (1 - d.properties.norm) * (strokeWith_river_max - strokeWith_river_min);
 	})
 	.attr("stroke-linejoin", "miter")
 	.attr("stroke-linecap", "round")
-	.attr("stroke-miterlimit", 1);
+	.attr("stroke-miterlimit", 1)
+	.attr("d", pathGenerator)
+	.transition()
+	.duration(1000);
 
     redrawPoint();
+    highlight_selected_point();
+}
+const redrawMap_debounce = debounce(redrawMap, 100);
+
+
+function highlight_selected_point() {
+    
+    const svg = d3.select("#svg-france");
+    svg.selectAll(".point.clicked")
+        .attr("stroke-width", 0)
+        .attr("r", 3)
+        .classed("clicked", false);
+    
+    if (selected_code !== null) {
+        const svg = d3.select("#svg-france");
+
+        svg.selectAll(".point.clicked")
+            .attr("stroke-width", 0)
+            .attr("r", 3)
+            .classed("clicked", false);
+
+        var clickedPoint = svg.selectAll(".point")
+            .filter(function(d) {
+                return d.code === selected_code;
+            });
+
+        clickedPoint
+            .attr("r", 4)
+            .attr("stroke", "#060508")
+            .attr("stroke-width", 1)
+            .classed("clicked", true);
+
+        var parentNode = clickedPoint.node().parentNode;
+        parentNode.appendChild(clickedPoint.node());
+    }
 }
 
 function redrawPoint() {

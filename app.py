@@ -11,8 +11,8 @@ from datetime import datetime
 import pandas as pd
 # from scipy.interpolate import interp1d
 # from scipy.interpolate import UnivariateSpline
-import rpy2.robjects as robjects
-
+# import rpy2.robjects as robjects
+from dotenv import load_dotenv
 
 name_of_storylines = np.array([
     "historical-rcp85_HadGEM2-ES_ALADIN63_ADAMONT",
@@ -27,7 +27,6 @@ color_of_storylines = np.array([
     "#791F5D"
 ])
 
-  
 def switch_color(color, color_to_find, color_to_switch):
     #switch 12% https://mdigi.tools/darken-color/#f6e8c3
     color = color.upper()
@@ -38,20 +37,16 @@ def switch_color(color, color_to_find, color_to_switch):
     return color
 
 
-# app = Flask(__name__)
-app = Flask(__name__, static_url_path='', static_folder='static')
-
-CORS(app, resources={r"/*": {"origins": "*"}})
+load_dotenv()
+debug = os.getenv('DEBUG')
+api_base_url = os.getenv('API_BASE_URL')
+db_url = os.getenv('DB_URL')
 current_dir = os.path.dirname(os.path.abspath(__file__))
 R_dir = os.path.join(current_dir, "static", "R")
 
-# Configure the database connection URL
-db_url = 'postgresql://dora:Chipeur_arrete_2_chiper@127.0.0.1/explore2'
-
-# Create the engine with a connection pool
+app = Flask(__name__, static_url_path='', static_folder='static')
+CORS(app, resources={r"/*": {"origins": "*"}})
 engine = create_engine(db_url, poolclass=QueuePool)
-
-
 
 
 @app.route('/')
@@ -72,18 +67,13 @@ def index():
 
 
 
+# @app.route('/api/base_url', methods=['GET'])
+# def get_api_base_url():
+#     print(api_base_url)
+#     return jsonify({"api_base_url": api_base_url})
 
 
-# @app.route('/plus-eau-moin-eau_disparite')
-# def plus_eau_moin_eau_disparite():
-#     # Read the content of dynamic_content.html
-#     path = os.path.join("templates", "plus-eau-moin-eau", "disparite.html")
-#     with open(path, 'r') as f:
-#         content = f.read()
-#     return render_template('index.html', content=content)
-
-
-@app.route('/delta', methods=['POST'])
+@app.route('/get_delta_on_horizon', methods=['POST'])
 def delta_post():
     # Get parameters from the JSON payload
     data = request.json
@@ -115,22 +105,16 @@ def delta_post():
     GROUP BY code
     ) b ON s.code = b.code;
     """
-
     result = connection.execute(
         text(sql_query),
         {'chain': tuple(chain)}
     )
     columns = result.keys()
     rows = result.fetchall()
-
     data = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows]
 
-    Code = [x['code'] for x in data]
-    nCode = len(Code)
-    Delta = [x['value'] for x in data]
-
     sql_query = f"""
-    SELECT variable_fr, unit_fr, name_fr, description_fr, method_fr, sampling_period_fr, topic_fr, palette
+    SELECT *
     FROM variables
     WHERE variable_en = :variable;
     """
@@ -138,16 +122,19 @@ def delta_post():
         text(sql_query),
         {'variable': variable}
     )
-    connection.close()
-    
     columns = result.keys()
     rows = result.fetchall()
     meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
+    connection.close()
     
     palette = meta['palette']
     palette = palette.split(" ")
     meta['palette'] = palette
+    
+    Code = [x['code'] for x in data]
+    nCode = len(Code)
 
+    Delta = [x['value'] for x in data]
     q01Delta = np.quantile(Delta, 0.01)
     q99Delta = np.quantile(Delta, 0.99)
 
@@ -175,7 +162,6 @@ def delta_post():
         d['fill_text'] = switch_color(Fill[i],
                                       color_to_find,
                                       color_to_switch)
-
     command = [
         "Rscript",
         os.path.join(R_dir, "compute_bin.R"),
@@ -184,12 +170,13 @@ def delta_post():
         "--delta", json.dumps(Delta),
         "--palette", json.dumps(palette)
     ]
+
     process = subprocess.Popen(command,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     output, error = process.communicate()
     bin = output.decode().strip().split('\n')
-    
+
     response = {'data': data,
                 'bin': bin}
     response.update(meta)
@@ -200,7 +187,7 @@ def delta_post():
 
 
 
-@app.route('/serie', methods=['POST'])
+@app.route('/get_delta_serie', methods=['POST'])
 def serie_post():
     # Get parameters from the JSON payload
     data = request.json
@@ -213,7 +200,7 @@ def serie_post():
 
     sql_query = f"""
     SELECT chain, date, value
-    FROM data_{exp}_{variable}
+    FROM delta_{exp}_{variable}
     WHERE chain IN :chain AND code = '{code}';
     """
 
@@ -319,4 +306,4 @@ def serie_post():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=debug)
