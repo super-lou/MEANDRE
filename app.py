@@ -38,14 +38,19 @@ def switch_color(color, color_to_find, color_to_switch):
 
 
 load_dotenv()
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_HOST = os.environ.get('DB_HOST')
+DB_PORT = os.environ.get('DB_PORT')
+DB_NAME = os.environ.get('DB_NAME')
 debug = os.getenv('DEBUG')
-# api_base_url = os.getenv('API_BASE_URL')
-db_url = os.getenv('DB_URL')
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 R_dir = os.path.join(current_dir, "static", "R")
-
 app = Flask(__name__, static_url_path='', static_folder='static')
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+db_url = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 engine = create_engine(db_url, poolclass=QueuePool)
 
 

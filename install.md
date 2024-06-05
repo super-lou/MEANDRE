@@ -1,19 +1,17 @@
 ## INSTALL MEANDRE
 
-### 1. UPDATE AND UPGRADE YOUR SERVER
-Copy the env file from the default one
+### 1. Prepare your server
+#### Connection
+Connect to you VM with below command and register with you password
 ``` sh
-cp install.env .env
+ssh user@IP
 ```
-Fill this env file with your info.
-**WARNING : KEEP THE .ENV FILE FOR YOU. DO NOT EXPOSE IT.**
-
-Connect to you VM with
+Create file for auto login and paste your local ssh id_rsa.pub in that file
 ``` sh
-ssh $SERVER_USER@$SERVER_IP
+nano .ssh/authorized_keys
 ```
-And register with you password
 
+#### Update
 Change password on new VM
 ``` sh
 passwd
@@ -25,13 +23,51 @@ sudo apt update
 sudo apt upgrade -y
 ```
 
-Create file for auto login and paste your local ssh id_rsa.pub in that file
+#### Resize LVM
+To see free space
 ``` sh
-nano .ssh/authorized_keys
+sudo vgdisplay
+```
+
+To see occupy space by partition
+``` sh
+sudo lvdisplay
+```
+
+Add suffisant free space to var partition
+``` sh
+sudo lvextend -L +200G /dev/vg1/var
+sudo resize2fs /dev/vg1/var
 ```
 
 
-### 2. INSTALL APACHE
+### 2. Download MEANDRE
+Clone MEANDRE git
+``` sh
+git clone https://github.com/super-lou/MEANDRE.git
+```
+
+Copy the env file from the default one and secure it
+``` sh
+cp MEANDRE/install.env MEANDRE/.env
+```
+Edit this env file with your info.//
+**WARNING : KEEP THE .ENV FILE FOR YOU. DO NOT EXPOSE IT.**
+
+Load environment variables and move this dir it in the right location
+``` sh
+source MEANDRE/.env
+sudo mv -rv MEANDRE/ $SERVER_DIR
+```
+
+Secure this dir
+``` sh
+sudo chown -R root:root $SERVER_DIR/MEANDRE
+sudo chmod -R 755 $SERVER_DIR/MEANDRE
+```
+
+
+### 2. Install Apache
 ``` sh
 sudo apt install apache2 python3-certbot-apache -y
 sudo systemctl enable apache2
@@ -39,22 +75,23 @@ sudo systemctl start apache2
 ```
 
 
-### 3. INSTALL POSTGRESQL
+### 3. Install postgresql
 #### On local computer
-Save the database and export it to server
+Save the database from MEANDRE local dir and export it to server
 ``` sh
 source .env
-pg_dump -U $DB_USER -F c -b -v -f $DB_NAME.backup $DB_NAME
+pg_dump postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME -F c -b -v -f $DB_NAME.backup
 scp $DB_NAME.backup $SERVER_USER@$SERVER_IP:~/
 ```
 
 #### On remotes server
 Create user and database and update it with the local backup
 ``` sh
-source .env
 sudo apt install postgresql postgresql-contrib libpq-dev -y
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
+## TO DO
+source .env
 sudo -u postgres psql -U postgres -c "CREATE DATABASE '${DB_NAME}';"
 sudo -u postgres psql -U postgres -c "CREATE USER '${DB_USER}' WITH PASSWORD '${DB_PASSWORD}';"
 sudo -u postgres psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE '${DB_NAME}' TO '${DB_USER}';"
@@ -62,29 +99,31 @@ pg_restore -U $DB_USER -d $DB_NAME -v ~/$DB_NAME.backup
 ```
 
 
-### 4. INSTALL PYTHON
+### 4. Install python
 ``` sh
 sudo apt install python3 python3-pip -y
-sudo pip install flask sqlalchemy flask-cors psycopg2 numpy subprocess json os datetime pandas dotenv
+sudo pip install flask sqlalchemy flask-cors psycopg2 numpy json os datetime pandas dotenv
 ```
 
+subprocess ???
 
-### 5. INSTALL R
+
+### 5. Install R
 ``` sh
 sudo apt install -y r-base
 sudo Rscript -e 'install.packages(c("argparse", "jsonlite", "remotes")); remotes::install_github("super-lou/dataSHEEP")'
 ```
 
 
-### 6. CONFIGURE FLASK APP
+### 6. Configure flask app
 Source info and install dependency
 ``` sh
-source .env
 sudo apt install libapache2-mod-wsgi-py3
 ```
 
 Create the Apache configuration file
 ``` sh
+source .env
 sudo bash -c "cat > /etc/apache2/sites-available/MEANDRE.conf <<EOF
 <VirtualHost *:80>
     ServerName $SERVER_IP
@@ -92,9 +131,9 @@ sudo bash -c "cat > /etc/apache2/sites-available/MEANDRE.conf <<EOF
 
     WSGIDaemonProcess MEANDRE python-path=/usr/lib/python3/dist-packages
     WSGIProcessGroup MEANDRE
-    WSGIScriptAlias / $SERVER_DIR/app.wsgi
+    WSGIScriptAlias / $SERVER_DIR/MEANDRE/app.wsgi
 
-    <Directory $SERVER_DIR>
+    <Directory $SERVER_DIR/MEANDRE>
         Require all granted
     </Directory>
 
