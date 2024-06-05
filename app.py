@@ -39,7 +39,7 @@ def switch_color(color, color_to_find, color_to_switch):
 
 load_dotenv()
 debug = os.getenv('DEBUG')
-api_base_url = os.getenv('API_BASE_URL')
+# api_base_url = os.getenv('API_BASE_URL')
 db_url = os.getenv('DB_URL')
 current_dir = os.path.dirname(os.path.abspath(__file__))
 R_dir = os.path.join(current_dir, "static", "R")
