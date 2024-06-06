@@ -27,7 +27,7 @@ function load_slider() {
     var slider = document.getElementById('slider-n');
     
     noUiSlider.create(slider, {
-	start: [4],
+	start: [default_n],
 	behaviour: 'drag-smooth-steps-tap',
 	step: 1,
 	connect: true,

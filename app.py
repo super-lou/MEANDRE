@@ -6,12 +6,12 @@ from flask_cors import CORS
 import numpy as np
 import subprocess
 import json
-import os
 from datetime import datetime
 import pandas as pd
 # from scipy.interpolate import interp1d
 # from scipy.interpolate import UnivariateSpline
 # import rpy2.robjects as robjects
+import os
 from dotenv import load_dotenv
 
 name_of_storylines = np.array([
@@ -43,7 +43,7 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_HOST = os.environ.get('DB_HOST')
 DB_PORT = os.environ.get('DB_PORT')
 DB_NAME = os.environ.get('DB_NAME')
-debug = os.getenv('DEBUG')
+debug = os.environ.get('DEBUG')
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 R_dir = os.path.join(current_dir, "static", "R")

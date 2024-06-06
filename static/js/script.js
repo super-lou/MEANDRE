@@ -1,5 +1,7 @@
 
 let api_base_url = "http://127.0.0.1:5000";
+const default_n = 7;
+
 
 
 $(document).ready(function() {
@@ -404,13 +406,20 @@ function close_point_grid() {
 }
 
 
+function make_list(from, to) {
+    const result = [];
+    for (let i = from; i <= to; i++) {
+        result.push(i);
+    }
+    return result;
+}
+
 
 function draw_colorbar(dataBackend) {
     // document.getElementById("grid-variable_unit").innerHTML = dataBackend.unit_fr;
 
-
     var bin = dataBackend.bin.slice(1, -1).reverse();
-    var palette = dataBackend.palette.reverse();
+    var Palette = dataBackend.palette.reverse();
     var step = 25;
     var shift = 20;
     var to_normalise = dataBackend.to_normalise;
@@ -423,7 +432,7 @@ function draw_colorbar(dataBackend) {
 
     const svg = d3.select("#svg-colorbar");
 
-    svg.attr("height", (palette.length - 1) * step + shift * 2);
+    svg.attr("height", (Palette.length - 1) * step + shift * 2);
     svg.attr("width", "75%");
 
     // Update tick lines
@@ -457,9 +466,9 @@ function draw_colorbar(dataBackend) {
 	});
     texts.exit().remove();
 
-    var selectedColor = null;
+    var selected_color = null;
     const circles = svg.selectAll(".color-circle")
-        .data(palette);
+        .data(Palette);
     circles.enter()
         .append("circle")
         .attr("class", "color-circle")
@@ -472,38 +481,50 @@ function draw_colorbar(dataBackend) {
 	    d3.select(this).attr("r", 7);
 	})
 	.on("mouseout", function(event, d) {
-	    d3.select(this).attr("r", 6);
+	    if (this.getAttribute('fill') !== selected_color) {
+		d3.select(this).attr("r", 6);
+	    }
 	})
 	.each(function(d, i) {
             d3.select(this)
 	        .on("click", function(event, d) {
-		    var clickedColor = d;
+		    var clicked_color = d;
 
-		    if (selectedColor === clickedColor) {
+		    if (i < Palette.length/2) {
+			var clicked_ID = make_list(0, i);
+			var clicked_Ticks = clicked_ID;
+		    } else {
+			var clicked_ID = make_list(i, Palette.length-1);
+			var clicked_Ticks = make_list(i-1, Palette.length-1);
+		    }
+		    var clicked_Colors = clicked_ID.map(id => Palette[id]);
+
+		    if (selected_color === clicked_color) {
 			d3.select("#svg-france").selectAll(".point")
 			    .attr("opacity", 1);
-			selectedColor = null;
+			selected_color = null;
 			svg.selectAll(".color-circle, .tick-line, .bin-text")
-			    .attr("opacity", 1);
+			    .attr("opacity", 1)
+			    .attr("r", 6);
 			
 		    } else {
+			selected_color = clicked_color;
 			d3.select("#svg-france").selectAll(".point")
 			    .attr("opacity", function(d) {
-				return d.fill === clickedColor ? 1 : 0.1;
+				return clicked_Colors.includes(d.fill) ? 1 : 0.1;
 			    });
-			selectedColor = clickedColor;
 
 			svg.selectAll(".color-circle")
 			    .attr("opacity", function() {
-				return this === event.target ? 1 : 0.3;
+				return clicked_Colors.includes(this.getAttribute('fill')) ? 1 : 0.3;	
 			    });
 			svg.selectAll(".tick-line")
 			    .attr("opacity", function(d, j) {
-				return j === i || j === i - 1 ? 1 : 0.3;
+				return clicked_Ticks.includes(j) ? 1 : 0.3;
 			    });
 			svg.selectAll(".bin-text")
 			    .attr("opacity", function(d, j) {
-				return j === i || j === i - 1 ? 1 : 0.3;
+				return clicked_Ticks.includes(j) ? 1 : 0.3;
 			    });
 		    }
 		});

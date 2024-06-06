@@ -51,10 +51,10 @@ Copy the env file from the default one and secure it
 ``` sh
 cp MEANDRE/install.env MEANDRE/.env
 ```
-Edit this env file with your info.//
+Edit this env file with your info.\\
 **WARNING : KEEP THE .ENV FILE FOR YOU. DO NOT EXPOSE IT.**
 
-Load environment variables and move this dir it in the right location
+Load environment variables and move this dir in the right location
 ``` sh
 source MEANDRE/.env
 sudo mv -rv MEANDRE/ $SERVER_DIR
@@ -80,9 +80,11 @@ sudo systemctl start apache2
 Save the database from MEANDRE local dir and export it to server
 ``` sh
 source .env
-pg_dump postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME -F c -b -v -f $DB_NAME.backup
+sudo -u postgres pg_dump -U postgres -d $DB_NAME -Fc -b -v -f /home/louis/.postgresql/$DB_NAME.backup
 scp $DB_NAME.backup $SERVER_USER@$SERVER_IP:~/
 ```
+You need to be careful with the privileges for the postgres user.\\
+With the VPN, the bandwidth is significantly limited, so if necessary, use FileSender and then wget.
 
 #### On remotes server
 Create user and database and update it with the local backup
@@ -90,22 +92,19 @@ Create user and database and update it with the local backup
 sudo apt install postgresql postgresql-contrib libpq-dev -y
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
-## TO DO
 source .env
-sudo -u postgres psql -U postgres -c "CREATE DATABASE '${DB_NAME}';"
-sudo -u postgres psql -U postgres -c "CREATE USER '${DB_USER}' WITH PASSWORD '${DB_PASSWORD}';"
-sudo -u postgres psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE '${DB_NAME}' TO '${DB_USER}';"
-pg_restore -U $DB_USER -d $DB_NAME -v ~/$DB_NAME.backup
+sudo -u postgres psql -U postgres -c "CREATE DATABASE \"${DB_NAME}\";"
+sudo -u postgres psql -U postgres -c "CREATE USER \"${DB_USER}\" WITH PASSWORD '${DB_PASSWORD}';"
+sudo -u postgres psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE \"${DB_NAME}\" TO \"${DB_USER}\";"
+sudo -u postgres pg_restore -U postgres -d $DB_NAME -v ~/$DB_NAME.backup
 ```
 
 
 ### 4. Install python
 ``` sh
 sudo apt install python3 python3-pip -y
-sudo pip install flask sqlalchemy flask-cors psycopg2 numpy json os datetime pandas dotenv
+sudo apt install python3-flask python3-sqlalchemy python3-flask-cors python3-psycopg2 python3-numpy python3-pandas python3-dotenv -y
 ```
-
-subprocess ???
 
 
 ### 5. Install R
@@ -129,7 +128,7 @@ sudo bash -c "cat > /etc/apache2/sites-available/MEANDRE.conf <<EOF
     ServerName $SERVER_IP
     ServerAdmin $SERVER_EMAIL
 
-    WSGIDaemonProcess MEANDRE python-path=/usr/lib/python3/dist-packages
+    WSGIDaemonProcess MEANDRE processes=4 threads=5 python-path=/usr/lib/python3/dist-packages
     WSGIProcessGroup MEANDRE
     WSGIScriptAlias / $SERVER_DIR/MEANDRE/app.wsgi
 
@@ -137,8 +136,8 @@ sudo bash -c "cat > /etc/apache2/sites-available/MEANDRE.conf <<EOF
         Require all granted
     </Directory>
 
-    ErrorLog \${APACHE_LOG_DIR}/MEANDRE_error.log
-    CustomLog \${APACHE_LOG_DIR}/MEANDRE_access.log combined
+    ErrorLog /var/log/apache2/MEANDRE_error.log
+    CustomLog /var/log/apache2/MEANDRE_access.log combined
 </VirtualHost>
 EOF"
 ```
@@ -148,6 +147,9 @@ Enable the new site and mod_wsgi module
 sudo a2ensite MEANDRE
 sudo a2enmod wsgi
 ```
+
+
+
 
 Restart Apache and certbot for HTTPS
 ``` sh
