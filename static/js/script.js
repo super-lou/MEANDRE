@@ -1,7 +1,13 @@
 
-let api_base_url = "http://127.0.0.1:5000";
-const default_n = 7;
+const is_production = false;
 
+if (is_production) {
+    var api_base_url = "http://138.102.159.152";
+    const default_n = 4;
+} else {
+    var api_base_url = "http://127.0.0.1:5000";
+    const default_n = 7;
+}
 
 
 $(document).ready(function() {
