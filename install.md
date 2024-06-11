@@ -125,7 +125,7 @@ Create the Apache configuration file
 source .env
 sudo bash -c "cat > /etc/apache2/sites-available/MEANDRE.conf <<EOF
 <VirtualHost *:80>
-    ServerName $SERVER_IP
+    ServerName $SERVER_NAME
     ServerAdmin $SERVER_EMAIL
 
     WSGIDaemonProcess MEANDRE processes=4 threads=5 python-path=/usr/lib/python3/dist-packages

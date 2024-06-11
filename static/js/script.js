@@ -4,7 +4,7 @@ let api_base_url;
 let default_n;
 
 if (is_production) {
-    api_base_url = "http://138.102.159.152";
+    api_base_url = "http://meandre.explore2.inrae.fr";
     default_n = 4;
 } else {
     api_base_url = "http://127.0.0.1:5000";
