@@ -1,5 +1,5 @@
 db:
-	sudo mount /dev/sdd1 /home/louis/.postgresql
+	sudo mount /dev/sde1 /home/louis/.postgresql
 	sudo systemctl restart postgresql
 
 front:

@@ -16,34 +16,35 @@ $(document).ready(function() {
     updateContent(start=true);
 });
 
-window.addEventListener('popstate', function(event) {
+$(window).on('popstate', function(event) {
     updateContent();
 });
 
+
 function change_url(url, actualise=true) {
-    console.log(url)
     history.pushState({}, "", url);
     updateContent(start=false, actualise=actualise);
 }
 
 function updateContent(start=false, actualise=true) {
     var url = window.location.pathname;
+    var file = url.replace(/-/g, '_');
 
     if (url !== "/") {
 	hide_home();
     } else {
 	show_home();
     }
-    if (start || url !== "/personnalisation_avancee") {
+    if (start || url !== "/personnalisation-avancee") {
     	fetch_components();
     }
     
-    // if (actualise && url !== "/" && (start || url !== "/personnalisation_avancee")) {
+    // if (actualise && url !== "/" && (start || url !== "/personnalisation-avancee")) {
     // 	$("#container-map-gallery").load("/html" + url + ".html");
     // 	update_data_debounce();
 	
     // } else if (url === "/") {
-    // 	$("#container-map-gallery").load("/html" + "/plus_d_eau_d_moins_eau/disparite_sur_le_territoire" + ".html");
+    // 	$("#container-map-gallery").load("/html" + "/plus-d-eau-d-moins-eau/disparite-sur-le-territoire" + ".html");
     // 	update_data_debounce();
     // }
 
@@ -51,19 +52,19 @@ function updateContent(start=false, actualise=true) {
 	$("#container-map-gallery").load("/html" + "/plus_d_eau_d_moins_eau/disparite_sur_le_territoire" + ".html");
     	update_data_debounce();
 	
-    } else if (actualise && url !== "/" && (start || url !== "/personnalisation_avancee")) {
-    	$("#container-map-gallery").load("/html" + url + ".html");
+    } else if (actualise && url !== "/" && (start || url !== "/personnalisation-avancee")) {
+    	$("#container-map-gallery").load("/html" + file + ".html");
     	update_data_debounce();
     }
-    
-
 }
+
 
 function fetch_components() {
     $.get('/html/bar.html', function(html) {
-        if ($('#bar-element').length) {
+	if ($('#bar-element').length) {
             $('#bar-element').html(html);
-        }
+            select_tab();
+	}
     });
 
     $.get('/html/menu.html', function(html) {
@@ -74,9 +75,9 @@ function fetch_components() {
     });
 }
 
-function stopPropagation(event) {
-    event.stopPropagation();
-}
+// function stopPropagation(event) {
+    // event.stopPropagation();
+// }
 
 
 
