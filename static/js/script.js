@@ -37,14 +37,26 @@ function updateContent(start=false, actualise=true) {
     if (start || url !== "/personnalisation_avancee") {
     	fetch_components();
     }
-    if (actualise && url !== "/" && (start || url !== "/personnalisation_avancee")) {
-    	$("#container-map-gallery").load("/html" + url + ".html");
-    	update_data_debounce();
+    
+    // if (actualise && url !== "/" && (start || url !== "/personnalisation_avancee")) {
+    // 	$("#container-map-gallery").load("/html" + url + ".html");
+    // 	update_data_debounce();
 	
-    } else if (url === "/") {
+    // } else if (url === "/") {
+    // 	$("#container-map-gallery").load("/html" + "/plus_d_eau_d_moins_eau/disparite_sur_le_territoire" + ".html");
+    // 	update_data_debounce();
+    // }
+
+    if (start) {
 	$("#container-map-gallery").load("/html" + "/plus_d_eau_d_moins_eau/disparite_sur_le_territoire" + ".html");
     	update_data_debounce();
+	
+    } else if (actualise && url !== "/" && (start || url !== "/personnalisation_avancee")) {
+    	$("#container-map-gallery").load("/html" + url + ".html");
+    	update_data_debounce();
     }
+    
+
 }
 
 function fetch_components() {

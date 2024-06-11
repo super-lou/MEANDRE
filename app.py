@@ -13,6 +13,8 @@ import pandas as pd
 # import rpy2.robjects as robjects
 import os
 from dotenv import load_dotenv
+# import static.py.color
+from static.py import color
 
 name_of_storylines = np.array([
     "historical-rcp85_HadGEM2-ES_ALADIN63_ADAMONT",
@@ -27,14 +29,13 @@ color_of_storylines = np.array([
     "#791F5D"
 ])
 
-def switch_color(color, color_to_find, color_to_switch):
-    #switch 12% https://mdigi.tools/darken-color/#f6e8c3
-    color = color.upper()
-    color_to_find = np.char.upper(color_to_find)
-    color_to_switch = np.char.upper(color_to_switch)
-    if color in color_to_find:
-        color = color_to_switch[color_to_find == color][0]
-    return color
+
+def round_int(value):
+    if np.isinf(value):
+        return value
+    elif value.is_integer():
+        return int(value)
+    return value
 
 
 load_dotenv()
@@ -132,9 +133,9 @@ def delta_post():
     meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
     connection.close()
     
-    palette = meta['palette']
-    palette = palette.split(" ")
-    meta['palette'] = palette
+    Palette = meta['palette']
+    Palette = Palette.split(" ")
+    meta['palette'] = Palette
     
     Code = [x['code'] for x in data]
     nCode = len(Code)
@@ -143,19 +144,27 @@ def delta_post():
     q01Delta = np.quantile(Delta, 0.01)
     q99Delta = np.quantile(Delta, 0.99)
 
-    command = [
-        "Rscript",
-        os.path.join(R_dir, "compute_color.R"),
-        "--min", str(q01Delta),
-        "--max", str(q99Delta),
-        "--delta", json.dumps(Delta),
-        "--palette", json.dumps(palette)
-    ]
-    process = subprocess.Popen(command,
-                           stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-    output, error = process.communicate()
-    Fill = output.decode().strip().split('\n')
+    # command = [
+    #     "Rscript",
+    #     os.path.join(R_dir, "compute_color.R"),
+    #     "--min", str(q01Delta),
+    #     "--max", str(q99Delta),
+    #     "--delta", json.dumps(Delta),
+    #     "--palette", json.dumps(Palette)
+    # ]
+    # process = subprocess.Popen(command,
+    #                        stdout=subprocess.PIPE,
+    #                            stderr=subprocess.PIPE)
+    # output, error = process.communicate()
+    # Fill = output.decode().strip().split('\n')
+    
+    res = color.compute_colorBin(q01Delta, q99Delta,
+                                 len(Palette), center=0)
+    bin = res['bin']
+    bin = [str(round_int(x)) for x in bin]
+        
+    Fill = color.get_colors(Delta, res['upBin'],
+                            res['lowBin'], Palette)
 
     color_to_find = np.array(["#F6E8C3", "#C7EAE5",
                               "#EFE2E9", "#F5E4E2"])
@@ -164,23 +173,23 @@ def delta_post():
     
     for i, d in enumerate(data):
         d['fill'] = Fill[i]
-        d['fill_text'] = switch_color(Fill[i],
-                                      color_to_find,
-                                      color_to_switch)
-    command = [
-        "Rscript",
-        os.path.join(R_dir, "compute_bin.R"),
-        "--min", str(q01Delta),
-        "--max", str(q99Delta),
-        "--delta", json.dumps(Delta),
-        "--palette", json.dumps(palette)
-    ]
+        d['fill_text'] = color.switch_color(Fill[i],
+                                            color_to_find,
+                                            color_to_switch)
+    # command = [
+    #     "Rscript",
+    #     os.path.join(R_dir, "compute_bin.R"),
+    #     "--min", str(q01Delta),
+    #     "--max", str(q99Delta),
+    #     "--delta", json.dumps(Delta),
+    #     "--palette", json.dumps(Palette)
+    # ]
 
-    process = subprocess.Popen(command,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-    output, error = process.communicate()
-    bin = output.decode().strip().split('\n')
+    # process = subprocess.Popen(command,
+    #                            stdout=subprocess.PIPE,
+    #                            stderr=subprocess.PIPE)
+    # output, error = process.communicate()
+    # bin = output.decode().strip().split('\n')
 
     response = {'data': data,
                 'bin': bin}

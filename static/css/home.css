@@ -52,7 +52,12 @@
     align-items: center;
 } 
 #home-by_Explore2 {
-     height: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 1rem;
+}
+#home-by_LIFE_EC {
+    height: 3.5rem;
+    margin-bottom: 0.5rem;
 }
 #home-by_INRAE {
      height: 2.5rem;
