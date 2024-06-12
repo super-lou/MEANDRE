@@ -60,18 +60,18 @@ function updateContent(start=false, actualise=true) {
 
 
 function fetch_components() {
+    $.get('/html/menu.html', function(html) {
+        if ($('#menu-element').length) {
+            $('#menu-element').html(html);
+            load_slider();
+        }
+    });
+
     $.get('/html/bar.html', function(html) {
 	if ($('#bar-element').length) {
             $('#bar-element').html(html);
             select_tab();
 	}
-    });
-
-    $.get('/html/menu.html', function(html) {
-        if ($('#menu-element').length) {
-            $('#menu-element').html(html);
-            load_slider(); 
-        }
     });
 }
 

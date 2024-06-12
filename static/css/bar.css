@@ -74,7 +74,7 @@
     text-wrap: wrap;
     line-height: 0.8rem;
     display: flex;
-    gap: 0.4rem;
+    /* gap: 0.4rem; */
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
@@ -92,7 +92,18 @@
     flex-grow: 1;
 }
 
-#button-advance {
+.tab-text {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+.subtab-text {
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+}
+
+#button_personnalisation-avancee {
     position: absolute;
     right: 0;
     top: 0;
@@ -100,23 +111,23 @@
     width: 9rem;
     height: 3rem;
 }
-#button-advance.expanded {
+#button_personnalisation-avancee.expanded {
     width: 0rem;
 }
-#tab_advance {
+#tab_personnalisation-avancee {
     margin-right: 0.6rem;
     transition: width 0.3s ease;
 }
-#tab_advance-icon, #tab_advance-text, #tab_advance-close {
+#tab_personnalisation-avancee-icon, #tab_personnalisation-avancee-text, #tab_personnalisation-avancee-close {
     transition: opacity 0.3s ease;
     opacity: 1; 
 }
-#tab_advance-icon.expanded,
-#tab_advance-text.expanded {
+#tab_personnalisation-avancee-icon.expanded,
+#tab_personnalisation-avancee-text.expanded {
     opacity: 0; 
 }
 
-#tab_close-advance {
+#tab_close_personnalisation-avancee {
     height: 3rem;
 }
 

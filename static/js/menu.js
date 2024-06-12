@@ -82,9 +82,9 @@ function selectHorizonButton(selectedButton) {
 function toggle_menu() {
     const menu_container = document.getElementById("container-menu");
     const menu = document.getElementById("menu");
-    const icon = document.getElementById("tab_advance-icon");
-    const title = document.getElementById("tab_advance-text");
-    const button = document.getElementById("tab_advance");
+    const icon = document.getElementById("tab_personnalisation-avancee-icon");
+    const title = document.getElementById("tab_personnalisation-avancee-text");
+    const button = document.getElementById("tab_personnalisation-avancee");
     const bar = document.getElementById("bar");
     
     if (menu_container.classList.contains("expanded")) {
