@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 import pandas as pd
 # from scipy.interpolate import interp1d
-# from scipy.interpolate import UnivariateSpline
+from scipy.interpolate import UnivariateSpline
 # import rpy2.robjects as robjects
 import os
 from dotenv import load_dotenv
@@ -210,6 +210,8 @@ def serie_post():
     chain = data.get('chain')
     variable = data.get('variable')
 
+    print("a")
+    
     connection = engine.connect()
 
     sql_query = f"""
@@ -227,6 +229,7 @@ def serie_post():
     columns = result.keys()
     rows = result.fetchall()
 
+    print("b")
 
     data = pd.DataFrame(rows, columns=columns)
     data['date'] = pd.to_datetime(data['date'])
@@ -236,40 +239,35 @@ def serie_post():
     data['color'] = "#ADABAA"
     data['order'] = 0
 
+    print("c")
 
-    ### not need to be done after cleaning
-    # filtered_data = data[(data['date'] >= '1976-01-01') &
-    #                      (data['date'] <= '2005-08-31')]
-    # mean_values = filtered_data.groupby('chain')['value'].mean().reset_index()
-    # mean_values.columns = ['chain', 'mean_value']
-
-    # data = pd.merge(data, mean_values, on='chain', how='left')
-
-    # data['value'] = (data['value'] - data['mean_value']) / data['mean_value']
-    # data.drop(columns=['mean_value'], inplace=True)
-    ###
-    
     for storyline in name_of_storylines:
         data_med = data[data['climate_chain'] == storyline].groupby(['date'])['value'].median().reset_index()
 
         data_med = data_med.dropna()
+        # x = pd.to_numeric(data_med['date']) / 10**9
+        # y = data_med['value']
+        # x_str = ' '.join(map(str, x))
+        # y_str = ' '.join(map(str, y))
+        # command = [
+        #     "Rscript",
+        #     os.path.join(R_dir, "compute_spline.R"),
+        #     "--x", x_str,
+        #     "--y", y_str
+        # ]
+        # process = subprocess.Popen(command,
+        #                            stdout=subprocess.PIPE,
+        #                            stderr=subprocess.PIPE)
+        # output, error = process.communicate()
+        # y = output.decode().strip().split('\n')
+        # data_med['value'] = pd.to_numeric(y)
+        
         x = pd.to_numeric(data_med['date']) / 10**9
         y = data_med['value']
-        x_str = ' '.join(map(str, x))
-        y_str = ' '.join(map(str, y))
-        command = [
-            "Rscript",
-            os.path.join(R_dir, "compute_spline.R"),
-            "--x", x_str,
-            "--y", y_str
-        ]
-        process = subprocess.Popen(command,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-        output, error = process.communicate()
-        y = output.decode().strip().split('\n')
-
-        data_med['value'] = pd.to_numeric(y)
+        smoothing_factor = 10**20
+        spline = UnivariateSpline(x, y, s=smoothing_factor, k=3)
+        y_smooth = spline(x)
+        data_med['value'] = y_smooth
         
         data_med['chain'] = storyline + "_back"
         data_med['climate_chain'] = storyline + "_back"
@@ -286,7 +284,10 @@ def serie_post():
         data_med['color'] = color_of_storylines[name_of_storylines == storyline][0]
         data_med['order'] = 2
         data = pd.concat([data, data_med], ignore_index=True)
-       
+
+
+    print("d")
+    
     data['date'] = data['date'].dt.strftime("%Y-%m-%d")
     data = data.rename(columns={'value': 'y', 'date': 'x'})
 
@@ -294,6 +295,8 @@ def serie_post():
     data = data.groupby(group).apply(lambda x: x[['x', 'y']].to_dict('records')).reset_index(name='values')
 
     data = data.sort_values(by=['order'], ascending=True)
+
+    print("e")
     
     json_output = []
     for index, row in data.iterrows():
@@ -304,7 +307,9 @@ def serie_post():
                     'opacity': row['opacity'],
                     'values': row['values']}
         json_output.append(json_row)
-   
+
+    print("f")
+
     json_output_cleaned = json_output.copy()
     for item in json_output_cleaned:
         for record in item['values']:
@@ -314,8 +319,6 @@ def serie_post():
     json_output_str = json.dumps(json_output_cleaned)
    
     return json_output_str
-
-
 
 
 
