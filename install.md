@@ -103,7 +103,7 @@ sudo -u postgres pg_restore -U postgres -d $DB_NAME -v ~/$DB_NAME.backup
 ### 4. Install python
 ``` sh
 sudo apt install python3 python3-pip -y
-sudo apt install python3-flask python3-sqlalchemy python3-flask-cors python3-psycopg2 python3-numpy python3-pandas python3-dotenv -y
+sudo apt install python3-flask python3-sqlalchemy python3-flask-cors python3-psycopg2 python3-numpy python3-pandas python3-dotenv python3-scipy -y
 ```
 
 
