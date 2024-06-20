@@ -12,6 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
 }
 
 #home {
@@ -32,6 +33,11 @@
     height: fit-content;
     color: #ffffff;
     margin-bottom: 1rem;
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 
 #home-logo img {
@@ -40,6 +46,12 @@
     padding-right: 1.5rem;
 }
 
+.home-phone {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 1.8rem;
+} 
 #home-by {
     position: absolute;
     display: flex;
@@ -53,13 +65,51 @@
 } 
 #home-by_Explore2 {
     height: 3.5rem;
-    margin-bottom: 1rem;
+    padding-bottom: 1rem;
 }
 #home-by_LIFE_EC {
     height: 3.5rem;
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 #home-by_INRAE {
      height: 2.5rem;
 }
+
+
+@media (max-width: 768px) {
+
+    #home {
+        position: absolute;
+	top: 1rem;
+	width: 100vw;
+    }
+
+
+    #home-logo img {
+	padding-right: 0rem;
+    }
+
+    #home p {
+	padding-bottom: 3rem;
+	padding-left: 2rem;
+	padding-right: 2rem;
+    }
+    .home-phone {
+	display: flex;
+    } 
+    #home-by {
+	display: none;
+    }
+    #home-by_Explore2 {
+	padding-bottom: 0rem;
+    }
+    #home-by_LIFE_EC {
+	padding-bottom: 0.3rem;
+    }
+    #home-by_INRAE {
+	padding-bottom: 2rem;
+    }
+    
+}
+
 

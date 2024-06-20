@@ -1,11 +1,11 @@
-#container-gallery {
-    height: calc(100vh - 3rem - 1rem);
-    flex: 1;
-    overflow-y: auto;
-    margin-top: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
+/* #container-gallery { */
+    /* height: calc(100vh - 3rem - 1rem); */
+    /* flex: 1; */
+    /* overflow-y: auto; */
+    /* margin-top: 1rem; */
+    /* padding-left: 1rem; */
+    /* padding-right: 1rem; */
+/* } */
 
 .gallery {
     display: grid;
@@ -185,3 +185,11 @@
 }
 
 
+
+@media (max-width: 768px) {
+
+    .gallery {
+	grid-template-columns: repeat(auto-fill, 8rem);
+    }
+    
+}

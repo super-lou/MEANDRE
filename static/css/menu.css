@@ -11,8 +11,6 @@
     color: #060508;
     transition: width 0.3s ease;
     z-index: 2;
-    overflow-y: auto;
-    height: 100vh;
 }
 #container-menu.expanded {
     pointer-events: auto;
@@ -103,6 +101,17 @@
 }
 .end-subdrawer {
     height: 0.5rem;
+}
+
+
+
+
+@media (max-width: 768px) {
+    
+    #container-menu.expanded {
+	width: 100vw;
+    }
+
 }
 
 

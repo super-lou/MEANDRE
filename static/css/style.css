@@ -291,8 +291,12 @@ h3 {
 
 
 #container-map-gallery {
+    height: calc(100vh - 3rem);
     display: flex;
+    /* flex-direction: row; */
     flex-grow: 1;
+    overflow-y: auto;
+    flex-wrap: wrap;
 }
 
 
@@ -301,6 +305,15 @@ h3 {
     width: calc(100vh - 50px);
     height: calc(100vh - 50px);
     overflow: hidden;
+}
+
+#container-gallery {
+    height: calc(100vh - 3rem - 1rem);
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 #panel-hover {
@@ -333,17 +346,28 @@ h3 {
     /* align-items: stretch; */
     /* }  */
 
+    #container-map-gallery {
+	height: calc(100vh - 6rem);
+    }
+    
     #container-map {
 	position: relative;
 	width: 100vw;
 	height: 100vw;
     }
 
-    .gallery {
+    #container-gallery {
+	height: unset;
 	width: 100vw;
-	margin-left: 20px;
-	top: 100vw;
+	/* height: calc(100vh - 6rem - 1rem); */
     }
+
+    /* .gallery { */
+    /* 	width: 100vw; */
+    /* 	margin-left: 20px; */
+    /* 	top: 100vw; */
+    /* } */
+
 }
 
 

@@ -71,6 +71,7 @@ function fetch_components() {
 	if ($('#bar-element').length) {
             $('#bar-element').html(html);
             select_tab();
+	    check_bar();
 	}
     });
 }
