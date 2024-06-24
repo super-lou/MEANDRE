@@ -53,6 +53,9 @@ function check_bar() {
 	sep.style.display = "inline-flex";
     }
 }
+window.addEventListener('resize', function() {
+    check_bar();
+});
 
 function scroll_bar_left() {
     var bar = document.getElementById('bar');

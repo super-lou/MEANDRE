@@ -1,22 +1,30 @@
-/* #container-gallery { */
-    /* height: calc(100vh - 3rem - 1rem); */
-    /* flex: 1; */
-    /* overflow-y: auto; */
-    /* margin-top: 1rem; */
-    /* padding-left: 1rem; */
-    /* padding-right: 1rem; */
+
+
+/* .gallery { */
+/*     display: grid; */
+/*     grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr)); */
+/*     grid-template-columns: repeat(auto-fill, 9rem); */
+/*     grid-gap: 1rem; */
+/*     grid-auto-flow: row; */
+/*     height: auto; */
+/*     transition: all 0.3s ease; */
+/*     overflow-y: auto; */
+/*     margin-bottom: 1rem; */
 /* } */
 
 .gallery {
-    display: grid;
-    grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr));
-    grid-template-columns: repeat(auto-fill, 9rem);
-    grid-gap: 1rem;
-    grid-auto-flow: row;
+    display: flex;
+    /* grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr)); */
+    /* grid-template-columns: repeat(auto-fill, 9rem); */
+    /* grid-gap: 1rem; */
+    /* grid-auto-flow: row; */
     height: auto;
     transition: all 0.3s ease;
     overflow-y: auto;
     margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .gallery-item {
@@ -58,13 +66,13 @@
 }
 
 
+#grid-colorbar {
+    width: 5rem;
+}
 
-
-/* #grid-variable { */
-/*     flex-direction: row; */
-/*     column-gap: 1rem; */
-/*     align-items: center; */
-/* } */
+#grid-variable {
+    max-width: 20rem;
+}
 #grid-variable_variable {
     font-family: "Raleway", sans-serif;
     font-weight: 300;
@@ -85,6 +93,9 @@
 }
 
 
+#grid-horizon {
+    max-width: 27rem;
+}
 #grid-horizon_name {
     font-family: "Raleway", sans-serif;
     /* font-weight: 400; */
@@ -125,6 +136,9 @@
 }
 
 
+#grid-point {
+    max-width: 15rem;
+}
 #grid-point_code-value {
     margin-bottom: 0.1rem;
 }
@@ -166,7 +180,11 @@
 }
 
 
-
+#grid-line {
+    width: 100%;
+    min-height: 10rem;
+    max-height: 20rem;
+}
 #grid-line_title {
     font-family: "Raleway", sans-serif;
     font-size: 1rem;
@@ -188,8 +206,8 @@
 
 @media (max-width: 768px) {
 
-    .gallery {
-	grid-template-columns: repeat(auto-fill, 8rem);
-    }
+    /* .gallery { */
+    /* 	grid-template-columns: repeat(auto-fill, 8rem); */
+    /* } */
     
 }

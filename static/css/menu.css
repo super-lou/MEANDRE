@@ -11,6 +11,8 @@
     color: #060508;
     transition: width 0.3s ease;
     z-index: 2;
+    height: 100vh;
+    overflow-y: auto;
 }
 #container-menu.expanded {
     pointer-events: auto;

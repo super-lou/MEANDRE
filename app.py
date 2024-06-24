@@ -265,7 +265,7 @@ def serie_post():
         x = pd.to_numeric(data_med['date']) / 10**9
         y = data_med['value']
         smoothing_factor = 10**20
-        spline = UnivariateSpline(x, y, s=smoothing_factor, k=3)
+        spline = UnivariateSpline(x, y, s=smoothing_factor, k=2)
         y_smooth = spline(x)
         data_med['value'] = y_smooth
         

@@ -15,79 +15,70 @@
 <div id="container-gallery">
     <div class="gallery">
 	
-	<div class="gallery-item cross-center center row nowrap column-small-gap"
-	     style="grid-column: span 1; grid-row: span 5;">
-	    <svg id="svg-colorbar"></svg>
-	</div>
-
-	
-	<div id="grid-variable"
-	     class="gallery-item column center"
-	     style="grid-column: span 2; grid-row: span 2;">
-	    <div class="bunch row column-gap baseline">
-		<span id="grid-variable_variable"></span>
-		<span id="grid-variable_name"></span>
+	<div class="bunch row column-gap row-gap">
+	    <div id="grid-colorbar" class="gallery-item">
+		<svg id="svg-colorbar"></svg>
 	    </div>
-	    <span id="grid-variable_sampling-period"></span>
+
+	    <div class="bunch column column-gap row-gap end">
+		<div id="grid-variable" class="gallery-item">
+		    <div class="bunch column">
+			<span id="grid-variable_variable"></span>
+			<span id="grid-variable_name"></span>
+			<span id="grid-variable_sampling-period"></span>
+		    </div>
+		</div>
+
+		<div id="grid-horizon" class="gallery-item">
+		    <div class="bunch column">
+			<span id="grid-horizon_name"></span>
+			<span id="grid-horizon_period-l1"></span>
+			<span id="grid-horizon_period-l2"></span>
+		    </div>
+		</div>
+
+	    </div>
 	</div>
 
 	
-	<div id="grid-horizon"
-	     class="gallery-item column center"
-	     style="grid-column: span 3; grid-row: span 3;">
-	    <span id="grid-horizon_name"></span>
-	    <span id="grid-horizon_period-l1"></span>
-	    <span id="grid-horizon_period-l2"></span>
-	</div>
-
-	
-	<div id="grid-point"
-	     class="gallery-item column"
-	     style="grid-column: span 2; grid-row: span 1; display: none;">
+	<div id="grid-point" class="gallery-item" style="display: none;">
 	    <div id="grid-point_cross"
 		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
-	    <div id="grid-point_code-value"
-		 class="bunch row column-gap cross-center">
-		<span id="grid-point_code"></span>
-		<!-- <span id="grid-point_value"></span> -->
-	    </div>
-	    <span id="grid-point_name"></span>
-	    <span id="grid-point_hr" class="grid-point_info"></span>
-	    <span id="grid-point_reference" class="grid-point_info"></span>
-	    <span id="grid-point_surface" class="grid-point_info"></span>
-	    
-	    <div class="bunch row column-gap">
-		<span id="grid-point_lat" class="grid-point_info"></span>
-		<span id="grid-point_lon" class="grid-point_info"></span>
-	    </div>
-	    <div class="bunch row column-gap">
-		<span id="grid-point_xl93" class="grid-point_info"></span>
-		<span id="grid-point_yl93" class="grid-point_info"></span>
-	    </div>
 
-	    <span id="grid-point_n" class="grid-point_info"></span>
-	    <span id="grid-point_HM" class="grid-point_info"></span>
-	    
+	    <div class="bunch column">
+		<div id="grid-point_code-value"
+		     class="bunch row column-gap cross-center">
+		    <span id="grid-point_code"></span>
+		</div>
+		<span id="grid-point_name"></span>
+		<span id="grid-point_hr" class="grid-point_info"></span>
+		<span id="grid-point_reference" class="grid-point_info"></span>
+		<span id="grid-point_surface" class="grid-point_info"></span>
+		
+		<div class="bunch row column-gap">
+		    <span id="grid-point_xl93" class="grid-point_info"></span>
+		    <span id="grid-point_yl93" class="grid-point_info"></span>
+		</div>
+
+		<span id="grid-point_n" class="grid-point_info"></span>
+		<span id="grid-point_HM" class="grid-point_info"></span>
+	    </div>
 	</div>
 
 
-	<div id="grid-line"
-	     class="gallery-item column center"
-	     style="grid-column: 1 / -1; grid-row: span 3; display: none;">
+	<div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
 	    <div id="grid-line_cross"
 		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
 	    <div class="bunch column">
-		<div class="bunch column">
-		    <div id="grid-line_title">
-			Série des changements relatifs
-		    </div>
-		    <div id="grid-line_tooltip"></div>
+		<div id="grid-line_title">
+		    Série des changements relatifs
 		</div>
-		<div id="line-loading" class="container-loading">
-		    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-		</div>
-		<svg id="svg-line"></svg>			    
+		<div id="grid-line_tooltip"></div>
 	    </div>
+	    <div id="line-loading" class="container-loading">
+		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+	    </div>
+	    <svg id="svg-line"></svg>			    
 	</div>
 
     </div>

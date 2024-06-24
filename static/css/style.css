@@ -56,46 +56,41 @@ p.bottom-big-space {
     display: flex;
     flex-wrap: wrap;
 }
-
-.nowrap {
+.bunch.nowrap {
     flex-wrap: nowrap;
 }
-.column {
+.bunch.column {
     flex-direction: column;
 }
-.row {
+.bunch.row {
     flex-direction: row;
 }
-.row-small-gap {
+.bunch.row-small-gap {
     row-gap: 0.5rem;
 }
-.row-gap {
+.bunch.row-gap {
     row-gap: 1rem;
 }
-.column-small-gap {
+.bunch.column-small-gap {
     column-gap: 0.5rem;
 }
-.column-gap {
+.bunch.column-gap {
     column-gap: 1rem;
 }
-.baseline {
+.bunch.cross-baseline {
     align-items: last baseline;
 }
-.cross-center {
+.bunch.cross-center {
     align-items: center;
 }
-.center {
+.bunch.center {
     justify-content: center; 
 }
-.space-between {
+.bunch.space-between {
     justify-content: space-between; 
 }
-
-span.top-space {
-    margin-top: 0.4rem;
-}
-span.align-start {
-    text-align: start;
+.bunch.end {
+    justify-content: end; 
 }
 .bunch.space {
     margin-top: 0.1rem;
@@ -104,6 +99,14 @@ span.align-start {
 .bunch.left-border {
     border-left: 3px solid #89898a;
 }
+
+span.top-space {
+    margin-top: 0.4rem;
+}
+span.align-start {
+    text-align: start;
+}
+
 
 
 
