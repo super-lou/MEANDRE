@@ -264,15 +264,15 @@ def serie_post():
         
         x = pd.to_numeric(data_med['date']) / 10**9
         y = data_med['value']
-        smoothing_factor = 10**20
-        spline = UnivariateSpline(x, y, s=smoothing_factor, k=2)
+        smoothing_factor = 10**100
+        spline = UnivariateSpline(x, y, s=smoothing_factor, k=4)
         y_smooth = spline(x)
         data_med['value'] = y_smooth
         
         data_med['chain'] = storyline + "_back"
         data_med['climate_chain'] = storyline + "_back"
         data_med['opacity'] = "1"
-        data_med['stroke_width'] = "3px"
+        data_med['stroke_width'] = "4px"
         data_med['color'] = "#ffffff"
         data_med['order'] = 1
         data = pd.concat([data, data_med], ignore_index=True)
@@ -280,7 +280,7 @@ def serie_post():
         data_med['chain'] = storyline
         data_med['climate_chain'] = storyline
         data_med['opacity'] = "1"
-        data_med['stroke_width'] = "1px"
+        data_med['stroke_width'] = "2px"
         data_med['color'] = color_of_storylines[name_of_storylines == storyline][0]
         data_med['order'] = 2
         data = pd.concat([data, data_med], ignore_index=True)

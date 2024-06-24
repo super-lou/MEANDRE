@@ -259,19 +259,16 @@ function plot_data_serie() {
 	    .range([height, 0]);
 
 	// Define axes
-	// var xAxis = d3.axisBottom().scale(xScale)
-	//     .tickSize(0)
-	//     .tickSizeInner(5)
-        //     .tickFormat(d3.timeFormat("%Y"));
-
 	if (window.innerWidth < 768) {
             xAxis = d3.axisBottom(xScale)
                 .tickSize(0)
+		.tickSizeInner(5)
                 .tickFormat(d3.timeFormat("%Y"))
                 .ticks(d3.timeYear.every(20)); // Show ticks every 20 years
         } else {
             xAxis = d3.axisBottom(xScale)
                 .tickSize(0)
+		.tickSizeInner(5)
                 .tickFormat(d3.timeFormat("%Y"))
                 .ticks(d3.timeYear.every(10)); // Show ticks every 10 years by default
         }
@@ -360,14 +357,16 @@ function plot_data_serie() {
 	    }
             tooltip.style("opacity", 0);
 	});
+	
 	svg.append("line")
 	    .attr("class", "zero-line")
 	    .attr("x1", 0)
 	    .attr("y1", yScale(0))
 	    .attr("x2", width)
 	    .attr("y2", yScale(0))
-	    .style("stroke", "gray")
-	    .style("stroke-width", 2);
+	    .style("stroke", "#555")
+	    .style("stroke-dasharray", ("3, 3"))
+	    .style("stroke-width", 1);
     }
 }
 
