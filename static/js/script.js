@@ -259,10 +259,22 @@ function plot_data_serie() {
 	    .range([height, 0]);
 
 	// Define axes
-	var xAxis = d3.axisBottom().scale(xScale)
-	    .tickSize(0)
-	    .tickSizeInner(5)
-            .tickFormat(d3.timeFormat("%Y"));
+	// var xAxis = d3.axisBottom().scale(xScale)
+	//     .tickSize(0)
+	//     .tickSizeInner(5)
+        //     .tickFormat(d3.timeFormat("%Y"));
+
+	if (window.innerWidth < 768) {
+            xAxis = d3.axisBottom(xScale)
+                .tickSize(0)
+                .tickFormat(d3.timeFormat("%Y"))
+                .ticks(d3.timeYear.every(20)); // Show ticks every 20 years
+        } else {
+            xAxis = d3.axisBottom(xScale)
+                .tickSize(0)
+                .tickFormat(d3.timeFormat("%Y"))
+                .ticks(d3.timeYear.every(10)); // Show ticks every 10 years by default
+        }
 
 	var customTickFormat = function(d) {
 	    return d > 0 ? "+" + d : d;
