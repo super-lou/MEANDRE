@@ -205,6 +205,11 @@ function update_data_point() {
 const update_data_point_debounce = debounce(update_data_point, 1000);
 
 
+// function update_plot_data_serie() {
+//     if (data_point) {
+// 	plot_data_serie();
+//     }
+// }
 window.addEventListener('resize', function() {
     plot_data_serie();
 });
@@ -212,7 +217,8 @@ window.addEventListener('resize', function() {
 function plot_data_serie() {
     if (data_point) {
 	d3.select("#svg-line").selectAll("*").remove();
-
+	var svgContainer = d3.select("#svg-line");
+	
 	var gridLineContainer = d3.select("#grid-line");
 	var containerPadding = 2 * parseFloat(window.getComputedStyle(gridLineContainer.node()).paddingLeft);
 	var svgWidth = gridLineContainer.node().getBoundingClientRect().width - containerPadding;
@@ -225,7 +231,6 @@ function plot_data_serie() {
 	var width = svgWidth - margin.left - margin.right;
 	var height = svgHeight - margin.top - margin.bottom;
 
-	var svgContainer = d3.select("#svg-line");
 	var svg = svgContainer
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
