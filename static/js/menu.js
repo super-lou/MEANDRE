@@ -157,6 +157,16 @@ function toggle_drawer(drawerId) {
             drawerIcon.classList.add("rotated");
 	}
     }
+
+    if (drawer_mode === 'drawer-narratif') {
+    	$("#grid-line").css("display", "none");
+    	$("#svg-france").css("display", "none");
+	$("#svg-france-narratif").css("display", "flex");
+    } else {
+    	// $("#grid-line").css("display", "block");
+    	$("#svg-france").css("display", "block");
+    	$("#svg-france-narratif").css("display", "none");
+    }
 }
 
 
@@ -322,8 +332,14 @@ function get_RCP_only() {
 
 function get_narratif_only() {
     var container = document.getElementById('bunch_narratif');
-    var selectedButton = container.querySelector('button.selected');
-    return [selectedButton.value];
+    // var selectedButton = container.querySelector('button.selected');
+    var selectedButtons = container.querySelectorAll('div.selected');
+    var values = [];
+    selectedButtons.forEach(function(button) {
+        values.push(button.getAttribute('value'));
+    });
+    // return [selectedButton.value];
+    return values;
 }
 
 function get_chain() {
@@ -343,6 +359,9 @@ function get_chain() {
 	
     } else if (drawer_mode === 'drawer-narratif') {
 	var EXP_GCM_RCM_BC = get_narratif_only();
+
+	console.log(EXP_GCM_RCM_BC);
+	
 	var HM = ["CTRIP", "EROS", "GRSD", "J2000", "MORDOR-SD",
 		  "MORDOR-TS", "ORCHIDEE", "SIM2", "SMASH"];
 	var chain = [];

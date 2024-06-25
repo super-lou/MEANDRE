@@ -217,48 +217,52 @@ button:hover .material-icons-outlined {
 
 .vert {
     color: #569A71;
+    font-weight: 600;
 }
-.vert:hover {
-    color: #569A71;
-    opacity: 0.7;
-}
-.vert.selected {
-    color: #569A71;
-    font-weight: bold;
-}
+/* .vert:hover { */
+/*     color: #569A71; */
+/*     opacity: 0.7; */
+/* } */
+/* .vert.selected { */
+/*     color: #569A71; */
+/*     font-weight: bold; */
+/* } */
 .jaune {
     color: #EECC66;
+    font-weight: 600;
 }
-.jaune:hover {
-    color: #EECC66;
-    opacity: 0.7;
-}
-.jaune.selected {
-    color: #EECC66;
-    font-weight: bold;
-}
+/* .jaune:hover { */
+/*     color: #EECC66; */
+/*     opacity: 0.7; */
+/* } */
+/* .jaune.selected { */
+/*     color: #EECC66; */
+/*     font-weight: bold; */
+/* } */
 .orange {
     color: #E09B2F;
+    font-weight: 600;
 }
-.orange:hover {
-    color: #E09B2F;
-    opacity: 0.7;
-}
-.orange.selected {
-    color: #E09B2F;
-    font-weight: bold;
-}
+/* .orange:hover { */
+/*     color: #E09B2F; */
+/*     opacity: 0.7; */
+/* } */
+/* .orange.selected { */
+/*     color: #E09B2F; */
+/*     font-weight: bold; */
+/* } */
 .violet {
     color: #791F5D;
+    font-weight: 600;
 }
-.violet:hover {
-    color: #791F5D;
-    opacity: 0.7;
-}
-.violet.selected {
-    color: #791F5D;
-    font-weight: bold;
-}
+/* .violet:hover { */
+/*     color: #791F5D; */
+/*     opacity: 0.7; */
+/* } */
+/* .violet.selected { */
+/*     color: #791F5D; */
+/*     font-weight: bold; */
+/* } */
 
 
 
@@ -311,7 +315,18 @@ h3 {
     width: calc(100vh - 50px);
     height: calc(100vh - 50px);
     overflow: hidden;
+    display: flex;
 }
+#svg-france-narratif {
+    width: 100%;
+    height: 100%;
+}
+.sub-container-map {
+    width: calc(100% / 2);
+    height: calc(100% / 2);
+}
+
+
 
 #container-gallery {
     height: calc(100vh - 3rem - 1rem);

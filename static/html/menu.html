@@ -32,19 +32,20 @@
 
 		    <h2>Basses Eaux</h2>
 		    <p class="bottom-space">La sévérité des étiages est caractérisée par le minimum annuel du débit journalier moyen sur 10 jours.</p>
-		    <button id="button-VCN10" value="VCN10_summer" onclick="selectVariableButton(this);">
+		    <button id="button-VCN10_summer" value="VCN10_summer" onclick="selectVariableButton(this);">
 			<span>VCN10</span>
 		    </button>
 
+		    <p class="top-space bottom-space">Le début des étiages est donnée par la première date sous un débit critique.</p>
+		    <button id="button-startLF_summer" value="startLF_summer" onclick="selectVariableButton(this);">
+			<span>debutBE</span>
+		    </button>
+		    
 		    <p class="top-space bottom-space">La durée des étiages est donnée par le temps passé sous un débit critique.</p>
-		    <button id="button-dtBE" value="dtLF_summer" onclick="selectVariableButton(this);">
+		    <button id="button-dtLF_summer" value="dtLF_summer" onclick="selectVariableButton(this);">
 			<span>dtBE</span>
 		    </button>
 
-		    <p class="top-space bottom-space">Le début des étiages est donnée par la première date sous un débit critique.</p>
-		    <button id="button-debutBE" value="startLF_summer" onclick="selectVariableButton(this);">
-			<span>debutBE</span>
-		    </button>
 		</div>
 
 		<div class="end-drawer"></div>
@@ -146,32 +147,28 @@
 			<div id="bunch_narratif" class="bunch column space">
 
 			    <p class="top-space">Fort réchauffement et fort assèchement en été</p>
-			    <button id="narratif-violet"
-					value="85_HadGEM2-ES_CCLM4-8-17_ADAMONT"
-					class="violet selected" onclick="selectAllButton(this);">
+			    <div id="narratif-violet" value="85_HadGEM2-ES_CCLM4-8-17_ADAMONT" class="violet selected">
+				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 HadGEM2-ES CCLM4-8-17 ADAMONT</span>
-			    </button>
+			    </div>
 
 			    <p class="top-space">Sec toute l’année, recharge moindre en hiver</p>
-			    <button id="narratif-orange"
-					value="85_EC-EARTH_HadREM3-GA7_ADAMONT"
-					class="orange" onclick="selectAllButton(this);">
+			    <div id="narratif-orange" value="85_EC-EARTH_HadREM3-GA7_ADAMONT" class="orange selected">
+				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 EC-EARTH HadREM3-GA7 ADAMONT</span>
-			    </button>
+			    </div>
 
 			    <p class="top-space">Modéré en réchauffement et en changement de précipitations</p>
-			    <button id="narratif-jaune"
-					value="85_CNRM-CM5_ALADIN63_ADAMONT"
-					class="jaune" onclick="selectAllButton(this);">
+			    <div id="narratif-jaune" value="85_CNRM-CM5_ALADIN63_ADAMONT" class="jaune selected">
+				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 CNRM-CM5 ALADIN63 ADAMONT</span>
-			    </button>
+			    </div>
 
 			    <p class="top-space">Chaud et humide à toutes les saisons</p>
-			    <button id="narratif-vert"
-					value="85_HadGEM2-ES_ALADIN63_ADAMONT"
-					class="vert" onclick="selectAllButton(this);">
+			    <div id="narratif-vert" value="85_HadGEM2-ES_ALADIN63_ADAMONT" class="vert selected">
+				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 HadGEM2-ES ALADIN63 ADAMONT</span>
-			    </button>
+			    </div>
 			</div>
 			<div class="end-subdrawer"></div>
 		    </div>

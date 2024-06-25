@@ -12,6 +12,28 @@ if (is_production) {
 }
 
 
+let URL_QA = ["/",
+	      "/plus-d-eau-ou-moins-d-eau/nord-et-sud",
+	      "/plus-d-eau-ou-moins-d-eau/et-entre-les-deux",
+	      "/plus-d-eau-ou-moins-d-eau/le-changement-dans-la-continuite",
+	      "/plus-d-eau-ou-moins-d-eau/ajouter-une-pincee-de-variabilite-naturelle",
+	      "/plus-d-eau-ou-moins-d-eau/raconter-les-trajectoires"];
+
+let URL_VCN10 = ["/des-etiages-plus-severe/moins-d-eau-l-ete",
+		 "/des-etiages-plus-severe/et-c-est-certain"];
+
+let URL_dtLF = ["/des-etiages-plus-severe/des-etiages-plus-longs"];
+
+let URL_QJXA = ["/des-crues-incertaines/quelle-evolution-en-france",
+		"/des-crues-incertaines/et-d-abord-dans-quelle-direction",
+		"/des-crues-incertaines/ajouter-une-louche-de-variabilite"];
+
+let URL_narratifs = ["/plus-d-eau-ou-moins-d-eau/et-entre-les-deux",
+		     "/plus-d-eau-ou-moins-d-eau/raconter-les-trajectoires",
+		     "/des-etiages-plus-severe/et-c-est-certain",
+		     "/des-crues-incertaines/et-d-abord-dans-quelle-direction"]; 
+
+
 $(document).ready(function() {
     console.log("ready");
     updateContent(start=true);
@@ -44,8 +66,9 @@ function updateContent(start=false, actualise=true) {
     }
     if (start || url !== "/personnalisation-avancee") {
 	// console.log("c");
-    	fetch_components();
+    	fetch_components(url);
     }
+    
     
     if (start && url == "/") {
 	// console.log("d");
@@ -62,11 +85,34 @@ function updateContent(start=false, actualise=true) {
 }
 
 
-function fetch_components() {
+function fetch_components(url) {
     $.get('/html/menu.html', function(html) {
         if ($('#menu-element').length) {
             $('#menu-element').html(html);
             load_slider();
+
+	    var selected_variable = get_variable();
+	    console.log(selected_variable);
+	    
+	    if (URL_QA.includes(url) && selected_variable != "QA") {
+		var variable = document.getElementById("button-QA");
+		selectVariableButton(variable);
+
+	    } else if (URL_VCN10.includes(url) && selected_variable != "VCN10_summer") {
+		var variable = document.getElementById("button-VCN10_summer");
+		selectVariableButton(variable);
+
+	    } else if (URL_dtLF.includes(url) && selected_variable != "dtLF_summer") {
+		var variable = document.getElementById("button-dtLF_summer");
+		selectVariableButton(variable);
+		
+	    } else if (URL_QJXA.includes(url) && selected_variable != "QJXA") {
+		var variable = document.getElementById("button-QJXA");
+		selectVariableButton(variable);
+	    }
+
+	    // URL_narratifs
+
         }
     });
 
@@ -161,18 +207,24 @@ function update_data() {
     .then(response => response.json())
     .then(dataBackend => {
 	data = dataBackend.data
-
-	$('#map-loading').css('display', 'none');
-	update_map();
-	redrawPoint();
-	
 	update_grid(dataBackend);
 	draw_colorbar(dataBackend);
 	
+	$('#map-loading').css('display', 'none');
+
+	console.log(drawer_mode);
+	
+	if (drawer_mode === 'drawer-narratif') {
+	    update_map("#svg-france-vert");
+	    update_map("#svg-france-jaune");
+	    update_map("#svg-france-orange");
+	    update_map("#svg-france-violet");
+	    // redrawPoint();
+	} else {
+	    update_map("#svg-france");
+	    redrawPoint();
+	}
     })
-    // .catch(error => {
-        // console.error('Error:', error);
-    // });
 }
 const update_data_debounce = debounce(update_data, 1000);
 // update_data_debounce();
@@ -594,7 +646,7 @@ Promise.all(promises)
 	geoJSONdata_france = geoJSONdata[0];
 	geoJSONdata_river = geoJSONdata[1];
 	geoJSONdata_entiteHydro = geoJSONdata[2];
-	update_map();
+	update_map("#svg-france");
     });
 
 
@@ -632,9 +684,15 @@ let height = window.innerHeight;
 let projection;
 let svgFrance;
 
-function update_map() {
+function update_map(id_svg) {
 
-    d3.select("#svg-france").selectAll("*").remove();
+    d3.select(id_svg).selectAll("*").remove();
+
+    if (drawer_mode === 'drawer-narratif') {
+	var fact = 2;
+    } else {
+	var fact = 1;
+    }
     
     const zoom = d3.zoom()
 	  .scaleExtent([minZoom, maxZoom])
@@ -651,7 +709,7 @@ function update_map() {
     projection = d3.geoMercator()
 	  .center(geoJSONdata_france.features[0].properties.centroid);
 
-     svgFrance = d3.select("#svg-france")
+     svgFrance = d3.select(id_svg)
 	  .attr("width", "100%")
 	  .attr("height", "100%")
 	  .call(zoom)
@@ -659,12 +717,15 @@ function update_map() {
 
     function handleResize() {
 	if (window.innerWidth < window.innerHeight) {
-	    var width = window.innerWidth;
-	    var height = window.innerWidth;
+	    var width = window.innerWidth / fact;
+	    var height = window.innerWidth / fact;
 	} else {
-	    var width = window.innerHeight - 50;
-	    var height = window.innerHeight - 50;
+	    var width = (window.innerHeight - 50 ) / fact;
+	    var height = (window.innerHeight - 50) / fact;
 	}
+
+	console.log(width);
+	
 	zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
 	svgFrance.attr("width", width).attr("height", height);
 	projection.scale([height*3.2]).translate([width / 2, height / 2]);	    
