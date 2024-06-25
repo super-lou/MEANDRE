@@ -1,0 +1,99 @@
+
+<div id="container-map">
+    <div id="panel-hover">
+	<div class="bunch row column-small-gap center cross-center">
+	    <div id="panel-hover_code"></div>
+	    <!-- <div id="panel-hover_value"></div> -->
+	</div>
+    </div>
+    <div id="map-loading" class="container-loading">
+	<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </div>
+    <svg id="svg-france"></svg>
+</div>
+
+<div id="container-gallery">
+    <div class="gallery">
+
+	<div class="bunch row column-small-gap row-small-gap cross-end">
+	    <h1 class="gallery-item">
+		DES ÉTIAGES PLUS SÉVÈRES 
+	    </h1>
+
+	    <h2 class="gallery-item">
+		MOINS D’EAU L’ÉTÉ
+	    </h2>
+	</div>
+
+	<p class="gallery-item">
+	    En <b>été</b>, le déclin des précipitations s’étend vers le nord, et associé à l’augmentation générale de l’évaporation due au réchauffement, conduit à une <b>diminution drastique des débits des cours d’eau</b>.
+	</p>
+	
+	<div class="bunch row column-small-gap row-small-gap">
+	    <div id="grid-colorbar" class="gallery-item">
+		<svg id="svg-colorbar"></svg>
+	    </div>
+
+	    <div class="bunch column column-small-gap row-small-gap baseline">
+		<div id="grid-variable" class="gallery-item">
+		    <div class="bunch column">
+			<span id="grid-variable_variable"></span>
+			<span id="grid-variable_name"></span>
+			<span id="grid-variable_sampling-period"></span>
+		    </div>
+		</div>
+
+		<div id="grid-horizon" class="gallery-item">
+		    <div class="bunch column">
+			<span id="grid-horizon_name"></span>
+			<span id="grid-horizon_period-l1"></span>
+			<span id="grid-horizon_period-l2"></span>
+		    </div>
+		</div>
+
+	    </div>
+	</div>
+
+	
+	<div id="grid-point" class="gallery-item" style="display: none;">
+	    <div id="grid-point_cross"
+		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
+
+	    <div class="bunch column">
+		<div id="grid-point_code-value"
+		     class="bunch row column-gap cross-center">
+		    <span id="grid-point_code"></span>
+		</div>
+		<span id="grid-point_name"></span>
+		<span id="grid-point_hr" class="grid-point_info"></span>
+		<span id="grid-point_reference" class="grid-point_info"></span>
+		<span id="grid-point_surface" class="grid-point_info"></span>
+		
+		<div class="bunch row column-gap">
+		    <span id="grid-point_xl93" class="grid-point_info"></span>
+		    <span id="grid-point_yl93" class="grid-point_info"></span>
+		</div>
+
+		<span id="grid-point_n" class="grid-point_info"></span>
+		<span id="grid-point_HM" class="grid-point_info"></span>
+	    </div>
+	</div>
+
+
+	<div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
+	    <div id="grid-line_cross"
+		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
+	    <div class="bunch column">
+		<div id="grid-line_title">
+		    Série des changements relatifs
+		</div>
+		<div id="grid-line_tooltip"></div>
+	    </div>
+	    <div id="line-loading" class="container-loading">
+		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+	    </div>
+	    <svg id="svg-line"></svg>			    
+	</div>
+
+    </div>
+</div>

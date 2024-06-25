@@ -13,49 +13,52 @@ if (is_production) {
 
 
 $(document).ready(function() {
+    console.log("ready");
     updateContent(start=true);
 });
 
 $(window).on('popstate', function(event) {
+    console.log("popstate");
     updateContent();
 });
 
 
-function change_url(url, actualise=true) {
+function change_url(url, start=false, actualise=true) {
     history.pushState({}, "", url);
-    updateContent(start=false, actualise=actualise);
+    updateContent(start=start, actualise=actualise);
 }
 
 function updateContent(start=false, actualise=true) {
     var url = window.location.pathname;
-    var file = url.replace(/-/g, '_');
 
+    // console.log("url       ", url);
+    // console.log("start     ", start);
+    // console.log("actualise ", actualise);
+    
     if (url !== "/") {
+	// console.log("a");
 	hide_home();
     } else {
+	// console.log("b");
 	show_home();
     }
     if (start || url !== "/personnalisation-avancee") {
+	// console.log("c");
     	fetch_components();
     }
     
-    // if (actualise && url !== "/" && (start || url !== "/personnalisation-avancee")) {
-    // 	$("#container-map-gallery").load("/html" + url + ".html");
-    // 	update_data_debounce();
-	
-    // } else if (url === "/") {
-    // 	$("#container-map-gallery").load("/html" + "/plus-d-eau-d-moins-eau/disparite-sur-le-territoire" + ".html");
-    // 	update_data_debounce();
-    // }
-
-    if (start) {
-	$("#container-map-gallery").load("/html" + "/plus_d_eau_d_moins_eau/disparite_sur_le_territoire" + ".html");
+    if (start && url == "/") {
+	// console.log("d");
+	$("#container-map-gallery").load("/html" + "/plus-d-eau-ou-moins-d-eau/nord-et-sud" + ".html");
     	update_data_debounce();
 	
     } else if (actualise && url !== "/" && (start || url !== "/personnalisation-avancee")) {
-    	$("#container-map-gallery").load("/html" + file + ".html");
+	// console.log("e");
+    	$("#container-map-gallery").load("/html" + url + ".html");
     	update_data_debounce();
     }
+
+    // console.log("");
 }
 
 

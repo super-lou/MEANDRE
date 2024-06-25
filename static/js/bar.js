@@ -89,8 +89,8 @@ function select_tab() {
     selected_tab.addClass('selected');
 
     var selected_close_tab = $("#tab_close_" + tab);
-    console.log("#tab_close_" + tab);
-    console.log(selected_close_tab);
+    // console.log("#tab_close_" + tab);
+    // console.log(selected_close_tab);
     selected_close_tab.addClass('selected');
     
     var selected_subtab = $("#tab_" + tab + "_" + subtab);

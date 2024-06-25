@@ -182,7 +182,7 @@
     white-space: nowrap;
 }
 .subbar.expanded {
-    max-width: 30rem;
+    max-width: 100rem;
 }
 
 .subbar-tab {

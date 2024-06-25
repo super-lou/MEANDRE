@@ -1,6 +1,6 @@
 <div id="container-logo-bar-sep">
 
-    <div id="logo" class="logo" onclick="change_url('/', actualise=false);">
+    <div id="logo" class="logo" onclick="change_url('/', start=true, actualise=true);">
 	<img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
 	<span>MEANDRE</span>
     </div>
@@ -13,88 +13,88 @@
 	    <div id="left-arrow" class="arrow material-icons-outlined"
 		 onclick="scroll_bar_left()">keyboard_arrow_left</div>
 	    
-	    <div id="tab_plus-d-eau-d-moins-eau" class="bar-tab"
+	    <div id="tab_plus-d-eau-ou-moins-d-eau" class="bar-tab"
 		 onclick="toggle_subtab(this)">
-		<span id="tab_plus-d-eau-d-moins-eau-icon" class="material-icons-outlined">water_drop</span>
-		<span id="tab_plus-d-eau-d-moins-eau-text" class="tab-text">Plus d'eau ou<br>moins d'eau ?</span>
+		<span id="tab_plus-d-eau-ou-moins-d-eau-icon" class="material-icons-outlined">water_drop</span>
+		<span id="tab_plus-d-eau-ou-moins-d-eau-text" class="tab-text">Plus d'eau ou<br>moins d'eau ?</span>
 
-		<div id="tab_plus-d-eau-d-moins-eau" class="subbar">
-		    <div id="tab_plus-d-eau-d-moins-eau_disparite-sur-le-territoire" class="subbar-tab"
-			 onclick="change_url('/plus-d-eau-d-moins-eau/disparite-sur-le-territoire')">
+		<div id="tab_plus-d-eau-ou-moins-d-eau" class="subbar">
+		    <div id="tab_plus-d-eau-ou-moins-d-eau_nord-et-sud" class="subbar-tab"
+			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/nord-et-sud')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Disparité sur<br>le territoire</span>
+			<span class="subtab-text">Nord et Sud</span>
 		    </div>
-		    <div id="tab_plus-d-eau-d-moins-eau_l-approche-multi-modeles" class="subbar-tab"
-			 onclick="change_url('/plus-d-eau-d-moins-eau/l-approche-multi-modeles')">
+		    <div id="tab_plus-d-eau-ou-moins-d-eau_et-entre-les-deux" class="subbar-tab"
+			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/et-entre-les-deux')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">L'approche<br>multi-modèles</span>
+			<span class="subtab-text">Et entre les deux</span>
 		    </div>
-		    <div id="tab_plus-d-eau-d-moins-eau_les-trajectoires" class="subbar-tab"
-			 onclick="change_url('/plus-d-eau-d-moins-eau/les-trajectoires')">
+		    <div id="tab_plus-d-eau-ou-moins-d-eau_le-changement-dans-la-continuite" class="subbar-tab"
+			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/le-changement-dans-la-continuite')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Les trajectoires</span>
+			<span class="subtab-text">Le changement dans<br>la continuité</span>
 		    </div>
-		    <div id="tab_plus-d-eau-d-moins-eau_les-narratifs" class="subbar-tab"
-			 onclick="change_url('/plus-d-eau-d-moins-eau/les-narratifs')">
+		    <div id="tab_plus-d-eau-ou-moins-d-eau_ajouter-une-pincee-de-variabilite-naturelle" class="subbar-tab"
+			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/ajouter-une-pincee-de-variabilite-naturelle')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Les narratifs</span>
+			<span class="subtab-text">Ajouter une pincée de<br>variabilité naturelle</span>
+		    </div>
+		    <div id="tab_plus-d-eau-ou-moins-d-eau_raconter-les-trajectoires" class="subbar-tab"
+			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/raconter-les-trajectoires')">
+			<div class="subbar-sep"></div>
+			<span class="subtab-text">Raconter les<br>trajectoires</span>
 		    </div>
 		</div>
 	    </div>
 
 	    <div class="sep"></div>
 
-	    <div id="tab_l-incertitude-des-crues" class="bar-tab"
+	    <div id="tab_des-etiages-plus-severe" class="bar-tab"
 		 onclick="toggle_subtab(this)">
-		<span id="tab_l-incertitude-des-crues-icon" class="material-icons-outlined">flood</span>
-		<span id="tab_l-incertitude-des-crues-text" class="tab-text">L'incertitude des crues</span>
+		<span id="tab_des-etiages-plus-severe-icon" class="material-icons-outlined">trending_down</span>
+		<span id="tab_des-etiages-plus-severe-text" class="tab-text">Des étiages plus sévères</span>
 
-		<div id="tab_l-incertitude-des-crues" class="subbar">
-		    <div id="tab_l-incertitude-des-crues_le-regime-des-crues" class="subbar-tab"
-			 onclick="change_url('/l-incertitude-des-crues/le-regime-des-crues')">
+		<div id="tab_des-etiages-plus-severe" class="subbar">
+		    <div id="tab_des-etiages-plus-severe_moins-d-eau-l-ete" class="subbar-tab"
+			 onclick="change_url('/des-etiages-plus-severe/moins-d-eau-l-ete')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Le régime<br>des crues</span>
+			<span class="subtab-text">Moins d’eau l’été</span>
 		    </div>
-		    <div id="tab_l-incertitude-des-crues_ou-est-la-limite" class="subbar-tab"
-			 onclick="change_url('/l-incertitude-des-crues/ou-est-la-limite')">
+		    <div id="tab_des-etiages-plus-severe_et-c-est-certain" class="subbar-tab"
+			 onclick="change_url('/des-etiages-plus-severe/et-c-est-certain')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Où est la<br>limite ?</span>
+			<span class="subtab-text">Et c’est certain</span>
 		    </div>
-		    <div id="tab_l-incertitude-des-crues_des-futurs-incertains" class="subbar-tab"
-			 onclick="change_url('/l-incertitude-des-crues/des-futurs-incertains')">
+		    <div id="tab_des-etiages-plus-severe_des-etiages-plus-longs" class="subbar-tab"
+			 onclick="change_url('/des-etiages-plus-severe/des-etiages-plus-longs')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Des futurs<br>incertains</span>
+			<span class="subtab-text">Des étiages<br>plus longs</span>
 		    </div>
 		</div>
 	    </div>
 
 	    <div class="sep"></div>
 
-	    <div id="tab_la-peur-du-manque" class="bar-tab"
+	    <div id="tab_des-crues-incertaines" class="bar-tab"
 		 onclick="toggle_subtab(this)">
-		<span id="tab_la-peur-du-manque-icon" class="material-icons-outlined">trending_down</span>
-		<span id="tab_la-peur-du-manque-text" class="tab-text">La peur du manque</span>
+		<span id="tab_des-crues-incertaines-icon" class="material-icons-outlined">flood</span>
+		<span id="tab_des-crues-incertaines-text" class="tab-text">Des crues incertaines</span>
 
-		<div id="tab_la-peur-du-manque" class="subbar">
-		    <div id="tab_la-peur-du-manque_le-regime-des-etiages" class="subbar-tab"
-			 onclick="change_url('/la-peur-du-manque/le-regime-des-etiages')">
+		<div id="tab_des-crues-incertaines" class="subbar">
+		    <div id="tab_des-crues-incertaines_quelle-evolution-en-france" class="subbar-tab"
+			 onclick="change_url('/des-crues-incertaines/quelle-evolution-en-france')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">Le régime<br>des étiages</span>
+			<span class="subtab-text">Quelle évolution<br>en France ?</span>
 		    </div>
-		    <div id="tab_la-peur-du-manque_l-intensite" class="subbar-tab"
-			 onclick="change_url('/la-peur-du-manque/l-intensite')">
+		    <div id="tab_des-crues-incertaines_et-d-abord-dans-quelle-direction" class="subbar-tab"
+			 onclick="change_url('/des-crues-incertaines/et-d-abord-dans-quelle-direction')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">L'intensité</span>
+			<span class="subtab-text">Et d’abord dans<br>quelle direction ?</span>
 		    </div>
-		    <div id="tab_la-peur-du-manque_la-duree" class="subbar-tab"
-			 onclick="change_url('/la-peur-du-manque/la-duree')">
+		    <div id="tab_des-crues-incertaines_ajouter-une-louche-de-variabilite" class="subbar-tab"
+			 onclick="change_url('/des-crues-incertaines/ajouter-une-louche-de-variabilite')">
 			<div class="subbar-sep"></div>
-			<span class="subtab-text">La durée</span>
-		    </div>
-		    <div id="tab_la-peur-du-manque_le-constat" class="subbar-tab"
-			 onclick="change_url('/la-peur-du-manque/le-constat')">
-			<div class="subbar-sep"></div>
-			<span class="subtab-text">Le constat</span>
+			<span class="subtab-text">Ajouter une louche<br>de variabilité</span>
 		    </div>
 		</div>
 	    </div>

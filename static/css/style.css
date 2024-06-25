@@ -83,6 +83,9 @@ p.bottom-big-space {
 .bunch.cross-center {
     align-items: center;
 }
+.bunch.cross-end {
+    align-items: end;
+}
 .bunch.center {
     justify-content: center; 
 }
