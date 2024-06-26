@@ -1,6 +1,10 @@
 
 
-function toggle_subtab(tab) {
+function toggle_subtab(tab_button) {
+
+    console.log(tab_button);
+    var tab = tab_button.parentNode;
+    
     var subbars = $('.subbar');
     subbars.each(function() {
 	var subbar = $(this);
@@ -89,8 +93,6 @@ function select_tab() {
     selected_tab.addClass('selected');
 
     var selected_close_tab = $("#tab_close_" + tab);
-    // console.log("#tab_close_" + tab);
-    // console.log(selected_close_tab);
     selected_close_tab.addClass('selected');
     
     var selected_subtab = $("#tab_" + tab + "_" + subtab);

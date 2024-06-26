@@ -219,6 +219,11 @@ button:hover .material-icons-outlined {
     color: #569A71;
     font-weight: 600;
 }
+.vert.border {
+    border: solid 3px #569A71;
+    border-radius: 100%;
+    padding: 0.05rem;
+}
 /* .vert:hover { */
 /*     color: #569A71; */
 /*     opacity: 0.7; */
@@ -230,6 +235,11 @@ button:hover .material-icons-outlined {
 .jaune {
     color: #EECC66;
     font-weight: 600;
+}
+.jaune.border {
+    border: solid 3px #EECC66;
+    border-radius: 100%;
+    padding: 0.05rem;
 }
 /* .jaune:hover { */
 /*     color: #EECC66; */
@@ -243,6 +253,11 @@ button:hover .material-icons-outlined {
     color: #E09B2F;
     font-weight: 600;
 }
+.orange.border {
+    border: solid 3px #E09B2F;
+    border-radius: 100%;
+    padding: 0.05rem;
+}
 /* .orange:hover { */
 /*     color: #E09B2F; */
 /*     opacity: 0.7; */
@@ -255,6 +270,12 @@ button:hover .material-icons-outlined {
     color: #791F5D;
     font-weight: 600;
 }
+.violet.border {
+    border: solid 3px #791F5D;
+    border-radius: 100%;
+    padding: 0.05rem;
+}
+
 /* .violet:hover { */
 /*     color: #791F5D; */
 /*     opacity: 0.7; */
@@ -325,6 +346,11 @@ h3 {
     position: relative;
     width: calc(100% / 2);
     height: calc(100% / 2);
+}
+.map-color {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;   
 }
 
 

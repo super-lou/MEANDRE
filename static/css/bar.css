@@ -69,6 +69,18 @@
 
 
 .bar-tab {
+    background-color: transparent;
+    height: auto;
+    transition: width 0.3s ease;
+    margin-left: 0.6rem;
+    /* margin-right: 0rem; */
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.bar-button {
     font-family: "Raleway", sans-serif;
     font-weight: 700;
     font-size: 0.7rem;
@@ -77,22 +89,20 @@
     color: #060508;
     cursor: pointer;
     height: auto;
-    transition: width 0.3s ease;
-    margin-left: 0.6rem;
-    margin-right: 0rem;
-    text-wrap: wrap;
+    /* text-wrap: wrap; */
     line-height: 0.8rem;
     display: flex;
-    /* gap: 0.4rem; */
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     white-space: nowrap;
 }
-.bar-tab:hover,
-.bar-tab:hover .material-icons-outlined{
+.bar-button:hover,
+.bar-button:hover .material-icons-outlined{
     color: #70757A;
 }
+
+
 
 #tab_other {
     margin-right: 0.9rem;

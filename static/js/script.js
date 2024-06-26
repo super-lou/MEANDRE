@@ -64,58 +64,74 @@ function updateContent(start=false, actualise=true) {
 	// console.log("b");
 	show_home();
     }
-    if (start || url !== "/personnalisation-avancee") {
+    if (start) {
 	// console.log("c");
     	fetch_components(url);
+    } else {
+	select_tab();
+	check_bar();
     }
     
     
     if (start && url == "/") {
 	// console.log("d");
-	$("#container-map-gallery").load("/html" + "/plus-d-eau-ou-moins-d-eau/nord-et-sud" + ".html");
+	$("#container-map-gallery").load("/html" + "/plus-d-eau-ou-moins-d-eau/nord-et-sud" + ".html", function() {
+	    check_urk(url);
+	});
+	
     	update_data_point_debounce();
 	
     } else if (actualise && url !== "/" && (start || url !== "/personnalisation-avancee")) {
 	// console.log("e");
-    	$("#container-map-gallery").load("/html" + url + ".html");
+	$("#container-map-gallery").load("/html" + url + ".html", function() {
+	    check_urk(url);
+	});
     	update_data_point_debounce();
     }
 
     // console.log("");
 }
 
+function check_urk(url) {
+    var selected_variable = get_variable();
+    
+    if (URL_QA.includes(url) && selected_variable != "QA") {
+	var variable = document.getElementById("button-QA");
+	selectVariableButton(variable);
+
+    } else if (URL_VCN10.includes(url) && selected_variable != "VCN10_summer") {
+	var variable = document.getElementById("button-VCN10_summer");
+	selectVariableButton(variable);
+
+    } else if (URL_dtLF.includes(url) && selected_variable != "dtLF_summer") {
+	var variable = document.getElementById("button-dtLF_summer");
+	selectVariableButton(variable);
+	
+    } else if (URL_QJXA.includes(url) && selected_variable != "QJXA") {
+	var variable = document.getElementById("button-QJXA");
+	selectVariableButton(variable);
+    }
+    console.log(drawer_mode);
+
+    if (URL_narratifs.includes(url)) {
+	change_drawer("drawer-narratif");
+    } else {
+	change_drawer("drawer-chain");
+    }
+    console.log(drawer_mode);
+}
+
 
 function fetch_components(url) {
+
+    console.log("fetch");
+    
     $.get('/html/menu.html', function(html) {
         if ($('#menu-element').length) {
             $('#menu-element').html(html);
             load_slider();
-
-	    var selected_variable = get_variable();
-	    // console.log(selected_variable);
-	    
-	    if (URL_QA.includes(url) && selected_variable != "QA") {
-		var variable = document.getElementById("button-QA");
-		selectVariableButton(variable);
-
-	    } else if (URL_VCN10.includes(url) && selected_variable != "VCN10_summer") {
-		var variable = document.getElementById("button-VCN10_summer");
-		selectVariableButton(variable);
-
-	    } else if (URL_dtLF.includes(url) && selected_variable != "dtLF_summer") {
-		var variable = document.getElementById("button-dtLF_summer");
-		selectVariableButton(variable);
-		
-	    } else if (URL_QJXA.includes(url) && selected_variable != "QJXA") {
-		var variable = document.getElementById("button-QJXA");
-		selectVariableButton(variable);
-	    }
-
-	    // URL_narratifs
-
         }
     });
-
     $.get('/html/bar.html', function(html) {
 	if ($('#bar-element').length) {
             $('#bar-element').html(html);
@@ -794,6 +810,7 @@ const stroke_river = "#B0D9D6";
 const minZoom = 1;
 const maxZoom = 4;
 const maxPan = 0;
+const scale = 3.5;
 
 const transitionDuration = 500;
 
@@ -877,7 +894,7 @@ function update_map(id_svg, svgElement, data_point) {
 
 	zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
 	svgElement.attr("width", width).attr("height", height);
-	projection.scale([height*3.2]).translate([width / 2, height / 2]);	    
+	projection.scale([height*scale]).translate([width / 2, height / 2]);	    
 
 	redrawMap();
 	highlight_selected_point();

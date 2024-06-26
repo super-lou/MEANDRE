@@ -13,10 +13,12 @@
 	    <div id="left-arrow" class="arrow material-icons-outlined"
 		 onclick="scroll_bar_left()">keyboard_arrow_left</div>
 	    
-	    <div id="tab_plus-d-eau-ou-moins-d-eau" class="bar-tab"
-		 onclick="toggle_subtab(this)">
-		<span id="tab_plus-d-eau-ou-moins-d-eau-icon" class="material-icons-outlined">water_drop</span>
-		<span id="tab_plus-d-eau-ou-moins-d-eau-text" class="tab-text">Plus d'eau ou<br>moins d'eau ?</span>
+	    <div id="tab_plus-d-eau-ou-moins-d-eau" class="bar-tab">
+
+		<div id="tab_plus-d-eau-ou-moins-d-eau-button"  class="bar-button" onclick="toggle_subtab(this)">
+		    <span id="tab_plus-d-eau-ou-moins-d-eau-icon" class="material-icons-outlined">water_drop</span>
+		    <span id="tab_plus-d-eau-ou-moins-d-eau-text" class="tab-text">Plus d'eau ou<br>moins d'eau ?</span>
+		</div>
 
 		<div id="tab_plus-d-eau-ou-moins-d-eau" class="subbar">
 		    <div id="tab_plus-d-eau-ou-moins-d-eau_nord-et-sud" class="subbar-tab"
@@ -49,10 +51,12 @@
 
 	    <div class="sep"></div>
 
-	    <div id="tab_des-etiages-plus-severe" class="bar-tab"
-		 onclick="toggle_subtab(this)">
-		<span id="tab_des-etiages-plus-severe-icon" class="material-icons-outlined">trending_down</span>
-		<span id="tab_des-etiages-plus-severe-text" class="tab-text">Des étiages plus sévères</span>
+	    <div id="tab_des-etiages-plus-severe" class="bar-tab">
+
+		<div id="tab_des-etiages-plus-severe-button"  class="bar-button" onclick="toggle_subtab(this)">
+		    <span id="tab_des-etiages-plus-severe-icon" class="material-icons-outlined">trending_down</span>
+		    <span id="tab_des-etiages-plus-severe-text" class="tab-text">Des étiages plus sévères</span>
+		</div>
 
 		<div id="tab_des-etiages-plus-severe" class="subbar">
 		    <div id="tab_des-etiages-plus-severe_moins-d-eau-l-ete" class="subbar-tab"
@@ -75,11 +79,13 @@
 
 	    <div class="sep"></div>
 
-	    <div id="tab_des-crues-incertaines" class="bar-tab"
-		 onclick="toggle_subtab(this)">
-		<span id="tab_des-crues-incertaines-icon" class="material-icons-outlined">flood</span>
-		<span id="tab_des-crues-incertaines-text" class="tab-text">Des crues incertaines</span>
+	    <div id="tab_des-crues-incertaines" class="bar-tab">
 
+		<div id="tab_des-crues-incertaines-button"  class="bar-button" onclick="toggle_subtab(this)">
+		    <span id="tab_des-crues-incertaines-icon" class="material-icons-outlined">flood</span>
+		    <span id="tab_des-crues-incertaines-text" class="tab-text">Des crues incertaines</span>
+		</div>
+		
 		<div id="tab_des-crues-incertaines" class="subbar">
 		    <div id="tab_des-crues-incertaines_quelle-evolution-en-france" class="subbar-tab"
 			 onclick="change_url('/des-crues-incertaines/quelle-evolution-en-france')">
@@ -121,8 +127,12 @@
 <div id="button_personnalisation-avancee" class="bunch row nowrap center cross-center">
     <div id="tab_personnalisation-avancee" class="bar-tab"
 	 onclick="toggle_menu(); change_url('/personnalisation-avancee');">
-	<span id="tab_personnalisation-avancee-icon" class="material-icons-outlined">design_services</span>
-	<span id="tab_personnalisation-avancee-text" class="tab-text">Personnalisation<br>avancée</span>
+
+	<div id="tab_personnalisation-avancee-button"  class="bar-button">
+	    <span id="tab_personnalisation-avancee-icon" class="material-icons-outlined">design_services</span>
+	    <span id="tab_personnalisation-avancee-text" class="tab-text">Personnalisation<br>avancée</span>
+	</div>
+
     </div>
 </div>
 
