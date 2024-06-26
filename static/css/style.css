@@ -322,6 +322,7 @@ h3 {
     height: 100%;
 }
 .sub-container-map {
+    position: relative;
     width: calc(100% / 2);
     height: calc(100% / 2);
 }

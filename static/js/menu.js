@@ -7,7 +7,7 @@ function selectAllButton(selectedButton) {
     });
     selectedButton.classList.add('selected');
 
-    update_data_debounce();
+    update_data_point_debounce();
 }
 
 
@@ -19,7 +19,7 @@ function selectButton(selectedButton) {
         selectedButton.classList.add('selected');
     }
 
-    update_data_debounce();
+    update_data_point_debounce();
 }
 
 
@@ -52,7 +52,7 @@ function load_slider() {
     slider.noUiSlider.on('change', function(values) {
     	var maxPos = Math.max(values) -1;
         $(slider).find('.noUi-value:visible').removeClass('highlight').eq(maxPos).addClass('highlight');
-	update_data_debounce();
+	update_data_point_debounce();
     });
 }
 
@@ -63,7 +63,7 @@ function selectVariableButton(selectedButton) {
 	button.classList.remove('selected');
     });
     selectedButton.classList.add('selected');
-    update_data_debounce();
+    update_data_point_debounce();
 }
 
 
@@ -73,7 +73,7 @@ function selectHorizonButton(selectedButton) {
 	button.classList.remove('selected');
     });
     selectedButton.classList.add('selected');
-    update_data_debounce();
+    update_data_point_debounce();
 }
 
 
@@ -136,7 +136,7 @@ function toggle_drawer(drawerId) {
 		} else {
 		    drawerContent.classList.add("expanded");
 		    drawerIcon.classList.add("rotated");
-		    update_data_debounce();
+		    update_data_point_debounce();
 		}
 	    } else {
 		if (drawerContent.classList.contains("expanded")) {
@@ -163,7 +163,6 @@ function toggle_drawer(drawerId) {
     	$("#svg-france").css("display", "none");
 	$("#svg-france-narratif").css("display", "flex");
     } else {
-    	// $("#grid-line").css("display", "block");
     	$("#svg-france").css("display", "block");
     	$("#svg-france-narratif").css("display", "none");
     }
