@@ -274,22 +274,17 @@ function show_HM(selectedButton) {
 
 
 
-
-
-
-
-
-
-
-
-
+function get_RCP() {
+    const selectedButton = document.querySelector('#bunch_RCP_only .selected');
+    const RCP = selectedButton.querySelector('span').innerText;
+    return RCP;
+}
 
 function get_n() {
     var slider = document.getElementById('slider-n');
     var n = parseInt(slider.noUiSlider.get());
     return n;
 }
-
 
 function get_variable() {
     var variableBunch = $('#bunch-variable');

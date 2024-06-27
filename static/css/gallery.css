@@ -1,33 +1,19 @@
 
-
-/* .gallery { */
-/*     display: grid; */
-/*     grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr)); */
-/*     grid-template-columns: repeat(auto-fill, 9rem); */
-/*     grid-gap: 1rem; */
-/*     grid-auto-flow: row; */
-/*     height: auto; */
-/*     transition: all 0.3s ease; */
-/*     overflow-y: auto; */
-/*     margin-bottom: 1rem; */
-/* } */
-
 .gallery {
     display: flex;
-    /* grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr)); */
-    /* grid-template-columns: repeat(auto-fill, 9rem); */
-    /* grid-gap: 1rem; */
-    /* grid-auto-flow: row; */
     height: auto;
     transition: all 0.3s ease;
     overflow-y: auto;
     margin-bottom: 1rem;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-.gallery-item {
+.gallery-item,
+.gallery-item-small,
+.gallery-arrow {
     border: 3px solid #ffffff;
     background-color: #ffffff;
     padding: 1rem 1rem;
@@ -38,32 +24,21 @@
     width: fit-content;
     height: fit-content;
 }
+.gallery-item-small {
+    padding: 0.5rem 1rem;
+}
+.gallery-arrow {
+    padding: 0.1rem 0.1rem;
+    cursor: pointer;
+}
 
-/* .gallery-item.align-center { */
-/*     align-items: center; */
-/* } */
-/* .gallery-item.justify-center { */
-/*     justify-content: center; */
-/* } */
-
-/* .gallery-item img { */
-/*     position: absolute; */
-/*     top: 50%; */
-/*     left: 50%; */
-/*     transform: translate(-50%, -50%); */
-/* } */
-
-/* .gallery-item span { */
-/*     position: relative; */
-/*     z-index: 1; */
-/* } */
-/* .grid-cross { */
-/*     cursor: pointer; */
-/*     position: absolute; */
-/*     top: 0.4rem; */
-/*     right: 0.4rem; */
-/*     font-size: 0.9rem; */
-/* } */
+.grid-cross {
+    cursor: pointer;
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    font-size: 0.9rem;
+}
 
 
 .gallery h1 {
@@ -166,6 +141,19 @@
 }
 
 
+#grid-n_number {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #3d3e3e;
+}
+#grid-n_text {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #89898a;
+    line-height: 0.8rem;
+}
 
 
 
@@ -231,9 +219,22 @@
     margin-top: 0.3rem;
 }
 
+.grid-chain_drawer {
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #3d3e3e;
+}
+.grid-chain_text {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #3d3e3e;
+}
+
 
 #grid-line {
-    width: 100%;
+    width: calc(100% - 6px - 2rem);
     min-height: 10rem;
     max-height: 20rem;
 }

@@ -52,29 +52,77 @@
 <div id="container-gallery">
     <div class="gallery">
 
-	<div class="bunch row column-small-gap row-small-gap">
-	    <div id="grid-colorbar" class="gallery-item">
-		<svg id="svg-colorbar"></svg>
-	    </div>
+	<div class="bunch column column-small-gap row-small-gap">
+	    <h1 class="gallery-item">
+		PERSONNALISATION<br>AVANCÉE
+	    </h1>
+	</div>
 
-	    <div class="bunch column column-small-gap row-small-gap baseline">
-		<div id="grid-variable" class="gallery-item">
-		    <div class="bunch column">
-			<span id="grid-variable_variable"></span>
-			<span id="grid-variable_name"></span>
-			<span id="grid-variable_sampling-period"></span>
-		    </div>
+	<div class="bunch column column-small-gap row-small-gap">
+	    <div class="bunch row column-small-gap row-small-gap">
+		<div id="grid-colorbar" class="gallery-item">
+		    <svg id="svg-colorbar"></svg>
 		</div>
 
-		<div id="grid-horizon" class="gallery-item">
-		    <div class="bunch column">
-			<span id="grid-horizon_name"></span>
-			<span id="grid-horizon_period-l1"></span>
-			<span id="grid-horizon_period-l2"></span>
+		<div class="bunch column column-small-gap row-small-gap baseline">
+		    <div id="grid-variable" class="gallery-item">
+			<div class="bunch column">
+			    <span id="grid-variable_variable"></span>
+			    <span id="grid-variable_name"></span>
+			    <span id="grid-variable_sampling-period"></span>
+			</div>
+		    </div>
+
+		    <div id="grid-horizon" class="gallery-item">
+			<div class="bunch column">
+			    <span id="grid-horizon_name"></span>
+			    <span id="grid-horizon_period-l1"></span>
+			    <span id="grid-horizon_period-l2"></span>
+			</div>
+		    </div>
+		    
+		    <div id="grid-n" class="gallery-item-small">
+			<div class="bunch row column-small-gap row-small-gap cross-baseline">
+			    <span id="grid-n_number"></span>
+			    <span id="grid-n_text" style="display: none;">modèles hydrologiques par point</span>
+			</div>
 		    </div>
 		</div>
-
 	    </div>
+
+	    <div id="grid-chain" class="gallery-item">
+		<div id="grid-chain_drawer-narratif" style="display: none;"
+		     class="bunch column">
+		    <span class="grid-chain_drawer">Chaînes de modélisation pour chaque narratif</span>
+		    <span class="vert grid-chain_text">VERT Réchauffement marqué et augmentation des précipitations</span>
+		    <span class="jaune grid-chain_text">JAUNE Changements futurs relativement peu marqués</span>
+		    <span class="orange grid-chain_text">ORANGE Fort réchauffement et fort assèchement en été (et en annuel)</span>
+		    <span class="violet grid-chain_text">VIOLET Fort réchauffement et forts contrastes saisonniers en précipitations</span>
+		</div>
+
+		<div id="grid-chain_drawer-RCP" style="display: none;"
+		     class="bunch column">
+		    <span class="grid-chain_drawer">Chaînes de modélisation par niveau d'émission</span>
+		    <span id="grid-chain_RCP26-text" style="display: none;" class="grid-chain_text">
+			Le <b>RCP 2.6</b> est un scénario où <b>des efforts importants</b> sont fait pour réduire les émissions.
+		    </span>
+		    <span id="grid-chain_RCP45-text" style="display: none;" class="grid-chain_text">
+			Le <b>RCP 4.5</b> est un scénario où <b>des efforts modérés</b> sont fait pour réduire les émissions.
+		    </span>
+		    <span id="grid-chain_RCP85-text" style="display: none;" class="grid-chain_text">
+			Le <b>RCP 8.5</b> est un scénario où <b>l'augmentation</b> des émissions <b>continue</b> selon la tendance actuelle.
+		    </span>
+		</div>
+
+		<div id="grid-chain_drawer-chain" style="display: none;"
+		     class="bunch column">
+		    <span class="grid-chain_drawer">Chaînes de modélisation spécifiques</span>
+		    <span id="grid-chain_chain-text" class="grid-chain_text">
+			<b>Attention</b> : L'approche multi-modèle doit être privilégiée.
+		    </span>
+		</div>
+	    </div>
+
 	</div>
 
 	

@@ -46,6 +46,11 @@ $(window).on('popstate', function(event) {
 
 
 function change_url(url, start=false, actualise=true) {
+    var current_url = window.location.pathname;
+    console.log(current_url);
+    if (current_url === url && url === "/personnalisation-avancee") {
+	actualise = false;
+    }
     history.pushState({}, "", url);
     updateContent(start=start, actualise=actualise);
 }
@@ -81,7 +86,7 @@ function updateContent(start=false, actualise=true) {
 	
     	update_data_point_debounce();
 	
-    } else if (actualise && url !== "/" && (start || url !== "/personnalisation-avancee")) {
+    } else if (actualise && url !== "/") {
 	// console.log("e");
 	$("#container-map-gallery").load("/html" + url + ".html", function() {
 	    check_urk(url);
@@ -198,7 +203,6 @@ function debounce(func, delay) {
         }, delay);
     };
 }
-
 
 
 
@@ -588,13 +592,13 @@ function update_grid(data_back) {
     var horizon = get_horizon("futur");
     
     if (horizon === "H1") {
-	var period = "01/01/2021 - 31/12/2050";
+	var period = "2021 - 2050";
 	var horizon_name = "proche";
     } else if (horizon === "H2") {
-	var period = "01/01/2041 - 31/12/2070";
+	var period = "2041 - 2070";
 	var horizon_name = "moyen";
     } else if (horizon === "H3") {
-	var period = "01/01/2070 - 31/12/2099";
+	var period = "2070 - 2099";
 	var horizon_name = "lointain";
     }
 
@@ -623,10 +627,43 @@ function update_grid(data_back) {
     
     document.getElementById("grid-horizon_name").innerHTML = "Horizon " + horizon_name;
 
-    period = period.replace(/ - /g, "</b> au <b>");
-    document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur du <b>" + period + "</b>";
-    document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence du <b>01/01/1976</b> au <b>31/08/2005</b>";
+    period = period.replace(/ - /g, "</b> à <b>");
+    document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur de <b>" + period + "</b>";
+    document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence de <b>1976</b> à <b>2005</b>";
 
+    var url = window.location.pathname;
+    if (url === "/personnalisation-avancee") {
+	$("#grid-n_text").css("display", "flex");
+	document.getElementById("grid-n_number").innerHTML = n;
+
+	$("#grid-chain_drawer-narratif").css("display", "none");
+	$("#grid-chain_drawer-RCP").css("display", "none");
+	$("#grid-chain_drawer-chain").css("display", "none");
+	
+	if (drawer_mode === "drawer-narratif") {
+	    $("#grid-chain_drawer-narratif").css("display", "flex");
+	    
+	} else if (drawer_mode === "drawer-RCP") {
+    	    $("#grid-chain_drawer-RCP").css("display", "flex");
+
+	    var RCP = get_RCP();
+	    $("#grid-chain_RCP26-text").css("display", "none");
+	    $("#grid-chain_RCP45-text").css("display", "none");
+	    $("#grid-chain_RCP85-text").css("display", "none");
+	    
+	    if (RCP === "RCP 2.6") {
+		$("#grid-chain_RCP26-text").css("display", "block");
+	    } else if (RCP === "RCP 4.5") {
+		$("#grid-chain_RCP45-text").css("display", "block");
+	    } else if (RCP === "RCP 8.5") {
+		$("#grid-chain_RCP85-text").css("display", "block");
+	    }
+	    
+	} else if (drawer_mode === "drawer-chain") {
+	    $("#grid-chain_drawer-chain").css("display", "flex");
+	}
+    }
+    
 }
 
 
