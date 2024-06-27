@@ -10,7 +10,7 @@
     background-color: #ffffff;
     color: #060508;
     transition: width 0.3s ease;
-    z-index: 2;
+    z-index: 20;
     height: 100vh;
     overflow-y: auto;
 }
@@ -30,7 +30,7 @@
     flex-wrap: nowrap;
 }
 
-#button_close_personnalisation-avancee {
+#button_close_exploration-avancee {
     position: sticky;
     top: 0;
     background: white;

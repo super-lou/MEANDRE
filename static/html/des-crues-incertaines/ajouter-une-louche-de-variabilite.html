@@ -49,12 +49,12 @@
 </div>
 
 
-<div id="container-gallery">
+<div class="container-gallery">
     <div class="gallery">
 
 	<div class="bunch column column-small-gap row-small-gap">
 	    <h1 class="gallery-item">
-		DES CRUES INCERTAINES
+		DES CRUES INCER&shy;TAINES
 	    </h1>
 	    <div class="bunch row column-small-gap row-small-gap nowrap">
 		<div class="bunch column column-small-gap row-small-gap">
@@ -69,9 +69,47 @@
 	    </div>
 	</div>
 
-	<p class="gallery-item small-text">
-	    <b>À ces incertitudes s’ajoute une très forte variabilité naturelle</b> d’une année sur l’autre, classique pour des valeurs extrêmes.
-	</p>
+	
+	<div  id="grid-line-container" class="bunch column column-small-gap row-small-gap">
+	    <div id="grid-line" class="gallery-item bunch column nowrap">
+		<div class="bunch column">
+		    <div id="grid-line_title">
+			Série des changements relatifs
+		    </div>
+		    <div id="grid-line_tooltip"></div>
+		</div>
+		<div id="line-loading" class="container-loading">
+		    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+		</div>
+		<svg id="svg-line"></svg>			    
+	    </div>
+
+	    <div class="bunch row column-small-gap row-small-gap">
+		<div id="grid-point" class="gallery-item">
+		    <div class="bunch column">
+			<div id="grid-point_code-value"
+			     class="bunch row column-gap cross-center">
+			    <span id="grid-point_code"></span>
+			</div>
+			<span id="grid-point_name"></span>
+			<span id="grid-point_hr" class="grid-point_info"></span>
+			<span id="grid-point_reference" class="grid-point_info"></span>
+			<span id="grid-point_surface" class="grid-point_info"></span>
+			<div class="bunch row column-gap">
+			    <span id="grid-point_xl93" class="grid-point_info"></span>
+			    <span id="grid-point_yl93" class="grid-point_info"></span>
+			</div>
+			<span id="grid-point_n" class="grid-point_info"></span>
+			<span id="grid-point_HM" class="grid-point_info"></span>
+		    </div>
+		</div>
+		
+		<p class="gallery-item small-text">
+		    <b>À ces incertitudes s’ajoute une très forte variabilité naturelle</b> d’une année sur l’autre, classique pour des valeurs extrêmes.
+		</p>
+	    </div>
+	</div>
+		
 		
 	<div class="bunch row column-small-gap row-small-gap">
 	    <div id="grid-colorbar" class="gallery-item">
@@ -99,45 +137,45 @@
 	</div>
 
 	
-	<div id="grid-point" class="gallery-item" style="display: none;">
-	    <div id="grid-point_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
+	<!-- <div id="grid-point" class="gallery-item" style="display: none;">
+	     <div id="grid-point_cross"
+	     class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
 
-	    <div class="bunch column">
-		<div id="grid-point_code-value"
-		     class="bunch row column-gap cross-center">
-		    <span id="grid-point_code"></span>
-		</div>
-		<span id="grid-point_name"></span>
-		<span id="grid-point_hr" class="grid-point_info"></span>
-		<span id="grid-point_reference" class="grid-point_info"></span>
-		<span id="grid-point_surface" class="grid-point_info"></span>
-		
-		<div class="bunch row column-gap">
-		    <span id="grid-point_xl93" class="grid-point_info"></span>
-		    <span id="grid-point_yl93" class="grid-point_info"></span>
-		</div>
+	     <div class="bunch column">
+	     <div id="grid-point_code-value"
+	     class="bunch row column-gap cross-center">
+	     <span id="grid-point_code"></span>
+	     </div>
+	     <span id="grid-point_name"></span>
+	     <span id="grid-point_hr" class="grid-point_info"></span>
+	     <span id="grid-point_reference" class="grid-point_info"></span>
+	     <span id="grid-point_surface" class="grid-point_info"></span>
+	     
+	     <div class="bunch row column-gap">
+	     <span id="grid-point_xl93" class="grid-point_info"></span>
+	     <span id="grid-point_yl93" class="grid-point_info"></span>
+	     </div>
 
-		<span id="grid-point_n" class="grid-point_info"></span>
-		<span id="grid-point_HM" class="grid-point_info"></span>
-	    </div>
-	</div>
+	     <span id="grid-point_n" class="grid-point_info"></span>
+	     <span id="grid-point_HM" class="grid-point_info"></span>
+	     </div>
+	     </div>
 
 
-	<div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
-	    <div id="grid-line_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
-	    <div class="bunch column">
-		<div id="grid-line_title">
-		    Série des changements relatifs
-		</div>
-		<div id="grid-line_tooltip"></div>
-	    </div>
-	    <div id="line-loading" class="container-loading">
-		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-	    </div>
-	    <svg id="svg-line"></svg>			    
-	</div>
+	     <div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
+	     <div id="grid-line_cross"
+	     class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
+	     <div class="bunch column">
+	     <div id="grid-line_title">
+	     Série des changements relatifs
+	     </div>
+	     <div id="grid-line_tooltip"></div>
+	     </div>
+	     <div id="line-loading" class="container-loading">
+	     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+	     </div>
+	     <svg id="svg-line"></svg>			    
+	     </div> -->
 
     </div>
 </div>

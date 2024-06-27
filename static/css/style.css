@@ -320,7 +320,7 @@ h3 {
 
 
 
-#container-gallery {
+.container-gallery {
     height: calc(100vh - 3rem - 1rem);
     flex: 1;
     overflow-y: auto;
@@ -369,7 +369,7 @@ h3 {
 	height: 100vw;
     }
 
-    #container-gallery {
+    .container-gallery {
 	height: unset;
 	width: 100vw;
 	/* height: calc(100vh - 6rem - 1rem); */

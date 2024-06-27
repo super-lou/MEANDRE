@@ -49,7 +49,7 @@
 #bar {
     position: relative;
     height: 3rem;
-    width: calc(100vw - 14rem - 9rem - 6px);
+    width: calc(100vw - 14rem - 8rem - 6px);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -122,31 +122,31 @@
     margin-right: 0.3rem;
 }
 
-#button_personnalisation-avancee {
+#button_exploration-avancee {
     position: absolute;
     right: 0;
     top: 0;
     background: #ffffff;
-    width: 9rem;
+    width: 8rem;
     height: 3rem;
 }
-#button_personnalisation-avancee.expanded {
+#button_exploration-avancee.expanded {
     width: 0rem;
 }
-#tab_personnalisation-avancee {
+#tab_exploration-avancee {
     margin-right: 0.6rem;
     transition: width 0.3s ease;
 }
-#tab_personnalisation-avancee-icon, #tab_personnalisation-avancee-text, #tab_personnalisation-avancee-close {
+#tab_exploration-avancee-icon, #tab_exploration-avancee-text, #tab_exploration-avancee-close {
     transition: opacity 0.3s ease;
     opacity: 1; 
 }
-#tab_personnalisation-avancee-icon.expanded,
-#tab_personnalisation-avancee-text.expanded {
+#tab_exploration-avancee-icon.expanded,
+#tab_exploration-avancee-text.expanded {
     opacity: 0; 
 }
 
-#tab_close_personnalisation-avancee {
+#tab_close_exploration-avancee {
     height: 3rem;
 }
 
@@ -312,12 +312,12 @@
     }
 
 
-    #button_personnalisation-avancee {
+    #button_exploration-avancee {
 	top: 3rem;
 	width: 3rem;
     }
     
-    #tab_personnalisation-avancee-text {
+    #tab_exploration-avancee-text {
 	display: none !important;
     }
 

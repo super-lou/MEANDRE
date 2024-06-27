@@ -31,24 +31,30 @@ let URL_QJXA = ["/des-crues-incertaines/quelle-evolution-en-france",
 let URL_narratifs = ["/plus-d-eau-ou-moins-d-eau/et-entre-les-deux",
 		     "/plus-d-eau-ou-moins-d-eau/raconter-les-trajectoires",
 		     "/des-etiages-plus-severe/et-c-est-certain",
+		     "/des-etiages-plus-severe/des-etiages-plus-longs",
 		     "/des-crues-incertaines/et-d-abord-dans-quelle-direction"]; 
+
+let URL_serie = ["/plus-d-eau-ou-moins-d-eau/ajouter-une-pincee-de-variabilite-naturelle",
+		 "/plus-d-eau-ou-moins-d-eau/raconter-les-trajectoires",
+		 "/des-etiages-plus-severe/des-etiages-plus-longs",
+		 "/des-crues-incertaines/ajouter-une-louche-de-variabilite"];
 
 
 $(document).ready(function() {
-    console.log("ready");
+    // console.log("ready");
     updateContent(start=true);
 });
 
 $(window).on('popstate', function(event) {
-    console.log("popstate");
+    // console.log("popstate");
     updateContent();
 });
 
 
 function change_url(url, start=false, actualise=true) {
     var current_url = window.location.pathname;
-    console.log(current_url);
-    if (current_url === url && url === "/personnalisation-avancee") {
+    // console.log(current_url);
+    if (current_url === url && url === "/exploration-avancee") {
 	actualise = false;
     }
     history.pushState({}, "", url);
@@ -80,16 +86,18 @@ function updateContent(start=false, actualise=true) {
     
     if (start && url == "/") {
 	// console.log("d");
+	// update_data_point_debounce();
 	$("#container-map-gallery").load("/html" + "/plus-d-eau-ou-moins-d-eau/nord-et-sud" + ".html", function() {
-	    check_urk(url);
+	    check_url();
 	});
-	
-    	update_data_point_debounce();
+	update_data_point_debounce();
+    	
 	
     } else if (actualise && url !== "/") {
 	// console.log("e");
+	// update_data_point_debounce();
 	$("#container-map-gallery").load("/html" + url + ".html", function() {
-	    check_urk(url);
+	    check_url();
 	});
     	update_data_point_debounce();
     }
@@ -97,8 +105,13 @@ function updateContent(start=false, actualise=true) {
     // console.log("");
 }
 
-function check_urk(url) {
+function check_url() {
+    var url = window.location.pathname;
     var selected_variable = get_variable();
+
+    
+    // console.log(selected_variable);
+    
     
     if (URL_QA.includes(url) && selected_variable != "QA") {
 	var variable = document.getElementById("button-QA");
@@ -107,7 +120,7 @@ function check_urk(url) {
     } else if (URL_VCN10.includes(url) && selected_variable != "VCN10_summer") {
 	var variable = document.getElementById("button-VCN10_summer");
 	selectVariableButton(variable);
-
+	
     } else if (URL_dtLF.includes(url) && selected_variable != "dtLF_summer") {
 	var variable = document.getElementById("button-dtLF_summer");
 	selectVariableButton(variable);
@@ -116,20 +129,27 @@ function check_urk(url) {
 	var variable = document.getElementById("button-QJXA");
 	selectVariableButton(variable);
     }
-    console.log(drawer_mode);
 
     if (URL_narratifs.includes(url)) {
 	change_drawer("drawer-narratif");
     } else {
 	change_drawer("drawer-chain");
     }
-    console.log(drawer_mode);
+}
+
+function check_url_after_data() {
+    var url = window.location.pathname;
+    if (URL_serie.includes(url)) {
+	show_serie(data_point, "K228311002", toggle=false);
+    } else {
+	close_serie();
+    }
 }
 
 
 function fetch_components(url) {
 
-    console.log("fetch");
+    // console.log("fetch");
     
     $.get('/html/menu.html', function(html) {
         if ($('#menu-element').length) {
@@ -236,7 +256,7 @@ function update_data_point() {
     var horizon = get_horizon("futur");
     var chain = get_chain();
     var exp = chain[0].split('_')[0].replace('-', '_');
-
+    
     if (drawer_mode === 'drawer-narratif') {
 	var data_query = {
 	    n: n,
@@ -257,6 +277,7 @@ function update_data_point() {
 		data_point = data_back.data
 		update_grid(data_back);
 		draw_colorbar(data_back);
+		check_url_after_data();
 	    })
 
 	var chain_vert = chain.filter(item => item.includes("85_HadGEM2-ES_ALADIN63_ADAMONT"));
@@ -373,6 +394,7 @@ function update_data_point() {
 		svgFrance = update_map("#svg-france", svgFrance, data_point);
 		svgFrance = redrawPoint(svgFrance, data_point);
 		$('#map-loading').css('display', 'none');
+		check_url_after_data();
 	    })
     }
 }
@@ -385,7 +407,7 @@ function update_data_serie() {
     var variable = get_variable();
     var chain = get_chain();
     var exp = chain[0].split('_')[0].replace('-', '_');
-
+    
     var data_query = {
 	code: selected_code,
         exp: exp,
@@ -423,11 +445,15 @@ function plot_data_serie() {
     if (data_serie) {
 	d3.select("#svg-line").selectAll("*").remove();
 	var svgContainer = d3.select("#svg-line");
-	
-	var gridLineContainer = d3.select("#grid-line");
-	var containerPadding = 2 * parseFloat(window.getComputedStyle(gridLineContainer.node()).paddingLeft);
-	var svgWidth = gridLineContainer.node().getBoundingClientRect().width - containerPadding;
 
+	var svgNode = d3.select("#grid-line").node();
+	var computedStyle = window.getComputedStyle(svgNode);
+	var paddingLeft = parseFloat(computedStyle.paddingLeft);
+	var paddingRight = parseFloat(computedStyle.paddingRight);
+	var containerPadding = paddingLeft + paddingRight;
+	var svgWidth = svgNode.getBoundingClientRect().width - containerPadding;
+	
+	
 	var svgHeight_min = 250;
 	var svgHeight = Math.max(svgHeight_min,
 				 +svgContainer.node().getBoundingClientRect().height);
@@ -632,7 +658,7 @@ function update_grid(data_back) {
     document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence de <b>1976</b> à <b>2005</b>";
 
     var url = window.location.pathname;
-    if (url === "/personnalisation-avancee") {
+    if (url === "/exploration-avancee") {
 	$("#grid-n_text").css("display", "flex");
 	document.getElementById("grid-n_number").innerHTML = n;
 
@@ -668,11 +694,10 @@ function update_grid(data_back) {
 
 
 
-
-function close_point_grid() {
+function close_serie() {
+    selected_code = null;
     document.getElementById("grid-point_cross").parentNode.style.display = "none";
     document.getElementById("grid-line_cross").parentNode.style.display = "none";
-    selected_code = null;
     highlight_selected_point();
 }
 
@@ -969,86 +994,132 @@ function update_map(id_svg, svgElement, data_point) {
 }
 
 
-// function redrawMap(svgElement) {
-
-//     console.log(svgElement);
-    
-//     const pathGenerator = d3.geoPath(projection);
-//     const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
-//     const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.norm >= riverLength);
-//     const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
-
-//     svgElement.selectAll("path.france")
-// 	.data(simplifiedGeoJSON_france.features)
-// 	.join("path")
-// 	.attr("class", "france")
-//     	.attr("fill", fill_france)
-// 	.attr("stroke", stroke_france)
-// 	.attr("stroke-width", strokeWith_france)
-// 	.attr("stroke-linejoin", "miter")
-// 	.attr("stroke-miterlimit", 1)
-// 	.attr("d", pathGenerator)
-// 	.transition()
-// 	.duration(1000);
-
-//     svgElement.selectAll("path.river")
-// 	.data(simplifiedselectedGeoJSON_river.features)
-// 	.join("path")
-// 	.attr("class", "river")
-//     	.attr("fill", "transparent")
-// 	.attr("stroke", stroke_river)
-// 	.attr("stroke-width", function(d) {
-// 	    return strokeWith_river_max - (1 - d.properties.norm) * (strokeWith_river_max - strokeWith_river_min);
-// 	})
-// 	.attr("stroke-linejoin", "miter")
-// 	.attr("stroke-linecap", "round")
-// 	.attr("stroke-miterlimit", 1)
-// 	.attr("d", pathGenerator)
-// 	.transition()
-// 	.duration(1000);
-
-//     redrawPoint();
-//     highlight_selected_point();
-    
-//     return svgElement
-// }
-
-// const redrawMap_debounce = debounce(redrawMap, 100);
-
-
-
 
 function highlight_selected_point() {
-    
-    const svg = d3.select("#svg-france");
-    svg.selectAll(".point.clicked")
-        .attr("stroke-width", 0)
-        .attr("r", 3)
-        .classed("clicked", false);
-    
-    if (selected_code !== null) {
-        const svg = d3.select("#svg-france");
 
-        svg.selectAll(".point.clicked")
+    if (selected_code) {
+	const svg = d3.select("#svg-france");
+	svg.selectAll(".point.clicked")
             .attr("stroke-width", 0)
             .attr("r", 3)
             .classed("clicked", false);
+	
+	if (selected_code !== null) {
+            const svg = d3.select("#svg-france");
 
-        var clickedPoint = svg.selectAll(".point")
-            .filter(function(d) {
-                return d.code === selected_code;
-            });
+            svg.selectAll(".point.clicked")
+		.attr("stroke-width", 0)
+		.attr("r", 3)
+		.classed("clicked", false);
 
-        clickedPoint
-            .attr("r", 4)
-            .attr("stroke", "#060508")
-            .attr("stroke-width", 1)
-            .classed("clicked", true);
+            var clickedPoint = svg.selectAll(".point")
+		.filter(function(d) {
+                    return d.code === selected_code;
+		});
 
-        var parentNode = clickedPoint.node().parentNode;
-        parentNode.appendChild(clickedPoint.node());
+	    if (clickedPoint.node()) {
+		clickedPoint
+		    .attr("r", 4)
+		    .attr("stroke", "#060508")
+		    .attr("stroke-width", 1)
+		    .classed("clicked", true);
+
+		var parentNode = clickedPoint.node().parentNode;
+		parentNode.appendChild(clickedPoint.node());
+	    }
+	}
     }
 }
+
+
+function find_code_in_data(dataJSON, code) {
+    return dataJSON.find(item => item.code === code);
+}
+
+// function hide_serie() {
+//     selected_code = null;
+//     document.getElementById("grid-point").style.display = "none";
+//     document.getElementById("grid-line").style.display = "none";
+// }
+
+function show_serie(dataJSON, code, toggle=true) {
+    // console.log(code);
+    // console.log(dataJSON);
+    
+    var point = find_code_in_data(dataJSON, code);
+    
+    if (selected_code === point.code && toggle) {
+	selected_code = null;
+	document.getElementById("grid-point").style.display = "none";
+	document.getElementById("grid-line").style.display = "none";
+    } else {
+	selected_code = point.code;
+	document.getElementById("grid-point").style.display = "flex";
+	document.getElementById("grid-line").style.display = "flex";
+    }
+    highlight_selected_point();
+    update_data_serie_debounce();
+
+    document.getElementById("grid-point_code").innerHTML =
+	"<span style='font-weight: 900; color:" + point.fill_text + ";'>" +
+	point.code + "</span>";
+
+    // const value = point.value.toFixed(2);
+    // document.getElementById("grid-point_value").innerHTML =
+    //     "<span style='color:" + point.fill_text + ";'>" +
+    //     "<span style='font-weight: 900;'>" +
+    //     (value > 0 ? "+" : "") + value + " </span>%</span>";
+    
+    document.getElementById("grid-point_name").innerHTML = point.name;
+
+    document.getElementById("grid-point_hr").innerHTML =
+	"<span class='text-light'>Région hydrologique: </span>" +
+	point.hydrological_region;
+
+    document.getElementById("grid-point_reference").innerHTML =
+	"<span class='text-light'>Station de référence: </span>" +
+	(point.is_reference ? "Oui" : "Non");
+
+    document.getElementById("grid-point_n").innerHTML =
+	"<span class='text-light'>Nombre de modèles hydrologiques: </span>" +
+	point.n;
+    
+    var HM = get_HM();
+    var surface_HM = HM.map(hm => "surface_" +
+			    hm.toLowerCase().replace('-', '_') +
+			    "_km2");
+    surface_HM = surface_HM.map(x => point[x]);
+    var isnotNull = surface_HM.map(value => value !== null);
+    HM = HM.filter((_, index) => isnotNull[index]);
+
+    HM_available =
+	HM.reduce((str, hm) => str + `${hm}&nbsp; `, "");
+    document.getElementById("grid-point_HM").innerHTML = HM_available;
+    
+    document.getElementById("grid-point_xl93").innerHTML =
+	"<span class='text-light'>XL93: </span>" +
+	Math.round(point.xl93_m) +
+	" <span class='text-light'>m</span>";
+    document.getElementById("grid-point_yl93").innerHTML =	
+	"<span class='text-light'>YL93: </span>" + 
+	Math.round(point.yl93_m) +
+	" <span class='text-light'>m</span>";
+
+    // document.getElementById("grid-point_lat").innerHTML =
+    //     "<span class='text-light'>lat: </span>" +
+    //     Math.abs(point.lat_deg.toFixed(2)) +
+    //     " <span class='text-light'>°</span>" + (point.lat_deg >= 0 ? "N" : "S");
+    // document.getElementById("grid-point_lon").innerHTML =	
+    //     "<span class='text-light'>lon: </span>" + 
+    //     Math.abs(point.lon_deg.toFixed(2)) +
+    //     " <span class='text-light'>°</span>" + (point.lon_deg >= 0 ? "E" : "W") ;
+
+    document.getElementById("grid-point_surface").innerHTML =
+	"<span class='text-light'>Surface: </span>" +
+	Math.round(point.surface_km2) +
+	" <span class='text-light'>km<sup>2</sup></span>";
+}
+
 
 function redrawPoint(svgElement, dataJSON) {
     
@@ -1092,78 +1163,7 @@ function redrawPoint(svgElement, dataJSON) {
 		document.getElementById("panel-hover").style.display = "none";
 	    })
 	    .on("click", function(d, point) {
-
-		if (selected_code === point.code) {
-		    selected_code = null;
-		    document.getElementById("grid-point").style.display = "none";
-		    document.getElementById("grid-line").style.display = "none";
-		} else {
-		    selected_code = point.code;
-		    document.getElementById("grid-point").style.display = "flex";
-		    document.getElementById("grid-line").style.display = "flex";
-		}
-		highlight_selected_point();
-
-		update_data_serie_debounce();
-
-		document.getElementById("grid-point_code").innerHTML =
-		    "<span style='font-weight: 900; color:" + point.fill_text + ";'>" +
-		    point.code + "</span>";
-
-		// const value = point.value.toFixed(2);
-		// document.getElementById("grid-point_value").innerHTML =
-		//     "<span style='color:" + point.fill_text + ";'>" +
-		//     "<span style='font-weight: 900;'>" +
-		//     (value > 0 ? "+" : "") + value + " </span>%</span>";
-		
-		document.getElementById("grid-point_name").innerHTML = point.name;
-
-		document.getElementById("grid-point_hr").innerHTML =
-		    "<span class='text-light'>Région hydrologique: </span>" +
-		    point.hydrological_region;
-
-		document.getElementById("grid-point_reference").innerHTML =
-		    "<span class='text-light'>Station de référence: </span>" +
-		    (point.is_reference ? "Oui" : "Non");
-
-		document.getElementById("grid-point_n").innerHTML =
-		    "<span class='text-light'>Nombre de modèles hydrologiques: </span>" +
-		    point.n;
-		
-		var HM = get_HM();
-		var surface_HM = HM.map(hm => "surface_" +
-					hm.toLowerCase().replace('-', '_') +
-					"_km2");
-		surface_HM = surface_HM.map(x => point[x]);
-		var isnotNull = surface_HM.map(value => value !== null);
-		HM = HM.filter((_, index) => isnotNull[index]);
-
-		HM_available =
-		    HM.reduce((str, hm) => str + `${hm}&nbsp; `, "");
-		document.getElementById("grid-point_HM").innerHTML = HM_available;
-		
-		document.getElementById("grid-point_xl93").innerHTML =
-		    "<span class='text-light'>XL93: </span>" +
-		    Math.round(point.xl93_m) +
-		    " <span class='text-light'>m</span>";
-		document.getElementById("grid-point_yl93").innerHTML =	
-		    "<span class='text-light'>YL93: </span>" + 
-		    Math.round(point.yl93_m) +
-		    " <span class='text-light'>m</span>";
-
-		// document.getElementById("grid-point_lat").innerHTML =
-		//     "<span class='text-light'>lat: </span>" +
-		//     Math.abs(point.lat_deg.toFixed(2)) +
-		//     " <span class='text-light'>°</span>" + (point.lat_deg >= 0 ? "N" : "S");
-		// document.getElementById("grid-point_lon").innerHTML =	
-		//     "<span class='text-light'>lon: </span>" + 
-		//     Math.abs(point.lon_deg.toFixed(2)) +
-		//     " <span class='text-light'>°</span>" + (point.lon_deg >= 0 ? "E" : "W") ;
-
-		document.getElementById("grid-point_surface").innerHTML =
-		    "<span class='text-light'>Surface: </span>" +
-		    Math.round(point.surface_km2) +
-		    " <span class='text-light'>km<sup>2</sup></span>";
+		show_serie(dataJSON, point.code);
 	    });
     }
     

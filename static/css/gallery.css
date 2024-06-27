@@ -48,6 +48,10 @@
     margin-top: 0rem;
     margin-bottom: 0rem;
     display: inline;
+    text-wrap: balance;
+    hyphens: manual;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 .gallery-item .h1b {
     font-family: "Monoton", sans-serif;
@@ -66,6 +70,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-wrap: balance;
+    hyphens: manual;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .gallery p {
@@ -219,11 +227,24 @@
     margin-top: 0.3rem;
 }
 
+
+#grid-chain_drawer-RCP {
+    max-width: 27rem;
+}
+#grid-chain_drawer-narratif {
+    max-width: 31rem;
+}
+#grid-chain_drawer-chain {
+    max-width: 27rem;
+}
+
 .grid-chain_drawer {
     font-family: "Raleway", sans-serif;
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: 2rem;
     color: #3d3e3e;
+    line-height: 2rem;
+    margin-bottom: 0.4rem;
 }
 .grid-chain_text {
     font-family: 'Lato', sans-serif;
@@ -233,8 +254,13 @@
 }
 
 
+
+#grid-line-container {
+    width: calc(100% - 6px - 2rem); 
+}
+
 #grid-line {
-    width: calc(100% - 6px - 2rem);
+    width: calc(100% - 6px - 2rem); 
     min-height: 10rem;
     max-height: 20rem;
 }
@@ -285,12 +311,13 @@
 
 
 
-
-
 @media (max-width: 768px) {
 
-    /* .gallery { */
-    /* 	grid-template-columns: repeat(auto-fill, 8rem); */
-    /* } */
-    
+    .gallery h1 {
+	font-size: 2.1rem;
+    }
+    .gallery h2 {
+	font-size: 1.7rem;
+    }
+
 }

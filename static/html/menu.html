@@ -1,12 +1,12 @@
 <div id="container-menu">
     <div id="menu" class="hidden">
 
-	<div id="button_close_personnalisation-avancee">
-	    <div id="tab_close_personnalisation-avancee" class="bar-tab" onclick="toggle_menu();">
+	<div id="button_close_exploration-avancee">
+	    <div id="tab_close_exploration-avancee" class="bar-tab" onclick="toggle_menu();">
 
-		<div id="tab_personnalisation-avancee-button"  class="bar-button">
-		    <span id="tab_close_personnalisation-avancee-icon" class="material-icons-outlined">close</span>
-		    <span id="tab_close_personnalisation-avancee-text" class="tab-text">Personnalisation<br>avancée</span>
+		<div id="tab_exploration-avancee-button"  class="bar-button">
+		    <span id="tab_close_exploration-avancee-icon" class="material-icons-outlined">close</span>
+		    <span id="tab_close_exploration-avancee-text" class="tab-text">Exploration<br>avancée</span>
 		</div>
 	    </div>
 	</div>
@@ -28,7 +28,7 @@
 		    </button>
 
 		    <h2>Moyennes Eaux</h2>
-		    <p class="bottom-space">La moyennes annuelles des débits journaliers permet de donner un ordre d'idée de la ressource en eau mais masque les variations à l'intérieure d'une année.</p>
+		    <p class="bottom-space">La moyenne annuelle des débits journaliers permet de donner un ordre d'idée de la ressource en eau mais masque les variations à l'intérieur d'une année.</p>
 		    <button id="button-QA" value="QA" class="selected" onclick="selectVariableButton(this);">
 			<span>QA</span>
 		    </button>
@@ -68,8 +68,8 @@
 		    <span>de 1976 à 2005</span>
 		</div>
 		
-		<h2>Période futur</h2>
-		<p class="bottom-space">Fixer une période d'analyse des futurs possibles permet de calculer des changements d'une variable par rapport à la période de référence pour comparer les chaînes de modélisations entre-elles.</p>
+		<h2>Période future</h2>
+		<p class="bottom-space">Fixer une période d'analyse des futurs possibles permet de calculer des changements d'une variable par rapport à la période de référence pour comparer les chaînes de modélisation entre elles.</p>
 		<div id="bunch-horizon_futur" class="bunch space">
 		    <button id="button-horizon_near" value="H1"
 			    onclick="selectHorizonButton(this);">
@@ -104,7 +104,7 @@
 			<span id="drawer-n-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
 		    </div>
 		    <div class="drawer-content" id="drawer-n-content">
-			<p>Le nombre de point représenté est défini par le nombre de modèle hydrologique qui simulent chaque point.</p>
+			<p>Le nombre de points représentés est défini par le nombre de modèles hydrologiques qui simulent chaque point.</p>
 			<div id="container-slider-n" class="range-container">
 			    <div id="slider-n" class="slider-styled slider-round"></div>
 			</div>
@@ -115,12 +115,12 @@
 		
 		<div class="subdrawer">
 		    <div class="subdrawer-label" onclick="toggle_drawer('drawer-RCP')">
-			<h2 class="top-section">Par niveau d'émission</h2>
+			<h2 class="top-section">Par niveau d'émissions</h2>
 			<span id="drawer-RCP-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
 		    </div>
 		    <div class="drawer-content" id="drawer-RCP-content">
-			<p class="bottom-space">Le scénario climatique défini le niveau d'émission de gaz à effet de serre.</p>
-			<p class="bottom-space">Le RCP 2.6 est un scénario où des efforts importants sont fait pour réduire les émissions.<br>Le RCP 4.5 est un scénario médian.<br>Le RCP 8.5 est un scénario où l'augmentation des émissions continue selon la tendance actuelle.</p>
+			<p class="bottom-space">Le scénario climatique définit le niveau d'émissions de gaz à effet de serre.</p>
+			<p class="bottom-space">Le RCP 2.6 est un scénario où des efforts importants sont faits pour réduire les émissions.<br>Le RCP 4.5 est un scénario médian.<br>Le RCP 8.5 est un scénario où l'augmentation des émissions continue selon la tendance actuelle.</p>
 			<div id="bunch_RCP_only" class="bunch space">
 			    <button id="26_only" value="26"
 					onclick="selectAllButton(this); show_GCM_RCM(this);">
@@ -145,25 +145,25 @@
 			<span id="drawer-narratif-icon" class="drawer-icon material-icons-outlined">keyboard_arrow_down</span>
 		    </div>
 		    <div class="drawer-content" id="drawer-narratif-content">
-			<p class="bottom-big-space">Quatres futurs climatiques possibles sont mis en avant. Ils sont appelé narratifs et on été selectionné pour représenter quatres types de futures possibles en terme de précipitation et de température.</p>
+			<p class="bottom-big-space">Quatres futurs climatiques possibles sont mis en avant. Ils sont appelé narratifs et on été selectionnés pour représenter quatre types de futurs possibles en termes de précipitation et de température.</p>
 			
 			<div id="bunch_narratif" class="bunch column space">
-			    <p class="top-space">Chaud et humide à toutes les saisons</p>
+			    <p class="top-space">Réchauffement marqué et augmentation des précipitations</p>
 			    <div id="narratif-vert" value="85_HadGEM2-ES_ALADIN63_ADAMONT" class="vert selected">
 				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 HadGEM2-ES ALADIN63 ADAMONT</span>
 			    </div>
-			    <p class="top-space">Modéré en réchauffement et en changement de précipitations</p>
+			    <p class="top-space">Changements futurs relativement peu marqués</p>
 			    <div id="narratif-jaune" value="85_CNRM-CM5_ALADIN63_ADAMONT" class="jaune selected">
 				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 CNRM-CM5 ALADIN63 ADAMONT</span>
 			    </div>
-			    <p class="top-space">Sec toute l’année, recharge moindre en hiver</p>
+			    <p class="top-space">Fort réchauffement et fort assèchement en été (et en annuel)</p>
 			    <div id="narratif-orange" value="85_EC-EARTH_HadREM3-GA7_ADAMONT" class="orange selected">
 				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 EC-EARTH HadREM3-GA7 ADAMONT</span>
 			    </div>
-			    <p class="top-space">Fort réchauffement et fort assèchement en été</p>
+			    <p class="top-space">Fort réchauffement et forts contrastes saisonniers en précipitations</p>
 			    <div id="narratif-violet" value="85_HadGEM2-ES_CCLM4-8-17_ADAMONT" class="violet selected">
 				<!-- onclick="selectAllButton(this);"> -->
 				<span class="align-start">RCP 8.5 HadGEM2-ES CCLM4-8-17 ADAMONT</span>

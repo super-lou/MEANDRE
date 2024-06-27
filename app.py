@@ -67,7 +67,7 @@ engine = create_engine(db_url, poolclass=QueuePool)
 @app.route('/des-crues-incertaines/quelle-evolution-en-france')
 @app.route('/des-crues-incertaines/et-d-abord-dans-quelle-direction')
 @app.route('/des-crues-incertaines/ajouter-une-louche-de-variabilite')
-@app.route('/personnalisation-avancee')
+@app.route('/exploration-avancee')
 def index():
     return render_template('index.html')
 

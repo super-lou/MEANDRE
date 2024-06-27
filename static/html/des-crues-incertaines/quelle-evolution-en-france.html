@@ -49,12 +49,12 @@
 </div>
 
 
-<div id="container-gallery">
+<div class="container-gallery">
     <div class="gallery">
 
 	<div class="bunch column column-small-gap row-small-gap">
 	    <h1 class="gallery-item">
-		DES CRUES INCERTAINES
+		DES CRUES INCER&shy;TAINES
 	    </h1>
 	    <div class="bunch row column-small-gap row-small-gap nowrap">
 		<div class="bunch column column-small-gap row-small-gap">
@@ -69,12 +69,16 @@
 	    </div>
 	</div>
 
-	<p class="gallery-item small-text">
-	    La médiane des projections Explore2 suggère de <b>faibles évolutions des débits de crue</b> en France.<br>
-	</p>
-	<p class="gallery-item small-text">
-	    Mais cela peut être trompeur.
-	</p>
+
+	<div class="bunch column column-small-gap row-small-gap">
+	    <p class="gallery-item small-text">
+		La médiane des projections Explore2 suggère <b>une évolution marquée des débits de crue</b> en France.<br>
+	    </p>
+	    <p class="gallery-item small-text">
+		Mais cela peut être trompeur.
+	    </p>
+	</div>
+	
 	
 	<div class="bunch row column-small-gap row-small-gap">
 	    <div id="grid-colorbar" class="gallery-item">
@@ -104,7 +108,7 @@
 	
 	<div id="grid-point" class="gallery-item" style="display: none;">
 	    <div id="grid-point_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
+		 class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
 
 	    <div class="bunch column">
 		<div id="grid-point_code-value"
@@ -129,7 +133,7 @@
 
 	<div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
 	    <div id="grid-line_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_point_grid()">close</div>
+		 class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
 	    <div class="bunch column">
 		<div id="grid-line_title">
 		    Série des changements relatifs

@@ -58,12 +58,14 @@ function load_slider() {
 
 
 function selectVariableButton(selectedButton) {
-    var buttons = selectedButton.parentNode.querySelectorAll('button');
-    buttons.forEach(function (button) {
-	button.classList.remove('selected');
-    });
-    selectedButton.classList.add('selected');
-    update_data_point_debounce();
+    if (selectedButton) {
+	var buttons = selectedButton.parentNode.querySelectorAll('button');
+	buttons.forEach(function (button) {
+	    button.classList.remove('selected');
+	});
+	selectedButton.classList.add('selected');
+	update_data_point_debounce();
+    }
 }
 
 
@@ -82,9 +84,9 @@ function selectHorizonButton(selectedButton) {
 function toggle_menu() {
     const menu_container = document.getElementById("container-menu");
     const menu = document.getElementById("menu");
-    const icon = document.getElementById("tab_personnalisation-avancee-icon");
-    const title = document.getElementById("tab_personnalisation-avancee-text");
-    const button = document.getElementById("tab_personnalisation-avancee");
+    const icon = document.getElementById("tab_exploration-avancee-icon");
+    const title = document.getElementById("tab_exploration-avancee-text");
+    const button = document.getElementById("tab_exploration-avancee");
     const bar = document.getElementById("bar");
     
     if (menu_container.classList.contains("expanded")) {
@@ -123,7 +125,6 @@ let drawer_mode = 'drawer-chain';
 function change_drawer(drawerId) {
     drawer_mode = drawerId;
     if (drawer_mode === 'drawer-narratif') {
-    	$("#grid-line").css("display", "none");
     	$("#svg-france").css("display", "none");
 	$("#svg-france-narratif").css("display", "flex");
     } else {
@@ -289,8 +290,13 @@ function get_n() {
 function get_variable() {
     var variableBunch = $('#bunch-variable');
     var selectedButton = variableBunch.find('.selected')[0];
-    var variableName = selectedButton.getAttribute('value');
-    return variableName;
+
+    if (selectedButton) {
+	var variableName = selectedButton.getAttribute('value');
+	return variableName;
+    } else {
+	return null
+    }
 }
 
 function get_horizon(horizon) {
@@ -359,9 +365,7 @@ function get_chain() {
 	
     } else if (drawer_mode === 'drawer-narratif') {
 	var EXP_GCM_RCM_BC = get_narratif_only();
-
-	console.log(EXP_GCM_RCM_BC);
-	
+	// console.log(EXP_GCM_RCM_BC);
 	var HM = ["CTRIP", "EROS", "GRSD", "J2000", "MORDOR-SD",
 		  "MORDOR-TS", "ORCHIDEE", "SIM2", "SMASH"];
 	var chain = [];
