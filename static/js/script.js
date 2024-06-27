@@ -39,6 +39,12 @@ let URL_serie = ["/plus-d-eau-ou-moins-d-eau/ajouter-une-pincee-de-variabilite-n
 		 "/des-etiages-plus-severe/des-etiages-plus-longs",
 		 "/des-crues-incertaines/ajouter-une-louche-de-variabilite"];
 
+let URL_noSL = ["/",
+		"/plus-d-eau-ou-moins-d-eau/nord-et-sud",
+		"/plus-d-eau-ou-moins-d-eau/et-entre-les-deux",
+		"/plus-d-eau-ou-moins-d-eau/le-changement-dans-la-continuite",
+		"/plus-d-eau-ou-moins-d-eau/ajouter-une-pincee-de-variabilite-naturelle"]; 
+
 
 $(document).ready(function() {
     // console.log("ready");
@@ -112,7 +118,6 @@ function check_url() {
     
     // console.log(selected_variable);
     
-    
     if (URL_QA.includes(url) && selected_variable != "QA") {
 	var variable = document.getElementById("button-QA");
 	selectVariableButton(variable);
@@ -148,7 +153,6 @@ function check_url_after_data() {
 
 
 function fetch_components(url) {
-
     // console.log("fetch");
     
     $.get('/html/menu.html', function(html) {
@@ -166,10 +170,6 @@ function fetch_components(url) {
     });
 }
 
-// function stopPropagation(event) {
-    // event.stopPropagation();
-// }
-
 
 
 function hide_home() {
@@ -186,34 +186,6 @@ function unique(array) {
     });
 }
 
-
-
-
-
-
-// const CTRIP_color = "#A88D72";
-// const EROS_color = "#CECD8D";
-// const GRSD_color = "#619C6C";
-// const J2000_color = "#00a3a6";
-// const MORDORSD_color = "#D8714E";
-// const MORDORTS_color = "#AE473E";
-// const ORCHIDEE_color = "#EFA59D";
-// const SIM2_color = "#475E6A";
-// const SMASH_color = "#F6BA62";
-
-
-
-// function debounce(func, delay) {
-//     let timerId;
-//     return function() {
-//         const context = this;
-//         const args = arguments;
-//         clearTimeout(timerId);
-//         timerId = setTimeout(() => {
-//             func.apply(context, args);
-//         }, delay);
-//     };
-// }
 function debounce(func, delay) {
     let timerId;
     return function(...args) {
@@ -443,6 +415,11 @@ window.addEventListener('resize', function() {
 
 function plot_data_serie() {
     if (data_serie) {
+	var url = window.location.pathname;
+	if (URL_noSL.includes(url)) {
+	    data_serie = data_serie.filter(item => item.order === 0);
+	}
+	
 	d3.select("#svg-line").selectAll("*").remove();
 	var svgContainer = d3.select("#svg-line");
 
@@ -656,11 +633,11 @@ function update_grid(data_back) {
     document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur de <b>" + period + "</b>";
     document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence de <b>1976</b> à <b>2005</b>";
 
+    $(".grid-n_text").css("display", "flex");
+    document.getElementById("grid-n_number").innerHTML = n;
+    
     var url = window.location.pathname;
     if (url === "/exploration-avancee") {
-	$("#grid-n_text").css("display", "flex");
-	document.getElementById("grid-n_number").innerHTML = n;
-
 	$("#grid-chain_drawer-narratif").css("display", "none");
 	$("#grid-chain_drawer-RCP").css("display", "none");
 	$("#grid-chain_drawer-chain").css("display", "none");

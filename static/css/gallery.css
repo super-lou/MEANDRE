@@ -155,7 +155,7 @@
     font-size: 1rem;
     color: #3d3e3e;
 }
-#grid-n_text {
+.grid-n_text {
     font-family: "Lato", sans-serif;
     font-weight: 400;
     font-size: 0.9rem;
@@ -256,10 +256,12 @@
 
 
 #grid-line-container {
+    box-sizing: border-box;
     width: calc(100% - 6px - 1rem); 
 }
 
 #grid-line {
+    box-sizing: border-box;
     width: calc(100% - 6px - 1rem); 
     min-height: 10rem;
     max-height: 20rem;

@@ -15,7 +15,7 @@
     <div id="svg-france-narratif" class="bunch" style="display: none;">
 	
 	<div class="sub-container-map">
-	    <span class="map-color vert border material-icons-outlined">gesture</span>
+	    <!-- <span class="map-color vert border material-icons-outlined">gesture</span> -->
 	    <div id="map-vert-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -23,7 +23,7 @@
 	</div>
 	
 	<div class="sub-container-map">
-	    <span class="map-color jaune border material-icons-outlined">gesture</span>
+	    <!-- <span class="map-color jaune border material-icons-outlined">gesture</span> -->
 	    <div id="map-jaune-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -31,7 +31,7 @@
 	</div>
 	
 	<div class="sub-container-map">
-	    <span class="map-color orange border material-icons-outlined">gesture</span>
+	    <!-- <span class="map-color orange border material-icons-outlined">gesture</span> -->
 	    <div id="map-orange-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -39,7 +39,7 @@
 	</div>
 	
 	<div class="sub-container-map">
-	    <span class="map-color violet border material-icons-outlined">gesture</span>
+	    <!-- <span class="map-color violet border material-icons-outlined">gesture</span> -->
 	    <div id="map-violet-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -78,72 +78,87 @@
 	<p class="gallery-item">
 	    Mais des <b>incertitudes</b> subsistent sur la position exacte de cette <b>zone de transition</b> dans le futur, les modèles climatiques la projetant entre le sud de l’Angleterre et le milieu de la France. Les <b>certitudes</b> sont donc fortes sur <b>moins d’eau dans la partie sud</b> de la France, et des <b>incertitudes</b> subsistent sur <b>plus d’eau dans la partie nord</b>.
 	</p>
-	
-	<div class="bunch row column-small-gap row-small-gap">
-	    <div id="grid-colorbar" class="gallery-item">
-		<svg id="svg-colorbar"></svg>
+
+
+	<div class="bunch column column-small-gap row-small-gap">
+	    <div id="grid-chain" class="gallery-item">
+		<div id="grid-chain_drawer-narratif" class="bunch column">
+		    <span class="grid-chain_drawer" style="margin: 0;">Chaînes de modélisation<br>pour quatre futurs</span>
+		</div>
 	    </div>
-
-	    <div class="bunch column column-small-gap row-small-gap baseline">
-		<div id="grid-variable" class="gallery-item">
-		    <div class="bunch column">
-			<span id="grid-variable_variable"></span>
-			<span id="grid-variable_name"></span>
-			<span id="grid-variable_sampling-period"></span>
-		    </div>
-		</div>
-
-		<div id="grid-horizon" class="gallery-item">
-		    <div class="bunch column">
-			<span id="grid-horizon_name"></span>
-			<span id="grid-horizon_period-l1"></span>
-			<span id="grid-horizon_period-l2"></span>
-		    </div>
-		</div>
-
-	    </div>
-	</div>
-
-	
-	<div id="grid-point" class="gallery-item" style="display: none;">
-	    <div id="grid-point_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
-
-	    <div class="bunch column">
-		<div id="grid-point_code-value"
-		     class="bunch row column-gap cross-center">
-		    <span id="grid-point_code"></span>
-		</div>
-		<span id="grid-point_name"></span>
-		<span id="grid-point_hr" class="grid-point_info"></span>
-		<span id="grid-point_reference" class="grid-point_info"></span>
-		<span id="grid-point_surface" class="grid-point_info"></span>
 		
-		<div class="bunch row column-gap">
-		    <span id="grid-point_xl93" class="grid-point_info"></span>
-		    <span id="grid-point_yl93" class="grid-point_info"></span>
+	    <div class="bunch row column-small-gap row-small-gap">
+		<div id="grid-colorbar" class="gallery-item">
+		    <svg id="svg-colorbar"></svg>
 		</div>
 
-		<span id="grid-point_n" class="grid-point_info"></span>
-		<span id="grid-point_HM" class="grid-point_info"></span>
+		<div class="bunch column column-small-gap row-small-gap baseline">
+		    <div id="grid-variable" class="gallery-item">
+			<div class="bunch column">
+			    <span id="grid-variable_variable"></span>
+			    <span id="grid-variable_name"></span>
+			    <span id="grid-variable_sampling-period"></span>
+			</div>
+		    </div>
+
+		    <div id="grid-horizon" class="gallery-item">
+			<div class="bunch column">
+			    <span id="grid-horizon_name"></span>
+			    <span id="grid-horizon_period-l1"></span>
+			    <span id="grid-horizon_period-l2"></span>
+			</div>
+		    </div>
+
+		    <div id="grid-n" class="gallery-item-small">
+			<div class="bunch row column-small-gap row-small-gap cross-baseline">
+			    <span class="grid-n_text" style="display: none;">Au moins</span>
+			    <span id="grid-n_number"></span>
+			    <span class="grid-n_text" style="display: none;">modèles hydrologiques par point</span>
+			</div>
+		    </div>
+		</div>
 	    </div>
 	</div>
 
-
-	<div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
-	    <div id="grid-line_cross"
-		 class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
-	    <div class="bunch column">
-		<div id="grid-line_title">
-		    Série des changements relatifs
+	
+	<div class="bunch column column-small-gap row-small-gap">
+	    <div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
+		<div id="grid-line_cross"
+		     class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
+		<div class="bunch column">
+		    <div id="grid-line_title">
+			Série des changements relatifs
+		    </div>
+		    <div id="grid-line_tooltip"></div>
 		</div>
-		<div id="grid-line_tooltip"></div>
+		<div id="line-loading" class="container-loading">
+		    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+		</div>
+		<svg id="svg-line"></svg>			    
 	    </div>
-	    <div id="line-loading" class="container-loading">
-		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+	    
+	    <div id="grid-point" class="gallery-item" style="display: none;">
+		<div id="grid-point_cross"
+		     class="grid-cross material-icons-outlined" onclick="close_serie()">close</div>
+		<div class="bunch column">
+		    <div id="grid-point_code-value"
+			 class="bunch row column-gap cross-center">
+			<span id="grid-point_code"></span>
+		    </div>
+		    <span id="grid-point_name"></span>
+		    <span id="grid-point_hr" class="grid-point_info"></span>
+		    <span id="grid-point_reference" class="grid-point_info"></span>
+		    <span id="grid-point_surface" class="grid-point_info"></span>
+		    <div class="bunch row column-gap">
+			<span id="grid-point_xl93" class="grid-point_info"></span>
+			<span id="grid-point_yl93" class="grid-point_info"></span>
+		    </div>
+		    <span id="grid-point_n" class="grid-point_info"></span>
+		    <span id="grid-point_HM" class="grid-point_info"></span>
+		</div>
 	    </div>
-	    <svg id="svg-line"></svg>			    
 	</div>
+	
 
     </div>
 </div>
