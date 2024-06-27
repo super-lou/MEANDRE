@@ -453,7 +453,6 @@ function plot_data_serie() {
 	var containerPadding = paddingLeft + paddingRight;
 	var svgWidth = svgNode.getBoundingClientRect().width - containerPadding;
 	
-	
 	var svgHeight_min = 250;
 	var svgHeight = Math.max(svgHeight_min,
 				 +svgContainer.node().getBoundingClientRect().height);

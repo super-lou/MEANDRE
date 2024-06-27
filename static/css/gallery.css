@@ -256,11 +256,11 @@
 
 
 #grid-line-container {
-    width: calc(100% - 6px - 2rem); 
+    width: calc(100% - 6px - 1rem); 
 }
 
 #grid-line {
-    width: calc(100% - 6px - 2rem); 
+    width: calc(100% - 6px - 1rem); 
     min-height: 10rem;
     max-height: 20rem;
 }
@@ -315,9 +315,13 @@
 
     .gallery h1 {
 	font-size: 2.1rem;
+	line-height: 2.4rem;
+    }
+    .gallery-item .h1b {
+	font-size: 1.8rem;
     }
     .gallery h2 {
-	font-size: 1.7rem;
+	font-size: 1.6rem;
     }
 
 }
