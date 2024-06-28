@@ -38,7 +38,7 @@
     <div id="svg-france-narratif" class="bunch" style="display: none;">
 	
 	<div class="sub-container-map">
-	    <!-- <span class="map-color vert border material-icons-outlined">gesture</span> -->
+	    <span class="map-color vert border material-icons-outlined">gesture</span>
 	    <div id="map-vert-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -46,7 +46,7 @@
 	</div>
 	
 	<div class="sub-container-map">
-	    <!-- <span class="map-color jaune border material-icons-outlined">gesture</span> -->
+	    <span class="map-color jaune border material-icons-outlined">gesture</span>
 	    <div id="map-jaune-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -54,7 +54,7 @@
 	</div>
 	
 	<div class="sub-container-map">
-	    <!-- <span class="map-color orange border material-icons-outlined">gesture</span> -->
+	    <span class="map-color orange border material-icons-outlined">gesture</span>
 	    <div id="map-orange-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -62,7 +62,7 @@
 	</div>
 	
 	<div class="sub-container-map">
-	    <!-- <span class="map-color violet border material-icons-outlined">gesture</span> -->
+	    <span class="map-color violet border material-icons-outlined">gesture</span>
 	    <div id="map-violet-loading" class="container-loading">
 		<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 	    </div>
@@ -77,39 +77,44 @@
 
 	<div class="bunch column column-small-gap row-small-gap">
 	    <h1 class="gallery-item">
-		PLUS 
-		<span class="nowrap">D<span class="h1b">’</span>EAU</span> 
-		<br>
-		OU MOINS 
-		<span class="nowrap">D<span class="h1b">’</span>EAU</span> 
-		<span class="h1b">?</span>
+		EXPLORATION<br>AVANCÉE
 	    </h1>
-
-	    <div class="bunch row column-small-gap row-small-gap nowrap">
-		<div class="bunch column column-small-gap row-small-gap">
-		    <div class="gallery-arrow material-icons-outlined"
-			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/nord-et-sud')">arrow_back</div>
-		    <div class="gallery-arrow material-icons-outlined"
-			 onclick="change_url('/plus-d-eau-ou-moins-d-eau/le-changement-dans-la-continuite')">arrow_forward</div>
-		</div>
-		<h2 class="gallery-item">
-		    ET ENTRE LES DEUX
-		</h2>
-	    </div>
 	</div>
-
-	<p class="gallery-item">
-	    Mais des <b>incertitudes</b> subsistent sur la position exacte de cette <b>zone de transition</b> dans le futur, les modèles climatiques la projetant entre le sud de l’Angleterre et le milieu de la France. Les <b>certitudes</b> sont donc fortes sur <b>moins d’eau dans la partie sud</b> de la France, et des <b>incertitudes</b> subsistent sur <b>plus d’eau dans la partie nord</b>.
-	</p>
-
 
 	<div class="bunch column column-small-gap row-small-gap">
 	    <div id="grid-chain" class="gallery-item">
-		<div id="grid-chain_drawer-narratif" class="bunch column">
-		    <span class="grid-chain_drawer" style="margin: 0;">Chaînes de modélisation<br>pour quatre futurs</span>
+		<div id="grid-chain_drawer-narratif" style="display: none;"
+		     class="bunch column">
+		    <span class="grid-chain_drawer">Chaînes de modélisation<br>pour chaque narratif</span>
+		    <span class="vert grid-chain_text">VERT Réchauffement marqué et augmentation des précipitations</span>
+		    <span class="jaune grid-chain_text">JAUNE Changements futurs relativement peu marqués</span>
+		    <span class="orange grid-chain_text">ORANGE Fort réchauffement et fort assèchement en été (et en annuel)</span>
+		    <span class="violet grid-chain_text">VIOLET Fort réchauffement et forts contrastes saisonniers en précipitations</span>
+		</div>
+
+		<div id="grid-chain_drawer-RCP" style="display: none;"
+		     class="bunch column">
+		    <span class="grid-chain_drawer">Moyenne multi-modèles<br>par niveau d'émissions</span>
+		    <span id="grid-chain_RCP26-text" style="display: none;" class="grid-chain_text">
+			Le <b>RCP 2.6</b> est un scénario où <b>des efforts importants</b> sont fait pour réduire les émissions.
+		    </span>
+		    <span id="grid-chain_RCP45-text" style="display: none;" class="grid-chain_text">
+			Le <b>RCP 4.5</b> est un scénario où <b>des efforts modérés</b> sont fait pour réduire les émissions.
+		    </span>
+		    <span id="grid-chain_RCP85-text" style="display: none;" class="grid-chain_text">
+			Le <b>RCP 8.5</b> est un scénario où <b>l'augmentation</b> des émissions <b>continue</b> selon la tendance actuelle.
+		    </span>
+		</div>
+
+		<div id="grid-chain_drawer-chain" style="display: none;"
+		     class="bunch column">
+		    <span class="grid-chain_drawer"><b>Attention</b> : Chaînes de modélisation spécifiques</span>
+		    <span id="grid-chain_chain-text" class="grid-chain_text">
+			L'approche multi-modèle doit être privilégiée.
+		    </span>
 		</div>
 	    </div>
-		
+	    
 	    <div class="bunch row column-small-gap row-small-gap">
 		<div id="grid-colorbar" class="gallery-item">
 		    <svg id="svg-colorbar"></svg>
@@ -131,7 +136,7 @@
 			    <span id="grid-horizon_period-l2"></span>
 			</div>
 		    </div>
-
+		    
 		    <div id="grid-n" class="gallery-item-small">
 			<div class="bunch row column-small-gap row-small-gap cross-baseline">
 			    <span class="grid-n_text" style="display: none;">Au moins</span>
@@ -143,7 +148,7 @@
 	    </div>
 	</div>
 
-	
+
 	<div class="bunch column column-small-gap row-small-gap">
 	    <div id="grid-line" class="gallery-item bunch column nowrap" style="display: none;">
 		<div id="grid-line_cross"
@@ -181,7 +186,7 @@
 		</div>
 	    </div>
 	</div>
-	
 
+	
     </div>
 </div>

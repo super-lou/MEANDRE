@@ -1,3 +1,25 @@
+// Copyright 2024
+// Louis Héraut (louis.heraut@inrae.fr)*1,
+// Éric Sauquet (eric.sauquet@inrae.fr)*1
+
+//     *1   INRAE, France
+
+// This file is part of MEANDRE.
+
+// MEANDRE is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+
+// MEANDRE is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with MEANDRE.
+// If not, see <https://www.gnu.org/licenses/>.
+
 
 const is_production = false;
 let api_base_url;
@@ -88,34 +110,39 @@ function updateContent(start=false, actualise=true) {
 	select_tab();
 	check_bar();
     }
-    
-    
-    if (start && url == "/") {
-	// console.log("d");
-	// update_data_point_debounce();
-	$("#container-map-gallery").load("/html" + "/plus-d-eau-ou-moins-d-eau/nord-et-sud" + ".html", function() {
-	    check_url();
-	});
-	update_data_point_debounce();
-    	
-	
-    } else if (actualise && url !== "/") {
-	// console.log("e");
-	// update_data_point_debounce();
-	$("#container-map-gallery").load("/html" + url + ".html", function() {
-	    check_url();
-	});
-    	update_data_point_debounce();
-    }
 
-    // console.log("");
+    const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
+    Promise.all(promises)
+	.then(geoJSONdata => {
+	    geoJSONdata_france = geoJSONdata[0];
+	    geoJSONdata_river = geoJSONdata[1];
+	    geoJSONdata_entiteHydro = geoJSONdata[2];
+	    svgFrance = update_map("#svg-france", svgFrance, data_point=null);
+	});
+
+    if (url !== "/a-propos") {
+	if (start && url == "/") {
+	    $("#container-map-gallery").load("/html" + "/plus-d-eau-ou-moins-d-eau/nord-et-sud" + ".html", function() {
+		check_url();
+	    });
+	    update_data_point_debounce();
+	    
+	} else if (actualise && url !== "/") {
+	    $("#container-map-gallery").load("/html" + url + ".html", function() {
+		check_url();
+	    });
+	    update_data_point_debounce();
+	}
+	
+    } else {
+	$("#container-map-gallery").load("/html" + url + ".html");
+    }
 }
 
 function check_url() {
     var url = window.location.pathname;
     var selected_variable = get_variable();
 
-    
     // console.log(selected_variable);
     
     if (URL_QA.includes(url) && selected_variable != "QA") {
@@ -672,9 +699,12 @@ function update_grid(data_back) {
 
 function close_serie() {
     selected_code = null;
-    document.getElementById("grid-point_cross").parentNode.style.display = "none";
-    document.getElementById("grid-line_cross").parentNode.style.display = "none";
-    highlight_selected_point();
+    var url = window.location.pathname;
+    if (url !== "/a-propos") {
+	document.getElementById("grid-point_cross").parentNode.style.display = "none";
+	document.getElementById("grid-line_cross").parentNode.style.display = "none";
+	highlight_selected_point();
+    }
 }
 
 
@@ -824,16 +854,6 @@ function loadGeoJSON(fileURL) {
 	});
 }
 
-const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
-Promise.all(promises)
-    .then(geoJSONdata => {
-	geoJSONdata_france = geoJSONdata[0];
-	geoJSONdata_river = geoJSONdata[1];
-	geoJSONdata_entiteHydro = geoJSONdata[2];
-	svgFrance = update_map("#svg-france", svgFrance, data_point);
-    });
-
-
 
 let selected_code = null;
 
@@ -874,10 +894,8 @@ function update_map(id_svg, svgElement, data_point) {
     d3.select(id_svg).selectAll("*").remove();
 
     if (drawer_mode === 'drawer-narratif') {
-	// var is_zoom = false;
 	var fact = 2;
     } else {
-	// var is_zoom = true;
 	var fact = 1;
     }
 
@@ -916,8 +934,10 @@ function update_map(id_svg, svgElement, data_point) {
 	    .transition()
 	    .duration(1000);
 
-	svgElement = redrawPoint(svgElement, data_point);
-	highlight_selected_point();
+	if (data_point) {
+	    svgElement = redrawPoint(svgElement, data_point);
+	    highlight_selected_point();
+	}
     }
     const redrawMap_debounce = debounce(redrawMap, 100);
 

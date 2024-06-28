@@ -1,3 +1,25 @@
+/* Copyright 2024                                                     */
+/* Louis Héraut (louis.heraut@inrae.fr)*1,                            */
+/* Éric Sauquet (eric.sauquet@inrae.fr)*1                             */
+
+/*     *1   INRAE, France                                             */
+
+/* This file is part of MEANDRE.                                      */
+
+/* MEANDRE is free software: you can redistribute it and/or           */
+/* modify it under the terms of the GNU General Public License as     */
+/* published by the Free Software Foundation, either version 3 of the */
+/* License, or (at your option) any later version.                    */
+
+/* MEANDRE is distributed in the hope that it will be useful, but     */
+/* WITHOUT ANY WARRANTY; without even the implied warranty of         */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  */
+/* General Public License for more details.                           */
+
+/* You should have received a copy of the GNU General Public License  */
+/* along with MEANDRE.                                                */
+/* If not, see <https://www.gnu.org/licenses/>.                       */
+
 
 #logo {
     font-size: 1.3rem;
@@ -73,13 +95,14 @@
     height: auto;
     transition: width 0.3s ease;
     margin-left: 0.6rem;
-    /* margin-right: 0rem; */
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 }
-
+#tab_a-propos {
+    margin-right: 1.1rem;
+}
 .bar-button {
     font-family: "Raleway", sans-serif;
     font-weight: 700;
@@ -101,6 +124,8 @@
 .bar-button:hover .material-icons-outlined{
     color: #70757A;
 }
+
+
 
 
 

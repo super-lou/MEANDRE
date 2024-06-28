@@ -1,7 +1,31 @@
+<!--
+     Copyright 2024
+     Louis Héraut (louis.heraut@inrae.fr)*1,
+     Éric Sauquet (eric.sauquet@inrae.fr)*1
+     
+     *1   INRAE, France
+
+     This file is part of MEANDRE.
+
+     MEANDRE is free software: you can redistribute it and/or
+     modify it under the terms of the GNU General Public License as
+     published by the Free Software Foundation, either version 3 of the
+     License, or (at your option) any later version.
+
+     MEANDRE is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with MEANDRE.
+     If not, see <https://www.gnu.org/licenses/>.
+-->
+
 <div id="container-logo-bar-sep">
 
     <div id="logo" class="logo" onclick="change_url('/', start=true, actualise=true);">
-	<img src="/resources/MEANDRE_logo.svg" alt="MEANDRE"/>
+	<img src="/resources/logo/MEANDRE_logo.svg" alt="MEANDRE"/>
 	<span>MEANDRE</span>
     </div>
 
@@ -105,15 +129,15 @@
 		</div>
 	    </div>
 
+	    <div class="sep"></div>
 
-	    <!-- <div class="sep"></div> -->
-
-	    <!-- <div id="tab_other" class="bar-tab"
-		 onclick="toggle_subtab(this)">
-		 <span id="tab_recul-icon" class="material-icons-outlined">troubleshoot</span>
-		 <span id="tab_recul-text" class="text">Prenons du recul</span>
-		 </div> -->
-
+	    <div id="tab_a-propos" class="bar-tab" onclick="change_url('/a-propos');">
+		<div id="tab_a-propos-button" class="bar-button">
+		    <span id="tab_a-propos-icon" class="material-icons-outlined">info</span>
+		    <span id="tab_a-propos-text" class="tab-text">À propos</span>
+		</div>
+	    </div>
+	    
 	    <div id="last-sep" class="sep"></div>
 
 	    <div id="right-arrow" class="arrow material-icons-outlined"
@@ -127,12 +151,10 @@
 <div id="button_exploration-avancee" class="bunch row nowrap center cross-center">
     <div id="tab_exploration-avancee" class="bar-tab"
 	 onclick="toggle_menu(); change_url('/exploration-avancee');">
-
 	<div id="tab_exploration-avancee-button"  class="bar-button">
 	    <span id="tab_exploration-avancee-icon" class="material-icons-outlined">design_services</span>
 	    <span id="tab_exploration-avancee-text" class="tab-text">Exploration<br>avancée</span>
 	</div>
-
     </div>
 </div>
 

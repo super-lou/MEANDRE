@@ -1,4 +1,26 @@
-	
+/* Copyright 2024                                                     */
+/* Louis Héraut (louis.heraut@inrae.fr)*1,                            */
+/* Éric Sauquet (eric.sauquet@inrae.fr)*1                             */
+
+/*     *1   INRAE, France                                             */
+
+/* This file is part of MEANDRE.                                      */
+
+/* MEANDRE is free software: you can redistribute it and/or           */
+/* modify it under the terms of the GNU General Public License as     */
+/* published by the Free Software Foundation, either version 3 of the */
+/* License, or (at your option) any later version.                    */
+
+/* MEANDRE is distributed in the hope that it will be useful, but     */
+/* WITHOUT ANY WARRANTY; without even the implied warranty of         */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  */
+/* General Public License for more details.                           */
+
+/* You should have received a copy of the GNU General Public License  */
+/* along with MEANDRE.                                                */
+/* If not, see <https://www.gnu.org/licenses/>.                       */
+
+
 /* font-family: 'Lato', sans-serif;
 	    font-family: 'Poppins', sans-serif;
 	    font-family: 'Raleway', sans-serif;
@@ -71,11 +93,17 @@ p.bottom-big-space {
 .bunch.row-gap {
     row-gap: 1rem;
 }
+.bunch.row-big-gap {
+    row-gap: 2rem;
+}
 .bunch.column-small-gap {
     column-gap: 0.5rem;
 }
 .bunch.column-gap {
     column-gap: 1rem;
+}
+.bunch.column-big-gap {
+    column-gap: 2rem;
 }
 .bunch.cross-baseline {
     align-items: last baseline;
