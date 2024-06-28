@@ -111,14 +111,16 @@ function updateContent(start=false, actualise=true) {
 	check_bar();
     }
 
-    const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
-    Promise.all(promises)
-	.then(geoJSONdata => {
-	    geoJSONdata_france = geoJSONdata[0];
-	    geoJSONdata_river = geoJSONdata[1];
-	    geoJSONdata_entiteHydro = geoJSONdata[2];
-	    svgFrance = update_map("#svg-france", svgFrance, data_point=null);
-	});
+    if (actualise) {
+	const promises = geoJSONfiles.map(fileURL => loadGeoJSON(fileURL));
+	Promise.all(promises)
+	    .then(geoJSONdata => {
+		geoJSONdata_france = geoJSONdata[0];
+		geoJSONdata_river = geoJSONdata[1];
+		geoJSONdata_entiteHydro = geoJSONdata[2];
+		svgFrance = update_map("#svg-france", svgFrance, data_point=null);
+	    });
+    }
 
     if (url !== "/a-propos") {
 	if (start && url == "/") {
