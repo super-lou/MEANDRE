@@ -74,7 +74,7 @@
     justify-content: center;
     align-items: center;
     padding-bottom: 1.8rem;
-} 
+}
 #home-by {
     position: absolute;
     display: flex;
@@ -85,23 +85,39 @@
     bottom: 0.4rem;
     justify-content: center;
     align-items: center;
-} 
-#home-by_Explore2 {
+}
+
+#home-by_Explore2,
+#home-by_phone_Explore2 {
     height: 3.5rem;
     padding-bottom: 1.7rem;
 }
-#home-by_LIFE {
+
+#home-by_LIFE,
+#home-by_phone_LIFE {
     height: 4.5rem;
     padding-bottom: 1.5rem;
 }
-#home-by_LIFE_EC {
+
+#home-by_LIFE_EC,
+#home-by_phone_LIFE_EC {
     height: 3.5rem;
     padding-bottom: 1.4rem;
 }
-#home-by_INRAE {
+#home-by_phone_LIFE_EC {
+    padding-bottom: 2rem;
+}
+
+#home-by_INRAE,
+#home-by_phone_INRAE {
     height: 8rem;
     padding-left: 0.8rem;
     padding-right: 0.8rem;
+}
+#home-by_phone_INRAE {
+    padding-left: 0rem;
+    padding-right: 0rem;
+    padding-bottom: 2rem;
 }
 
 
@@ -112,7 +128,6 @@
 	top: 1rem;
 	width: 100vw;
     }
-
 
     #home-logo img {
 	padding-right: 0rem;
@@ -125,6 +140,7 @@
     }
     .home-phone {
 	display: flex;
+	padding-bottom: 0rem;
     } 
     #home-by {
 	display: none;
@@ -138,7 +154,4 @@
     #home-by_INRAE {
 	padding-bottom: 2rem;
     }
-    
 }
-
-

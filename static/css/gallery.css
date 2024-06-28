@@ -347,18 +347,14 @@
 }
 
 
-
 @media (max-width: 768px) {
-
     .gallery h1 {
-	font-size: 2.1rem;
-	line-height: 2.4rem;
+	font-size: 2.2rem;
     }
     .gallery-item .h1b {
 	font-size: 1.8rem;
     }
     .gallery h2 {
-	font-size: 1.6rem;
+	font-size: 1.8rem;
     }
-
 }
