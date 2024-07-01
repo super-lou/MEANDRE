@@ -1,6 +1,6 @@
 // Copyright 2024
 // Louis Héraut (louis.heraut@inrae.fr)*1,
-// Éric Sauquet (eric.sauquet@inrae.fr)*1
+// Jean-Philippe Vidal (jean-philippe.vidal@inrae.fr)*1
 
 //     *1   INRAE, France
 

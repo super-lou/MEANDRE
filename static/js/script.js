@@ -1,6 +1,6 @@
 // Copyright 2024
 // Louis Héraut (louis.heraut@inrae.fr)*1,
-// Éric Sauquet (eric.sauquet@inrae.fr)*1
+// Jean-Philippe Vidal (jean-philippe.vidal@inrae.fr)*1
 
 //     *1   INRAE, France
 
@@ -275,7 +275,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point = data_back.data
+		data_point = data_back.data;
 		update_grid(data_back);
 		draw_colorbar(data_back);
 		check_url_after_data();
@@ -302,7 +302,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_vert = data_back.data
+		data_point_vert = data_back.data;
 		svgFrance_vert = update_map("#svg-france-vert", svgFrance_vert, data_point_vert);
 		$('#map-vert-loading').css('display', 'none');
 	    })
@@ -323,7 +323,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_jaune = data_back.data
+		data_point_jaune = data_back.data;
 		svgFrance_jaune = update_map("#svg-france-jaune", svgFrance_jaune, data_point_jaune);
 		$('#map-jaune-loading').css('display', 'none');
 	    })
@@ -344,7 +344,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_orange = data_back.data
+		data_point_orange = data_back.data;
 		svgFrance_orange = update_map("#svg-france-orange", svgFrance_orange, data_point_orange);
 		$('#map-orange-loading').css('display', 'none');
 	    })
@@ -365,7 +365,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_violet = data_back.data
+		data_point_violet = data_back.data;
 		svgFrance_violet = update_map("#svg-france-violet", svgFrance_violet, data_point_violet);
 		$('#map-violet-loading').css('display', 'none');
 	    })
@@ -389,7 +389,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point = data_back.data
+		data_point = data_back.data;
 		update_grid(data_back);
 		draw_colorbar(data_back);
 		svgFrance = update_map("#svg-france", svgFrance, data_point);
@@ -397,7 +397,7 @@ function update_data_point() {
 		$('#map-loading').css('display', 'none');
 		check_url_after_data();
 	    })
-    }
+    }    
 }
 const update_data_point_debounce = debounce(update_data_point, 1000);
 // update_data_point_debounce();
@@ -408,6 +408,9 @@ function update_data_serie() {
     var variable = get_variable();
     var chain = get_chain();
     var exp = chain[0].split('_')[0].replace('-', '_');
+
+    console.log("selected_code");
+    console.log(selected_code);
     
     var data_query = {
 	code: selected_code,
@@ -425,9 +428,19 @@ function update_data_serie() {
     })
     .then(response => response.json())
     .then(data_back => {
-	data_serie = data_back
+	data_serie = data_back;
 	$('#line-loading').css('display', 'none');
-	plot_data_serie()
+
+
+	console.log("data_point");
+	console.log(data_point);
+	
+	console.log("data_serie");
+	console.log(data_serie);
+
+	
+	
+	plot_data_serie();
     })
 }
 const update_data_serie_debounce = debounce(update_data_serie, 1000);
@@ -1041,10 +1054,14 @@ function find_code_in_data(dataJSON, code) {
 // }
 
 function show_serie(dataJSON, code, toggle=true) {
-    // console.log(code);
+    console.log(code);
     // console.log(dataJSON);
     
     var point = find_code_in_data(dataJSON, code);
+
+    console.log("point");
+    console.log(point);
+    
     
     if (selected_code === point.code && toggle) {
 	selected_code = null;
@@ -1161,6 +1178,7 @@ function redrawPoint(svgElement, dataJSON) {
 		document.getElementById("panel-hover").style.display = "none";
 	    })
 	    .on("click", function(d, point) {
+		console.log("aaa");
 		show_serie(dataJSON, point.code);
 	    });
     }
