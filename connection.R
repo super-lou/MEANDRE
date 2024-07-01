@@ -21,9 +21,8 @@
 
 
 library(dotenv)
-load_dot_env()
 
-WORKING_DIR = Sys.getenv("WORKING_DIR")
+load_dot_env("/var/www/MEANDRE/.env")
 URL = Sys.getenv("URL")
 FROM = Sys.getenv("FROM")
 TO = Sys.getenv("TO")
@@ -34,7 +33,6 @@ SMTP_USERNAME = Sys.getenv("SMTP_USERNAME")
 SMTP_PASSWORD = Sys.getenv("SMTP_PASSWORD")
 SUBJECT = Sys.getenv("SUBJECT")
 
-setwd(WORKING_DIR)
 
 Paths = list.files("/var/log/apache2/", pattern="^access", full.names=TRUE)
 Id = stringr::str_extract(basename(Paths), "[[:digit:]]+")
