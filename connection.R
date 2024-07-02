@@ -35,10 +35,8 @@ SMTP_PASSWORD = Sys.getenv("SMTP_PASSWORD")
 SUBJECT = Sys.getenv("SUBJECT")
 
 
+fact = 2
 Paths = list.files("/var/log/apache2/", pattern=paste0(APP_NAME, "_access"), full.names=TRUE)
-
-print(Paths)
-
 Id = stringr::str_extract(basename(Paths), "[[:digit:]]+")
 Id[is.na(Id)] = 0
 Id = as.numeric(Id)
@@ -62,9 +60,10 @@ for (i in 1:nPaths) {
     IP = gsub("[ ].*", "", Lines)
     IP = IP[!duplicated(IP)]
     nIP = length(IP)
+    nIP_fact = round(nIP / fact)
     
     text = paste0(format(date, "%d/%m/%Y"), " ",
-                  strrep("-", nIP), " ", nIP, "\r\n")
+                  strrep("-", nIP_fact), " ", nIP, "\r\n")
     graph = paste0(graph, text)
 }
 
