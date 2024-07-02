@@ -66,6 +66,14 @@
     font-size: 0.9rem;
 }
 
+.gallery-item.warning {
+    border: 3px solid #060508;
+}
+p.warning {
+    font-weight: 600 !important;
+}
+
+
 
 .gallery h1 {
     font-family: "Zen Tokyo Zoo", sans-serif;
