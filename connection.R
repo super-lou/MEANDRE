@@ -23,6 +23,7 @@
 library(dotenv)
 
 load_dot_env("/var/www/MEANDRE/.env")
+APP_NAME = Sys.getenv("APP_NAME")
 URL = Sys.getenv("URL")
 FROM = Sys.getenv("FROM")
 TO = Sys.getenv("TO")
@@ -34,7 +35,10 @@ SMTP_PASSWORD = Sys.getenv("SMTP_PASSWORD")
 SUBJECT = Sys.getenv("SUBJECT")
 
 
-Paths = list.files("/var/log/apache2/", pattern="^access", full.names=TRUE)
+Paths = list.files("/var/log/apache2/", pattern=paste0(APP_NAME, "_access"), full.names=TRUE)
+
+print(Paths)
+
 Id = stringr::str_extract(basename(Paths), "[[:digit:]]+")
 Id[is.na(Id)] = 0
 Id = as.numeric(Id)
