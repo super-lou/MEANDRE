@@ -128,12 +128,23 @@ sudo bash -c "cat > /etc/apache2/sites-available/MEANDRE.conf <<EOF
     ServerName $SERVER_NAME
     ServerAdmin $SERVER_EMAIL
 
-    WSGIDaemonProcess MEANDRE processes=4 threads=5 python-path=/usr/lib/python3/dist-packages
-    WSGIProcessGroup MEANDRE
+    <IfDefine !wsgi_init>
+        WSGIDaemonProcess MEANDRE processes=4 threads=5 python-path=/usr/lib/python3/dist-packages
+        WSGIProcessGroup MEANDRE
+        Define wsgi_init 1
+    </IfDefine>
+
     WSGIScriptAlias / $SERVER_DIR/MEANDRE/app.wsgi
 
     <Directory $SERVER_DIR/MEANDRE>
+        WSGIProcessGroup MEANDRE
+        WSGIApplicationGroup %{GLOBAL}
         Require all granted
+
+        #Require valid-user
+        #AuthType Basic
+        #AuthName "Restricted Area"
+        #AuthUserFile /path/to/.htpasswd
     </Directory>
 
     ErrorLog /var/log/apache2/MEANDRE_error.log
@@ -147,9 +158,6 @@ Enable the new site and mod_wsgi module
 sudo a2ensite MEANDRE
 sudo a2enmod wsgi
 ```
-
-
-
 
 Restart Apache and certbot for HTTPS
 ``` sh

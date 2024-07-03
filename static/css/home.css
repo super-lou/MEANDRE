@@ -49,6 +49,13 @@
 }
 
 
+.maintenance {
+    margin-bottom: 1rem;
+}
+.maintenance .material-icons-outlined {
+    color: white;
+}
+
 
 #home-logo {
     font-size: 3.8rem;
