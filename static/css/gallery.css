@@ -146,6 +146,10 @@ p.warning {
 
 #grid-colorbar {
     width: 5rem;
+    display: flex;
+    justify-content: center;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
 #grid-variable {
@@ -216,15 +220,15 @@ p.warning {
     
     /* writing-mode: sideways-lr; */
 }
-.tick-line {
-    stroke: #060508;
-    stroke-width: 1px;
-}
-.bin-text {
-    color: #3d3e3e;
-    font-family: "Lato", sans-serif;
-    font-weight: 600;
-}
+/* .tick-line { */
+    /* stroke: #060508; */
+    /* stroke-width: 1px; */
+/* } */
+/* .bin-text { */
+    /* color: #3d3e3e; */
+    /* font-family: "Lato", sans-serif; */
+    /* font-weight: 600; */
+/* } */
 
 
 #grid-point {

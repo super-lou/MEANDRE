@@ -347,7 +347,6 @@ h3 {
 }
 
 
-
 .container-gallery {
     height: calc(100vh - 3rem - 1rem);
     flex: 1;
@@ -357,19 +356,48 @@ h3 {
     padding-right: 1rem;
 }
 
-#panel-hover {
+
+#action-bar {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 1rem;
+}
+#screenshot, #download {
+    position: relative;
+    color: #060508;
+    font-size: 1rem;
     border: 3px solid #ffffff;
     background-color: #ffffff;
     padding: 0.2rem 0.3rem;
-    position: relative;
+    overflow: hidden;
+    width: fit-content;
+    height: fit-content;
+}
+#screenshot:hover, #download:hover {
+    color: #70757A;
+}
+#screenshot {
+    border-radius: 8px 0px 0px 8px;
+}
+#download {
+    border-radius: 0px 8px 8px 0px;
+}
+
+
+#panel-hover {
+    display: none;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 6rem;
+    color: #060508;
+    font-size: 1rem;
+    border: 3px solid #ffffff;
+    background-color: #ffffff;
+    padding: 0.2rem 0.3rem;
     overflow: hidden;
     border-radius: 8px;
     width: fit-content;
     height: fit-content;
-    display: none;
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
 }
 #panel-hover_code {
     font-family: 'Lato', sans-serif;
@@ -378,6 +406,7 @@ h3 {
     color: #89898a;
     margin-bottom: 0.1rem;
 }
+
 
 
 

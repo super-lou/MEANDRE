@@ -733,22 +733,21 @@ function make_list(from, to) {
 
 
 function draw_colorbar(data_back) {
-    // document.getElementById("grid-variable_unit").innerHTML = data_back.unit_fr;
-
+    // Get the bins and palette
     var bin = data_back.bin.slice(1, -1).reverse();
     var Palette = data_back.palette.reverse();
     var step = 25;
     var shift = 20;
     var to_normalise = data_back.to_normalise;
 
-    if (to_normalise) {
-	var unit = "%";
-    } else {
-	var unit = "jours";
-    }
+    // Determine the unit based on normalization
+    var unit = to_normalise ? "%" : "jours";
 
+    // Select the SVG and convert it to a DOM node
     const svg = d3.select("#svg-colorbar");
+    const svgNode = svg.node();  // Get the DOM node
 
+    // Calculate and set initial SVG dimensions
     svg.attr("height", (Palette.length - 1) * step + shift * 2);
     svg.attr("width", "100%");
 
@@ -758,31 +757,34 @@ function draw_colorbar(data_back) {
 
     lines.enter()
         .append("line")
-        .attr("class", "tick-line")
         .attr("x1", 5)
         .attr("x2", 15)
+        .style("stroke", "#3d3e3e")
+        .style("stroke-width", "1px")
         .merge(lines)
         .attr("y1", (d, i) => i * step + step / 2 + shift)
         .attr("y2", (d, i) => i * step + step / 2 + shift);
-
     lines.exit().remove();
 
     // Update bin text
     const texts = svg.selectAll(".bin-text")
         .data(bin);
     texts.enter()
-	.append("text")
-	.attr("class", "bin-text")
-	.attr("x", 28)
-	.merge(texts)
-	.attr("y", (d, i) => i * step + step / 2 + shift + 4)
-	.html(d => {
+        .append("text")
+        .attr("x", 28)
+        .style("fill", "#3d3e3e")
+        .style("font-family", "Lato, sans-serif")
+        .style("font-weight", "600")
+        .merge(texts)
+        .attr("y", (d, i) => i * step + step / 2 + shift + 4)
+        .html(d => {
             d = d > 0 ? "+" + d : d;
-	    d = d == 0 ? d : `<tspan>${d}</tspan>&nbsp;<tspan class="colorbar-unit">${unit}</tspan>`;
+            d = d == 0 ? d : `<tspan>${d}</tspan>&nbsp;<tspan class="colorbar-unit" style="fill: #70757A; font-size: 9pt;">${unit}</tspan>`;
             return d;
-	});
+        });
     texts.exit().remove();
 
+    // Update color circles
     var selected_color = null;
     const circles = svg.selectAll(".color-circle")
         .data(Palette);
@@ -794,60 +796,68 @@ function draw_colorbar(data_back) {
         .merge(circles)
         .attr("cy", (d, i) => i * step + shift)
         .attr("fill", d => d)
-    	.on("mouseover", function(event, d) {
-	    d3.select(this).attr("r", 7);
-	})
-	.on("mouseout", function(event, d) {
-	    if (this.getAttribute('fill') !== selected_color) {
-		d3.select(this).attr("r", 6);
-	    }
-	})
-	.each(function(d, i) {
+        .on("mouseover", function(event, d) {
+            d3.select(this).attr("r", 7);
+        })
+        .on("mouseout", function(event, d) {
+            if (this.getAttribute('fill') !== selected_color) {
+                d3.select(this).attr("r", 6);
+            }
+        })
+        .each(function(d, i) {
             d3.select(this)
-	        .on("click", function(event, d) {
-		    var clicked_color = d;
+                .on("click", function(event, d) {
+                    var clicked_color = d;
+                    var clicked_ID, clicked_Ticks;
 
-		    if (i < Palette.length/2) {
-			var clicked_ID = make_list(0, i);
-			var clicked_Ticks = clicked_ID;
-		    } else {
-			var clicked_ID = make_list(i, Palette.length-1);
-			var clicked_Ticks = make_list(i-1, Palette.length-1);
-		    }
-		    var clicked_Colors = clicked_ID.map(id => Palette[id]);
+                    if (i < Palette.length / 2) {
+                        clicked_ID = make_list(0, i);
+                        clicked_Ticks = clicked_ID;
+                    } else {
+                        clicked_ID = make_list(i, Palette.length - 1);
+                        clicked_Ticks = make_list(i - 1, Palette.length - 1);
+                    }
+                    var clicked_Colors = clicked_ID.map(id => Palette[id]);
 
-		    if (selected_color === clicked_color) {
-			d3.select("#svg-france").selectAll(".point")
-			    .attr("opacity", 1);
-			selected_color = null;
-			svg.selectAll(".color-circle, .tick-line, .bin-text")
-			    .attr("opacity", 1)
-			    .attr("r", 6);
-			
-		    } else {
-			selected_color = clicked_color;
-			d3.select("#svg-france").selectAll(".point")
-			    .attr("opacity", function(d) {
-				return clicked_Colors.includes(d.fill) ? 1 : 0.1;
-			    });
+                    if (selected_color === clicked_color) {
+                        d3.select("#svg-france").selectAll(".point")
+                            .attr("opacity", 1);
+                        selected_color = null;
+                        svg.selectAll(".color-circle, .tick-line, .bin-text")
+                            .attr("opacity", 1)
+                            .attr("r", 6);
+                    } else {
+                        selected_color = clicked_color;
+                        d3.select("#svg-france").selectAll(".point")
+                            .attr("opacity", function(d) {
+                                return clicked_Colors.includes(d.fill) ? 1 : 0.1;
+                            });
 
-			svg.selectAll(".color-circle")
-			    .attr("opacity", function() {
-				return clicked_Colors.includes(this.getAttribute('fill')) ? 1 : 0.3;	
-			    });
-			svg.selectAll(".tick-line")
-			    .attr("opacity", function(d, j) {
-				return clicked_Ticks.includes(j) ? 1 : 0.3;
-			    });
-			svg.selectAll(".bin-text")
-			    .attr("opacity", function(d, j) {
-				return clicked_Ticks.includes(j) ? 1 : 0.3;
-			    });
-		    }
-		});
-	});
+                        svg.selectAll(".color-circle")
+                            .attr("opacity", function() {
+                                return clicked_Colors.includes(this.getAttribute('fill')) ? 1 : 0.3;
+                            });
+                        svg.selectAll(".tick-line")
+                            .attr("opacity", function(d, j) {
+                                return clicked_Ticks.includes(j) ? 1 : 0.3;
+                            });
+                        svg.selectAll(".bin-text")
+                            .attr("opacity", function(d, j) {
+                                return clicked_Ticks.includes(j) ? 1 : 0.3;
+                            });
+                    }
+                });
+        });
     circles.exit().remove();
+
+    // Ensure width and height are set to prevent distortion
+    const bbox = svgNode.getBBox();  // Get bounding box of the content
+    svgNode.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);  // Set viewBox
+    svgNode.setAttribute("width", bbox.width);  // Set width
+    svgNode.setAttribute("height", bbox.height);  // Set height
+    svgNode.setAttribute("preserveAspectRatio", "xMidYMid meet");  // Preserve aspect ratio
 }
+
 
 
 
@@ -1189,3 +1199,191 @@ function redrawPoint(svgElement, dataJSON) {
 
 
 
+
+// function exportSVG() {
+//     const svgElement = d3.select("#svg-france");
+//     const bbox = svgElement.node().getBBox();
+//     svgElement.attr("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+
+//     const serializer = new XMLSerializer();
+//     const svgString = serializer.serializeToString(svgElement.node());
+
+//     const blob = new Blob([svgString], { type: "image/svg+xml" });
+
+//     const url = URL.createObjectURL(blob);
+//     const downloadLink = document.createElement("a");
+//     downloadLink.href = url;
+//     downloadLink.download = "map.svg";
+
+//     document.body.appendChild(downloadLink);
+//     downloadLink.click();
+//     document.body.removeChild(downloadLink);
+
+//     URL.revokeObjectURL(url);
+// }
+
+
+function get_france_svg() {
+    const svgElement = d3.select("#svg-france").node();
+    const clonedSvgElement = svgElement.cloneNode(true);
+    const bbox = svgElement.getBBox();
+    clonedSvgElement.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+    clonedSvgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(clonedSvgElement);
+    const blob = new Blob([svgString], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "map.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+}
+
+function get_colorbar_svg() {
+    const svgElement = d3.select("#svg-colorbar").node();
+    const clonedSvgElement = svgElement.cloneNode(true);
+    const bbox = svgElement.getBBox();
+    const padding = 10;
+    const viewBox = [
+        bbox.x - padding, 
+        bbox.y - padding, 
+        bbox.width + padding * 2, 
+        bbox.height + padding * 2
+    ].join(" ");
+    clonedSvgElement.setAttribute("viewBox", viewBox);
+    clonedSvgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(clonedSvgElement);
+    const blob = new Blob([svgString], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "colorbar.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+}
+
+
+
+
+
+
+
+
+
+function exportCombinedSVG() {
+
+    const cut_left_map = 30;
+    const right_colorbar_offset = 40;
+    const top_colorbar_offset = 30;
+    const top_map_offset = 10;
+    const bottom_map_offset = 10;
+    
+    
+    const mapSvgElement = d3.select("#svg-france").node();
+    const colorbarSvgElement = d3.select("#svg-colorbar").node();
+
+    // Clone both SVG elements
+    const clonedMapSvg = mapSvgElement.cloneNode(true);
+    const clonedColorbarSvg = colorbarSvgElement.cloneNode(true);
+
+    // Get bounding box of the map SVG
+    const mapBBox = mapSvgElement.getBBox();
+
+    const mapBBox_height_top = mapBBox.y - top_map_offset;
+    const mapBBox_height_bottom = mapBBox.height + top_map_offset + bottom_map_offset;
+    clonedMapSvg.setAttribute("viewBox", `${mapBBox.x} ${mapBBox_height_top} ${mapBBox.width} ${mapBBox_height_bottom}`);
+    clonedMapSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+    // Calculate the desired height for the colorbar (2/3 of map height)
+    const colorbarHeight = (2 / 3) * mapBBox.height;
+
+    // Calculate the scaling factor for the colorbar to fit the new height
+    const colorbarBBox = colorbarSvgElement.getBBox();
+    const colorbarScale = colorbarHeight / colorbarBBox.height;
+
+    const colorbar_width = colorbarBBox.width + 10;
+    clonedColorbarSvg.setAttribute("viewBox", `${colorbarBBox.x} ${colorbarBBox.y} ${colorbar_width} ${colorbarBBox.height}`);
+    clonedColorbarSvg.setAttribute("width", colorbarBBox.width * colorbarScale);
+    clonedColorbarSvg.setAttribute("height", colorbarHeight);
+    clonedColorbarSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+    // Calculate total width of the combined SVG
+    const combinedWidth = mapBBox.width + (colorbarBBox.width * colorbarScale) + right_colorbar_offset;
+    const combinedHeight = mapBBox.height;
+    
+    // Create a new SVG element to hold both the map and the colorbar
+    const combinedSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    combinedSvg.setAttribute("width", combinedWidth);
+    combinedSvg.setAttribute("height", combinedHeight);
+    combinedSvg.setAttribute("viewBox", `${cut_left_map} 0 ${combinedWidth} ${combinedHeight}`);
+
+    // Position the colorbar to the right of the map
+    clonedColorbarSvg.setAttribute("x", mapBBox.width + right_colorbar_offset);
+    clonedColorbarSvg.setAttribute("y", top_colorbar_offset);
+
+    // Append cloned SVG elements to the new combined SVG
+    combinedSvg.appendChild(clonedMapSvg);
+    combinedSvg.appendChild(clonedColorbarSvg);
+
+
+    // const serializer = new XMLSerializer();
+    // const svgString = serializer.serializeToString(combinedSvg);
+    // const blob = new Blob([svgString], { type: "image/svg+xml" });
+    // const url = URL.createObjectURL(blob);
+    // const downloadLink = document.createElement("a");
+    // downloadLink.href = url;
+    // downloadLink.download = "map.svg";
+    // document.body.appendChild(downloadLink);
+    // downloadLink.click();
+    // document.body.removeChild(downloadLink);
+    // URL.revokeObjectURL(url);
+    
+    
+    // Create a data URL for the SVG
+    const svgData = new XMLSerializer().serializeToString(combinedSvg);
+    const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+
+    // Set the resolution multiplier
+    const resolutionMultiplier = 5; // Change this value to increase or decrease resolution
+
+    // Create an image element to render the SVG data
+    const img = new Image();
+    img.onload = function () {
+        // Create a canvas with the scaled dimensions
+        const canvas = document.createElement("canvas");
+        canvas.width = combinedWidth * resolutionMultiplier;
+        canvas.height = combinedHeight * resolutionMultiplier;
+
+        // Scale the context to increase resolution
+        const ctx = canvas.getContext("2d");
+        ctx.scale(resolutionMultiplier, resolutionMultiplier);
+
+        // Draw the SVG on the canvas
+        ctx.drawImage(img, 0, 0);
+
+        // Export the canvas as a PNG
+        const pngData = canvas.toDataURL("image/png");
+
+        const filename = "map";
+        // Create a link element to download the PNG
+        const link = document.createElement("a");
+        link.download = `${filename || "export"}.png`;
+        link.href = pngData;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Clean up
+        URL.revokeObjectURL(url);
+    };
+    img.src = url;
+}
