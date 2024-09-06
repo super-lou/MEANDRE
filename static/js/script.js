@@ -1334,23 +1334,192 @@ function exportCombinedSVG() {
     combinedSvg.appendChild(clonedColorbarSvg);
 
 
-    // const serializer = new XMLSerializer();
-    // const svgString = serializer.serializeToString(combinedSvg);
-    // const blob = new Blob([svgString], { type: "image/svg+xml" });
-    // const url = URL.createObjectURL(blob);
-    // const downloadLink = document.createElement("a");
-    // downloadLink.href = url;
-    // downloadLink.download = "map.svg";
-    // document.body.appendChild(downloadLink);
-    // downloadLink.click();
-    // document.body.removeChild(downloadLink);
-    // URL.revokeObjectURL(url);
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(combinedSvg);
+    const blob = new Blob([svgString], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "map.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
     
     
-    // Create a data URL for the SVG
-    const svgData = new XMLSerializer().serializeToString(combinedSvg);
-    const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(svgBlob);
+    // // Create a data URL for the SVG
+    // const svgData = new XMLSerializer().serializeToString(combinedSvg);
+    // const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    // const url = URL.createObjectURL(svgBlob);
+
+    // // Set the resolution multiplier
+    // const resolutionMultiplier = 5; // Change this value to increase or decrease resolution
+
+    // // Create an image element to render the SVG data
+    // const img = new Image();
+    // img.onload = function () {
+    //     // Create a canvas with the scaled dimensions
+    //     const canvas = document.createElement("canvas");
+    //     canvas.width = combinedWidth * resolutionMultiplier;
+    //     canvas.height = combinedHeight * resolutionMultiplier;
+
+    //     // Scale the context to increase resolution
+    //     const ctx = canvas.getContext("2d");
+    //     ctx.scale(resolutionMultiplier, resolutionMultiplier);
+
+    //     // Draw the SVG on the canvas
+    //     ctx.drawImage(img, 0, 0);
+
+    //     // Export the canvas as a PNG
+    //     const pngData = canvas.toDataURL("image/png");
+
+    //     const filename = "map";
+    //     // Create a link element to download the PNG
+    //     const link = document.createElement("a");
+    //     link.download = `${filename || "export"}.png`;
+    //     link.href = pngData;
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+
+    //     // Clean up
+    //     URL.revokeObjectURL(url);
+    // };
+    // img.src = url;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function exportSVG() {
+    // Define margins
+    const topMargin = 40;  // Space for title
+    const bottomMargin = 0; // Space for footer
+    const top_colorbar = 120;
+    const left_colorbar = -20;
+    const top_title = 10;
+    const left_title = 10;
+    const bottom_footer = 25;
+    const left_footer = 100;
+
+    const left_logo = 30;
+    const bottom_logo = 30;
+    const width_logo = 50;
+    const height_logo = 50;
+    
+    const right_cut = 20;
+    
+    
+    // Select existing SVG elements
+    const svgColorbar = d3.select("#svg-colorbar");
+    const svgFrance = d3.select("#svg-france");
+
+    // Clone both SVG elements
+    const clonedSvgColorbar = svgColorbar.node().cloneNode(true);
+    const clonedSvgFrance = svgFrance.node().cloneNode(true);
+
+    // Get bounding box of the France SVG
+    const franceBBox = svgFrance.node().getBBox();
+    const colorbarBBox = svgColorbar.node().getBBox();
+
+    // Define dimensions for the combined SVG
+    const colorbarWidth = colorbarBBox.width + 10;
+    const colorbarHeight = colorbarBBox.height;
+    const franceWidth = franceBBox.width;
+    const franceHeight = franceBBox.height;
+    const combinedWidth = franceWidth + colorbarWidth - right_cut;
+    const combinedHeight = Math.max(franceHeight, colorbarHeight) + topMargin + bottomMargin; 
+
+    // Define new dimensions for the colorbar
+    const newColorbarHeight = combinedHeight * 0.4;  // Height is 1/3 of combined height
+    const colorbarAspectRatio = colorbarWidth / colorbarHeight;
+    const newColorbarWidth = newColorbarHeight * colorbarAspectRatio;
+
+    // Adjust the viewBox for the France SVG to ensure it fits
+    const mapBBox_height_top = franceBBox.y;
+    const mapBBox_height_bottom = franceBBox.height + mapBBox_height_top;
+    clonedSvgFrance.setAttribute("viewBox", `${franceBBox.x} ${mapBBox_height_top} ${franceBBox.width} ${mapBBox_height_bottom}`);
+    clonedSvgFrance.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+    // Create a new SVG container with adjusted dimensions
+    const combinedSVG = d3.select("body").append("svg")
+        .attr("width", combinedWidth)
+        .attr("height", combinedHeight)
+        .attr("xmlns", "http://www.w3.org/2000/svg");
+
+        // Add background color
+    combinedSVG.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", combinedWidth)
+        .attr("height", combinedHeight)
+        .attr("fill", "#F5F5F5");  // Change this color as needed
+    
+    // Add title
+    combinedSVG.append("text")
+        .attr("x", left_title)
+        .attr("y", top_title)  // Centered vertically in the title space
+        .attr("text-anchor", "start")
+        .attr("font-size", "20px")
+        .attr("font-weight", "bold")
+	.attr("fill", "#060508")
+        .text("Title of the Graph");
+
+    // Add footer
+    combinedSVG.append("text")
+        .attr("x", left_footer)
+        .attr("y", combinedHeight - bottom_footer)
+        .attr("text-anchor", "start")
+        .attr("font-size", "6px")
+        .attr("fill", "#060508")
+        .selectAll("tspan")
+        .data([
+            "Ces résultats sont issus de projections hydrologiques réalisées sur la France. La mise à jour de ces projections a été réalisé",
+	    "entre 2022 et 2024 dans le cadre du projet national Explore2. Ces résultats sont un aperçu de quelques futures possibles pour",
+	    "la ressource en eau."
+        ])
+        .enter().append("tspan")
+        .attr("x", left_footer)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.2em")  // Adjust vertical spacing between lines
+        .text(d => d);
+
+    // Add the SVG logo
+    combinedSVG.append("image")
+	.attr("href", "/resources/logo/MEANDRE_logo.svg") // Path to your logo file
+	.attr("x", left_logo + width_logo)
+	.attr("y", combinedHeight - height_logo - bottom_logo) // Adjusted to account for height
+	.attr("width", width_logo)  // Desired width of the logo
+	.attr("height", height_logo)  // Desired height of the logo
+	.attr("preserveAspectRatio", "xMidYMid meet");
+
+    
+    // Append France to combined SVG
+    combinedSVG.append(() => clonedSvgFrance)
+        .attr("x", 0)
+        .attr("y", topMargin) // Adjust Y to leave space for the title
+        .attr("width", franceWidth)
+        .attr("height", franceHeight);
+
+    // Append colorbar to combined SVG
+    combinedSVG.append(() => clonedSvgColorbar)
+        .attr("x", franceWidth + left_colorbar)
+        .attr("y", top_colorbar) // Adjust Y to ensure it fits in the bottom space
+        .attr("width", newColorbarWidth)
+        .attr("height", newColorbarHeight);
+
+    // Serialize the combined SVG to a string
+    const combinedSVGNode = combinedSVG.node();
+    const svgString = new XMLSerializer().serializeToString(combinedSVGNode);
+    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+    const svgUrl = URL.createObjectURL(svgBlob);
 
     // Set the resolution multiplier
     const resolutionMultiplier = 5; // Change this value to increase or decrease resolution
@@ -1361,9 +1530,7 @@ function exportCombinedSVG() {
         // Create a canvas with the scaled dimensions
         const canvas = document.createElement("canvas");
         canvas.width = combinedWidth * resolutionMultiplier;
-        canvas.height = combinedHeight * resolutionMultiplier;
-
-        // Scale the context to increase resolution
+        canvas.height = combinedHeight * resolutionMultiplier; // Include extra space
         const ctx = canvas.getContext("2d");
         ctx.scale(resolutionMultiplier, resolutionMultiplier);
 
@@ -1373,17 +1540,19 @@ function exportCombinedSVG() {
         // Export the canvas as a PNG
         const pngData = canvas.toDataURL("image/png");
 
-        const filename = "map";
         // Create a link element to download the PNG
         const link = document.createElement("a");
-        link.download = `${filename || "export"}.png`;
+        link.download = "combined.png";
         link.href = pngData;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
         // Clean up
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(svgUrl);
     };
-    img.src = url;
+    img.src = svgUrl;
+
+    // Remove the combined SVG from the document
+    combinedSVG.remove();
 }
