@@ -6,6 +6,8 @@ from flask_cors import CORS
 import numpy as np
 import subprocess
 import json
+import sys
+import hashlib
 from datetime import datetime
 import pandas as pd
 # from scipy.interpolate import interp1d
@@ -80,6 +82,10 @@ def index():
 #     return jsonify({"api_base_url": api_base_url})
 
 
+cache = {}
+def get_hash(chr):
+    return hashlib.sha256(chr.encode()).hexdigest()
+
 @app.route('/get_delta_on_horizon', methods=['POST'])
 def delta_post():
     # Get parameters from the JSON payload
@@ -89,115 +95,99 @@ def delta_post():
     chain = data.get('chain')
     variable = data.get('variable')
     horizon = data.get('horizon')
+    check_cache = data.get('check_cache')
 
-    connection = engine.connect()
+    chr = str(n)+exp+str(chain)+variable+horizon
+    hash = get_hash(chr)
+    
+    if check_cache and hash in cache:
+        # print("read from cache")
+        response = cache[hash]
 
-    sql_query = f"""
-    WITH hm_average AS (
+    else:
+        # print("computed")
+        connection = engine.connect()
+        
+        sql_query = f"""
+        WITH hm_average AS (
         SELECT code, gcm, rcm, bc, AVG(value) AS value
         FROM delta_{exp}_{variable}_{horizon}
         WHERE chain IN :chain AND n >= {n}
         GROUP BY code, gcm, rcm, bc
-    ),
-    bc_average AS (
+        ),
+        bc_average AS (
         SELECT code, AVG(value) AS value
         FROM hm_average
         GROUP BY code, gcm, rcm
-    )
-    SELECT s.*, b.value
-    FROM stations s
-    JOIN (
-    SELECT code, AVG(value) AS value
-    FROM bc_average
-    GROUP BY code
-    ) b ON s.code = b.code;
-    """
-    result = connection.execute(
-        text(sql_query),
-        {'chain': tuple(chain)}
-    )
-    columns = result.keys()
-    rows = result.fetchall()
-    data = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows]
-
-    sql_query = f"""
-    SELECT *
-    FROM variables
-    WHERE variable_en = :variable;
-    """
-    result = connection.execute(
-        text(sql_query),
-        {'variable': variable}
-    )
-    columns = result.keys()
-    rows = result.fetchall()
-    meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
-    connection.close()
-    
-    Palette = meta['palette']
-    Palette = Palette.split(" ")
-    meta['palette'] = Palette
-    
-    Code = [x['code'] for x in data]
-    nCode = len(Code)
-
-    Delta = [x['value'] for x in data]
-    q01Delta = np.quantile(Delta, 0.01)
-    q99Delta = np.quantile(Delta, 0.99)
-
-    # command = [
-    #     "Rscript",
-    #     os.path.join(R_dir, "compute_color.R"),
-    #     "--min", str(q01Delta),
-    #     "--max", str(q99Delta),
-    #     "--delta", json.dumps(Delta),
-    #     "--palette", json.dumps(Palette)
-    # ]
-    # process = subprocess.Popen(command,
-    #                        stdout=subprocess.PIPE,
-    #                            stderr=subprocess.PIPE)
-    # output, error = process.communicate()
-    # Fill = output.decode().strip().split('\n')
-    
-    res = color.compute_colorBin(q01Delta, q99Delta,
-                                 len(Palette), center=0)
-    bin = res['bin']
-    bin = [str(round_int(x)) for x in bin]
+        )
+        SELECT s.*, b.value
+        FROM stations s
+        JOIN (
+        SELECT code, AVG(value) AS value
+        FROM bc_average
+        GROUP BY code
+        ) b ON s.code = b.code;
+        """
+        result = connection.execute(
+            text(sql_query),
+            {'chain': tuple(chain)}
+        )
+        columns = result.keys()
+        rows = result.fetchall()
+        data = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows]
         
-    Fill = color.get_colors(Delta, res['upBin'],
-                            res['lowBin'], Palette)
+        sql_query = f"""
+        SELECT *
+        FROM variables
+        WHERE variable_en = :variable;
+        """
+        result = connection.execute(
+            text(sql_query),
+            {'variable': variable}
+        )
+        columns = result.keys()
+        rows = result.fetchall()
+        meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
+        connection.close()
+        
+        Palette = meta['palette']
+        Palette = Palette.split(" ")
+        meta['palette'] = Palette
+        
+        Code = [x['code'] for x in data]
+        nCode = len(Code)
+        
+        Delta = [x['value'] for x in data]
+        q01Delta = np.quantile(Delta, 0.01)
+        q99Delta = np.quantile(Delta, 0.99)
+        
+        res = color.compute_colorBin(q01Delta, q99Delta,
+                                     len(Palette), center=0)
+        bin = res['bin']
+        bin = [str(round_int(x)) for x in bin]
+        
+        Fill = color.get_colors(Delta, res['upBin'],
+                                res['lowBin'], Palette)
+        
+        color_to_find = np.array(["#F6E8C3", "#C7EAE5",
+                                  "#EFE2E9", "#F5E4E2"])
+        color_to_switch = np.array(["#EFD695", "#A1DCD3",
+                                    "#DBBECE", "#E7BDB8"])
+        
+        for i, d in enumerate(data):
+            d['fill'] = Fill[i]
+            d['fill_text'] = color.switch_color(Fill[i],
+                                                color_to_find,
+                                                color_to_switch)
+        response = {'data': data,
+                    'bin': bin}
+        response.update(meta)
+        response = jsonify(response)
 
-    color_to_find = np.array(["#F6E8C3", "#C7EAE5",
-                              "#EFE2E9", "#F5E4E2"])
-    color_to_switch = np.array(["#EFD695", "#A1DCD3",
-                                "#DBBECE", "#E7BDB8"])
-    
-    for i, d in enumerate(data):
-        d['fill'] = Fill[i]
-        d['fill_text'] = color.switch_color(Fill[i],
-                                            color_to_find,
-                                            color_to_switch)
-    # command = [
-    #     "Rscript",
-    #     os.path.join(R_dir, "compute_bin.R"),
-    #     "--min", str(q01Delta),
-    #     "--max", str(q99Delta),
-    #     "--delta", json.dumps(Delta),
-    #     "--palette", json.dumps(Palette)
-    # ]
+        cache[hash] = response
 
-    # process = subprocess.Popen(command,
-    #                            stdout=subprocess.PIPE,
-    #                            stderr=subprocess.PIPE)
-    # output, error = process.communicate()
-    # bin = output.decode().strip().split('\n')
-
-    response = {'data': data,
-                'bin': bin}
-    response.update(meta)
-    
-    # Return the data as JSON response
-    response = jsonify(response)
+    # print(sys.getsizeof(cache))
+        
     return response
 
 
@@ -211,7 +201,7 @@ def serie_post():
     chain = data.get('chain')
     variable = data.get('variable')
 
-    print("a")
+    # print("a")
     
     connection = engine.connect()
 
@@ -230,7 +220,7 @@ def serie_post():
     columns = result.keys()
     rows = result.fetchall()
 
-    print("b")
+    # print("b")
 
     data = pd.DataFrame(rows, columns=columns)
     data['date'] = pd.to_datetime(data['date'])
@@ -240,7 +230,7 @@ def serie_post():
     data['color'] = "#ADABAA"
     data['order'] = 0
 
-    print("c")
+    # print("c")
 
     for storyline in name_of_storylines:
         data_med = data[data['climate_chain'] == storyline].groupby(['date'])['value'].median().reset_index()
@@ -287,7 +277,7 @@ def serie_post():
         data = pd.concat([data, data_med], ignore_index=True)
 
 
-    print("d")
+    # print("d")
     
     data['date'] = data['date'].dt.strftime("%Y-%m-%d")
     data = data.rename(columns={'value': 'y', 'date': 'x'})
@@ -297,7 +287,7 @@ def serie_post():
 
     data = data.sort_values(by=['order'], ascending=True)
 
-    print("e")
+    # print("e")
     
     json_output = []
     for index, row in data.iterrows():
@@ -309,7 +299,7 @@ def serie_post():
                     'values': row['values']}
         json_output.append(json_row)
 
-    print("f")
+    # print("f")
 
     json_output_cleaned = json_output.copy()
     for item in json_output_cleaned:

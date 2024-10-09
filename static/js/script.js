@@ -243,6 +243,16 @@ let svgFrance_violet;
 
 function update_data_point() {
 
+    var url = window.location.pathname;
+    console.log(url);
+
+    let check_cache;
+    if (url === "/exploration-avancee") {
+	check_cache = false; 
+    } else {
+	check_cache = true;
+    }
+    
     if (drawer_mode === 'drawer-narratif') {
 	$('#map-vert-loading').css('display', 'flex');
 	$('#map-jaune-loading').css('display', 'flex');
@@ -265,6 +275,7 @@ function update_data_point() {
             chain: chain,
             variable: variable,
             horizon: horizon,
+	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
             method: 'POST',
@@ -292,6 +303,7 @@ function update_data_point() {
             chain: chain_vert,
             variable: variable,
             horizon: horizon,
+	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
             method: 'POST',
@@ -313,6 +325,7 @@ function update_data_point() {
             chain: chain_jaune,
             variable: variable,
             horizon: horizon,
+	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
             method: 'POST',
@@ -334,6 +347,7 @@ function update_data_point() {
             chain: chain_orange,
             variable: variable,
             horizon: horizon,
+	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
             method: 'POST',
@@ -355,6 +369,7 @@ function update_data_point() {
             chain: chain_violet,
             variable: variable,
             horizon: horizon,
+	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
             method: 'POST',
@@ -378,6 +393,7 @@ function update_data_point() {
             chain: chain,
             variable: variable,
             horizon: horizon,
+	    check_cache: check_cache,
 	};
 
 	fetch(api_base_url + "/get_delta_on_horizon", {
@@ -418,7 +434,7 @@ function update_data_serie() {
 	code: selected_code,
         exp: exp,
         chain: chain,
-        variable: variable
+        variable: variable,
     };
 
     fetch(api_base_url + "/get_delta_serie", {
@@ -845,7 +861,7 @@ function draw_colorbar(data_back) {
 
     // Ensure width and height are set to prevent distortion
     const bbox = svgNode.getBBox();  // Get bounding box of the content
-    svgNode.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);  // Set viewBox
+    svgNode.setAttribute("viewBox", `${bbox.x - 2} ${bbox.y - 2} ${bbox.width + 2} ${bbox.height + 2}`);  // Set viewBox
     svgNode.setAttribute("width", bbox.width);  // Set width
     svgNode.setAttribute("height", bbox.height);  // Set height
     svgNode.setAttribute("preserveAspectRatio", "xMidYMid meet");  // Preserve aspect ratio
