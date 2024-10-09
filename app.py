@@ -101,11 +101,11 @@ def delta_post():
     hash = get_hash(chr)
     
     if check_cache and hash in cache:
-        # print("read from cache")
+        print("read from cache")
         response = cache[hash]
 
     else:
-        # print("computed")
+        print("computed")
         connection = engine.connect()
         
         sql_query = f"""
@@ -186,7 +186,7 @@ def delta_post():
 
         cache[hash] = response
 
-    # print(sys.getsizeof(cache))
+    print(sys.getsizeof(cache))
         
     return response
 
