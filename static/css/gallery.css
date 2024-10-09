@@ -57,6 +57,16 @@
     width: unset;
     height: unset;
 }
+.gallery-item a:hover {
+    color: #70757A;
+}
+.gallery-item a img {
+    transition: filter 0.05s ease;
+}
+.gallery-item a:hover img {
+    filter: grayscale(100%);
+}
+
 
 .grid-cross {
     cursor: pointer;
