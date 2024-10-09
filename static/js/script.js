@@ -275,7 +275,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point = data_back.data;
+		data_point = data_back;
 		update_grid(data_back);
 		draw_colorbar(data_back);
 		check_url_after_data();
@@ -302,7 +302,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_vert = data_back.data;
+		data_point_vert = data_back;
 		svgFrance_vert = update_map("#svg-france-vert", svgFrance_vert, data_point_vert);
 		$('#map-vert-loading').css('display', 'none');
 	    })
@@ -323,7 +323,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_jaune = data_back.data;
+		data_point_jaune = data_back;
 		svgFrance_jaune = update_map("#svg-france-jaune", svgFrance_jaune, data_point_jaune);
 		$('#map-jaune-loading').css('display', 'none');
 	    })
@@ -344,7 +344,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_orange = data_back.data;
+		data_point_orange = data_back;
 		svgFrance_orange = update_map("#svg-france-orange", svgFrance_orange, data_point_orange);
 		$('#map-orange-loading').css('display', 'none');
 	    })
@@ -365,7 +365,7 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point_violet = data_back.data;
+		data_point_violet = data_back;
 		svgFrance_violet = update_map("#svg-france-violet", svgFrance_violet, data_point_violet);
 		$('#map-violet-loading').css('display', 'none');
 	    })
@@ -389,7 +389,9 @@ function update_data_point() {
 	})
 	    .then(response => response.json())
 	    .then(data_back => {
-		data_point = data_back.data;
+		data_point = data_back;
+		// delete data_back.data;
+		// meta_point = data_back;
 		update_grid(data_back);
 		draw_colorbar(data_back);
 		svgFrance = update_map("#svg-france", svgFrance, data_point);
@@ -397,7 +399,7 @@ function update_data_point() {
 		$('#map-loading').css('display', 'none');
 		check_url_after_data();
 	    })
-    }    
+    }
 }
 const update_data_point_debounce = debounce(update_data_point, 1000);
 // update_data_point_debounce();
@@ -430,16 +432,6 @@ function update_data_serie() {
     .then(data_back => {
 	data_serie = data_back;
 	$('#line-loading').css('display', 'none');
-
-
-	console.log("data_point");
-	console.log(data_point);
-	
-	console.log("data_serie");
-	console.log(data_serie);
-
-	
-	
 	plot_data_serie();
     })
 }
@@ -745,7 +737,8 @@ function draw_colorbar(data_back) {
 
     // Select the SVG and convert it to a DOM node
     const svg = d3.select("#svg-colorbar");
-    const svgNode = svg.node();  // Get the DOM node
+    const svgNode = svg.node();
+    svg.selectAll("*").remove();
 
     // Calculate and set initial SVG dimensions
     svg.attr("height", (Palette.length - 1) * step + shift * 2);
@@ -914,7 +907,7 @@ let height = window.innerHeight;
 let projection;
 
 
-function update_map(id_svg, svgElement, data_point) {
+function update_map(id_svg, svgElement, data_back) {
 
     d3.select(id_svg).selectAll("*").remove();
 
@@ -959,8 +952,8 @@ function update_map(id_svg, svgElement, data_point) {
 	    .transition()
 	    .duration(1000);
 
-	if (data_point) {
-	    svgElement = redrawPoint(svgElement, data_point);
+	if (data_back) {
+	    svgElement = redrawPoint(svgElement, data_back);
 	    highlight_selected_point();
 	}
     }
@@ -1053,8 +1046,8 @@ function highlight_selected_point() {
 }
 
 
-function find_code_in_data(dataJSON, code) {
-    return dataJSON.find(item => item.code === code);
+function find_code_in_data(data_back, code) {
+    return data_back.data.find(item => item.code === code);
 }
 
 // function hide_serie() {
@@ -1063,11 +1056,11 @@ function find_code_in_data(dataJSON, code) {
 //     document.getElementById("grid-line").style.display = "none";
 // }
 
-function show_serie(dataJSON, code, toggle=true) {
+function show_serie(data_back, code, toggle=true) {
     console.log(code);
-    // console.log(dataJSON);
+    // console.log(data_back);
     
-    var point = find_code_in_data(dataJSON, code);
+    var point = find_code_in_data(data_back, code);
 
     console.log("point");
     console.log(point);
@@ -1146,12 +1139,12 @@ function show_serie(dataJSON, code, toggle=true) {
 }
 
 
-function redrawPoint(svgElement, dataJSON) {
+function redrawPoint(svgElement, data_back) {
     
-    if (dataJSON) {
+    if (data_back) {
 	svgElement.selectAll(".point").remove();
 	svgElement.selectAll("circle.point")
-	    .data(dataJSON)
+	    .data(data_back.data)
 	    .join("circle")
 	    .attr("class", "point")
 	    .attr("cx", function(d) {
@@ -1189,7 +1182,7 @@ function redrawPoint(svgElement, dataJSON) {
 	    })
 	    .on("click", function(d, point) {
 		console.log("aaa");
-		show_serie(dataJSON, point.code);
+		show_serie(data_back, point.code);
 	    });
     }
     
@@ -1394,31 +1387,117 @@ function exportCombinedSVG() {
 
 
 
-
-
-
-
-
 function exportSVG() {
-    // Define margins
-    const topMargin = 40;  // Space for title
-    const bottomMargin = 0; // Space for footer
-    const top_colorbar = 120;
-    const left_colorbar = -20;
-    const top_title = 10;
-    const left_title = 10;
-    const bottom_footer = 25;
-    const left_footer = 100;
 
-    const left_logo = 30;
-    const bottom_logo = 30;
-    const width_logo = 50;
-    const height_logo = 50;
+    var title = data_point.name_fr;
+    var horizon = get_horizon("futur");
+    if (horizon === "H1") {
+	var horizon_period = "en début de siècle 2021-2050";
+    } else if (horizon === "H2") {
+	var horizon_period = "en milieu de siècle 2041-2070";
+    } else if (horizon === "H3") {
+	var horizon_period = "en fin de siècle 2070-2099";
+    }
+    var model = "Au moins " + get_n() + " modèles hydrologiques par point";
     
+    var relatif = data_point.to_normalise ? "relatif " : "";
+    var subtitle = "Changements " + relatif + horizon_period + " par rapport à la période de référence 1976-2005";
+
+    const width_max_title = 42;
+    const width_max_subtitle = 60;
+    let title_wrap = wrapTextByCharacterLimit(title, width_max_title);
+
+    let top_title_line1;
+    let top_title;
+    let title_line;
+    if (title_wrap.length > 1) {
+	top_title_line1 = 3;
+	top_title = 15;
+	title_line = 12;
+    } else {
+	top_title_line1 = 6;
+	top_title = 18;
+	title_line = 0;
+    }
+    let subtitle_wrap = wrapTextByCharacterLimit(subtitle, width_max_subtitle);
+
+    
+    const topMargin = 64;
+    const bottomMargin = 2;
     const right_cut = 20;
+
+    const left_title_line = 12;
+    const top_title_line2 = 45 + title_line;
     
+    const left_title = 23;
+
+    const top_subtitle = 32 + title_line;
+    const left_subtitle = 23;
     
-    // Select existing SVG elements
+    const top_colorbar = 132;
+    const left_colorbar = -25;
+    
+    const left_logo = 6;
+    const bottom_logo = 30;
+    const width_logo = 33;
+    const height_logo = 33;
+
+    const left_meandre = 46;
+    const bottom_meandre = 10;
+    const left_url = 47;
+    const bottom_url = 5;
+    
+    const left_sep_line = 122;
+    const bottom_sep_line1 = 4;
+    const bottom_sep_line2 = 20;
+    
+    const bottom_footer = 16;
+    const left_footer = 127;
+
+    const right_lo = 48;
+    const bottom_lo = 22;
+    const width_lo = 18;
+    const height_lo = 18;
+
+    const right_lo_text = 28;
+    const bottom_lo_text = 14;
+    
+
+    
+    // // Select existing SVG elements
+    // const svgColorbar = d3.select("#svg-colorbar");
+    // const svgFrance = d3.select("#svg-france");
+
+    // // Clone both SVG elements
+    // const clonedSvgColorbar = svgColorbar.node().cloneNode(true);
+    // const clonedSvgFrance = svgFrance.node().cloneNode(true);
+
+    // // Get bounding box of the France SVG
+    // const franceBBox = svgFrance.node().getBBox();
+    // const colorbarBBox = svgColorbar.node().getBBox();
+
+    // // Define dimensions for the combined SVG
+    // const colorbarWidth = colorbarBBox.width + 10;
+    // const colorbarHeight = colorbarBBox.height;
+    // const franceWidth = franceBBox.width;
+    // const franceHeight = franceBBox.height;
+    // const combinedWidth = franceWidth + colorbarWidth - right_cut;
+    // const combinedHeight = Math.max(franceHeight, colorbarHeight) + topMargin + bottomMargin; 
+
+    
+    // // Define new dimensions for the colorbar
+    // const newColorbarHeight = combinedHeight * 0.4;  // Height is 1/3 of combined height
+    // const colorbarAspectRatio = colorbarWidth / colorbarHeight;
+    // const newColorbarWidth = newColorbarHeight * colorbarAspectRatio;
+
+    // // Adjust the viewBox for the France SVG to ensure it fits
+    // const mapBBox_height_top = franceBBox.y;
+    // const mapBBox_height_bottom = franceBBox.height + mapBBox_height_top;
+    // clonedSvgFrance.setAttribute("viewBox", `${franceBBox.x} ${mapBBox_height_top} ${franceBBox.width} ${mapBBox_height_bottom}`);
+    // clonedSvgFrance.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+    
+
     const svgColorbar = d3.select("#svg-colorbar");
     const svgFrance = d3.select("#svg-france");
 
@@ -1430,27 +1509,38 @@ function exportSVG() {
     const franceBBox = svgFrance.node().getBBox();
     const colorbarBBox = svgColorbar.node().getBBox();
 
-    // Define dimensions for the combined SVG
-    const colorbarWidth = colorbarBBox.width + 10;
-    const colorbarHeight = colorbarBBox.height;
-    const franceWidth = franceBBox.width;
-    const franceHeight = franceBBox.height;
-    const combinedWidth = franceWidth + colorbarWidth - right_cut;
-    const combinedHeight = Math.max(franceHeight, colorbarHeight) + topMargin + bottomMargin; 
+    // Fixed map height for France
+    const fixedMapHeight = 331;
 
-    // Define new dimensions for the colorbar
-    const newColorbarHeight = combinedHeight * 0.4;  // Height is 1/3 of combined height
-    const colorbarAspectRatio = colorbarWidth / colorbarHeight;
-    const newColorbarWidth = newColorbarHeight * colorbarAspectRatio;
+    // Calculate the aspect ratio of the France SVG
+    const franceAspectRatio = franceBBox.width / franceBBox.height;
 
-    // Adjust the viewBox for the France SVG to ensure it fits
+    // Calculate the new width based on the fixed height
+    const franceWidth = fixedMapHeight * franceAspectRatio;
+    const franceHeight = fixedMapHeight;
+
+    // Adjust the viewBox for the France SVG to match the fixed height
     const mapBBox_height_top = franceBBox.y;
-    const mapBBox_height_bottom = franceBBox.height + mapBBox_height_top;
+    const mapBBox_height_bottom = franceHeight + mapBBox_height_top;
     clonedSvgFrance.setAttribute("viewBox", `${franceBBox.x} ${mapBBox_height_top} ${franceBBox.width} ${mapBBox_height_bottom}`);
     clonedSvgFrance.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-    // Create a new SVG container with adjusted dimensions
-    const combinedSVG = d3.select("body").append("svg")
+    // Adjust dimensions for the colorbar based on the new France map height
+    const combinedHeight = franceHeight + topMargin + bottomMargin; // New combined height with fixed map height
+    const colorbarHeight = combinedHeight * 0.4; // New colorbar height (40% of combined height)
+    const colorbarAspectRatio = colorbarBBox.width / colorbarBBox.height;
+    const colorbarWidth = colorbarHeight * colorbarAspectRatio + 10; // Adjusted colorbar width
+
+    // Calculate combined width by adding the colorbar's width and the France map width
+    const combinedWidth = franceWidth + colorbarWidth;
+    // - right_cut;
+
+    console.log(franceBBox);
+
+    
+
+    const combinedSVGNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const combinedSVG = d3.select(combinedSVGNode)
         .attr("width", combinedWidth)
         .attr("height", combinedHeight)
         .attr("xmlns", "http://www.w3.org/2000/svg");
@@ -1461,98 +1551,230 @@ function exportSVG() {
         .attr("y", 0)
         .attr("width", combinedWidth)
         .attr("height", combinedHeight)
-        .attr("fill", "#F5F5F5");  // Change this color as needed
+        .attr("fill", "#F5F5F5");
+
+
+    combinedSVG.append("line")
+	.attr("x1", left_title_line)
+	.attr("y1", top_title_line1) 
+	.attr("x2", left_title_line)
+	.attr("y2", top_title_line2) 
+	.attr("stroke", "#C5E7E7")
+	.attr("stroke-width", 7);
     
-    // Add title
     combinedSVG.append("text")
         .attr("x", left_title)
-        .attr("y", top_title)  // Centered vertically in the title space
+        .attr("y", top_title)
         .attr("text-anchor", "start")
-        .attr("font-size", "20px")
-        .attr("font-weight", "bold")
-	.attr("fill", "#060508")
-        .text("Title of the Graph");
+        .attr("font-size", "15px")
+	.attr("font-family", "Raleway, sans-serif")
+	.attr("font-weight", "800")
+        .attr("fill", "#16171f")
+        .selectAll("tspan")
+        .data(title_wrap)
+        .enter().append("tspan")
+        .attr("x", left_title)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1em")
+        .text(d => d);
+
+    combinedSVG.append("text")
+        .attr("x", left_subtitle)
+        .attr("y", top_subtitle)
+        .attr("text-anchor", "start")
+        .attr("font-size", "10px")
+	.attr("font-family", "Lato, sans-serif")
+	.attr("font-weight", "400")
+        .attr("fill", "#16171f")
+        .selectAll("tspan")
+        .data(subtitle_wrap)
+        .enter().append("tspan")
+        .attr("x", left_subtitle)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1em")
+        .text(d => d);
+    
 
     // Add footer
     combinedSVG.append("text")
         .attr("x", left_footer)
         .attr("y", combinedHeight - bottom_footer)
         .attr("text-anchor", "start")
-        .attr("font-size", "6px")
+        .attr("font-size", "5px")
+	.attr("font-family", "Lato, sans-serif")
+	.attr("font-weight", "400")
         .attr("fill", "#060508")
         .selectAll("tspan")
         .data([
-            "Ces résultats sont issus de projections hydrologiques réalisées sur la France. La mise à jour de ces projections a été réalisé",
-	    "entre 2022 et 2024 dans le cadre du projet national Explore2. Ces résultats sont un aperçu de quelques futures possibles pour",
-	    "la ressource en eau."
+            "Ces résultats sont issus de projections hydrologiques réalisées sur la France. La mise à jour",
+	    "de ces projections a été réalisé entre 2022 et 2024 dans le cadre du projet national Explore2.",
+	    "Ces résultats sont un aperçu de quelques futures possibles pour la ressource en eau."
         ])
         .enter().append("tspan")
         .attr("x", left_footer)
-        .attr("dy", (d, i) => i === 0 ? 0 : "1.2em")  // Adjust vertical spacing between lines
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")
         .text(d => d);
-
-    // Add the SVG logo
-    combinedSVG.append("image")
-	.attr("href", "/resources/logo/MEANDRE_logo.svg") // Path to your logo file
-	.attr("x", left_logo + width_logo)
-	.attr("y", combinedHeight - height_logo - bottom_logo) // Adjusted to account for height
-	.attr("width", width_logo)  // Desired width of the logo
-	.attr("height", height_logo)  // Desired height of the logo
-	.attr("preserveAspectRatio", "xMidYMid meet");
-
     
     // Append France to combined SVG
     combinedSVG.append(() => clonedSvgFrance)
         .attr("x", 0)
-        .attr("y", topMargin) // Adjust Y to leave space for the title
+        .attr("y", topMargin)
         .attr("width", franceWidth)
         .attr("height", franceHeight);
 
     // Append colorbar to combined SVG
     combinedSVG.append(() => clonedSvgColorbar)
         .attr("x", franceWidth + left_colorbar)
-        .attr("y", top_colorbar) // Adjust Y to ensure it fits in the bottom space
-        .attr("width", newColorbarWidth)
-        .attr("height", newColorbarHeight);
+        .attr("y", top_colorbar)
+        .attr("width", colorbarWidth)
+        .attr("height", colorbarHeight);
 
-    // Serialize the combined SVG to a string
-    const combinedSVGNode = combinedSVG.node();
-    const svgString = new XMLSerializer().serializeToString(combinedSVGNode);
-    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-    const svgUrl = URL.createObjectURL(svgBlob);
 
-    // Set the resolution multiplier
-    const resolutionMultiplier = 5; // Change this value to increase or decrease resolution
+    combinedSVG.append("line")
+	.attr("x1", left_sep_line)
+	.attr("y1", combinedHeight - bottom_sep_line1) 
+	.attr("x2", left_sep_line)
+	.attr("y2", combinedHeight - bottom_sep_line2) 
+	.attr("stroke", "#C5E7E7")
+	.attr("stroke-width", 2);
+    
+    combinedSVG.append("text")
+        .attr("x", left_meandre)
+        .attr("y", combinedHeight - bottom_meandre)
+        .attr("text-anchor", "start")
+        .attr("font-size", "13px")
+	.attr("font-family", "Raleway, sans-serif")
+        .attr("font-weight", "900")
+	.attr("fill", "#16171f")
+        .text("MEANDRE");
 
-    // Create an image element to render the SVG data
-    const img = new Image();
-    img.onload = function () {
-        // Create a canvas with the scaled dimensions
-        const canvas = document.createElement("canvas");
-        canvas.width = combinedWidth * resolutionMultiplier;
-        canvas.height = combinedHeight * resolutionMultiplier; // Include extra space
-        const ctx = canvas.getContext("2d");
-        ctx.scale(resolutionMultiplier, resolutionMultiplier);
+    combinedSVG.append("text")
+        .attr("x", left_url)
+        .attr("y", combinedHeight - bottom_url)
+        .attr("text-anchor", "start")
+        .attr("font-size", "5px")
+	.attr("font-family", "Raleway, sans-serif")
+        .attr("font-weight", "500")
+	.attr("fill", "#16171f")
+        .text("meandre.explore2.inrae.fr");
 
-        // Draw the SVG on the canvas
-        ctx.drawImage(img, 0, 0);
+    combinedSVG.append("text")
+        .attr("x", combinedWidth - right_lo_text)
+        .attr("y", combinedHeight - bottom_lo_text)
+        .attr("text-anchor", "start")
+        .attr("font-size", "6px")
+	.attr("font-family", "Arial, sans-serif")
+	.attr("font-weight", "300")
+        .attr("fill", "#89898A")
+        .selectAll("tspan")
+        .data([
+            "Licence",
+	    "Ouverte"
+        ])
+        .enter().append("tspan")
+        .attr("x", combinedWidth - right_lo_text)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")  // Adjust vertical spacing between lines
+        .text(d => d);
+    
 
-        // Export the canvas as a PNG
-        const pngData = canvas.toDataURL("image/png");
+    // Fetch the first logo (MEANDRE logo)
+    fetch('/resources/logo/MEANDRE_logo.svg')
+	.then(response => response.text())
+	.then(svgData => {
+            const base64Logo1 = btoa(svgData);
 
-        // Create a link element to download the PNG
-        const link = document.createElement("a");
-        link.download = "combined.png";
-        link.href = pngData;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+            // Append the first logo (MEANDRE)
+            combinedSVG.append("image")
+		.attr("href", "data:image/svg+xml;base64," + base64Logo1)
+		.attr("x", left_logo)
+		.attr("y", combinedHeight - bottom_logo)
+		.attr("width", width_logo)
+		.attr("height", height_logo)
+		.attr("preserveAspectRatio", "xMidYMid meet");
 
-        // Clean up
-        URL.revokeObjectURL(svgUrl);
-    };
-    img.src = svgUrl;
+            // Fetch the second logo (another SVG)
+            fetch('/resources/licence_ouverte/Logo-licence-ouverte2_grey.svg')
+		.then(response => response.text())
+		.then(svgData2 => {
+                    const base64Logo2 = btoa(svgData2);
 
-    // Remove the combined SVG from the document
-    combinedSVG.remove();
+                    // Append the second logo
+                    combinedSVG.append("image")
+			.attr("href", "data:image/svg+xml;base64," + base64Logo2)
+			.attr("x", combinedWidth - right_lo)
+			.attr("y", combinedHeight - bottom_lo) 
+			.attr("width", width_lo)
+			.attr("height", height_lo)
+			.attr("preserveAspectRatio", "xMidYMid meet");
+
+                    // Serialize the combined SVG to a string
+                    const combinedSVGNode = combinedSVG.node();
+                    const svgString = new XMLSerializer().serializeToString(combinedSVGNode);
+                    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+                    const svgUrl = URL.createObjectURL(svgBlob);
+
+                    // Set the resolution multiplier
+                    const resolutionMultiplier = 5;  // Change this value to increase or decrease resolution
+
+                    // Create an image element to render the SVG data
+                    const img = new Image();
+                    img.onload = function () {
+			// Create a canvas with the scaled dimensions
+			const canvas = document.createElement("canvas");
+			canvas.width = combinedWidth * resolutionMultiplier;
+			canvas.height = combinedHeight * resolutionMultiplier; // Include extra space
+			const ctx = canvas.getContext("2d");
+			ctx.scale(resolutionMultiplier, resolutionMultiplier);
+
+			// Draw the SVG on the canvas
+			ctx.drawImage(img, 0, 0);
+
+			// Export the canvas as a PNG
+			const pngData = canvas.toDataURL("image/png");
+
+			// Create a link element to download the PNG
+			const link = document.createElement("a");
+			link.download = "combined.png";
+			link.href = pngData;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+
+			// Clean up
+			URL.revokeObjectURL(svgUrl);
+                    };
+                    img.src = svgUrl;
+
+                    // Remove the combined SVG from the document
+                    combinedSVG.remove();
+		});
+	});
+
 }
+
+
+function wrapTextByCharacterLimit(text, maxChars) {
+    let words = text.split(' '); // Split the text into words
+    let lines = [];
+    let currentLine = [];
+
+    words.forEach(word => {
+        let currentLineLength = currentLine.join(' ').length;
+
+        // If the word fits within the max limit, add it to the current line
+        if (currentLineLength + word.length + 1 <= maxChars) {
+            currentLine.push(word);
+        } else {
+            // If the line reaches the limit, push it to lines and start a new line
+            lines.push(currentLine.join(' '));
+            currentLine = [word];
+        }
+    });
+
+    // Add the last line if there are remaining words
+    if (currentLine.length > 0) {
+        lines.push(currentLine.join(' '));
+    }
+
+    return lines;
+}
+
+
