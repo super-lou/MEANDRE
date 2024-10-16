@@ -295,13 +295,6 @@ function show_HM(selectedButton) {
 }
 
 
-
-function get_RCP() {
-    const selectedButton = document.querySelector('#bunch_RCP_only .selected');
-    const RCP = selectedButton.querySelector('span').innerText;
-    return RCP;
-}
-
 function get_n() {
     var slider = document.getElementById('slider-n');
     var n = parseInt(slider.noUiSlider.get());
@@ -320,10 +313,34 @@ function get_variable() {
     }
 }
 
-function get_horizon(horizon) {
-    var bunchHorizon = $('#bunch-horizon_'+horizon);
+function get_horizon() {
+    var bunchHorizon = $('#bunch-horizon_futur');
     var buttonHorizon = bunchHorizon.find('.selected')[0];
-    var horizon = buttonHorizon.getAttribute('value');
+    var H = buttonHorizon.getAttribute('value');
+
+    if (H === "H1") {
+	var horizon_period = "2021 - 2050";
+	var horizon_name = "proche";
+	var horizon_text = "en début de siècle 2021-2050";
+	
+    } else if (H === "H2") {
+	var horizon_period = "2041 - 2070";
+	var horizon_name = "moyen";
+	var horizon_text = "en milieu de siècle 2041-2070";
+	
+    } else if (H === "H3") {
+	var horizon_period = "2070 - 2099";
+	var horizon_name = "lointain";
+	var horizon_text = "en fin de siècle 2070-2099";
+    }
+
+    const horizon = {
+	H: H,
+	period: horizon_period,
+	name: horizon_name,
+	text: horizon_text
+    };
+
     return horizon;
 }
 
@@ -350,31 +367,46 @@ function get_HM() {
     return HM;
 }
 
+const RCP_map = {
+    "26": {
+	name: "RCP 2.6"
+    },
+    "45": {
+	name: "RCP 4.5"
+    },
+    "85": {
+	name: "RCP 8.5"
+    }
+};
 
-function get_RCP_only() {
-    var container = document.getElementById('bunch_RCP_only');
-    var selectedButton = container.querySelector('button.selected');
-    return selectedButton.value;
+function get_RCP_value() {
+    if (drawer_mode === 'drawer-chain') {
+	var RCP_value = document.querySelector('#bunch_RCP .selected').value;
+    } else if (drawer_mode === 'drawer-narratif') {
+	var RCP_value = "85";
+    } else if (drawer_mode === 'drawer-RCP') {
+	var RCP_value = document.querySelector('#bunch_RCP_only .selected').value;
+    }
+    return RCP_value;
 }
 
 function get_narratif_only() {
     var container = document.getElementById('bunch_narratif');
-    // var selectedButton = container.querySelector('button.selected');
     var selectedButtons = container.querySelectorAll('div.selected');
     var values = [];
     selectedButtons.forEach(function(button) {
         values.push(button.getAttribute('value'));
     });
-    // return [selectedButton.value];
     return values;
 }
 
-function get_chain() {
-    // var drawer_to_check = ['drawer-narratif',
-    // 			   'drawer-RCP',
-    // 			   'drawer-chain'];
+function get_projection() {
 
+    var RCP_value = get_RCP_value();
+    console.log(RCP_value);
+    
     if (drawer_mode === 'drawer-chain') {
+	var type = "Sélection avancée";
 	var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]:visible');
 	var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]:visible');
 	var chain = [];
@@ -385,8 +417,8 @@ function get_chain() {
 	});
 	
     } else if (drawer_mode === 'drawer-narratif') {
+	var type = "Sélection par narratif";
 	var EXP_GCM_RCM_BC = get_narratif_only();
-	// console.log(EXP_GCM_RCM_BC);
 	var HM = ["CTRIP", "EROS", "GRSD", "J2000", "MORDOR-SD",
 		  "MORDOR-TS", "ORCHIDEE", "SIM2", "SMASH"];
 	var chain = [];
@@ -397,7 +429,8 @@ function get_chain() {
 	});
 
     } else if (drawer_mode === 'drawer-RCP') {
-	var rcp = "chain_" + get_RCP_only();
+	var type = "Par niveau d'émissions";
+	var rcp = "chain_" + RCP_value;
 	var EXP_GCM_RCM = get_chunk_of_chain('[id^="block_"][id$="_RCM"]',
 					     search=rcp);
 	var BC_HM = get_chunk_of_chain('[id^="block_"][id$="_HM"]',
@@ -414,6 +447,25 @@ function get_chain() {
 	return "historical-rcp" + element;
     });
 
-    return chain;
+    var exp = chain[0].split('_')[0].replace('-', '_');
+
+    var chain_vert = chain.filter(item => item.includes("85_HadGEM2-ES_ALADIN63_ADAMONT"));
+    var chain_jaune = chain.filter(item => item.includes("85_CNRM-CM5_ALADIN63_ADAMONT"));
+    var chain_orange = chain.filter(item => item.includes("85_EC-EARTH_HadREM3-GA7_ADAMONT"));
+    var chain_violet = chain.filter(item => item.includes("85_HadGEM2-ES_CCLM4-8-17_ADAMONT"));
+    
+    const projection = {
+	type: type,
+	RCP: RCP_map[RCP_value].name,
+	exp: exp,
+	chain: chain,
+	chain_vert:chain_vert,
+	chain_jaune:chain_jaune,
+	chain_orange:chain_orange,
+	chain_violet:chain_violet
+    };
+
+    return projection;
 }
+
 

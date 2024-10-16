@@ -244,8 +244,6 @@ let svgFrance_violet;
 function update_data_point() {
 
     var url = window.location.pathname;
-    console.log(url);
-
     let check_cache;
     if (url === "/exploration-avancee") {
 	check_cache = false; 
@@ -264,17 +262,16 @@ function update_data_point() {
     
     var n = get_n();
     var variable = get_variable();
-    var horizon = get_horizon("futur");
-    var chain = get_chain();
-    var exp = chain[0].split('_')[0].replace('-', '_');
+    var horizon = get_horizon();
+    var projection = get_projection();
     
     if (drawer_mode === 'drawer-narratif') {
 	var data_query = {
 	    n: n,
-            exp: exp,
-            chain: chain,
+            exp: projection.exp,
+            chain: projection.chain,
             variable: variable,
-            horizon: horizon,
+            horizon: horizon.H,
 	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
@@ -292,17 +289,12 @@ function update_data_point() {
 		check_url_after_data();
 	    })
 
-	var chain_vert = chain.filter(item => item.includes("85_HadGEM2-ES_ALADIN63_ADAMONT"));
-	var chain_jaune = chain.filter(item => item.includes("85_CNRM-CM5_ALADIN63_ADAMONT"));
-	var chain_orange = chain.filter(item => item.includes("85_EC-EARTH_HadREM3-GA7_ADAMONT"));
-	var chain_violet = chain.filter(item => item.includes("85_HadGEM2-ES_CCLM4-8-17_ADAMONT"));
-	
 	var data_query = {
 	    n: n,
-            exp: exp,
-            chain: chain_vert,
+            exp: projection.exp,
+            chain: projection.chain_vert,
             variable: variable,
-            horizon: horizon,
+            horizon: horizon.H,
 	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
@@ -321,10 +313,10 @@ function update_data_point() {
 
 	var data_query = {
 	    n: n,
-            exp: exp,
-            chain: chain_jaune,
+            exp: projection.exp,
+            chain: projection.chain_jaune,
             variable: variable,
-            horizon: horizon,
+            horizon: horizon.H,
 	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
@@ -343,10 +335,10 @@ function update_data_point() {
 
 	var data_query = {
 	    n: n,
-            exp: exp,
-            chain: chain_orange,
+            exp: projection.exp,
+            chain: projection.chain_orange,
             variable: variable,
-            horizon: horizon,
+            horizon: horizon.H,
 	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
@@ -365,10 +357,10 @@ function update_data_point() {
 
 	var data_query = {
 	    n: n,
-            exp: exp,
-            chain: chain_violet,
+            exp: projection.exp,
+            chain: projection.chain_violet,
             variable: variable,
-            horizon: horizon,
+            horizon: horizon.H,
 	    check_cache: check_cache,
 	};
 	fetch(api_base_url + "/get_delta_on_horizon", {
@@ -389,10 +381,10 @@ function update_data_point() {
     } else {
 	var data_query = {
 	    n: n,
-            exp: exp,
-            chain: chain,
+            exp: projection.exp,
+            chain: projection.chain,
             variable: variable,
-            horizon: horizon,
+            horizon: horizon.H,
 	    check_cache: check_cache,
 	};
 
@@ -424,16 +416,15 @@ function update_data_serie() {
     $('#line-loading').css('display', 'flex');
     
     var variable = get_variable();
-    var chain = get_chain();
-    var exp = chain[0].split('_')[0].replace('-', '_');
+    var projection = get_projection();
 
     console.log("selected_code");
     console.log(selected_code);
     
     var data_query = {
 	code: selected_code,
-        exp: exp,
-        chain: chain,
+        exp: projection.exp,
+        chain: projection.chain,
         variable: variable,
     };
 
@@ -641,19 +632,8 @@ function update_grid(data_back) {
     }
     
     var n = get_n();
-    var horizon = get_horizon("futur");
+    var horizon = get_horizon();
     
-    if (horizon === "H1") {
-	var period = "2021 - 2050";
-	var horizon_name = "proche";
-    } else if (horizon === "H2") {
-	var period = "2041 - 2070";
-	var horizon_name = "moyen";
-    } else if (horizon === "H3") {
-	var period = "2070 - 2099";
-	var horizon_name = "lointain";
-    }
-
     const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
 		    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
     var sampling_period = data_back.sampling_period_fr;    
@@ -670,17 +650,14 @@ function update_grid(data_back) {
 	sampling_period = "débutant au " + sampling_period.toLowerCase();
     }    
     
-    var chain = get_chain();
-    var exp = chain[0].split('_')[0].replace('-', '_');
-    
     document.getElementById("grid-variable_variable").textContent = variable;
     document.getElementById("grid-variable_sampling-period").innerHTML = "Année hydrologique " + sampling_period;
     document.getElementById("grid-variable_name").innerHTML = data_back.name_fr;
     
-    document.getElementById("grid-horizon_name").innerHTML = "Horizon " + horizon_name;
+    document.getElementById("grid-horizon_name").innerHTML = "Horizon " + horizon.name;
 
-    period = period.replace(/ - /g, "</b> à <b>");
-    document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur de <b>" + period + "</b>";
+    horizon_period = horizon.period.replace(/ - /g, "</b> à <b>");
+    document.getElementById("grid-horizon_period-l1").innerHTML = "Période futur de <b>" + horizon_period + "</b>";
     document.getElementById("grid-horizon_period-l2").innerHTML = "Période de référence de <b>1976</b> à <b>2005</b>";
 
     $(".grid-n_text").css("display", "flex");
@@ -698,16 +675,16 @@ function update_grid(data_back) {
 	} else if (drawer_mode === "drawer-RCP") {
     	    $("#grid-chain_drawer-RCP").css("display", "flex");
 
-	    var RCP = get_RCP();
+	    var RCP_value = get_RCP_value();
 	    $("#grid-chain_RCP26-text").css("display", "none");
 	    $("#grid-chain_RCP45-text").css("display", "none");
 	    $("#grid-chain_RCP85-text").css("display", "none");
 	    
-	    if (RCP === "RCP 2.6") {
+	    if (RCP_value === "26") {
 		$("#grid-chain_RCP26-text").css("display", "block");
-	    } else if (RCP === "RCP 4.5") {
+	    } else if (RCP_value === "45") {
 		$("#grid-chain_RCP45-text").css("display", "block");
-	    } else if (RCP === "RCP 8.5") {
+	    } else if (RCP_value === "85") {
 		$("#grid-chain_RCP85-text").css("display", "block");
 	    }
 	    
@@ -742,14 +719,11 @@ function make_list(from, to) {
 
 function draw_colorbar(data_back) {
     // Get the bins and palette
+    var unit = data_back.unit_fr;
     var bin = data_back.bin.slice(1, -1).reverse();
     var Palette = data_back.palette.reverse();
     var step = 25;
     var shift = 20;
-    var to_normalise = data_back.to_normalise;
-
-    // Determine the unit based on normalization
-    var unit = to_normalise ? "%" : "jours";
 
     // Select the SVG and convert it to a DOM node
     const svg = d3.select("#svg-colorbar");
@@ -920,7 +894,7 @@ const strokeWith_river_min = 0.4;
 let width = window.innerHeight;
 let height = window.innerHeight;
 
-let projection;
+let projectionMap;
 
 
 function update_map(id_svg, svgElement, data_back) {
@@ -934,7 +908,7 @@ function update_map(id_svg, svgElement, data_back) {
     }
 
     function redrawMap() {
-	const pathGenerator = d3.geoPath(projection);
+	const pathGenerator = d3.geoPath(projectionMap);
 	const simplifiedGeoJSON_france = geotoolbox.simplify(geoJSONdata_france, { k: k_simplify, merge: false });
 	const selectedGeoJSON_river = geotoolbox.filter(geoJSONdata_river, (d) => d.norm >= riverLength);
 	const simplifiedselectedGeoJSON_river = geotoolbox.simplify(selectedGeoJSON_river, { k: k_simplify, merge: false });
@@ -986,7 +960,7 @@ function update_map(id_svg, svgElement, data_back) {
 
 	zoom.translateExtent([[-width*maxPan, -height*maxPan], [width*(1+maxPan), height*(1+maxPan)]]);
 	svgElement.attr("width", width).attr("height", height);
-	projection.scale([height*scale]).translate([width / 2, height / 2]);	    
+	projectionMap.scale([height*scale]).translate([width / 2, height / 2]);	    
 
 	redrawMap();
 	highlight_selected_point();
@@ -1005,7 +979,7 @@ function update_map(id_svg, svgElement, data_back) {
 	      highlight_selected_point();
 	  });
 
-    projection = d3.geoMercator()
+    projectionMap = d3.geoMercator()
 	  .center(geoJSONdata_france.features[0].properties.centroid);
 
      svgElement = d3.select(id_svg)
@@ -1164,10 +1138,10 @@ function redrawPoint(svgElement, data_back) {
 	    .join("circle")
 	    .attr("class", "point")
 	    .attr("cx", function(d) {
-		return projection([d.lon_deg, d.lat_deg])[0];
+		return projectionMap([d.lon_deg, d.lat_deg])[0];
 	    })
 	    .attr("cy", function(d) {
-		return projection([d.lon_deg, d.lat_deg])[1];
+		return projectionMap([d.lon_deg, d.lat_deg])[1];
 	    })
 	    .attr("r", 3)
 	    .attr("fill", function(d) {
@@ -1406,18 +1380,11 @@ function exportCombinedSVG() {
 function exportSVG() {
 
     var title = data_point.name_fr;
-    var horizon = get_horizon("futur");
-    if (horizon === "H1") {
-	var horizon_period = "en début de siècle 2021-2050";
-    } else if (horizon === "H2") {
-	var horizon_period = "en milieu de siècle 2041-2070";
-    } else if (horizon === "H3") {
-	var horizon_period = "en fin de siècle 2070-2099";
-    }
+    var horizon = get_horizon();
     var model = "Au moins " + get_n() + " modèles hydrologiques par point";
     
     var relatif = data_point.to_normalise ? "relatif " : "";
-    var subtitle = "Changements " + relatif + horizon_period + " par rapport à la période de référence 1976-2005";
+    var subtitle = "Changements " + relatif + horizon.text + " par rapport à la période de référence 1976-2005";
 
     const width_max_title = 42;
     const width_max_subtitle = 60;
@@ -1794,3 +1761,293 @@ function wrapTextByCharacterLimit(text, maxChars) {
 }
 
 
+function getFormattedDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+function slugify(str) {
+    return str
+        .normalize('NFD') // Decompose accents
+        .replace(/[\u0300-\u036f]/g, '') // Remove accents
+        .replace(/\s+/g, '_')
+        .toLowerCase();
+}
+
+
+const Storylines_map = {
+    "vert": {
+	chain: "historical-rcp85_HadGEM2-ES_ALADIN63_ADAMONT",
+	info: "Réchauffement marqué et augmentation des précipitations",
+	info_readme: "Narratif vert, réchauffement marqué et augmentation\ndes précipitations.",
+	color: "#569A71"
+    },
+    "jaune": {
+	chain: "historical-rcp85_CNRM-CM5_ALADIN63_ADAMONT",
+	info: "Changements futurs relativement peu marqués",
+	info_readme: "Narratif jaune, changements futurs relativement peu marqués.",
+	color: "#EECC66"
+    },
+    "orange": {
+	chain: "historical-rcp85_EC-EARTH_HadREM3-GA7_ADAMONT",
+	info: "Fort réchauffement et fort assèchement en été (et en annuel)",
+	info_readme: "Narratif orange, fort réchauffement et fort assèchement en été\n(et en annuel).",
+	color: "#E09B2F"
+    },
+    "violet": {
+	chain: "historical-rcp85_HadGEM2-ES_CCLM4-8-17_ADAMONT",
+	info: "Fort réchauffement et forts contrastes saisonniers en précipitations",
+	info_readme: "Narratif violet, fort réchauffement et forts contrastes saisonniers\nen précipitations",
+	color: "#791F5D"
+    }
+};
+
+
+function get_files (data, variable, chain) {
+    const csvData_meta_projection = [];
+    chain.forEach(item => {
+        const components = item.split('_');
+	let storyline_name = '';
+	let storyline_info = '';
+	let storyline_color = '';
+	for (const [key, value] of Object.entries(Storylines_map)) {
+	    if (item.includes(value.chain)) {
+                storyline_name = key;
+		storyline_info = value.info;
+                storyline_color = value.color;
+                break;
+	    }
+        }
+        const row = {
+	    chain: item,
+	    RCP: components[0],
+	    GCM: components[1],
+	    RCM: components[2],
+	    BC: components[3],
+	    HM: components[4],
+	    storyline_name: storyline_name,
+	    storyline_info: storyline_info,
+	    storyline_color: storyline_color
+        };
+        csvData_meta_projection.push(row);
+    });
+    const csv_meta_projection = Papa.unparse(csvData_meta_projection, {
+        columns: ["chain", "RCP", "GCM", "RCM", "BC", "HM",
+		  "storyline_name", "storyline_info", "storyline_color"]
+    });
+    
+    // meta_variable
+    const csvData_meta_variable = [];
+    const row = {};
+    Object.entries(data).forEach(([key, value]) => {
+        if (key === 'data') {
+	    return;
+        }
+        if (Array.isArray(value)) {
+	    row[key] = value.join(", ");
+        } else {
+	    row[key] = value;
+        }
+    });
+    csvData_meta_variable.push(row);
+
+    let fieldOrder
+    fieldOrder = [
+	"variable_en",
+	"unit_en",
+	"name_en",
+	"description_en",
+	"method_en",
+	"sampling_period_en",
+	"topic_en",
+        "variable_fr",
+        "unit_fr",
+	"name_fr",
+	"description_fr",
+	"method_fr",
+	"sampling_period_fr",
+	"topic_fr",
+        "is_date",
+        "to_normalise",
+        "palette",
+        "bin"
+    ];
+    const csv_meta_variable = Papa.unparse(csvData_meta_variable, {
+        columns: fieldOrder
+    });
+
+    // data meta_point
+    const csvData_data = [];
+    const csvData_meta_point = [];
+
+    data.data.forEach(item => {
+	csvData_data.push({
+            code: item.code,
+            [variable]: item.value,
+            fill: item.fill
+	});
+
+	const { fill, fill_text, value, ...otherFields } = item;
+	csvData_meta_point.push(otherFields);
+    });
+
+    // Convert data to CSV format
+    const csv_data = Papa.unparse(csvData_data);
+
+    fieldOrder = [
+	"code",
+	"code_hydro2",
+	"is_reference",
+	"name",
+	"hydrological_region",
+	"lat_deg",
+	"lon_deg",
+	"xl93_m",
+	"yl93_m",
+	"n_rcp26",
+	"n_rcp45",
+	"n_rcp85",
+	"surface_km2",
+	"surface_ctrip_km2",
+	"surface_eros_km2",
+	"surface_grsd_km2",
+	"surface_j2000_km2",	    
+	"surface_mordor_sd_km2",
+	"surface_mordor_ts_km2",
+	"surface_orchidee_km2",
+	"surface_sim2_km2",
+	"surface_smash_km2"
+    ];
+    const csv_meta_point = Papa.unparse(csvData_meta_point, {
+        columns: fieldOrder
+    });
+
+    const files = {
+	"data.csv": csv_data,
+	"meta_point.csv": csv_meta_point,
+	"meta_variable.csv": csv_meta_variable,
+	"meta_projection.csv": csv_meta_projection
+    };
+
+    return files;
+}
+
+
+async function exportData () {
+    var n = get_n();
+    var variable = get_variable();
+    var projection = get_projection();
+    var horizon = get_horizon();
+
+    var title = data_point.name_fr;
+    var relatif = data_point.to_normalise ? "relatif " : "";
+    var subtitle = "Changements " + relatif + horizon.text +
+	"\n             par rapport à la période de référence 1976-2005";
+
+    var filename =
+	"MEANDRE-export+" +
+	"var-" + variable + "+" + 
+	"H-" + horizon.period.replace(/ - /g, '_') + "+" +
+	"n-"+ n + "+" + 
+	"chain-" + slugify(projection.type) +
+	".zip";
+
+    let chain_info;
+    if (drawer_mode === 'drawer-RCP') {
+	chain_info = "Moyenne multi-modèles par niveau d'émissions.\n";
+	if (projection.RCP === "RCP 2.6") {
+	    chain_info = chain_info + "Le RCP 2.6 est un scénario où des efforts importants sont fait pour\nréduire les émissions.";
+	} else if (projection.RCP === "RCP 4.5") {
+	    chain_info = chain_info + "Le RCP 4.5 est un scénario où des efforts modérés sont fait pour\nréduire les émissions.";
+	} else if (projection.RCP === "RCP 8.5") {
+	    chain_info = chain_info + "Le RCP 8.5 est un scénario où l'augmentation des émissions\ncontinue selon la tendance actuelle.";
+	}
+    } else if (drawer_mode === 'drawer-chain') {
+	chain_info = "Attention : Chaînes de modélisation spécifiques, l'approche\n" +
+	    "multi-modèle doit être privilégiée. Le détail des chaînes de\n" +
+	    "modélisation sélectionnées est disponible dans le fichier\n" +
+	    "meta_projection.csv"
+    }
+
+    // README
+    let README = await fetch('/resources/README.txt');
+    README = await README.text();
+    var time = getFormattedDateTime();
+    let param =
+	"Titre : " + title + "\n" +
+	"Sous-titre : " + subtitle + "\n\n" +	
+	"Variable : " + variable + "\n" +
+	"Unité : " + data_point.unit_fr + "\n" +
+	"Horizon : " + horizon.period + "\n" +
+	"Nombre de point : Il y a au moins " + n + " modèles hydrologiques par point\n" +
+	"Scénario d'émission : " + projection.RCP + "\n" + 
+	"Chaînes de modélisations : " + projection.type + "\n\n";
+
+    // licence fr
+    const pdfResponse_LO_fr = await fetch('/resources/licence_ouverte/ETALAB-Licence-Ouverte-v2.0.pdf');
+    const pdf_LO_fr = await pdfResponse_LO_fr.blob();
+    // licence en
+    const pdfResponse_LO_en = await fetch('/resources/licence_ouverte/ETALAB-Open-Licence-v2.0.pdf');
+    const pdf_LO_en = await pdfResponse_LO_en.blob();
+
+    let zip;
+    
+    if (drawer_mode === 'drawer-narratif') {
+	const data_point_storyline = {
+	    "vert": data_point_vert,
+	    "jaune": data_point_jaune,
+	    "orange": data_point_orange,
+	    "violet": data_point_violet
+	}
+	zip = new JSZip();
+	Object.keys(data_point_storyline).forEach(storyline => {
+	    const folder = zip.folder(storyline);
+	    const files = get_files(data_point_storyline[storyline],
+				    variable,
+				    projection["chain_" + storyline]);
+	    for (const [fileName, content] of Object.entries(files)) {
+		folder.file(fileName, content);
+	    }
+
+	    var param_tmp = param + Storylines_map[storyline].info_readme;
+	    README_tmp = README
+		.replace(/\[DATE\]/g, time)
+		.replace(/\[PARAM\]/g, param_tmp);
+	    folder.file("README.txt", README_tmp);
+	    
+	    folder.file("ETALAB-Licence-Ouverte-v2.0.pdf", pdf_LO_fr);
+	    folder.file("ETALAB-Open-Licence-v2.0.pdf", pdf_LO_en);
+	});
+	
+    } else {
+	zip = new JSZip();
+	const files = get_files(data_point, variable,
+				projection.chain);
+	for (const [fileName, content] of Object.entries(files)) {
+	    zip.file(fileName, content);
+	}
+
+	var param_tmp = param + chain_info;
+	README_tmp = README
+	    .replace(/\[DATE\]/g, time)
+	    .replace(/\[PARAM\]/g, param_tmp);
+	zip.file("README.txt", README_tmp);
+	
+	zip.file("ETALAB-Licence-Ouverte-v2.0.pdf", pdf_LO_fr);
+	zip.file("ETALAB-Open-Licence-v2.0.pdf", pdf_LO_en);
+    }
+
+    zip.generateAsync({ type: "blob" })
+        .then(function(content) {
+	    const link = document.createElement("a");
+	    link.href = URL.createObjectURL(content);
+	    link.download = filename;
+	    link.click();
+        });
+}

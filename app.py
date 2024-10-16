@@ -149,11 +149,15 @@ def delta_post():
         rows = result.fetchall()
         meta = [{f"{column_name}": value for column_name, value in zip(columns, row)} for row in rows][0]
         connection.close()
-        
+
+        if meta["to_normalise"]:
+            meta["unit_fr"] = "%"
+            meta["unit_en"] = "%"
+          
         Palette = meta['palette']
         Palette = Palette.split(" ")
         meta['palette'] = Palette
-        
+      
         Code = [x['code'] for x in data]
         nCode = len(Code)
         

@@ -361,8 +361,9 @@ h3 {
     position: absolute;
     bottom: 0.5rem;
     left: 1rem;
+    z-index: 1;
 }
-#screenshot, #download {
+#screenshot, #export {
     position: relative;
     color: #060508;
     font-size: 1rem;
@@ -373,14 +374,15 @@ h3 {
     width: fit-content;
     height: fit-content;
 }
-#screenshot:hover, #download:hover {
+#screenshot:hover, #export:hover {
     color: #70757A;
 }
 #screenshot {
     border-radius: 8px 0px 0px 8px;
 }
-#download {
-    border-radius: 0px 8px 8px 0px;
+#export {
+    /* border-radius: 0px 8px 8px 0px; */
+    border-radius: 8px;
 }
 
 
