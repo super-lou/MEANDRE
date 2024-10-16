@@ -401,9 +401,7 @@ function get_narratif_only() {
 }
 
 function get_projection() {
-
     var RCP_value = get_RCP_value();
-    console.log(RCP_value);
     
     if (drawer_mode === 'drawer-chain') {
 	var type = "Sélection avancée";
