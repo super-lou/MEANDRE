@@ -259,13 +259,19 @@ HM
   -- description : Modèle hydrologique considéré
   -- valeurs autorisées : caratère
 
-storyline
-  -- nom : narratif
+storyline_name
+  -- nom : nom du narratif
   -- description : Nom du narratif associé si il existe
   -- valeurs autorisées : caratère
 
-color
-  -- nom : couleur
+storyline_info
+  -- nom : information du narratif
+  -- description : Informations caractéristiques du narratif associé
+                   si il existe
+  -- valeurs autorisées : caratère
+  
+storyline_color
+  -- nom : couleur du narratif
   -- description : Couleur hexadécimale associée au narratif
                    si il existe
   -- valeurs autorisées : caratère
