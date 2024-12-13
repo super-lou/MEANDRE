@@ -17,14 +17,12 @@
         {
             "type": "Role",
             "schema:author": "https://orcid.org/0009-0006-4372-0923",
-            "roleName": "Maintainer",
-            "startDate": "2022-03-01"
+            "roleName": "Maintainer"
         },
         {
             "type": "Role",
             "schema:author": "https://orcid.org/0009-0006-4372-0923",
-            "roleName": "Developper",
-            "startDate": "2022-03-01"
+            "roleName": "Developper"
         },
         {
             "id": "https://orcid.org/0000-0002-3748-6150",
