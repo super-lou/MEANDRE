@@ -8,7 +8,7 @@
 
 
 [MEANDRE](https://meandre.explore2.inrae.fr/) présente de manière guidée un regard d'expert sur les résultats des projections hydrologiques réalisées sur la France. La mise à jour de ces projections a été réalisé entre 2022 et 2024 dans le cadre du projet national [Explore2](https://professionnels.ofb.fr/fr/node/1244).<br>
-Ces résultats sont un aperçu de quelques futures possibles pour la ressource en eau.
+Ces résultats sont un aperçu de quelques futurs possibles pour la ressource en eau.
 
 [<img src="https://github.com/super-lou/MEANDRE/blob/3ddb682aa3fa38a18fdd36292dd8aa51e6a9d565/static/resources/thumbnail.png">](https://meandre.explore2.inrae.fr/)
 
