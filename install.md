@@ -64,6 +64,15 @@ Secure this dir
 ``` sh
 sudo chown -R root:root $SERVER_DIR/MEANDRE
 sudo chmod -R 755 $SERVER_DIR/MEANDRE
+
+sudo chown root:www-data $SERVER_DIR/MEANDRE/app.py
+sudo chmod 750 $SERVER_DIR/MEANDRE/app.py
+
+sudo chown root:www-data $SERVER_DIR/MEANDRE/app.wsgi
+sudo chmod 750 $SERVER_DIR/MEANDRE/app.wsgi
+
+sudo chown root:www-data $SERVER_DIR/MEANDRE/.env
+sudo chmod 440 $SERVER_DIR/MEANDRE/.env
 ```
 
 

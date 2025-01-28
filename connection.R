@@ -22,7 +22,7 @@
 
 library(dotenv)
 
-load_dot_env("/var/www/MEANDRE/.env")
+load_dot_env(".env")
 APP_NAME = Sys.getenv("APP_NAME")
 URL = Sys.getenv("URL")
 FROM = Sys.getenv("FROM")

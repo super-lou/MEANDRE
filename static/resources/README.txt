@@ -4,6 +4,7 @@
 |_|_|_|\___|\__,_||_||_|\__,_||_|  \___|
 Généré le [DATE] par MEANDRE
 https://meandre.explore2.inrae.fr/
+contact.meandre@listes.inrae.fr
 
 
 INFORMATIONS GENERALES _______________________________________________
@@ -44,8 +45,9 @@ Entrepôt de donnée du projet Explore2 :
    graphiques ou numériques.
    DRIAS Eau https://drias-eau.fr
 
-Développement : Louis Héraut louis.heraut@inrae.fr
-Référent scientifique : Jean-Philippe Vidal jean-philippe.vidal@inrae.fr
+Développement : Louis Héraut, RiverLy, INRAE, France
+Référent scientifique : Jean-Philippe Vidal, RiverLy, INRAE, France
+Contact : contact.meandre@listes.inrae.fr
 
 Code source : https://github.com/super-lou/MEANDRE
 Hébergement web : Data Center de INRAE, Île-de-France
