@@ -106,6 +106,7 @@ Arborescence :
 ├── data.csv
 ├── ETALAB-Licence-Ouverte-v2.0.pdf
 ├── ETALAB-Open-Licence-v2.0.pdf
+├── map.png
 ├── meta_point.csv
 ├── meta_projection.csv
 ├── meta_variable.csv
