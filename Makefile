@@ -1,8 +1,12 @@
-db:
-	sudo mount /dev/sdc1 /home/louis/.postgresql
+mount-postgres:
+	# sudo mkdir -p /mnt/CARGO2
+	sudo mount /dev/sda1 /mnt/CARGO2
 	sudo systemctl restart postgresql
+
+unmount-postgres:
+	sudo systemctl stop postgresql
 
 front:
 	python3 -m http.server
 back:
-	python3 app.py
+	. ~/python_env/bin/activate && python3 app.py

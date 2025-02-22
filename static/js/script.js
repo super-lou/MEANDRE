@@ -418,9 +418,6 @@ function update_data_serie() {
     var variable = get_variable();
     var projection = get_projection();
 
-    console.log("selected_code");
-    console.log(selected_code);
-    
     var data_query = {
 	code: selected_code,
         exp: projection.exp,
@@ -948,6 +945,7 @@ function update_map(id_svg, svgElement, data_back) {
 	}
     }
     const redrawMap_debounce = debounce(redrawMap, 100);
+    // const redrawMap_debounce = debounce(() => redrawMap(svgElement), 100);
 
     function handleResize() {
 	if (window.innerWidth < window.innerHeight) {
@@ -987,15 +985,15 @@ function update_map(id_svg, svgElement, data_back) {
 	.attr("height", "100%")
 	.append("g");
 
-    // if (is_zoom) {
-	svgElement.call(zoom)
-    // }
+    svgElement.call(zoom)
 
     redrawMap();
     handleResize();
 
     return svgElement
 }
+
+
 
 
 
@@ -1183,555 +1181,436 @@ function redrawPoint(svgElement, data_back) {
 
 
 
-// function exportSVG() {
-//     const svgElement = d3.select("#svg-france");
-//     const bbox = svgElement.node().getBBox();
-//     svgElement.attr("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
-
-//     const serializer = new XMLSerializer();
-//     const svgString = serializer.serializeToString(svgElement.node());
-
-//     const blob = new Blob([svgString], { type: "image/svg+xml" });
-
-//     const url = URL.createObjectURL(blob);
-//     const downloadLink = document.createElement("a");
-//     downloadLink.href = url;
-//     downloadLink.download = "map.svg";
-
-//     document.body.appendChild(downloadLink);
-//     downloadLink.click();
-//     document.body.removeChild(downloadLink);
-
-//     URL.revokeObjectURL(url);
-// }
 
 
-function get_france_svg() {
-    const svgElement = d3.select("#svg-france").node();
-    const clonedSvgElement = svgElement.cloneNode(true);
-    const bbox = svgElement.getBBox();
-    clonedSvgElement.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
-    clonedSvgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
-    
-    const serializer = new XMLSerializer();
-    const svgString = serializer.serializeToString(clonedSvgElement);
-    const blob = new Blob([svgString], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = "map.svg";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
-}
-
-function get_colorbar_svg() {
-    const svgElement = d3.select("#svg-colorbar").node();
-    const clonedSvgElement = svgElement.cloneNode(true);
-    const bbox = svgElement.getBBox();
-    const padding = 10;
-    const viewBox = [
-        bbox.x - padding, 
-        bbox.y - padding, 
-        bbox.width + padding * 2, 
-        bbox.height + padding * 2
-    ].join(" ");
-    clonedSvgElement.setAttribute("viewBox", viewBox);
-    clonedSvgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
-    
-    const serializer = new XMLSerializer();
-    const svgString = serializer.serializeToString(clonedSvgElement);
-    const blob = new Blob([svgString], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = "colorbar.svg";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
-}
-
-
-
-
-
-
-
-
-
-function exportCombinedSVG() {
-
-    const cut_left_map = 30;
-    const right_colorbar_offset = 40;
-    const top_colorbar_offset = 30;
-    const top_map_offset = 10;
-    const bottom_map_offset = 10;
-    
-    
-    const mapSvgElement = d3.select("#svg-france").node();
-    const colorbarSvgElement = d3.select("#svg-colorbar").node();
-
-    // Clone both SVG elements
-    const clonedMapSvg = mapSvgElement.cloneNode(true);
-    const clonedColorbarSvg = colorbarSvgElement.cloneNode(true);
-
-    // Get bounding box of the map SVG
-    const mapBBox = mapSvgElement.getBBox();
-
-    const mapBBox_height_top = mapBBox.y - top_map_offset;
-    const mapBBox_height_bottom = mapBBox.height + top_map_offset + bottom_map_offset;
-    clonedMapSvg.setAttribute("viewBox", `${mapBBox.x} ${mapBBox_height_top} ${mapBBox.width} ${mapBBox_height_bottom}`);
-    clonedMapSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-
-    // Calculate the desired height for the colorbar (2/3 of map height)
-    const colorbarHeight = (2 / 3) * mapBBox.height;
-
-    // Calculate the scaling factor for the colorbar to fit the new height
-    const colorbarBBox = colorbarSvgElement.getBBox();
-    const colorbarScale = colorbarHeight / colorbarBBox.height;
-
-    const colorbar_width = colorbarBBox.width + 10;
-    clonedColorbarSvg.setAttribute("viewBox", `${colorbarBBox.x} ${colorbarBBox.y} ${colorbar_width} ${colorbarBBox.height}`);
-    clonedColorbarSvg.setAttribute("width", colorbarBBox.width * colorbarScale);
-    clonedColorbarSvg.setAttribute("height", colorbarHeight);
-    clonedColorbarSvg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-
-    // Calculate total width of the combined SVG
-    const combinedWidth = mapBBox.width + (colorbarBBox.width * colorbarScale) + right_colorbar_offset;
-    const combinedHeight = mapBBox.height;
-    
-    // Create a new SVG element to hold both the map and the colorbar
-    const combinedSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    combinedSvg.setAttribute("width", combinedWidth);
-    combinedSvg.setAttribute("height", combinedHeight);
-    combinedSvg.setAttribute("viewBox", `${cut_left_map} 0 ${combinedWidth} ${combinedHeight}`);
-
-    // Position the colorbar to the right of the map
-    clonedColorbarSvg.setAttribute("x", mapBBox.width + right_colorbar_offset);
-    clonedColorbarSvg.setAttribute("y", top_colorbar_offset);
-
-    // Append cloned SVG elements to the new combined SVG
-    combinedSvg.appendChild(clonedMapSvg);
-    combinedSvg.appendChild(clonedColorbarSvg);
-
-
-    const serializer = new XMLSerializer();
-    const svgString = serializer.serializeToString(combinedSvg);
-    const blob = new Blob([svgString], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = "map.svg";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
-    
-    
-    // // Create a data URL for the SVG
-    // const svgData = new XMLSerializer().serializeToString(combinedSvg);
-    // const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-    // const url = URL.createObjectURL(svgBlob);
-
-    // // Set the resolution multiplier
-    // const resolutionMultiplier = 5; // Change this value to increase or decrease resolution
-
-    // // Create an image element to render the SVG data
-    // const img = new Image();
-    // img.onload = function () {
-    //     // Create a canvas with the scaled dimensions
-    //     const canvas = document.createElement("canvas");
-    //     canvas.width = combinedWidth * resolutionMultiplier;
-    //     canvas.height = combinedHeight * resolutionMultiplier;
-
-    //     // Scale the context to increase resolution
-    //     const ctx = canvas.getContext("2d");
-    //     ctx.scale(resolutionMultiplier, resolutionMultiplier);
-
-    //     // Draw the SVG on the canvas
-    //     ctx.drawImage(img, 0, 0);
-
-    //     // Export the canvas as a PNG
-    //     const pngData = canvas.toDataURL("image/png");
-
-    //     const filename = "map";
-    //     // Create a link element to download the PNG
-    //     const link = document.createElement("a");
-    //     link.download = `${filename || "export"}.png`;
-    //     link.href = pngData;
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-
-    //     // Clean up
-    //     URL.revokeObjectURL(url);
-    // };
-    // img.src = url;
-}
-
-
-
-
-
-
-
-function exportSVG() {
-
-    var title = data_point.name_fr;
-    var horizon = get_horizon();
-    var model = "Au moins " + get_n() + " modèles hydrologiques par point";
-    
-    var relatif = data_point.to_normalise ? "relatif " : "";
-    var subtitle = "Changements " + relatif + horizon.text + " par rapport à la période de référence 1976-2005";
-
-    const width_max_title = 42;
-    const width_max_subtitle = 60;
-    let title_wrap = wrapTextByCharacterLimit(title, width_max_title);
-
-    let top_title_line1;
-    let top_title;
-    let title_line;
-    if (title_wrap.length > 1) {
-	top_title_line1 = 3;
-	top_title = 15;
-	title_line = 12;
-    } else {
-	top_title_line1 = 6;
-	top_title = 18;
-	title_line = 0;
-    }
-    let subtitle_wrap = wrapTextByCharacterLimit(subtitle, width_max_subtitle);
-
-    
-    const topMargin = 64;
-    const bottomMargin = 2;
-    const right_cut = 20;
-
-    const left_title_line = 12;
-    const top_title_line2 = 45 + title_line;
-    
-    const left_title = 23;
-
-    const top_subtitle = 32 + title_line;
-    const left_subtitle = 23;
-    
-    const top_colorbar = 132;
-    const left_colorbar = -25;
-    
-    const left_logo = 6;
-    const bottom_logo = 30;
-    const width_logo = 33;
-    const height_logo = 33;
-
-    const left_meandre = 46;
-    const bottom_meandre = 10;
-    const left_url = 47;
-    const bottom_url = 5;
-    
-    const left_sep_line = 122;
-    const bottom_sep_line1 = 4;
-    const bottom_sep_line2 = 20;
-    
-    const bottom_footer = 16;
-    const left_footer = 127;
-
-    const right_lo = 48;
-    const bottom_lo = 22;
-    const width_lo = 18;
-    const height_lo = 18;
-
-    const right_lo_text = 28;
-    const bottom_lo_text = 14;
-    
-
-    
-    // // Select existing SVG elements
-    // const svgColorbar = d3.select("#svg-colorbar");
-    // const svgFrance = d3.select("#svg-france");
-
-    // // Clone both SVG elements
-    // const clonedSvgColorbar = svgColorbar.node().cloneNode(true);
-    // const clonedSvgFrance = svgFrance.node().cloneNode(true);
-
-    // // Get bounding box of the France SVG
-    // const franceBBox = svgFrance.node().getBBox();
-    // const colorbarBBox = svgColorbar.node().getBBox();
-
-    // // Define dimensions for the combined SVG
-    // const colorbarWidth = colorbarBBox.width + 10;
-    // const colorbarHeight = colorbarBBox.height;
-    // const franceWidth = franceBBox.width;
-    // const franceHeight = franceBBox.height;
-    // const combinedWidth = franceWidth + colorbarWidth - right_cut;
-    // const combinedHeight = Math.max(franceHeight, colorbarHeight) + topMargin + bottomMargin; 
-
-    
-    // // Define new dimensions for the colorbar
-    // const newColorbarHeight = combinedHeight * 0.4;  // Height is 1/3 of combined height
-    // const colorbarAspectRatio = colorbarWidth / colorbarHeight;
-    // const newColorbarWidth = newColorbarHeight * colorbarAspectRatio;
-
-    // // Adjust the viewBox for the France SVG to ensure it fits
-    // const mapBBox_height_top = franceBBox.y;
-    // const mapBBox_height_bottom = franceBBox.height + mapBBox_height_top;
-    // clonedSvgFrance.setAttribute("viewBox", `${franceBBox.x} ${mapBBox_height_top} ${franceBBox.width} ${mapBBox_height_bottom}`);
-    // clonedSvgFrance.setAttribute("preserveAspectRatio", "xMidYMid meet");
-
-    
+function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_color="") {
+    // Select the existing SVG element
+    const svgFrance = d3.select(id_svg);
+    const clonedSvgFrance = svgFrance.node().cloneNode(true);
+    const franceWidth = svgFrance.node().getBoundingClientRect().width;
+    const franceHeight = svgFrance.node().getBoundingClientRect().height;
+    // const franceAspectRatio = franceWidth / franceHeight;
 
     const svgColorbar = d3.select("#svg-colorbar");
-    const svgFrance = d3.select("#svg-france");
-
-    // Clone both SVG elements
     const clonedSvgColorbar = svgColorbar.node().cloneNode(true);
-    const clonedSvgFrance = svgFrance.node().cloneNode(true);
 
-    // Get bounding box of the France SVG
-    const franceBBox = svgFrance.node().getBBox();
-    const colorbarBBox = svgColorbar.node().getBBox();
-
-    // Fixed map height for France
-    const fixedMapHeight = 331;
-
-    // Calculate the aspect ratio of the France SVG
-    const franceAspectRatio = franceBBox.width / franceBBox.height;
-
-    // Calculate the new width based on the fixed height
-    const franceWidth = fixedMapHeight * franceAspectRatio;
-    const franceHeight = fixedMapHeight;
-
-    // Adjust the viewBox for the France SVG to match the fixed height
-    const mapBBox_height_top = franceBBox.y;
-    const mapBBox_height_bottom = franceHeight + mapBBox_height_top;
-    clonedSvgFrance.setAttribute("viewBox", `${franceBBox.x} ${mapBBox_height_top} ${franceBBox.width} ${mapBBox_height_bottom}`);
-    clonedSvgFrance.setAttribute("preserveAspectRatio", "xMidYMid meet");
-
-    // Adjust dimensions for the colorbar based on the new France map height
-    const combinedHeight = franceHeight + topMargin + bottomMargin; // New combined height with fixed map height
-    const colorbarHeight = combinedHeight * 0.4; // New colorbar height (40% of combined height)
-    const colorbarAspectRatio = colorbarBBox.width / colorbarBBox.height;
-    const colorbarWidth = colorbarHeight * colorbarAspectRatio + 10; // Adjusted colorbar width
-
-    // Calculate combined width by adding the colorbar's width and the France map width
-    const combinedWidth = franceWidth + colorbarWidth;
-    // - right_cut;
-
-    console.log(franceBBox);
-
+    const colorbarWidth = svgColorbar.node().getBoundingClientRect().width;
+    const colorbarHeight = svgColorbar.node().getBoundingClientRect().height;
+    const bbox = svgColorbar.node().getBBox();
+    clonedSvgColorbar.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width + 10} ${bbox.height}`);
     
-
     const combinedSVGNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     const combinedSVG = d3.select(combinedSVGNode)
-        .attr("width", combinedWidth)
-        .attr("height", combinedHeight)
-        .attr("xmlns", "http://www.w3.org/2000/svg");
+          .attr("width", Width)
+          .attr("height", Height)
+	  .attr("viewBox", `0 0 ${Width} ${Height}`)
+          .attr("xmlns", "http://www.w3.org/2000/svg");
 
-        // Add background color
     combinedSVG.append("rect")
         .attr("x", 0)
         .attr("y", 0)
-        .attr("width", combinedWidth)
-        .attr("height", combinedHeight)
+        .attr("width", Width)
+        .attr("height", Height)
         .attr("fill", "#F5F5F5");
 
-
-    combinedSVG.append("line")
-	.attr("x1", left_title_line)
-	.attr("y1", top_title_line1) 
-	.attr("x2", left_title_line)
-	.attr("y2", top_title_line2) 
-	.attr("stroke", "#C5E7E7")
-	.attr("stroke-width", 7);
     
+    // Append France to combined SVG
+    const france_scale = 1700/franceHeight;
+    const france_left = 2;
+    const france_top = 250;
+    combinedSVG.append(() => clonedSvgFrance)
+	.attr("transform", `translate(${france_left}, ${france_top}) scale(${france_scale})`);
+
+    // const colorbar_width = 220;
+    // const colorbar_scale = colorbar_width/colorbarWidth;
+    const colorbar_height = 850;
+    const colorbar_scale = colorbar_height/colorbarHeight;
+    const colorbar_right = 430;
+    const colorbar_top = 710;
+    combinedSVG.append(() => clonedSvgColorbar)
+        .attr("transform", `translate(${Width-colorbar_right}, ${colorbar_top}) scale(${colorbar_scale})`);
+
+
+
+    // en haut à droite : RCP ou narratif
+
+    
+    var title = data_point.name_fr;
+    const width_max_title = 42;
+    let title_wrap = wrapTextByCharacterLimit(title, width_max_title);
+
+    let title_text_shift_top;
+    let title_text_add_top;
+    if (title_wrap.length == 1) {
+	title_text_shift_top = 25;
+	title_text_add_top = 0;
+    } else {
+	title_text_shift_top = 0;
+	title_text_add_top = 90;
+    }
+
+    const header_line_left1 = 64;
+    const header_line_top1 = 30 + title_text_shift_top;
+    const header_line_left2 = 64;
+    const header_line_top2 = 230 + title_text_shift_top + title_text_add_top;
+    combinedSVG.append("line")
+	.attr("x1", header_line_left1)
+	.attr("y1", header_line_top1) 
+	.attr("x2", header_line_left2)
+	.attr("y2", header_line_top2) 
+	.attr("stroke", "#C5E7E7")
+	.attr("stroke-width", "35px");
+    
+    const title_text_left = 120;
+    const title_text_top = 90 + title_text_shift_top;    
     combinedSVG.append("text")
-        .attr("x", left_title)
-        .attr("y", top_title)
+        .attr("x", title_text_left)
+        .attr("y", title_text_top)
         .attr("text-anchor", "start")
-        .attr("font-size", "15px")
+        .attr("font-size", "76px")
 	.attr("font-family", "Raleway, sans-serif")
 	.attr("font-weight", "800")
         .attr("fill", "#16171f")
         .selectAll("tspan")
         .data(title_wrap)
         .enter().append("tspan")
-        .attr("x", left_title)
-        .attr("dy", (d, i) => i === 0 ? 0 : "1em")
+        .attr("x", title_text_left)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")
         .text(d => d);
 
+    
+    var horizon = get_horizon();
+    var relatif = data_point.to_normalise ? "relatif " : "";
+    var subtitle = "Changements " + relatif + horizon.text + " par rapport à la période de référence 1976-2005";
+    const width_max_subtitle = 60;
+    let subtitle_wrap = wrapTextByCharacterLimit(subtitle, width_max_subtitle);
+    
+    const subtitle_text_left = 120;
+    const subtitle_text_top = 160 + title_text_shift_top + title_text_add_top;
     combinedSVG.append("text")
-        .attr("x", left_subtitle)
-        .attr("y", top_subtitle)
+        .attr("x", subtitle_text_left)
+        .attr("y", subtitle_text_top)
         .attr("text-anchor", "start")
-        .attr("font-size", "10px")
+        .attr("font-size", "50px")
 	.attr("font-family", "Lato, sans-serif")
 	.attr("font-weight", "400")
         .attr("fill", "#16171f")
         .selectAll("tspan")
         .data(subtitle_wrap)
         .enter().append("tspan")
-        .attr("x", left_subtitle)
-        .attr("dy", (d, i) => i === 0 ? 0 : "1em")
+        .attr("x", subtitle_text_left)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")
         .text(d => d);
+
+
+    
+    let top_text = "";
+    let top_text_color = "transparent";
+
+    let width_max_chain_text = 56;
+    let chain_text_shift = 0;
+    let chain_text;
+    var projection = get_projection();
+    if (drawer_mode === 'drawer-narratif') {
+	chain_text = "Chaînes de modélisation par narratif sous le";
+	top_text = narratif_text;
+	top_text_color = narratif_color;
+    } else if (drawer_mode === 'drawer-RCP') {
+	// width_max_chain_text = 56;
+	// chain_text_shift = 60;
+	chain_text = "Ensemble des chaînes de modélisation pour le";
+	if (projection.RCP === "RCP 2.6") {
+	    top_text = "Scénario où des efforts importants sont fait pour réduire les émissions.";
+	    top_text_color = "#003466";
+	} else if (projection.RCP === "RCP 4.5") {
+	    top_text = "Scénario où des efforts modérés sont fait pour réduire les émissions.";
+	    top_text_color = "#70A0CD";
+	} else if (projection.RCP === "RCP 8.5") {
+	    top_text = "Scénario où l'augmentation des émissions continue selon la tendance actuelle.";
+	    top_text_color = "#990002";
+	}
+    } else if (drawer_mode === 'drawer-chain') {
+	// /!\ PB : le nombre de HM dépend de la sélection
+	const nChain = 0;
+	chain_text = "Sélection de " + projection.chain.length + " chaînes de modélisation sous le";
+    }
+    const RCP_text = projection.RCP;
+    const model_text = "avec au moins " + get_n() + " modèles hydrologiques par point";
+    chain_text = chain_text + " " + RCP_text + " " + model_text;
+
+    const width_max_top_text = 34;
+    const top_text_wrap = wrapTextByCharacterLimit(top_text, width_max_top_text);
+    // const top_text_right = 800;
+    const top_text_right = 150;
+    const top_text_top = 450;
+    combinedSVG.append("text")
+        .attr("x", Width - top_text_right)
+        .attr("y", top_text_top)
+        .attr("text-anchor", "end")
+        .attr("font-size", "40px")
+	.attr("font-family", "Raleway, sans-serif")
+	.attr("font-weight", "600")
+        .attr("fill", top_text_color)
+        .selectAll("tspan")
+        .data(top_text_wrap)
+        .enter().append("tspan")
+        .attr("x", Width - top_text_right)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")
+        .text(d => d);
+
+    const top_line_right1 = 115;
+    const top_line_top1 = 412;
+    const top_line_right2 = 115;
+    const top_line_top2 = 412 + 45*top_text_wrap.length; //548
+    combinedSVG.append("line")
+	.attr("x1", Width - top_line_right1)
+	.attr("y1", top_line_top1) 
+	.attr("x2", Width - top_line_right2)
+	.attr("y2", top_line_top2) 
+	.attr("stroke", top_text_color)
+	.attr("stroke-width", "6px");
     
 
-    // Add footer
+    const i_text_left = 280 - chain_text_shift;
+    const i_text_bottom = 195;
     combinedSVG.append("text")
-        .attr("x", left_footer)
-        .attr("y", combinedHeight - bottom_footer)
+        .attr("x", i_text_left)
+        .attr("y", Height - i_text_bottom)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "40px")
+	.attr("font-family", "Georgia, serif")
+        .attr("font-weight", "600")
+	.attr("fill", "#89898A")
+        .text("i");
+
+    const circle_left = 280 - chain_text_shift;
+    const circle_bottom = 210;
+    const circle_radius = 22;
+    combinedSVG.append("circle")
+	.attr("cx", circle_left)
+	.attr("cy", Height - circle_bottom)
+	.attr("r", circle_radius)
+	.attr("fill", "transparent")
+	.attr("stroke", "#89898A")
+	.attr("stroke-width", "5px");
+    
+    
+    const chain_text_wrap = wrapTextByCharacterLimit(chain_text, width_max_chain_text);
+    const chain_text_left = 340 - chain_text_shift;
+    const chain_text_bottom = 220;
+    combinedSVG.append("text")
+        .attr("x", chain_text_left)
+        .attr("y", Height - chain_text_bottom)
         .attr("text-anchor", "start")
-        .attr("font-size", "5px")
-	.attr("font-family", "Lato, sans-serif")
-	.attr("font-weight", "400")
-        .attr("fill", "#060508")
+        .attr("font-size", "40px")
+	.attr("font-family", "Raleway, sans-serif")
+	.attr("font-weight", "500")
+        .attr("fill", "#89898A")
         .selectAll("tspan")
-        .data([
-            "Ces résultats sont issus de projections hydrologiques réalisées sur la France. La mise à jour",
-	    "de ces projections a été réalisé entre 2022 et 2024 dans le cadre du projet national Explore2.",
-	    "Ces résultats sont un aperçu de quelques futures possibles pour la ressource en eau."
-        ])
+        .data(chain_text_wrap)
         .enter().append("tspan")
-        .attr("x", left_footer)
+        .attr("x", chain_text_left)
         .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")
         .text(d => d);
     
-    // Append France to combined SVG
-    combinedSVG.append(() => clonedSvgFrance)
-        .attr("x", 0)
-        .attr("y", topMargin)
-        .attr("width", franceWidth)
-        .attr("height", franceHeight);
 
-    // Append colorbar to combined SVG
-    combinedSVG.append(() => clonedSvgColorbar)
-        .attr("x", franceWidth + left_colorbar)
-        .attr("y", top_colorbar)
-        .attr("width", colorbarWidth)
-        .attr("height", colorbarHeight);
+    // const footer_sep_line_left1 = 0;
+    // const footer_sep_line_bottom1 = 130;
+    // const footer_sep_line_right2 = 0;
+    // const footer_sep_line_bottom2 = 130;
+    // combinedSVG.append("line")
+    // 	.attr("x1", footer_sep_line_left1)
+    // 	.attr("y1", Height - footer_sep_line_bottom1) 
+    // 	.attr("x2", Width - footer_sep_line_right2)
+    // 	.attr("y2", Height - footer_sep_line_bottom2) 
+    // 	.attr("stroke", "#89898A")
+    // 	.attr("stroke-width", "1px");
 
-
-    combinedSVG.append("line")
-	.attr("x1", left_sep_line)
-	.attr("y1", combinedHeight - bottom_sep_line1) 
-	.attr("x2", left_sep_line)
-	.attr("y2", combinedHeight - bottom_sep_line2) 
-	.attr("stroke", "#C5E7E7")
-	.attr("stroke-width", 2);
     
+    const meandre_text_left = 240;
+    const meandre_text_bottom = 50;
     combinedSVG.append("text")
-        .attr("x", left_meandre)
-        .attr("y", combinedHeight - bottom_meandre)
+        .attr("x", meandre_text_left)
+        .attr("y", Height - meandre_text_bottom)
         .attr("text-anchor", "start")
-        .attr("font-size", "13px")
+        .attr("font-size", "65px")
 	.attr("font-family", "Raleway, sans-serif")
         .attr("font-weight", "900")
 	.attr("fill", "#16171f")
         .text("MEANDRE");
 
+    const url_text_left = 246;
+    const url_text_bottom = 25;
     combinedSVG.append("text")
-        .attr("x", left_url)
-        .attr("y", combinedHeight - bottom_url)
+        .attr("x", url_text_left)
+        .attr("y", Height - url_text_bottom)
         .attr("text-anchor", "start")
-        .attr("font-size", "5px")
+        .attr("font-size", "25px")
 	.attr("font-family", "Raleway, sans-serif")
         .attr("font-weight", "500")
 	.attr("fill", "#16171f")
         .text("meandre.explore2.inrae.fr");
 
+
+    const footer_line_left1 = 620;
+    const footer_line_bottom1 = 100;
+    const footer_line_left2 = 620;
+    const footer_line_bottom2 = 20;
+    combinedSVG.append("line")
+	.attr("x1", footer_line_left1)
+	.attr("y1", Height - footer_line_bottom1) 
+	.attr("x2", footer_line_left2)
+	.attr("y2", Height - footer_line_bottom2) 
+	.attr("stroke", "#C5E7E7")
+	.attr("stroke-width", "10px");
+
+    const footer_text_left = 645;
+    const footer_text_bottom = 80;
     combinedSVG.append("text")
-        .attr("x", combinedWidth - right_lo_text)
-        .attr("y", combinedHeight - bottom_lo_text)
+        .attr("x", footer_text_left)
+        .attr("y", Height - footer_text_bottom)
         .attr("text-anchor", "start")
-        .attr("font-size", "6px")
+        .attr("font-size", "25px")
+	.attr("font-family", "Lato, sans-serif")
+	.attr("font-weight", "400")
+        .attr("fill", "#060508")
+        .selectAll("tspan")
+        .data([
+	    "Ces résultats sont issus de projections hydrologiques réalisées sur la France. La mise à jour",
+	    "de ces projections a été réalisé entre 2022 et 2024 dans le cadre du projet national Explore2.",
+	    "Ces résultats sont un aperçu de quelques futures possibles pour la ressource en eau."
+        ])
+        .enter().append("tspan")
+        .attr("x", footer_text_left)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")
+        .text(d => d);
+    
+
+    
+    const lo_text_right = 140;
+    const lo_text_bottom = 70;
+    combinedSVG.append("text")
+        .attr("x", Width - lo_text_right)
+        .attr("y", Height - lo_text_bottom)
+        .attr("text-anchor", "start")
+        .attr("font-size", "30px")
 	.attr("font-family", "Arial, sans-serif")
 	.attr("font-weight", "300")
         .attr("fill", "#89898A")
         .selectAll("tspan")
         .data([
-            "Licence",
+	    "Licence",
 	    "Ouverte"
         ])
         .enter().append("tspan")
-        .attr("x", combinedWidth - right_lo_text)
+        .attr("x", Width - lo_text_right)
         .attr("dy", (d, i) => i === 0 ? 0 : "1.1em")  // Adjust vertical spacing between lines
         .text(d => d);
-    
 
-    // Fetch the first logo (MEANDRE logo)
-    fetch('/resources/logo/MEANDRE_logo.svg')
-	.then(response => response.text())
-	.then(svgData => {
-            const base64Logo1 = btoa(svgData);
-
-            // Append the first logo (MEANDRE)
-            combinedSVG.append("image")
-		.attr("href", "data:image/svg+xml;base64," + base64Logo1)
-		.attr("x", left_logo)
-		.attr("y", combinedHeight - bottom_logo)
-		.attr("width", width_logo)
-		.attr("height", height_logo)
-		.attr("preserveAspectRatio", "xMidYMid meet");
-
-            // Fetch the second logo (another SVG)
-            fetch('/resources/licence_ouverte/Logo-licence-ouverte2_grey.svg')
-		.then(response => response.text())
-		.then(svgData2 => {
-                    const base64Logo2 = btoa(svgData2);
-
-                    // Append the second logo
-                    combinedSVG.append("image")
-			.attr("href", "data:image/svg+xml;base64," + base64Logo2)
-			.attr("x", combinedWidth - right_lo)
-			.attr("y", combinedHeight - bottom_lo) 
-			.attr("width", width_lo)
-			.attr("height", height_lo)
-			.attr("preserveAspectRatio", "xMidYMid meet");
-
-                    // Serialize the combined SVG to a string
-                    const combinedSVGNode = combinedSVG.node();
-                    const svgString = new XMLSerializer().serializeToString(combinedSVGNode);
-                    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-                    const svgUrl = URL.createObjectURL(svgBlob);
-
-                    // Set the resolution multiplier
-                    const resolutionMultiplier = 5;  // Change this value to increase or decrease resolution
-
-                    // Create an image element to render the SVG data
-                    const img = new Image();
-                    img.onload = function () {
-			// Create a canvas with the scaled dimensions
-			const canvas = document.createElement("canvas");
-			canvas.width = combinedWidth * resolutionMultiplier;
-			canvas.height = combinedHeight * resolutionMultiplier; // Include extra space
-			const ctx = canvas.getContext("2d");
-			ctx.scale(resolutionMultiplier, resolutionMultiplier);
-
-			// Draw the SVG on the canvas
-			ctx.drawImage(img, 0, 0);
-
-			// Export the canvas as a PNG
-			const pngData = canvas.toDataURL("image/png");
-
-			// Create a link element to download the PNG
-			const link = document.createElement("a");
-			link.download = "combined.png";
-			link.href = pngData;
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-
-			// Clean up
-			URL.revokeObjectURL(svgUrl);
-                    };
-                    img.src = svgUrl;
-
-                    // Remove the combined SVG from the document
-                    combinedSVG.remove();
-		});
-	});
-
+    return combinedSVG;
 }
+
+
+
+function exportSVG() {
+    const Height = 2000;
+    const Width = 2000;
+    const zip = new JSZip(); // Create a ZIP archive
+    let pngPromises = [];
+
+    if (drawer_mode === 'drawer-narratif') {
+        const svgDataArray = [
+            { id: "#svg-france-vert", name: "france-vert",
+	      narratif: "Réchauffement marqué et augmentation des précipitations", color: "#569A71"},
+            { id: "#svg-france-jaune", name: "france-jaune",
+	      narratif: "Changements futurs relativement peu marqués", color: "#EECC66"},
+            { id: "#svg-france-orange", name: "france-orange",
+	      narratif: "Fort réchauffement et fort assèchement en été (et en annuel)", color: "#E09B2F"},
+            { id: "#svg-france-violet", name: "france-violet",
+	      narratif: "Fort réchauffement et forts contrastes saisonniers en précipitations", color: "#791F5D"}
+        ];
+
+        pngPromises = svgDataArray.map(({id, name, narratif, color}) => {
+            return convertSVGToPNG(id, name, zip, Height, Width, narratif, color);
+        });
+
+    } else {
+        pngPromises.push(convertSVGToPNG("#svg-france", "france", zip, Height, Width));
+    }
+
+    // Wait for all PNG conversions to complete, then generate the ZIP
+    Promise.all(pngPromises).then(() => {
+        zip.generateAsync({ type: "blob" }).then((content) => {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(content);
+            link.download = "exported_maps.zip";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
+}
+
+
+
+function convertSVGToPNG(svgSelector, filename, zip, Height, Width, narratif="", color="") {
+    return new Promise((resolve) => {
+        const combinedSVG = drawSVG_for_export(svgSelector, Height, Width, narratif, color);
+
+        // Fetch the first logo (MEANDRE)
+        fetch('/resources/logo/MEANDRE/MEANDRE_logo.svg')
+            .then(response => response.text())
+            .then(svgData => {
+                const base64Logo1 = btoa(svgData);
+                combinedSVG.append("image")
+                    .attr("href", "data:image/svg+xml;base64," + base64Logo1)
+                    .attr("x", 45)
+                    .attr("y", Height - 120)
+                    .attr("width", 160)
+                    .attr("preserveAspectRatio", "xMidYMid meet");
+
+                // Fetch the second logo
+                return fetch('/resources/licence_ouverte/Logo-licence-ouverte2_grey.svg');
+            })
+            .then(response => response.text())
+            .then(svgData2 => {
+                const base64Logo2 = btoa(svgData2);
+                combinedSVG.append("image")
+                    .attr("href", "data:image/svg+xml;base64," + base64Logo2)
+                    .attr("x", Width - 225)
+                    .attr("y", Height - 110)
+                    .attr("height", 90)
+                    .attr("preserveAspectRatio", "xMidYMid meet");
+
+                // Convert SVG to PNG
+                const combinedSVGNode = combinedSVG.node();
+                const svgString = new XMLSerializer().serializeToString(combinedSVGNode);
+                const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+                const img = new Image();
+                const svgUrl = URL.createObjectURL(svgBlob);
+
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = Width;
+                    canvas.height = Height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Convert to PNG and add to ZIP
+                    canvas.toBlob((pngBlob) => {
+                        zip.file(`${filename}.png`, pngBlob);
+                        resolve();
+                    }, "image/png");
+                };
+
+                img.src = svgUrl;
+                combinedSVG.remove();
+            });
+    });
+}
+
+
+
 
 
 function wrapTextByCharacterLimit(text, maxChars) {
@@ -1939,7 +1818,7 @@ function get_files (data, variable, chain) {
 }
 
 
-async function exportData () {
+async function exportData() {
     var n = get_n();
     var variable = get_variable();
     var projection = get_projection();
@@ -1948,31 +1827,31 @@ async function exportData () {
     var title = data_point.name_fr;
     var relatif = data_point.to_normalise ? "relatif " : "";
     var subtitle = "Changements " + relatif + horizon.text +
-	"\n             par rapport à la période de référence 1976-2005";
+        "\n             par rapport à la période de référence 1976-2005";
 
     var filename =
-	"MEANDRE-export+" +
-	"var-" + variable + "+" + 
-	"H-" + horizon.period.replace(/ - /g, '_') + "+" +
-	"n-"+ n + "+" + 
-	"chain-" + slugify(projection.type) +
-	".zip";
+        "MEANDRE-export+" +
+        "var-" + variable + "+" +
+        "H-" + horizon.period.replace(/ - /g, '_') + "+" +
+        "n-" + n + "+" +
+        "chain-" + slugify(projection.type) +
+        ".zip";
 
     let chain_info;
     if (drawer_mode === 'drawer-RCP') {
-	chain_info = "Moyenne multi-modèles par niveau d'émissions.\n";
-	if (projection.RCP === "RCP 2.6") {
-	    chain_info = chain_info + "Le RCP 2.6 est un scénario où des efforts importants sont fait pour\nréduire les émissions.";
-	} else if (projection.RCP === "RCP 4.5") {
-	    chain_info = chain_info + "Le RCP 4.5 est un scénario où des efforts modérés sont fait pour\nréduire les émissions.";
-	} else if (projection.RCP === "RCP 8.5") {
-	    chain_info = chain_info + "Le RCP 8.5 est un scénario où l'augmentation des émissions\ncontinue selon la tendance actuelle.";
-	}
+        chain_info = "Moyenne multi-modèles par niveau d'émissions.\n";
+        if (projection.RCP === "RCP 2.6") {
+            chain_info = chain_info + "Le RCP 2.6 est un scénario où des efforts importants sont fait pour\nréduire les émissions.";
+        } else if (projection.RCP === "RCP 4.5") {
+            chain_info = chain_info + "Le RCP 4.5 est un scénario où des efforts modérés sont fait pour\nréduire les émissions.";
+        } else if (projection.RCP === "RCP 8.5") {
+            chain_info = chain_info + "Le RCP 8.5 est un scénario où l'augmentation des émissions\ncontinue selon la tendance actuelle.";
+        }
     } else if (drawer_mode === 'drawer-chain') {
-	chain_info = "Attention : Chaînes de modélisation spécifiques, l'approche\n" +
-	    "multi-modèle doit être privilégiée. Le détail des chaînes de\n" +
-	    "modélisation sélectionnées est disponible dans le fichier\n" +
-	    "meta_projection.csv"
+        chain_info = "Attention : Chaînes de modélisation spécifiques, l'approche\n" +
+            "multi-modèle doit être privilégiée. Le détail des chaînes de\n" +
+            "modélisation sélectionnées est disponible dans le fichier\n" +
+            "meta_projection.csv"
     }
 
     // README
@@ -1980,14 +1859,14 @@ async function exportData () {
     README = await README.text();
     var time = getFormattedDateTime();
     let param =
-	"Titre : " + title + "\n" +
-	"Sous-titre : " + subtitle + "\n\n" +	
-	"Variable : " + variable + "\n" +
-	"Unité : " + data_point.unit_fr + "\n" +
-	"Horizon : " + horizon.period + "\n" +
-	"Nombre de point : Il y a au moins " + n + " modèles hydrologiques par point\n" +
-	"Scénario d'émission : " + projection.RCP + "\n" + 
-	"Chaînes de modélisations : " + projection.type + "\n\n";
+        "Titre : " + title + "\n" +
+        "Sous-titre : " + subtitle + "\n\n" +
+        "Variable : " + variable + "\n" +
+        "Unité : " + data_point.unit_fr + "\n" +
+        "Horizon : " + horizon.period + "\n" +
+        "Nombre de point : Il y a au moins " + n + " modèles hydrologiques par point\n" +
+        "Scénario d'émission : " + projection.RCP + "\n" +
+        "Chaînes de modélisations : " + projection.type + "\n\n";
 
     // licence fr
     const pdfResponse_LO_fr = await fetch('/resources/licence_ouverte/ETALAB-Licence-Ouverte-v2.0.pdf');
@@ -1996,58 +1875,71 @@ async function exportData () {
     const pdfResponse_LO_en = await fetch('/resources/licence_ouverte/ETALAB-Open-Licence-v2.0.pdf');
     const pdf_LO_en = await pdfResponse_LO_en.blob();
 
+    // figure
+    const Height = 2000;
+    const Width = 2000;
+
     let zip;
-    
+
     if (drawer_mode === 'drawer-narratif') {
-	const data_point_storyline = {
-	    "vert": data_point_vert,
-	    "jaune": data_point_jaune,
-	    "orange": data_point_orange,
-	    "violet": data_point_violet
-	}
-	zip = new JSZip();
-	Object.keys(data_point_storyline).forEach(storyline => {
-	    const folder = zip.folder(storyline);
-	    const files = get_files(data_point_storyline[storyline],
-				    variable,
-				    projection["chain_" + storyline]);
-	    for (const [fileName, content] of Object.entries(files)) {
-		folder.file(fileName, content);
-	    }
+        const data_point_storyline = {
+            "vert": data_point_vert,
+            "jaune": data_point_jaune,
+            "orange": data_point_orange,
+            "violet": data_point_violet
+        }
+        zip = new JSZip();
+        for (const storyline of Object.keys(data_point_storyline)) {
+            const folder = zip.folder(storyline);
+            const files = get_files(data_point_storyline[storyline],
+                variable,
+                projection["chain_" + storyline]);
+            for (const [fileName, content] of Object.entries(files)) {
+                folder.file(fileName, content);
+            }
 
-	    var param_tmp = param + Storylines_map[storyline].info_readme;
-	    README_tmp = README
-		.replace(/\[DATE\]/g, time)
-		.replace(/\[PARAM\]/g, param_tmp);
-	    folder.file("README.txt", README_tmp);
-	    
-	    folder.file("ETALAB-Licence-Ouverte-v2.0.pdf", pdf_LO_fr);
-	    folder.file("ETALAB-Open-Licence-v2.0.pdf", pdf_LO_en);
-	});
-	
+            var param_tmp = param + Storylines_map[storyline].info_readme;
+            README_tmp = README
+                .replace(/\[DATE\]/g, time)
+                .replace(/\[PARAM\]/g, param_tmp);
+            folder.file("README.txt", README_tmp);
+
+            folder.file("ETALAB-Licence-Ouverte-v2.0.pdf", pdf_LO_fr);
+            folder.file("ETALAB-Open-Licence-v2.0.pdf", pdf_LO_en);
+
+            // Await the PNG conversion
+            await convertSVGToPNG("#svg-france-" + storyline, "map-" + storyline,
+                folder, Height, Width,
+                Storylines_map[storyline].info,
+                Storylines_map[storyline].color);
+        }
+
     } else {
-	zip = new JSZip();
-	const files = get_files(data_point, variable,
-				projection.chain);
-	for (const [fileName, content] of Object.entries(files)) {
-	    zip.file(fileName, content);
-	}
+        zip = new JSZip();
+        const files = get_files(data_point, variable,
+            projection.chain);
+        for (const [fileName, content] of Object.entries(files)) {
+            zip.file(fileName, content);
+        }
 
-	var param_tmp = param + chain_info;
-	README_tmp = README
-	    .replace(/\[DATE\]/g, time)
-	    .replace(/\[PARAM\]/g, param_tmp);
-	zip.file("README.txt", README_tmp);
-	
-	zip.file("ETALAB-Licence-Ouverte-v2.0.pdf", pdf_LO_fr);
-	zip.file("ETALAB-Open-Licence-v2.0.pdf", pdf_LO_en);
+        var param_tmp = param + chain_info;
+        README_tmp = README
+            .replace(/\[DATE\]/g, time)
+            .replace(/\[PARAM\]/g, param_tmp);
+        zip.file("README.txt", README_tmp);
+
+        zip.file("ETALAB-Licence-Ouverte-v2.0.pdf", pdf_LO_fr);
+        zip.file("ETALAB-Open-Licence-v2.0.pdf", pdf_LO_en);
+
+        // Await the PNG conversion
+        await convertSVGToPNG("#svg-france", "map", zip, Height, Width);
     }
 
     zip.generateAsync({ type: "blob" })
-        .then(function(content) {
-	    const link = document.createElement("a");
-	    link.href = URL.createObjectURL(content);
-	    link.download = filename;
-	    link.click();
+        .then(function (content) {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(content);
+            link.download = filename;
+            link.click();
         });
 }
