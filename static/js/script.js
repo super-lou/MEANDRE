@@ -890,6 +890,8 @@ let height = window.innerHeight;
 
 let projectionMap;
 
+let currentZoomLevel = 1; // Initialize with default zoom level
+
 
 function update_map(id_svg, svgElement, data_back) {
 
@@ -961,6 +963,7 @@ function update_map(id_svg, svgElement, data_back) {
 	highlight_selected_point();
     }
     window.addEventListener("resize", handleResize.bind(null, k_simplify, riverLength));
+
     
     const zoom = d3.zoom()
 	  .scaleExtent([minZoom, maxZoom])
@@ -991,6 +994,9 @@ function update_map(id_svg, svgElement, data_back) {
 }
 
 
+function isMapZoomed() {
+    return k_simplify !== k_simplify_ref;
+}
 
 
 
@@ -1196,24 +1202,12 @@ function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_co
 	  .attr("viewBox", `0 0 ${Width} ${Height}`)
           .attr("xmlns", "http://www.w3.org/2000/svg");
 
-    // const svg = d3.select("svg");
-    // const fontStyle = `
-    // @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-    // svg { font-family: 'Lato', sans-serif; }
-// `;
-    // const style = combinedSVG.append("style").text(fontStyle);
-
-
-
     const fontStyle = `
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Raleway:wght@500;600;800;900&display=swap');    
 `;
     combinedSVG.append("style")
 	.attr("type", "text/css")
 	.text(fontStyle);
-    
-    
-    
     
     combinedSVG.append("rect")
         .attr("x", 0)
@@ -1241,12 +1235,45 @@ function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_co
     combinedSVG.append(() => clonedSvgFrance)
 	.attr("transform", `translate(${france_left}, ${france_top})`);
 
+    var colorbar_right;
+    
+    if (isMapZoomed()) {
+	colorbar_right = 340;
+	combinedSVG.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 2000)
+            .attr("height", 350)
+            .attr("fill", "#F5F5F5");
+
+	combinedSVG.append("rect")
+            .attr("x", 0)
+            .attr("y", 1710)
+            .attr("width", 2000)
+            .attr("height", 290)
+            .attr("fill", "#F5F5F5");
+
+	combinedSVG.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 70)
+            .attr("height", 2000)
+            .attr("fill", "#F5F5F5");
+
+	combinedSVG.append("rect")
+            .attr("x", 1620)
+            .attr("y", 0)
+            .attr("width", 380)
+            .attr("height", 2000)
+            .attr("fill", "#F5F5F5");
+    } else {
+	colorbar_right = 440;
+    }
 
     const colorbar_height = 850;
     const colorbar_scale = colorbar_height/colorbarHeight;
-    const colorbar_right = 440;
+    
     const colorbar_top = 670;
-
     const colorbar_width_shift = 12;
     const colorbar_height_shift = 0;
     
@@ -1262,9 +1289,6 @@ function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_co
     clonedSvgColorbar.setAttribute("height", colorbar_scale * colorbarHeight);
     combinedSVG.append(() => clonedSvgColorbar)
 	.attr("transform", `translate(${Width-colorbar_right}, ${colorbar_top})`);
-
-    
-    // en haut à droite : RCP ou narratif
 
     
     var title = data_point.name_fr;
