@@ -442,11 +442,6 @@ function update_data_serie() {
 const update_data_serie_debounce = debounce(update_data_serie, 1000);
 
 
-// function update_plot_data_serie() {
-//     if (data_serie) {
-// 	plot_data_serie();
-//     }
-// }
 window.addEventListener('resize', function() {
     plot_data_serie();
 });
@@ -717,6 +712,8 @@ function make_list(from, to) {
 function draw_colorbar(data_back) {
     // Get the bins and palette
     var unit = data_back.unit_fr;
+    unit = /année/.test(unit) ? "jours" : unit; // for débutBE
+    unit = /jour/.test(unit) ? "jours" : unit; // for dtBE
     var bin = data_back.bin.slice(1, -1).reverse();
     var Palette = data_back.palette.reverse();
     var step = 25;
@@ -1045,14 +1042,7 @@ function find_code_in_data(data_back, code) {
 // }
 
 function show_serie(data_back, code, toggle=true) {
-    console.log(code);
-    // console.log(data_back);
-    
     var point = find_code_in_data(data_back, code);
-
-    console.log("point");
-    console.log(point);
-    
     
     if (selected_code === point.code && toggle) {
 	selected_code = null;
@@ -1206,6 +1196,14 @@ function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_co
 	  .attr("viewBox", `0 0 ${Width} ${Height}`)
           .attr("xmlns", "http://www.w3.org/2000/svg");
 
+    // const svg = d3.select("svg");
+    const fontStyle = `
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+    svg { font-family: 'Lato', sans-serif; }
+`;
+    const style = combinedSVG.append("style").text(fontStyle);
+    
+    
     combinedSVG.append("rect")
         .attr("x", 0)
         .attr("y", 0)
@@ -1218,20 +1216,43 @@ function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_co
     const france_scale = 1700/franceHeight;
     const france_left = 2;
     const france_top = 250;
-    combinedSVG.append(() => clonedSvgFrance)
-	.attr("transform", `translate(${france_left}, ${france_top}) scale(${france_scale})`);
 
-    // const colorbar_width = 220;
-    // const colorbar_scale = colorbar_width/colorbarWidth;
+    // combinedSVG.append(() => clonedSvgFrance)
+	// .attr("transform", `translate(${france_left}, ${france_top}) scale(${france_scale})`);
+    
+    // const franceGroup = combinedSVG.append("g")
+	  // .attr("transform", `translate(${france_left}, ${france_top}) scale(${france_scale})`);
+    // franceGroup.node().appendChild(clonedSvgFrance);
+
+    clonedSvgFrance.setAttribute("viewBox", `0 0 ${franceWidth} ${franceHeight}`);
+    clonedSvgFrance.setAttribute("width", france_scale * franceWidth);
+    clonedSvgFrance.setAttribute("height", france_scale * franceHeight);
+    combinedSVG.append(() => clonedSvgFrance)
+	.attr("transform", `translate(${france_left}, ${france_top})`);
+
+
     const colorbar_height = 850;
     const colorbar_scale = colorbar_height/colorbarHeight;
-    const colorbar_right = 430;
-    const colorbar_top = 710;
+    const colorbar_right = 440;
+    const colorbar_top = 670;
+
+    const colorbar_width_shift = 12;
+    const colorbar_height_shift = 0;
+    
+    // combinedSVG.append(() => clonedSvgColorbar)
+        // .attr("transform", `translate(${Width-colorbar_right}, ${colorbar_top}) scale(${colorbar_scale})`);
+
+    // const colorbarGroup = combinedSVG.append("g")
+	  // .attr("transform", `translate(${Width-colorbar_right}, ${colorbar_top}) scale(${colorbar_scale})`);
+    // colorbarGroup.node().appendChild(clonedSvgColorbar);
+
+    clonedSvgColorbar.setAttribute("viewBox", `0 0 ${colorbarWidth + colorbar_width_shift} ${colorbarHeight + colorbar_height_shift}`);
+    clonedSvgColorbar.setAttribute("width", colorbar_scale * colorbarWidth);
+    clonedSvgColorbar.setAttribute("height", colorbar_scale * colorbarHeight);
     combinedSVG.append(() => clonedSvgColorbar)
-        .attr("transform", `translate(${Width-colorbar_right}, ${colorbar_top}) scale(${colorbar_scale})`);
+	.attr("transform", `translate(${Width-colorbar_right}, ${colorbar_top})`);
 
-
-
+    
     // en haut à droite : RCP ou narratif
 
     
