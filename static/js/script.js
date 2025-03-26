@@ -1197,11 +1197,22 @@ function drawSVG_for_export(id_svg, Height, Width, narratif_text="", narratif_co
           .attr("xmlns", "http://www.w3.org/2000/svg");
 
     // const svg = d3.select("svg");
+    // const fontStyle = `
+    // @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+    // svg { font-family: 'Lato', sans-serif; }
+// `;
+    // const style = combinedSVG.append("style").text(fontStyle);
+
+
+
     const fontStyle = `
-    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-    svg { font-family: 'Lato', sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Raleway:wght@500;600;800;900&display=swap');    
 `;
-    const style = combinedSVG.append("style").text(fontStyle);
+    combinedSVG.append("style")
+	.attr("type", "text/css")
+	.text(fontStyle);
+    
+    
     
     
     combinedSVG.append("rect")
