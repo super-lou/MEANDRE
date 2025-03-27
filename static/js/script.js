@@ -1897,7 +1897,7 @@ async function exportData() {
     if (drawer_mode === 'drawer-RCP') {
         chain_info = "Moyenne multi-modèles par niveau d'émissions.\n";
         if (projection.RCP === "RCP 2.6") {
-            chain_info = chain_info + "Le RCP 2.6 est un scénario où des efforts importants sont fait pour\nréduire les émissions.";
+            chain_info = chain_info + "Le RCP 2.6 est un scénario compatible avec les objectifs\ndes accords de Paris.";
         } else if (projection.RCP === "RCP 4.5") {
             chain_info = chain_info + "Le RCP 4.5 est un scénario où des efforts modérés sont fait pour\nréduire les émissions.";
         } else if (projection.RCP === "RCP 8.5") {
